@@ -1,0 +1,100 @@
+@startuml
+
+class TwitchPlayerController {
+    - void update()
+
+    + void onHorAxisMove()
+    + void onVerticalAxisMove()
+    + void onSwapPress()
+    + void onShootAction()
+    + void onCaskPress()
+    + void onExpungePress()
+    + void onStealthPress()
+
+    + void onInventoryOpen()
+
+    + void onEnterIngredient()
+    + void onUpgradePrimaryVialAction()
+    + void onUpgradeSecondaryVialAction()
+}
+
+class TwitchPlayerStatus {
+    + bool canThrowCask()
+    + bool canExpunge()
+    + bool canStealth()
+
+    + void useCask()
+    + void useExpunge()
+    + void useStealth()
+
+    + float getCurrentSpeed()
+    + void changeSpeed(float speedFactor)
+
+    + float getAttackSpeed()
+
+    + void damage()
+}
+
+class TwitchPlayerUI {
+    + void setHealthBar(float curHealth, float maxHealth)
+    + void setCaskCooldown(float curCD, float maxCD)
+    + void setExpungeCooldown(float curCD, float maxCD)
+    + void setStealthCooldown(float curCD, float maxCD)
+}
+
+class AbilityIcon {
+    + void setCooldown(float curCooldown, float maxCooldown)
+}
+
+class TwitchAudioManager {
+
+}
+
+class TwitchAnimatorManager {
+
+}
+
+class PoisonVialInventory {
+    + PoisonVial getPrimaryVial()
+    + void swapCasks()
+    + void upgradePrimaryVial(Ingredient ingredient)
+    + void upgradeSecondaryVial(Ingredient ingredient)
+    + void addIngredient(Ingredient ingredient)
+}
+
+class PoisonVialInventoryUI {
+
+}
+
+class PoisonVialInventoryAudio {
+
+}
+
+class Hurtbox {
+    - onTriggerEnter()
+}
+
+class ExpungeManager {
+    - void onTriggerEnter()
+
+    + void expungeTargets()
+}
+
+TwitchPlayerController *-- TwitchPlayerStatus
+TwitchPlayerController *-- PoisonVialInventory
+TwitchPlayerController *-- TwitchAudioManager
+TwitchPlayerController *-- TwitchAnimatorManager
+TwitchPlayerController *-- ExpungeManager
+
+TwitchPlayerStatus *-- TwitchPlayerUI
+TwitchPlayerStatus *-- PoisonVialInventory
+TwitchPlayerStatus *-- TwitchAudioManager
+TwitchPlayerStatus *-- TwitchAnimatorManager
+Hurtbox *-- TwitchPlayerStatus
+
+PoisonVialInventory *-- PoisonVialInventoryUI
+PoisonVialInventoryUI *-- PoisonVialInventoryAudio
+
+TwitchPlayerUI *-- AbilityIcon
+
+@enduml

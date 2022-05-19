@@ -1,0 +1,115 @@
+@startuml
+
+Interface IVial {
+    + bool upgrade(Ingredient ing)
+    + bool useVial(int ammoCost)
+    + int getAmmoLeft()
+    + string getSideEffectName()
+    + float getBoltDamage()
+    + float poisonDamage(int numStacks)
+    + float getExpungeDamage(int numStacks)
+    + float getCaskSlowness()
+    + float getCaskTickRate()
+
+    + bool isPiercing()
+    + void onUnitDeath(Enemy enemy)
+    + float getStackSlowness(int numStacks)
+
+    + void onAuraTick(Enemy enemy)
+    + float getAuraSpeedFactor(int numStacks)
+    + void onAuraExpunge(Enemy enemy)
+    + bool canShowAura()
+
+}
+
+class Ingredient {
+    - bool isPotent
+    - bool isReactive
+    - bool isSticky
+    - bool isPoisonous
+    - int statsOffered
+
+    + Dictionary<String, int> getStatUpgrades()
+}
+
+class PoisonVial {
+    - int potency
+    - int reactivity
+    - int poison
+    - int stickiness
+    - int ammo
+    - SideEffect sideEffect
+}
+
+abstract class SideEffect {
+
+    + virtual float boltDamageAugment()
+    + virtual float poisonDamageAugment()
+    + virtual float caskSlownessAugment()
+
+    + virtual bool isPiercing()
+    + virtual void onUnitDeath(Enemy enemy)
+    + virtual float getStackSlowness(int numStacks)
+
+    + virtual void onAuraTick(Enemy enemy)
+    + virtual bool canShowAura()
+    + virtual void onAuraExpunge(Enemy enemy)
+    + virtual float getAuraSpeedFactor(int numStacks)
+
+    + abstract string getName()
+}
+
+class PiercingUlt {
+    + override bool isPiercing()
+    + override float boltDamageAugment()
+}
+
+class SprayPray {
+    + override float boltDamageAugment()
+}
+
+class RottenDecay {
+    + override float poisonDamageAugment()
+}
+
+class Contagion {
+    + override void onAuraExpunge(Enemy enemy)
+    + override void onAuraTick(Enemy enemy)
+}
+
+class ExplosiveExpunge {
+    + override void onAuraExpunge(Enemy enemy)
+}
+
+class RadioactiveCorpse {
+    - Transform radioactiveZonePrefab
+    + override void onUnitDeath()
+}
+
+class SluggishMiasma {
+    + override float caskSlownessAugment()
+}
+
+class InducedParalysis {
+    + override float getStackSlowness(int numStacks)
+}
+
+class LeakyBody {
+    + override float getAuraSpeedFactor(int numStacks)
+}
+
+IVial <|-- PoisonVial
+PoisonVial *-- SideEffect
+
+SideEffect <|-- PiercingUlt
+SideEffect <|-- SprayPray
+SideEffect <|-- RottenDecay
+SideEffect <|-- Contagion
+SideEffect <|-- ExplosiveExpunge
+SideEffect <|-- RadioactiveCorpse
+SideEffect <|-- SluggishMiasma
+SideEffect <|-- InducedParalysis
+SideEffect <|-- LeakyBody
+
+
+@enduml
