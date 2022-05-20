@@ -16,6 +16,8 @@ public class TopDownMovementController3D : MonoBehaviour
     // Reference variables
     [SerializeField]
     private Transform cameraTransform;
+    [SerializeField]
+    private Transform playerCharacterTransform;
 
 
     // FixedUpdate function: runs every frame
@@ -24,7 +26,7 @@ public class TopDownMovementController3D : MonoBehaviour
             handleMovement(Time.fixedDeltaTime);
         }
 
-        //setFacingDirection();
+        setFacingDirection();
     }
 
     // Main method to handle movement
@@ -54,10 +56,12 @@ public class TopDownMovementController3D : MonoBehaviour
     }
 
     // Main method to determine where the character is facing, considering both movement and aim
-    //  Pre: movementForward and aim direction is a vector that's not the zero vector
+    //  Pre: movementForward and aim direction is a vector that's not the zero vector, playerTransform != null
     //  Post: Sets the facing direction of the player character, assuming that player always face to its relative +Z dir
     private void setFacingDirection() {
-        transform.forward = movementForward;
+        Debug.Assert(playerCharacterTransform != null);
+
+        playerCharacterTransform.forward = movementForward;
     }
 
     // Event handler for 4 axis movement
