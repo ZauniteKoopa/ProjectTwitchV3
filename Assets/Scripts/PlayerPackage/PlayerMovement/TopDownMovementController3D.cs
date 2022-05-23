@@ -12,12 +12,14 @@ public class TopDownMovementController3D : MonoBehaviour
     private Vector3 movementForward = Vector3.forward;
 
     // Reference variables
+    [Header("Player Package Components")]
     [SerializeField]
     private Transform cameraTransform;
     [SerializeField]
     private Transform playerCharacterTransform;
 
     // Collision sensors
+    [Header("Solid Enviornment Sensors")]
     [SerializeField]
     private IBlockerSensor frontSensor;
     [SerializeField]
@@ -38,7 +40,16 @@ public class TopDownMovementController3D : MonoBehaviour
 
         // Error check
         if (unitStatus == null)
-            Debug.LogError("Unit status should be tied to this current object for movement to work!", transform);
+            Debug.LogError("Cannot access unit's movement stats! Please link a Unit Status to " + this, transform);
+
+        if (cameraTransform == null)
+            Debug.LogError("Cannot find camera to set movement forward to! Please link a camera to " + this, transform);
+        
+        if (playerCharacterTransform == null)
+            Debug.LogError("Cannot find playerCharacter to alter forward! Please link character to " + this, transform);
+
+        if (frontSensor == null || backSensor == null || leftSensor == null || rightSensor == null)
+            Debug.LogError("Collision Sensors not connected to movement controller! Make sure sensors are connected to " + this, transform);
     }
 
 
