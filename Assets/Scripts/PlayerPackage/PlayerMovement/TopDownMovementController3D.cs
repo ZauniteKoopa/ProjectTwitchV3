@@ -19,6 +19,16 @@ public class TopDownMovementController3D : MonoBehaviour
     [SerializeField]
     private Transform playerCharacterTransform;
 
+    // Collision sensors
+    [SerializeField]
+    private IBlockerSensor frontSensor;
+    [SerializeField]
+    private IBlockerSensor backSensor;
+    [SerializeField]
+    private IBlockerSensor leftSensor;
+    [SerializeField]
+    private IBlockerSensor rightSensor;
+
 
     // FixedUpdate function: runs every frame
     private void FixedUpdate() {
@@ -31,7 +41,7 @@ public class TopDownMovementController3D : MonoBehaviour
 
     // Main method to handle movement
     //  Pre: deltaTime > 0, inputVector is a normalized vector (NOT THE ZERO VECTOR), cameraTransform != null
-    //  Post: Translates the transform of the player based on the input vector and the camera direction
+    //  Post: Translates / rotates the transform of the player based on the input vector and the camera direction
     private void handleMovement(float deltaTime) {
         // Preconditions
         Debug.Assert(inputVector.magnitude > 0.999f && inputVector.magnitude <= 1.001f);
@@ -46,13 +56,20 @@ public class TopDownMovementController3D : MonoBehaviour
         Vector3 forwardVector = Vector3.ProjectOnPlane(cameraTransform.forward, Vector3.up);
         Vector3 rightVector = Vector3.Cross(Vector3.up, forwardVector);
 
-        // Get directional vector
-        Vector3 movementWorldDir = (inputX * rightVector) + (inputY * forwardVector);
-        movementWorldDir.Normalize();
+        // Get directional forward vector
+        Vector3 forwardWorldDir = (inputX * rightVector) + (inputY * forwardVector);
+        forwardWorldDir.Normalize();
 
-        // Apply directional vector to current transform
+        // Get movement vector by checking sensors
+        float movementX = (inputX < 0 && leftSensor.isBlocked()) ? 0 : inputX;
+        movementX = (movementX > 0 && rightSensor.isBlocked()) ? 0 : movementX;
+        float movementY = (inputY < 0 && backSensor.isBlocked()) ? 0 : inputY;
+        movementY = (movementY > 0 && frontSensor.isBlocked()) ? 0 : movementY;
+        Vector3 movementWorldDir = (movementX * rightVector) + (movementY * forwardVector);
+
+        // Translate via the movement vector and change facing direction via the forward vector
         transform.Translate(movementWorldDir * movementSpeed * deltaTime, Space.World);
-        movementForward = movementWorldDir;
+        movementForward = forwardWorldDir;
     }
 
     // Main method to determine where the character is facing, considering both movement and aim
