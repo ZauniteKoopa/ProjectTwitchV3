@@ -6,9 +6,7 @@ using UnityEngine.Assertions;
 
 public class TopDownMovementController3D : MonoBehaviour
 {
-    // Movement variables
-    [SerializeField]
-    private float movementSpeed = 6.0f;
+    // Variables to control movement
     private bool isMoving = false;
     private Vector2 inputVector = Vector2.zero;
     private Vector3 movementForward = Vector3.forward;
@@ -28,6 +26,20 @@ public class TopDownMovementController3D : MonoBehaviour
     private IBlockerSensor leftSensor;
     [SerializeField]
     private IBlockerSensor rightSensor;
+
+    // Unit status
+    private IUnitStatus unitStatus;
+
+
+    // On awake, automate initialization of variables and error check
+    private void Awake() {
+        // Initialize variables
+        unitStatus = GetComponent<IUnitStatus>();
+
+        // Error check
+        if (unitStatus == null)
+            Debug.LogError("Unit status should be tied to this current object for movement to work!", transform);
+    }
 
 
     // FixedUpdate function: runs every frame
@@ -68,7 +80,7 @@ public class TopDownMovementController3D : MonoBehaviour
         Vector3 movementWorldDir = (movementX * rightVector) + (movementY * forwardVector);
 
         // Translate via the movement vector and change facing direction via the forward vector
-        transform.Translate(movementWorldDir * movementSpeed * deltaTime, Space.World);
+        transform.Translate(movementWorldDir * unitStatus.getMovementSpeed() * deltaTime, Space.World);
         movementForward = forwardWorldDir;
     }
 
