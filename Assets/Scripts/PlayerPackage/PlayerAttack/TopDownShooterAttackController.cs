@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class TopDownShooterAttackController : MonoBehaviour
 {
     // Reference variables to components of player package
+    [Header("Reference variables")]
     [SerializeField]
     private Camera playerCamera = null;
     [SerializeField]
@@ -13,16 +14,50 @@ public class TopDownShooterAttackController : MonoBehaviour
     [SerializeField]
     private Transform primaryBullet = null;
 
+    // Stats for attacking (move to Player Status)
+    [Header("Primary Attack Stats")]
+    [SerializeField]
+    private float primaryAttackRate = 0.65f;
+    [SerializeField]
+    private float primaryBulletSpeed = 20f;
+
     // Variables for aiming
     private Plane aimPlane;
     private Vector2 inputMouseCoordinates;
+
+    // Variables for firingPrimaryAttack
     private bool firingPrimaryAttack = false;
+    private bool primaryAttackSequenceRunning = false;
 
 
     // On awake, error check and initialize variables
     private void Awake() {
         aimPlane = new Plane(Vector3.up, playerCharacter.position);
     }
+
+
+    // Invokable function to create a projectile at the specified direction
+    //  Pre: player is holding left click (firingPrimaryAttack is true)
+    private IEnumerator primaryAttackSequence() {
+        // Set flag to true
+        primaryAttackSequenceRunning = true;
+
+        // Keep firing projectiles until you stopped holding left click
+        while (firingPrimaryAttack) {
+            // Create projectile
+            Transform currentProjectile = Object.Instantiate(primaryBullet, playerCharacter.position, Quaternion.identity);
+            AbstractStraightProjectile projBehav = currentProjectile.GetComponent<AbstractStraightProjectile>();
+            Vector3 currentProjectileDir = getWorldAimLocation() - playerCharacter.position;
+            projBehav.setUpMovement(currentProjectileDir, primaryBulletSpeed);
+
+            // Wait for attack rate to finish
+            yield return new WaitForSeconds(primaryAttackRate);
+        }
+
+        // Set flag to false once sequence ends
+        primaryAttackSequenceRunning = false;
+    }
+
 
 
     // Event handler method for when mouse position changes
@@ -33,9 +68,13 @@ public class TopDownShooterAttackController : MonoBehaviour
     
     // Event handler method for when primary fire button click / removed
     public void onPrimaryButtonAction(InputAction.CallbackContext value) {
-        if (value.started) {
+
+        // Only run the sequence if this is the first bullet
+        if (value.started && !primaryAttackSequenceRunning) {
             firingPrimaryAttack = true;
-            primaryBullet.position = getWorldAimLocation();
+            StartCoroutine(primaryAttackSequence());
+        
+        // Once left click is canceled, turn mouse hold flag off
         } else if (value.canceled) {
             firingPrimaryAttack = false;
         }
