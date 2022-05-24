@@ -110,7 +110,7 @@ public class TopDownMovementController3D : MonoBehaviour
         isMoving = !value.canceled;
 
         // Set inputVector value
-        Vector3 eventVector = value.ReadValue<Vector2>();
+        Vector2 eventVector = value.ReadValue<Vector2>();
         inputVector = eventVector;
     }
 }
