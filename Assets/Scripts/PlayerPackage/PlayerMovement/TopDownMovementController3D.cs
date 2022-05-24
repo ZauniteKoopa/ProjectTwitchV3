@@ -17,6 +17,7 @@ public class TopDownMovementController3D : MonoBehaviour
     private Transform cameraTransform;
     [SerializeField]
     private Transform playerCharacterTransform;
+    private IAttackModule attackController;
 
     // Collision sensors
     [Header("Solid Enviornment Sensors")]
@@ -37,6 +38,7 @@ public class TopDownMovementController3D : MonoBehaviour
     private void Awake() {
         // Initialize variables
         unitStatus = GetComponent<IUnitStatus>();
+        attackController = GetComponent<IAttackModule>();
 
         // Error check
         if (unitStatus == null)
@@ -50,6 +52,9 @@ public class TopDownMovementController3D : MonoBehaviour
 
         if (frontSensor == null || backSensor == null || leftSensor == null || rightSensor == null)
             Debug.LogError("Collision Sensors not connected to movement controller! Make sure sensors are connected to " + this, transform);
+
+        if (attackController == null)
+            Debug.LogWarning("Attack Controller not connected to object! Attacking will not affect movement for " + this, transform);
     }
 
 
@@ -91,7 +96,7 @@ public class TopDownMovementController3D : MonoBehaviour
         Vector3 movementWorldDir = (movementX * rightVector) + (movementY * forwardVector);
 
         // Translate via the movement vector and change facing direction via the forward vector
-        transform.Translate(movementWorldDir * unitStatus.getMovementSpeed() * deltaTime, Space.World);
+        transform.Translate(movementWorldDir * getMovementSpeed() * deltaTime, Space.World);
         movementForward = forwardWorldDir;
     }
 
@@ -101,7 +106,21 @@ public class TopDownMovementController3D : MonoBehaviour
     private void setFacingDirection() {
         Debug.Assert(playerCharacterTransform != null);
 
-        playerCharacterTransform.forward = movementForward;
+        Vector3 localForward = Vector3.zero;
+
+        if (attackController != null && attackController.getNewForward(out localForward)) {
+            playerCharacterTransform.forward = localForward;
+        } else {
+            playerCharacterTransform.forward = movementForward;
+        }
+    }
+
+
+    // Main helper method to calculate the speed considering multiple different factors
+    private float getMovementSpeed() {
+        float baseMovement = unitStatus.getMovementSpeed();
+        baseMovement *= (attackController == null) ? 1.0f : attackController.getMovementSpeedFactor();
+        return baseMovement;
     }
 
     // Event handler for 4 axis movement

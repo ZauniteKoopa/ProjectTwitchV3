@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TopDownShooterAttackController : MonoBehaviour
+public class TopDownShooterAttackController : IAttackModule
 {
     // Reference variables to components of player package
     [Header("Reference variables")]
@@ -20,10 +20,13 @@ public class TopDownShooterAttackController : MonoBehaviour
     private float primaryAttackRate = 0.65f;
     [SerializeField]
     private float primaryBulletSpeed = 20f;
+    [SerializeField]
+    private float primaryAttackMoveReduction = 0.6f;
 
     // Variables for aiming
     private Plane aimPlane;
     private Vector2 inputMouseCoordinates;
+    private Vector3 aimForward;
 
     // Variables for firingPrimaryAttack
     private bool firingPrimaryAttack = false;
@@ -97,6 +100,28 @@ public class TopDownShooterAttackController : MonoBehaviour
 
         aimPlane.Raycast(inputRay, out intersectionDist);
         return inputRay.GetPoint(intersectionDist);
+    }
 
+    
+    // Function to return movement speed factor affected by this attack module
+    //  Pre: none
+    //  Post: returns a float that tells how much movement speed should be reduced by currently
+    public override float getMovementSpeedFactor() {
+        return (primaryAttackSequenceRunning) ? primaryAttackMoveReduction : 1.0f;
+    }
+
+
+    // Function to get the new forward calculated by this attack module
+    //  Pre: newForward needs to be any vector3
+    //  Post: returns whether forward should be overriden and puts overriden forward into newForward
+    public override bool getNewForward(out Vector3 newForward) {
+        newForward = Vector3.zero;
+        if (!primaryAttackSequenceRunning) {
+            return false;
+        }
+
+        newForward = getWorldAimLocation() - playerCharacter.position;
+        newForward = newForward.normalized;
+        return true;
     }
 }
