@@ -40,7 +40,6 @@ public class TopDownShooterAttackController : IAttackModule
     private Vector3 caskAimForward;
 
     // Variables for aiming
-    private Plane aimPlane;
     private Vector2 inputMouseCoordinates;
 
     // Variables for firingPrimaryAttack
@@ -50,7 +49,16 @@ public class TopDownShooterAttackController : IAttackModule
 
     // On awake, error check and initialize variables
     private void Awake() {
-        aimPlane = new Plane(Vector3.up, playerCharacter.position);
+        // Do error checking
+        if (playerCamera == null) {
+            Debug.LogError("Camera not connected to attack package for " + transform, transform);
+        } else if (playerCharacter == null) {
+            Debug.LogError("Player character not connected to attack package for " + transform, transform);
+        } else if (primaryBullet == null) {
+            Debug.LogError("Primary Bullet prefab not connected to attack package for " + transform, transform);
+        } else if (secondaryCask == null) {
+            Debug.LogError("Secondary weapon not connected to attack package for " + transform, transform);
+        }
     }
 
 
@@ -148,6 +156,7 @@ public class TopDownShooterAttackController : IAttackModule
     private Vector3 getWorldAimLocation() {
         Ray inputRay = playerCamera.ScreenPointToRay(inputMouseCoordinates);
         float intersectionDist = 0.0f;
+        Plane aimPlane = new Plane(Vector3.up, playerCharacter.position);
 
         aimPlane.Raycast(inputRay, out intersectionDist);
         return inputRay.GetPoint(intersectionDist);

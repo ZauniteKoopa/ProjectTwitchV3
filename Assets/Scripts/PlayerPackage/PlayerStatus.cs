@@ -15,4 +15,12 @@ public class PlayerStatus : IUnitStatus
     public override float getMovementSpeed() {
         return baseMovementSpeed * movementSpeedFactor;
     }
+
+
+    // Main method to damage player unit
+    //  Pre: damage is a number greater than 0
+    //  Post: damage is inflicted on player unit
+    public override void damage(float dmg) {
+        Debug.Log("Player suffered " + dmg + " damage");
+    }
 }

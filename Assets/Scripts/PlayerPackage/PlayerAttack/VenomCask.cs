@@ -7,13 +7,15 @@ public class VenomCask : MonoBehaviour
     // Private instance variables
     [Header("Reference Variables")]
     [SerializeField]
-    private GameObject poisonFogHitbox;
+    private AbstractDamageZone poisonFogHitbox;
     [SerializeField]
     private IFixedEffect caskThrowVisualEffect;
 
     // Variables concerning PoisonCask sequence
     [SerializeField]
     private float throwDuration = 0.5f;
+    [SerializeField]
+    private float initialDamageDuration = 0.08f;
     [SerializeField]
     private int numTicks = 4;
     [SerializeField]
@@ -23,7 +25,15 @@ public class VenomCask : MonoBehaviour
     
     // On Awake, deactivate poisonFogHitbox
     private void Awake() {
-        poisonFogHitbox.SetActive(false);
+        // Error check
+        if (poisonFogHitbox == null) {
+            Debug.LogError("Fog hitbox not connected to cask object for " + transform, transform);
+        } else if (caskThrowVisualEffect == null) {
+            Debug.LogError("Throw visual effect not connected to cask object for " + transform, transform);
+        }
+
+        // Set state of objects
+        poisonFogHitbox.gameObject.SetActive(false);
         caskThrowVisualEffect.gameObject.SetActive(true);
     }
 
@@ -43,14 +53,19 @@ public class VenomCask : MonoBehaviour
         caskThrowVisualEffect.activateEffect(transform.position, finalDestination, throwDuration);
         yield return new WaitForSeconds(throwDuration);
 
+        // Activate poison fog hitbox and do some immediate damage
         poisonFogHitbox.transform.position = finalDestination;
-        poisonFogHitbox.SetActive(true);
+        poisonFogHitbox.gameObject.SetActive(true);
+        yield return new WaitForSeconds(initialDamageDuration);
+
+        poisonFogHitbox.damageAllTargets(1.0f);
+
 
         for (int i = 0; i < numTicks; i++) {
             yield return new WaitForSeconds(timePerTick);
 
             // Do tick damage and increase stack to all enemies found in hitbox
-            Debug.Log("doTickDamage");
+            poisonFogHitbox.damageAllTargets(0.5f);
         }
 
         Object.Destroy(gameObject);

@@ -33,7 +33,7 @@ public class AbstractStraightProjectile : MonoBehaviour
     }
 
 
-    // Public method to set up the projectile movement properties
+    // Public method to set up the projectile movement properties and start movement
     public void setUpMovement(Vector3 projDir, float projSpeed) {
         projectileDir = projDir.normalized;
         projectileSpeed = projSpeed;
@@ -44,7 +44,26 @@ public class AbstractStraightProjectile : MonoBehaviour
     // onTriggerEnter function for projectile
     //  MUST only consider solid enviornment (walls) or hurtboxes
     private void OnTriggerEnter(Collider collider) {
-        Object.Destroy(gameObject);
+        Hurtbox colliderHurtbox = collider.GetComponent<Hurtbox>();
+
+        // If hit a valid hurtbox, do damage to enemy. Else, destroy projectile
+        if (colliderHurtbox != null) {
+            colliderHurtbox.onHurtboxDamaged(calculateDamage());
+            onEnemyHit();
+        } else {
+            Object.Destroy(gameObject);
+        }
     }
 
+    
+    // Main method to calculate damage done by this projectile (to be abstracted)
+    protected float calculateDamage() {
+        return 1.0f;
+    }
+
+    
+    // Main function to handle what happens when hitting an enemy (to be abstracted)
+    protected void onEnemyHit() {
+        Object.Destroy(gameObject);
+    }
 }

@@ -12,10 +12,10 @@ TagManager:
   - Water
   - UI
   - CollisionSensors
-  - Hitboxes
-  - Hurtboxes
-  - 
-  - 
+  - PlayerHitboxes
+  - PlayerHurtboxes
+  - EnemyHitboxes
+  - EnemyHurtboxes
   - 
   - 
   - 
