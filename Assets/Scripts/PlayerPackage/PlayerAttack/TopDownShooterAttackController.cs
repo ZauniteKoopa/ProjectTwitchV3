@@ -25,15 +25,23 @@ public class TopDownShooterAttackController : IAttackModule
     [SerializeField]
     private float primaryAttackMoveReduction = 0.6f;
 
-    // variables for secondary cask
-    [Header("Secondary Cask Stats")]
+
+    // stats for cask throwing
+    [Header("Secondary throw stats")]
     [SerializeField]
-    private float caskThrowDuration = 3f;
+    private LayerMask caskCollisionMask;
+    [SerializeField]
+    private float caskThrowWallOffset = 1.0f;
+    [SerializeField]
+    private float maxCaskThrowDistance = 5.0f;
+    [SerializeField]
+    private float caskAnticipationTime = 0.4f;
+    private bool caskSequenceRunning = false;
+    private Vector3 caskAimForward;
 
     // Variables for aiming
     private Plane aimPlane;
     private Vector2 inputMouseCoordinates;
-    private Vector3 aimForward;
 
     // Variables for firingPrimaryAttack
     private bool firingPrimaryAttack = false;
@@ -69,6 +77,20 @@ public class TopDownShooterAttackController : IAttackModule
     }
 
 
+    // Invokable function to start cask throwing sequence
+    private IEnumerator secondaryAttackSequence() {
+        caskSequenceRunning = true;
+
+        yield return new WaitForSeconds(caskAnticipationTime);
+
+        // Create cask and launch at cask destination
+        Transform currentCask = Object.Instantiate(secondaryCask, playerCharacter.position, Quaternion.identity);
+        Vector3 caskDestination = getCaskDestination();
+        currentCask.GetComponent<VenomCask>().launch(caskDestination);
+
+        caskSequenceRunning = false;
+    }
+
 
     // Event handler method for when mouse position changes
     public void onAimPositionChange(InputAction.CallbackContext value) {
@@ -93,18 +115,33 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Event handler method for when secondary fire button click
     public void onSecondaryButtonClick(InputAction.CallbackContext value) {
-        if (value.started) {
-            Debug.Log("Fire grenade");
-
-            // Create cask (moved fixedEffect into actual cask object)
-            Transform currentCask = Object.Instantiate(secondaryCask, playerCharacter.position, Quaternion.identity);
-            IFixedEffect lobEffect = currentCask.GetComponent<IFixedEffect>();
-            Vector3 caskDestination = getWorldAimLocation();
-
-            lobEffect.activateEffect(playerCharacter.position, caskDestination, caskThrowDuration);
+        if (value.started && !caskSequenceRunning) {
+            caskAimForward = (getWorldAimLocation() - transform.position).normalized;
+            StartCoroutine(secondaryAttackSequence());
         }
     }
 
+
+    // Main function to get valid cask destination via raycast
+    //  Pre: none
+    //  Post: returns the location where a cask can be thrown without hitting a wall
+    private Vector3 getCaskDestination() {
+        // Get ray information for raycast
+        Vector3 rayDir = getWorldAimLocation() - transform.position;
+        float rayDistance = Mathf.Min(rayDir.magnitude, maxCaskThrowDistance);
+        rayDir = rayDir.normalized;
+
+        // Shoot out raycast
+        RaycastHit hitInfo;
+        bool hit = Physics.Raycast(transform.position, rayDir, out hitInfo, rayDistance, caskCollisionMask);
+        Vector3 finalDestination = transform.position + (rayDistance * rayDir);
+
+        if (hit) {
+            finalDestination = hitInfo.point - (caskThrowWallOffset * rayDir);
+        }
+
+        return finalDestination;
+    }
     
     // Private helper method to get world aim location
     //  Does so by creating a ray on mouse position on camera and have it intersect the aim plane
@@ -121,7 +158,13 @@ public class TopDownShooterAttackController : IAttackModule
     //  Pre: none
     //  Post: returns a float that tells how much movement speed should be reduced by currently
     public override float getMovementSpeedFactor() {
-        return (primaryAttackSequenceRunning) ? primaryAttackMoveReduction : 1.0f;
+        if (caskSequenceRunning) {
+            return 0.0f;
+        } else if (primaryAttackSequenceRunning) {
+            return primaryAttackMoveReduction;
+        } else {
+            return 1.0f;
+        }
     }
 
 
@@ -129,13 +172,18 @@ public class TopDownShooterAttackController : IAttackModule
     //  Pre: newForward needs to be any vector3
     //  Post: returns whether forward should be overriden and puts overriden forward into newForward
     public override bool getNewForward(out Vector3 newForward) {
-        newForward = Vector3.zero;
-        if (!primaryAttackSequenceRunning) {
+        if (primaryAttackSequenceRunning) {
+            newForward = getWorldAimLocation() - playerCharacter.position;
+            newForward = newForward.normalized;
+            return true;
+
+        } else if (caskSequenceRunning) {
+            newForward = caskAimForward;
+            return true;
+
+        } else {
+            newForward = Vector3.zero;
             return false;
         }
-
-        newForward = getWorldAimLocation() - playerCharacter.position;
-        newForward = newForward.normalized;
-        return true;
     }
 }

@@ -1043,11 +1043,16 @@ MonoBehaviour:
   playerCamera: {fileID: 1279298828}
   playerCharacter: {fileID: 1977539218}
   primaryBullet: {fileID: 7053607081528903385, guid: b336ce3f20ea722edac9589d3d0cc306, type: 3}
-  secondaryCask: {fileID: 7243597398776557254, guid: 406eb32464f34df33adc1dc733bed5bf, type: 3}
+  secondaryCask: {fileID: 6518441157454951942, guid: 4e7de23ec2160a0f19bde635ad78c3c0, type: 3}
   primaryAttackRate: 0.5
   primaryBulletSpeed: 20
   primaryAttackMoveReduction: 0.6
-  caskThrowDuration: 0.5
+  caskCollisionMask:
+    serializedVersion: 2
+    m_Bits: 8
+  caskThrowWallOffset: 1
+  maxCaskThrowDistance: 6
+  caskAnticipationTime: 0.25
 --- !u!1 &1669519473
 GameObject:
   m_ObjectHideFlags: 0
