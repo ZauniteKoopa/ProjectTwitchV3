@@ -13,6 +13,8 @@ public class TopDownShooterAttackController : IAttackModule
     private Transform playerCharacter = null;
     [SerializeField]
     private Transform primaryBullet = null;
+    [SerializeField]
+    private Transform secondaryCask = null;
 
     // Stats for attacking (move to Player Status)
     [Header("Primary Attack Stats")]
@@ -22,6 +24,11 @@ public class TopDownShooterAttackController : IAttackModule
     private float primaryBulletSpeed = 20f;
     [SerializeField]
     private float primaryAttackMoveReduction = 0.6f;
+
+    // variables for secondary cask
+    [Header("Secondary Cask Stats")]
+    [SerializeField]
+    private float caskThrowDuration = 3f;
 
     // Variables for aiming
     private Plane aimPlane;
@@ -88,6 +95,13 @@ public class TopDownShooterAttackController : IAttackModule
     public void onSecondaryButtonClick(InputAction.CallbackContext value) {
         if (value.started) {
             Debug.Log("Fire grenade");
+
+            // Create cask (moved fixedEffect into actual cask object)
+            Transform currentCask = Object.Instantiate(secondaryCask, playerCharacter.position, Quaternion.identity);
+            IFixedEffect lobEffect = currentCask.GetComponent<IFixedEffect>();
+            Vector3 caskDestination = getWorldAimLocation();
+
+            lobEffect.activateEffect(playerCharacter.position, caskDestination, caskThrowDuration);
         }
     }
 
