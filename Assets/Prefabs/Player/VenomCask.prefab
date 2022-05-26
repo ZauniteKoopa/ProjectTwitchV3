@@ -157,8 +157,8 @@ MonoBehaviour:
   caskThrowVisualEffect: {fileID: 6582037478391440631}
   throwDuration: 0.5
   initialDamageDuration: 0.08
-  numTicks: 4
-  timePerTick: 0.8
+  numTicks: 3
+  timePerTick: 1
 --- !u!1 &6582037478391440521
 GameObject:
   m_ObjectHideFlags: 0

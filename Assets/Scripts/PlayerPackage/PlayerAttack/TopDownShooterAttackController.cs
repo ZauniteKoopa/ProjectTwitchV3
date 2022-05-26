@@ -15,6 +15,7 @@ public class TopDownShooterAttackController : IAttackModule
     private Transform primaryBullet = null;
     [SerializeField]
     private Transform secondaryCask = null;
+    private ITwitchStatus twitchPlayerStatus;
 
     // Stats for attacking (move to Player Status)
     [Header("Primary Attack Stats")]
@@ -24,6 +25,8 @@ public class TopDownShooterAttackController : IAttackModule
     private float primaryBulletSpeed = 20f;
     [SerializeField]
     private float primaryAttackMoveReduction = 0.6f;
+    [SerializeField]
+    private int bulletCost = 0;
 
 
     // stats for cask throwing
@@ -36,6 +39,8 @@ public class TopDownShooterAttackController : IAttackModule
     private float maxCaskThrowDistance = 5.0f;
     [SerializeField]
     private float caskAnticipationTime = 0.4f;
+    [SerializeField]
+    private int caskCost = 0;
     private bool caskSequenceRunning = false;
     private Vector3 caskAimForward;
 
@@ -49,6 +54,9 @@ public class TopDownShooterAttackController : IAttackModule
 
     // On awake, error check and initialize variables
     private void Awake() {
+        // get twitch status
+        twitchPlayerStatus = GetComponent<ITwitchStatus>();
+
         // Do error checking
         if (playerCamera == null) {
             Debug.LogError("Camera not connected to attack package for " + transform, transform);
@@ -58,6 +66,8 @@ public class TopDownShooterAttackController : IAttackModule
             Debug.LogError("Primary Bullet prefab not connected to attack package for " + transform, transform);
         } else if (secondaryCask == null) {
             Debug.LogError("Secondary weapon not connected to attack package for " + transform, transform);
+        } else if (twitchPlayerStatus == null) {
+            Debug.LogError("Player's status script component not connected to attack package for " + transform, transform);
         }
     }
 
@@ -70,10 +80,14 @@ public class TopDownShooterAttackController : IAttackModule
 
         // Keep firing projectiles until you stopped holding left click
         while (firingPrimaryAttack) {
-            // Create projectile
+            // Reduce cost if possible (cost will always either be 1 or 0, no if statement needed)
+            twitchPlayerStatus.usePrimaryVialAmmo(bulletCost);
+
+            // Create projectile. If poison vial is null, just do weak arrow
             Transform currentProjectile = Object.Instantiate(primaryBullet, playerCharacter.position, Quaternion.identity);
-            AbstractStraightProjectile projBehav = currentProjectile.GetComponent<AbstractStraightProjectile>();
+            PoisonVialBolt projBehav = currentProjectile.GetComponent<PoisonVialBolt>();
             Vector3 currentProjectileDir = getWorldAimLocation() - playerCharacter.position;
+            projBehav.setVialDamage(twitchPlayerStatus.getPrimaryVial());
             projBehav.setUpMovement(currentProjectileDir, primaryBulletSpeed);
 
             // Wait for attack rate to finish
@@ -124,8 +138,15 @@ public class TopDownShooterAttackController : IAttackModule
     // Event handler method for when secondary fire button click
     public void onSecondaryButtonClick(InputAction.CallbackContext value) {
         if (value.started && !caskSequenceRunning) {
-            caskAimForward = (getWorldAimLocation() - transform.position).normalized;
-            StartCoroutine(secondaryAttackSequence());
+            // Check if you're actually able to throw a cask
+            bool usedCask = twitchPlayerStatus.usePrimaryVialAmmo(caskCost);
+
+            if (usedCask) {
+                caskAimForward = (getWorldAimLocation() - transform.position).normalized;
+                StartCoroutine(secondaryAttackSequence());
+            } else {
+                Debug.Log("Not enough poison for cask");
+            }
         }
     }
 

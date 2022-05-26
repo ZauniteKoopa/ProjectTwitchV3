@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbstractStraightProjectile : MonoBehaviour
+public abstract class AbstractStraightProjectile : MonoBehaviour
 {
     // Private helper function to do movement
     private Vector3 projectileDir;
@@ -44,26 +44,22 @@ public class AbstractStraightProjectile : MonoBehaviour
     // onTriggerEnter function for projectile
     //  MUST only consider solid enviornment (walls) or hurtboxes
     private void OnTriggerEnter(Collider collider) {
-        Hurtbox colliderHurtbox = collider.GetComponent<Hurtbox>();
+        ITwitchUnitStatus colliderHurtbox = collider.GetComponent<ITwitchUnitStatus>();
 
         // If hit a valid hurtbox, do damage to enemy. Else, destroy projectile
         if (colliderHurtbox != null) {
-            colliderHurtbox.onHurtboxDamaged(calculateDamage());
-            onEnemyHit();
+            damageTarget(colliderHurtbox);
+            onTargetHit();
         } else {
             Object.Destroy(gameObject);
         }
     }
 
     
-    // Main method to calculate damage done by this projectile (to be abstracted)
-    protected float calculateDamage() {
-        return 1.0f;
-    }
+    // Main method to do damage to this target
+    protected abstract void damageTarget(ITwitchUnitStatus target);
 
     
-    // Main function to handle what happens when hitting an enemy (to be abstracted)
-    protected void onEnemyHit() {
-        Object.Destroy(gameObject);
-    }
+    // Main function to handle what happens to projectile body when hitting an enemy
+    protected abstract void onTargetHit();
 }

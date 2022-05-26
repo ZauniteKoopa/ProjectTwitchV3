@@ -564,7 +564,7 @@ MonoBehaviour:
   unitDeathEvent:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 10
+  maxHealth: 30
 --- !u!54 &432335710
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1207,12 +1207,14 @@ MonoBehaviour:
   primaryAttackRate: 0.5
   primaryBulletSpeed: 20
   primaryAttackMoveReduction: 0.6
+  bulletCost: 0
   caskCollisionMask:
     serializedVersion: 2
     m_Bits: 8
   caskThrowWallOffset: 1
   maxCaskThrowDistance: 6
   caskAnticipationTime: 0.25
+  caskCost: 0
 --- !u!1 &1669519473
 GameObject:
   m_ObjectHideFlags: 0

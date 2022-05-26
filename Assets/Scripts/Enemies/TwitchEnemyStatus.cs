@@ -4,13 +4,21 @@ using UnityEngine;
 using UnityEngine.Events;
 
 // General class for an enemy within the project Twitch game
-public class TwitchEnemyStatus : IUnitStatus
+public class TwitchEnemyStatus : ITwitchUnitStatus
 {
     // Instance variables concerning health
     [SerializeField]
     private float maxHealth = 10;
     private float curHealth;
     private readonly object healthLock = new object();
+
+    // Poison management
+    private IVial currentPoison = null;
+    private int numPoisonStacks = 0;
+    private const int MAX_STACKS = 6;
+    private readonly object poisonLock = new object();
+    private readonly object stacksLock = new object();
+
 
 
     // On awake, set up variables
@@ -36,7 +44,7 @@ public class TwitchEnemyStatus : IUnitStatus
             // Only change health is still alive. No need to kill unit more than once
             if (curHealth > 0.0f){
                 curHealth -= dmg;
-                Debug.Log(curHealth);
+                Debug.Log("Health: " + curHealth + ", Poison stacks: " + numPoisonStacks);
 
                 // Check death condition
                 if (curHealth <= 0.0f) {
@@ -44,6 +52,50 @@ public class TwitchEnemyStatus : IUnitStatus
                 }
             }
         }
+    }
+
+
+    // Main method to do poison damage (specific to twitch damage)
+    //  initDmg: initial, immediate damage applied to enemy, > 0
+    //  poison: PoisonVial that will be inflicted to this enemy.
+    //  numStacks: number of stacks applied to enemy when doing immediate damage
+    //  Post: damage AND poison will be applied to enemy
+    public override void poisonDamage(float initDmg, IVial poison, int numStacks) {
+        // Change poison
+        lock(poisonLock) {
+            currentPoison = poison;
+        }
+
+        // Inflict number of stacks
+        lock(stacksLock) {
+            numPoisonStacks = Mathf.Min(numPoisonStacks + numStacks, MAX_STACKS);
+        }
+
+        // Do damage
+        damage(initDmg);
+    }
+
+
+    // Main method to do poison damage (specific to twitch damage)
+    //  initDmg: initial, immediate damage applied to enemy, > 0
+    //  poison: PoisonVial that will be inflicted to this enemy IFF unit isn't already inflicted with poison
+    //  numStacks: number of stacks applied to enemy when doing immediate damage
+    //  Post: damage AND poison will be applied to enemy
+    public override void weakPoisonDamage(float initDmg, IVial poison, int numStacks) {
+        // Change poison
+        lock(poisonLock) {
+            if (currentPoison == null) {
+                currentPoison = poison;
+            }
+        }
+
+        // Inflict number of stacks
+        lock(stacksLock) {
+            numPoisonStacks = Mathf.Min(numPoisonStacks + numStacks, MAX_STACKS);
+        }
+
+        // Do damage
+        damage(initDmg);
     }
 
 
