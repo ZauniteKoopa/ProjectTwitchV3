@@ -44,6 +44,11 @@ public class TopDownShooterAttackController : IAttackModule
     private bool caskSequenceRunning = false;
     private Vector3 caskAimForward;
 
+
+    // Constaminate zone
+    [SerializeField]
+    private AbstractDamageZone contaminateZone;
+
     // Variables for aiming
     private Vector2 inputMouseCoordinates;
 
@@ -149,6 +154,22 @@ public class TopDownShooterAttackController : IAttackModule
             } else {
                 Debug.Log("Not enough poison for cask");
             }
+        }
+    }
+
+
+    // Event handler for contaminate press
+    public void onContaminatePress(InputAction.CallbackContext value) {
+        if (value.started && contaminateZone != null) {
+            contaminateZone.damageAllTargets(0.0f);
+        }
+    }
+
+
+    // Event handler for swap press
+    public void onSwapPress(InputAction.CallbackContext value) {
+        if (value.started) {
+            twitchPlayerStatus.swapVials();
         }
     }
 

@@ -13,7 +13,7 @@ public class CaskZone : AbstractDamageZone
     //  Pre: vial != null
     public void setCaskPoison(IVial vial) {
         Debug.Assert(vial != null);
-        vial = caskPoison;
+        caskPoison = vial;
     }
 
     // Protected method to override that does damage effect to inRangeTarget

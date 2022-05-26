@@ -56,11 +56,14 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
 
     // Main method to do poison damage (specific to twitch damage)
-    //  initDmg: initial, immediate damage applied to enemy, > 0
-    //  poison: PoisonVial that will be inflicted to this enemy.
-    //  numStacks: number of stacks applied to enemy when doing immediate damage
+    //  initDmg: initial, immediate damage applied to enemy, >= 0
+    //  poison: PoisonVial that will be inflicted to this enemy. Must not be null
+    //  numStacks: number of stacks applied to enemy when doing immediate damage >= 0
     //  Post: damage AND poison will be applied to enemy
     public override void poisonDamage(float initDmg, IVial poison, int numStacks) {
+        Debug.Assert(initDmg >= 0.0f && numStacks >= 0);
+        Debug.Assert(poison != null);
+
         // Change poison
         lock(poisonLock) {
             currentPoison = poison;
@@ -116,7 +119,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         }
 
         // Apply damage
-        damage(tempVial.getContaminateDamage(tempStacks));
+        if (tempVial != null) {
+            damage(tempVial.getContaminateDamage(tempStacks));
+        }
     }
 
 

@@ -91,7 +91,7 @@ public class PoisonVial : IVial
     //  Pre: 0 < numStacks <= 5
     //  Post: returns the amount of poison damage unit suffers based on this vial's stats > 0
     public float getPoisonDamage(int numStacks) {
-        Debug.Assert(numStacks > 0 && numStacks >= 6);
+        Debug.Assert(numStacks > 0 && numStacks <= 6);
 
         float poisonDamage = (BASE_POISON + (POISON_GROWTH * poison)) * numStacks;
 
@@ -104,7 +104,7 @@ public class PoisonVial : IVial
     //  Pre: 0 < numStacks <= 5
     //  Post: returns burst damage based on number of stacks and vial's stats > 0
     public float getContaminateDamage(int numStacks) {
-        Debug.Assert(numStacks > 0 && numStacks >= 6);
+        Debug.Assert(numStacks > 0 && numStacks <= 6);
 
         float curBaseDmg = BASE_CONTAMINATE_DMG + (BASE_CON_GROWTH * reactivity);
         float stackDmg = BASE_STACK_DMG + (STACK_DMG_GROWTH * reactivity);
@@ -130,7 +130,7 @@ public class PoisonVial : IVial
     //  Pre: 0 < numStacks <= 5
     //  Post: 0 < returnValue <= 1.0
     public float getStackSlowness(int numStacks) {
-        Debug.Assert(numStacks > 0 && numStacks >= 6);
+        Debug.Assert(numStacks > 0 && numStacks <= 6);
 
         float stackSlowness = (stickiness > 0) ? BASE_SLOWNESS + (SLOWNESS_GROWTH * (stickiness - 1)) : 1.0f;
 
