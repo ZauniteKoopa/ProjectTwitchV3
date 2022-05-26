@@ -2,38 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbstractDamageZone : MonoBehaviour
+public abstract class AbstractDamageZone : MonoBehaviour
 {
     // Variables to keep track of collider
-    protected HashSet<Hurtbox> inRangeTargets;
+    protected HashSet<ITwitchUnitStatus> inRangeTargets;
     protected readonly object targetsLock = new object();
 
     
     // On awake, initialize
     private void Awake() {
-        inRangeTargets = new HashSet<Hurtbox>();
+        inRangeTargets = new HashSet<ITwitchUnitStatus>();
     }
 
     
-    // On trigger enter, see if you hit hurtbox, if so, add it to targets
+    // On trigger enter, see if you hit ITwitchUnitStatus, if so, add it to targets
     private void OnTriggerEnter(Collider collider) {
-        Hurtbox colliderHurtbox = collider.GetComponent<Hurtbox>();
+        ITwitchUnitStatus colliderTgt = collider.GetComponent<ITwitchUnitStatus>();
 
-        if (colliderHurtbox != null) {
+        if (colliderTgt != null) {
             lock(targetsLock) {
-                inRangeTargets.Add(colliderHurtbox);
+                inRangeTargets.Add(colliderTgt);
             }
         }
     }
 
 
-    // On trigger enter, see if you hit hurtbox, if so, add it to targets
+    // On trigger enter, see if you hit ITwitchUnitStatus, if so, add it to targets
     private void OnTriggerExit(Collider collider) {
-        Hurtbox colliderHurtbox = collider.GetComponent<Hurtbox>();
+        ITwitchUnitStatus colliderTgt = collider.GetComponent<ITwitchUnitStatus>();
 
-        if (colliderHurtbox != null) {
+        if (colliderTgt != null) {
             lock(targetsLock) {
-                inRangeTargets.Remove(colliderHurtbox);
+                inRangeTargets.Remove(colliderTgt);
             }
         }
     }
@@ -41,19 +41,16 @@ public class AbstractDamageZone : MonoBehaviour
 
     // Public method to do damage to all enemies within the zone
     public void damageAllTargets(float dmg) {
-        foreach (Hurtbox target in inRangeTargets) {
+        foreach (ITwitchUnitStatus target in inRangeTargets) {
             damageTarget(target, dmg);
         }
     }
 
 
-    // Protected method to override that does damage effect to inRangeTarget (to be abstracted)
-    protected void damageTarget(Hurtbox tgt, float dmg) {
-        tgt.onHurtboxDamaged(dmg);
-    }
+    // Protected method to override that does damage effect to inRangeTarget
+    protected abstract void damageTarget(ITwitchUnitStatus tgt, float dmg);
 
 
-    // Protected method to apply visual effect to targets (to be abstracted)
-    protected void applyVisualEffects() {}
-
+    // Protected method to apply visual effect to targets
+    protected abstract void applyVisualEffects();
 }

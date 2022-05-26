@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class PoisonVialBolt : AbstractStraightProjectile
 {
     // Private instance variables
     private IVial poison;
+    [SerializeField]
+    private float weakBoltDamage = 1.75f;
 
 
     // Main method to set poison vial to calculate the damage. If newPoison is null, just use default damage
@@ -14,8 +17,15 @@ public class PoisonVialBolt : AbstractStraightProjectile
     }
 
     // Main method to do damage to this target
+    //  Pre: target != null
     protected override void damageTarget(ITwitchUnitStatus target) {
-        target.poisonDamage(poison.getBoltDamage(), poison, 1);
+        Debug.Assert(target != null);
+
+        if (poison != null) {
+            target.poisonDamage(poison.getBoltDamage(), poison, 1);
+        } else {
+            target.damage(weakBoltDamage);
+        }
     }
 
     

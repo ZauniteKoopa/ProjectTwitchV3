@@ -80,8 +80,6 @@ public class TopDownShooterAttackController : IAttackModule
 
         // Keep firing projectiles until you stopped holding left click
         while (firingPrimaryAttack) {
-            // Reduce cost if possible (cost will always either be 1 or 0, no if statement needed)
-            twitchPlayerStatus.usePrimaryVialAmmo(bulletCost);
 
             // Create projectile. If poison vial is null, just do weak arrow
             Transform currentProjectile = Object.Instantiate(primaryBullet, playerCharacter.position, Quaternion.identity);
@@ -89,6 +87,9 @@ public class TopDownShooterAttackController : IAttackModule
             Vector3 currentProjectileDir = getWorldAimLocation() - playerCharacter.position;
             projBehav.setVialDamage(twitchPlayerStatus.getPrimaryVial());
             projBehav.setUpMovement(currentProjectileDir, primaryBulletSpeed);
+
+            // Reduce cost if possible (cost will always either be 1 or 0, no if statement needed)
+            twitchPlayerStatus.usePrimaryVialAmmo(bulletCost);
 
             // Wait for attack rate to finish
             yield return new WaitForSeconds(primaryAttackRate);
@@ -100,7 +101,7 @@ public class TopDownShooterAttackController : IAttackModule
 
 
     // Invokable function to start cask throwing sequence
-    private IEnumerator secondaryAttackSequence() {
+    private IEnumerator secondaryAttackSequence(IVial curPoison) {
         caskSequenceRunning = true;
 
         yield return new WaitForSeconds(caskAnticipationTime);
@@ -108,7 +109,7 @@ public class TopDownShooterAttackController : IAttackModule
         // Create cask and launch at cask destination
         Transform currentCask = Object.Instantiate(secondaryCask, playerCharacter.position, Quaternion.identity);
         Vector3 caskDestination = getCaskDestination();
-        currentCask.GetComponent<VenomCask>().launch(caskDestination);
+        currentCask.GetComponent<VenomCask>().launch(caskDestination, curPoison);
 
         caskSequenceRunning = false;
     }
@@ -139,11 +140,12 @@ public class TopDownShooterAttackController : IAttackModule
     public void onSecondaryButtonClick(InputAction.CallbackContext value) {
         if (value.started && !caskSequenceRunning) {
             // Check if you're actually able to throw a cask
+            IVial curCask = twitchPlayerStatus.getPrimaryVial();
             bool usedCask = twitchPlayerStatus.usePrimaryVialAmmo(caskCost);
 
             if (usedCask) {
                 caskAimForward = (getWorldAimLocation() - transform.position).normalized;
-                StartCoroutine(secondaryAttackSequence());
+                StartCoroutine(secondaryAttackSequence(curCask));
             } else {
                 Debug.Log("Not enough poison for cask");
             }

@@ -42,4 +42,10 @@ public interface IVial
     //  Pre: 0 < numStacks <= 5
     //  Post: 0 < returnValue <= 1.0
     float getStackSlowness(int numStacks);
+
+
+    // Function to calculate initial cask damage
+    //  Pre: none
+    //  Post: return value >= 0
+    float getInitCaskDamage();
 }

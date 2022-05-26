@@ -17,7 +17,7 @@ public class PlayerStatus : ITwitchStatus
 
     //On awake, initialize poison vials (GET RID OF THIS IN CRAFTING)
     private void Awake() {
-        primaryPoisonVial = new PoisonVial(3, 0, 2, 0, 40);
+        primaryPoisonVial = new PoisonVial(3, 0, 2, 0, 2);
         secondaryPoisonVial = new PoisonVial(0, 2, 0, 3, 40);
     }
 
@@ -46,17 +46,24 @@ public class PlayerStatus : ITwitchStatus
     }
 
 
-    // Main shorthand method to use primary vial
+    // Main shorthand method to use primary vial. THIS IS THE ONLY ONE CALLING USE VIAL FOR THE PLAYER
     //  Pre: ammoCost >= 0
-    //  Post: returns if successful. If so, reduces primary vial's ammo
+    //  Post: returns if successful. If so, reduces primary vial's ammo. If ammo is <= 0 afterwards, sets it to null
     public override bool usePrimaryVialAmmo(int ammoCost) {
         Debug.Assert(ammoCost >= 0);
 
+        // If vial is an empty vial, return false immediately
         if (primaryPoisonVial == null) {
             return false;
         }
 
-        return primaryPoisonVial.useVial(ammoCost);   
+        // If you actually have a vial, use it to test if successful. then see if you run out of poison
+        bool useSuccess = primaryPoisonVial.useVial(ammoCost);
+        if (primaryPoisonVial.getAmmoLeft() <= 0) {
+            primaryPoisonVial = null;
+        }
+
+        return useSuccess;   
     }
 
 

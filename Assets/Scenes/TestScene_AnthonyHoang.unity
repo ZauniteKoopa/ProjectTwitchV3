@@ -1207,7 +1207,7 @@ MonoBehaviour:
   primaryAttackRate: 0.5
   primaryBulletSpeed: 20
   primaryAttackMoveReduction: 0.6
-  bulletCost: 0
+  bulletCost: 1
   caskCollisionMask:
     serializedVersion: 2
     m_Bits: 8

@@ -18,4 +18,10 @@ public abstract class ITwitchUnitStatus : IUnitStatus
     //  numStacks: number of stacks applied to enemy when doing immediate damage
     //  Post: damage AND poison will be applied to enemy
     public abstract void weakPoisonDamage(float initDmg, IVial poison, int numStacks);
+
+
+    // Main function to contaminate the unit with the poison they already have
+    //  Pre: none
+    //  Post: enemy suffers from severe burst damage
+    public abstract void contaminate();
 }

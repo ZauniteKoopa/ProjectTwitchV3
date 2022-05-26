@@ -57,7 +57,7 @@ public class PoisonVial : IVial
 
     // Main function to use vial with given ammo cost
     //  Pre: ammoCost > 0
-    //  Post: returns true if successful and decrements ammo accordingly, returns false if not enough ammo
+    //  Post: returns true if successful and decrements ammo accordingly, returns false if not enough ammo.
     public bool useVial(int ammoCost) {
         Debug.Assert(ammoCost >= 0);
 
@@ -136,5 +136,13 @@ public class PoisonVial : IVial
 
         Debug.Assert(stackSlowness > 0.0f && stackSlowness <= 1.0f);
         return stackSlowness;
+    }
+
+
+    // Function to calculate initial cask damage
+    //  Pre: none
+    //  Post: return value >= 0
+    public float getInitCaskDamage() {
+        return 2f * getBoltDamage();
     }
 }

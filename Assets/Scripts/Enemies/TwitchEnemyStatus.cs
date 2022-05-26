@@ -99,6 +99,27 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     }
 
 
+    // Main function to contaminate the unit with the poison they already have
+    //  Pre: none
+    //  Post: enemy suffers from severe burst damage
+    public override void contaminate() {
+        // Get necessary information to avoid synch errors
+        IVial tempVial = null;
+        int tempStacks = 0;
+
+        lock (poisonLock) {
+            tempVial = currentPoison;
+        }
+
+        lock (stacksLock) {
+            tempStacks = numPoisonStacks;
+        }
+
+        // Apply damage
+        damage(tempVial.getContaminateDamage(tempStacks));
+    }
+
+
     // Private helper function to do death sequence
     private void death() {
         unitDeathEvent.Invoke();
