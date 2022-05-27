@@ -17,7 +17,7 @@ public class PlayerStatus : ITwitchStatus
 
     //On awake, initialize poison vials (GET RID OF THIS IN CRAFTING)
     private void Awake() {
-        primaryPoisonVial = new PoisonVial(3, 0, 2, 0, 2);
+        primaryPoisonVial = new PoisonVial(3, 0, 2, 0, 40);
         secondaryPoisonVial = new PoisonVial(0, 2, 0, 3, 40);
     }
 
