@@ -24,6 +24,14 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     private const int MAX_TICKS = 6;
     private Coroutine poisonDotRoutine = null;
 
+    // Loot drops
+    [SerializeField]
+    private int maxLootDrops = 2;
+    [SerializeField]
+    private int minLootDrops = 2;
+    [SerializeField]
+    private Loot[] possibleLoot;
+
 
 
     // On awake, set up variables
@@ -175,8 +183,19 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
 
     // Private helper function to do death sequence
+    //  Pre: possibleLoot is not empty
     private void death() {
+        Debug.Assert(possibleLoot.Length != 0);
+
         unitDeathEvent.Invoke();
         gameObject.SetActive(false);
+        
+        int numLoot = Random.Range(minLootDrops, maxLootDrops + 1);
+        for (int l = 0; l < numLoot; l++) {
+            Vector3 lootPosition = transform.position;
+            Transform currentLoot = possibleLoot[Random.Range(0, possibleLoot.Length)].transform;
+            Object.Instantiate(currentLoot, lootPosition, Quaternion.identity);
+        }
+
     }
 }

@@ -564,7 +564,11 @@ MonoBehaviour:
   unitDeathEvent:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 30
+  maxHealth: 1
+  maxLootDrops: 2
+  minLootDrops: 2
+  possibleLoot:
+  - {fileID: 3086591498058174895, guid: f9eaffcaf8272243a8c6fc8f35983ccf, type: 3}
 --- !u!54 &432335710
 Rigidbody:
   m_ObjectHideFlags: 0
