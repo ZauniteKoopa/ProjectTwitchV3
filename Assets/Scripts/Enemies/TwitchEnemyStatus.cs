@@ -38,6 +38,8 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     [Header("UI Variables")]
     [SerializeField]
     private ResourceBar healthBar = null;
+    [SerializeField]
+    private INumberDisplay poisonStackDisplay = null;
 
 
     // On awake, set up variables and error check
@@ -55,6 +57,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             Debug.LogWarning("No health bar connected to this unit. HP will not be visible to player: " + transform, transform);
         }
 
+        if (poisonStackDisplay == null) {
+            Debug.LogWarning("No poison stack display connected to this unit. Stacks will not be visible to player: " + transform, transform);
+        }
+
+        // Set variables
         curHealth = maxHealth;
         if (healthBar != null) {
             healthBar.setStatus(curHealth, maxHealth);
@@ -102,6 +109,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             numPoisonStacks = 0;
             currentPoison = null;
             poisonDotRoutine = null;
+
+            if (poisonStackDisplay != null) {
+                poisonStackDisplay.displayNumber(numPoisonStacks);
+            }
         }
 
     }
@@ -149,6 +160,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             curTick = 0;
             numPoisonStacks = Mathf.Min(numPoisonStacks + numStacks, MAX_STACKS);
 
+            if (poisonStackDisplay != null) {
+                poisonStackDisplay.displayNumber(numPoisonStacks);
+            }
+
             // Run poison sequence if none are running at this point
             if (poisonDotRoutine == null) {
                 poisonDotRoutine = StartCoroutine(poisonDotLoop());
@@ -182,6 +197,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             // Change poison stacks
             curTick = 0;
             numPoisonStacks = Mathf.Min(numPoisonStacks + numStacks, MAX_STACKS);
+            if (poisonStackDisplay != null) {
+                poisonStackDisplay.displayNumber(numPoisonStacks);
+            }
         }
 
         // Do damage
