@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class TwitchEnemyStatus : ITwitchUnitStatus
 {
     // Instance variables concerning health
+    [Header("Health stats")]
     [SerializeField]
     private float maxHealth = 10;
     private float curHealth;
@@ -25,6 +26,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     private Coroutine poisonDotRoutine = null;
 
     // Loot drops
+    [Header("Loot variables")]
     [SerializeField]
     private int maxLootDrops = 2;
     [SerializeField]
@@ -32,11 +34,31 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     [SerializeField]
     private Loot[] possibleLoot;
 
+    // UI variables
+    [Header("UI Variables")]
+    [SerializeField]
+    private ResourceBar healthBar = null;
 
 
-    // On awake, set up variables
+    // On awake, set up variables and error check
     private void Awake() {
+        // Error check
+        if (maxHealth <= 0.0f) {
+            Debug.LogError("Unit's max health is less than or equal to 0: " + transform, transform);
+        }
+
+        if (maxLootDrops < minLootDrops || maxLootDrops < 0) {
+            Debug.LogError("Loot drop max and min counts are invalid for this unit: " + transform, transform);
+        }
+
+        if (healthBar == null) {
+            Debug.LogWarning("No health bar connected to this unit. HP will not be visible to player: " + transform, transform);
+        }
+
         curHealth = maxHealth;
+        if (healthBar != null) {
+            healthBar.setStatus(curHealth, maxHealth);
+        }
     }
 
     // Main method to get current movement speed considering all speed status effects on unit
@@ -95,6 +117,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             // Only change health is still alive. No need to kill unit more than once
             if (curHealth > 0.0f){
                 curHealth -= dmg;
+
+                if (healthBar != null) {
+                    healthBar.setStatus(curHealth, maxHealth);
+                }
+
                 Debug.Log("Health: " + curHealth + ", Poison stacks: " + numPoisonStacks);
 
                 // Check death condition
@@ -190,11 +217,15 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         unitDeathEvent.Invoke();
         gameObject.SetActive(false);
         
-        int numLoot = Random.Range(minLootDrops, maxLootDrops + 1);
-        for (int l = 0; l < numLoot; l++) {
-            Vector3 lootPosition = transform.position;
-            Transform currentLoot = possibleLoot[Random.Range(0, possibleLoot.Length)].transform;
-            Object.Instantiate(currentLoot, lootPosition, Quaternion.identity);
+        // Only drop loot if this unit drops loot
+        if (possibleLoot.Length > 0) {
+            int numLoot = Random.Range(minLootDrops, maxLootDrops + 1);
+
+            for (int l = 0; l < numLoot; l++) {
+                Vector3 lootPosition = transform.position;
+                Transform currentLoot = possibleLoot[Random.Range(0, possibleLoot.Length)].transform;
+                Object.Instantiate(currentLoot, lootPosition, Quaternion.identity);
+            }
         }
 
     }
