@@ -36,6 +36,8 @@ public class PlayerUI : ITwitchPlayerUI
     private Image camofladgeImage;
     [SerializeField]
     private ResourceBar caskIcon;
+    [SerializeField]
+    private INumberDisplay caskAmmoCostDisplay;
     private Image caskImage;
     [SerializeField]
     private ResourceBar contaminateIcon;
@@ -90,7 +92,7 @@ public class PlayerUI : ITwitchPlayerUI
             Debug.Log("Contaminate icon not set up correctly or not connected, make sure an image is attached to icon: " + transform, transform);
         }
 
-        if (caskIcon == null || caskIcon.GetComponent<Image>() == null) {
+        if (caskIcon == null || caskIcon.GetComponent<Image>() == null && caskAmmoCostDisplay == null) {
             Debug.Log("Cask icon not set up correctly or not connected, make sure an image is attached to icon: " + transform, transform);
         }
 
@@ -191,5 +193,15 @@ public class PlayerUI : ITwitchPlayerUI
         Debug.Assert(numCoins >= 0);
 
         coinDisplay.displayNumber(numCoins);
+    }
+
+
+    // Main function to display cask ammo cost
+    //  Pre: ammoCost >= 0
+    //  Post: cask ammo cost information is updated on UI
+    public override void displayCaskAmmoCost(int ammoCost) {
+        Debug.Assert(ammoCost >= 0);
+
+        caskAmmoCostDisplay.displayNumber(ammoCost);
     }
 }

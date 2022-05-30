@@ -25,8 +25,6 @@ public class TopDownShooterAttackController : IAttackModule
     private float primaryBulletSpeed = 20f;
     [SerializeField]
     private float primaryAttackMoveReduction = 0.6f;
-    [SerializeField]
-    private int bulletCost = 0;
 
 
     // stats for cask throwing
@@ -39,8 +37,6 @@ public class TopDownShooterAttackController : IAttackModule
     private float maxCaskThrowDistance = 5.0f;
     [SerializeField]
     private float caskAnticipationTime = 0.4f;
-    [SerializeField]
-    private int caskCost = 0;
     private bool caskSequenceRunning = false;
     private Vector3 caskAimForward;
 
@@ -94,7 +90,7 @@ public class TopDownShooterAttackController : IAttackModule
             projBehav.setUpMovement(currentProjectileDir, primaryBulletSpeed);
 
             // Reduce cost if possible (cost will always either be 1 or 0, no if statement needed)
-            twitchPlayerStatus.usePrimaryVialAmmo(bulletCost);
+            twitchPlayerStatus.consumePrimaryVialBullet();
 
             // Wait for attack rate to finish
             yield return new WaitForSeconds(primaryAttackRate);
@@ -146,13 +142,13 @@ public class TopDownShooterAttackController : IAttackModule
         if (value.started && !caskSequenceRunning) {
             // Check if you're actually able to throw a cask
             IVial curCask = twitchPlayerStatus.getPrimaryVial();
-            bool usedCask = twitchPlayerStatus.usePrimaryVialAmmo(caskCost);
+            bool usedCask = twitchPlayerStatus.consumePrimaryVialCask();
 
             if (usedCask) {
                 caskAimForward = (getWorldAimLocation() - transform.position).normalized;
                 StartCoroutine(secondaryAttackSequence(curCask));
             } else {
-                Debug.Log("Not enough poison for cask");
+                Debug.Log("Cannot cask");
             }
         }
     }
@@ -161,7 +157,11 @@ public class TopDownShooterAttackController : IAttackModule
     // Event handler for contaminate press
     public void onContaminatePress(InputAction.CallbackContext value) {
         if (value.started && contaminateZone != null) {
-            contaminateZone.damageAllTargets(0.0f);
+            if (twitchPlayerStatus.willContaminate()) {
+                contaminateZone.damageAllTargets(0.0f);
+            } else {
+                Debug.Log("Cannot contaminate");
+            }
         }
     }
 

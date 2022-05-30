@@ -14,11 +14,56 @@ public class PlayerStatus : ITwitchStatus
     private IVial primaryPoisonVial;
     private IVial secondaryPoisonVial;
 
+    // UI variables
+    [SerializeField]
+    private ITwitchPlayerUI mainPlayerUI = null;
+
+    [Header("Ability Costs and cooldowns")]
+    [SerializeField]
+    private int boltCost = 1;
+    [SerializeField]
+    private int caskCost = 3;
+    [SerializeField]
+    private float caskCooldown = 10f;
+    [SerializeField]
+    private float camoCooldown = 15f;
+    [SerializeField]
+    private float contaminateCooldown = 9f;
+
+    private bool canCask = true;
+    private bool canCamo = true;
+    private bool canContaminate = true;
+
 
     //On awake, initialize poison vials (GET RID OF THIS IN CRAFTING)
     private void Awake() {
+        // Error check
+        if (baseMovementSpeed < 0.0f) {
+            Debug.LogError("Player base movement speed cannot be negative: " + transform, transform);
+        }
+
+        if (mainPlayerUI == null) {
+            Debug.LogError("PlayerStatus not connected to ITwitchPlayerUI object: " + transform, transform);
+        }
+
         primaryPoisonVial = new PoisonVial(3, 0, 2, 0, 40);
         secondaryPoisonVial = new PoisonVial(0, 2, 0, 3, 40);
+        initDefaultUI();
+    }
+
+
+    // Main variable to initialize UI
+    private void initDefaultUI() {
+        mainPlayerUI.displayHealth(50f, 50f);
+        mainPlayerUI.displayCoinsEarned(0);
+
+        mainPlayerUI.displayPrimaryVial(primaryPoisonVial);
+        mainPlayerUI.displaySecondaryVial(secondaryPoisonVial);
+
+        mainPlayerUI.displayCamoCooldown(-1.0f, 1.0f);
+        mainPlayerUI.displayCaskCooldown(-1.0f, 1.0f);
+        mainPlayerUI.displayContaminateCooldown(-1.0f, 1.0f);
+        mainPlayerUI.displayCaskAmmoCost(caskCost);
     }
 
 
@@ -35,6 +80,7 @@ public class PlayerStatus : ITwitchStatus
     //  Post: damage is inflicted on player unit
     public override void damage(float dmg) {
         Debug.Log("Player suffered " + dmg + " damage");
+        mainPlayerUI.displayHealth(30f, 30f);
     }
 
 
@@ -49,7 +95,7 @@ public class PlayerStatus : ITwitchStatus
     // Main shorthand method to use primary vial. THIS IS THE ONLY ONE CALLING USE VIAL FOR THE PLAYER
     //  Pre: ammoCost >= 0
     //  Post: returns if successful. If so, reduces primary vial's ammo. If ammo is <= 0 afterwards, sets it to null
-    public override bool usePrimaryVialAmmo(int ammoCost) {
+    private bool usePrimaryVialAmmo(int ammoCost) {
         Debug.Assert(ammoCost >= 0);
 
         // If vial is an empty vial, return false immediately
@@ -63,16 +109,8 @@ public class PlayerStatus : ITwitchStatus
             primaryPoisonVial = null;
         }
 
+        mainPlayerUI.displayPrimaryVial(primaryPoisonVial);
         return useSuccess;   
-    }
-
-
-    // Main event handler function for when primary poison vial runs out of ammo
-    //  Pre: primary vial ammo <= 0
-    private void onPrimaryVialNoAmmo() {
-        Debug.Assert(primaryPoisonVial.getAmmoLeft() <= 0);
-
-        primaryPoisonVial = null;
     }
 
 
@@ -84,7 +122,112 @@ public class PlayerStatus : ITwitchStatus
         primaryPoisonVial = secondaryPoisonVial;
         secondaryPoisonVial = tempVial;
 
-        Debug.Log("Vials swapped");
+        mainPlayerUI.displayPrimaryVial(primaryPoisonVial);
+        mainPlayerUI.displaySecondaryVial(secondaryPoisonVial);
+    }
+
+
+    // Main function to use bolt bullet wth defined cost
+    //  Pre: none
+    //  Post: returns if successful, If so, reduce primary vial's ammo
+    public override bool consumePrimaryVialBullet() {
+        return usePrimaryVialAmmo(boltCost);
+    }
+
+
+    // Main function to use cask bullet wth defined cost
+    //  Pre: none
+    //  Post: returns if successful, If so, reduce primary vial's ammo
+    public override bool consumePrimaryVialCask() {
+        if (!canCask) {
+            return false;
+        }
+
+        bool usedCask = usePrimaryVialAmmo(caskCost);
+        if (usedCask) {
+            StartCoroutine(caskCooldownSequence());
+        }
+
+        return usedCask;
+    }
+
+    
+    // Cask cooldown sequence
+    private IEnumerator caskCooldownSequence() {
+        float timer = caskCooldown;
+        WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
+        canCask = false;
+        mainPlayerUI.displayCaskCooldown(timer, caskCooldown);
+
+        while (timer >= 0f) {
+            yield return waitFrame;
+            timer -= Time.fixedDeltaTime;
+
+            mainPlayerUI.displayCaskCooldown(timer, caskCooldown);
+        }
+
+        canCask = true;
+    }
+
+    // Main function to get permissions to cast contaminate
+    //  Pre: none
+    //  Post: return if you are allowed. If successful, must wait for cooldown to stop to do it again
+    public override bool willContaminate() {
+        if (canContaminate) {
+            StartCoroutine(contaminateCooldownSequence());
+            return true;
+        }
+
+        return false;
+    }
+
+
+    // Cask cooldown sequence
+    private IEnumerator contaminateCooldownSequence() {
+        float timer = contaminateCooldown;
+        WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
+        canContaminate = false;
+        mainPlayerUI.displayContaminateCooldown(timer, contaminateCooldown);
+
+        while (timer >= 0f) {
+            yield return waitFrame;
+            timer -= Time.fixedDeltaTime;
+
+            mainPlayerUI.displayContaminateCooldown(timer, contaminateCooldown);
+        }
+
+        canContaminate = true;
+    }
+
+
+    // Main function to get permissions to cast camofladge
+    //  Pre: none
+    //  Post: return if you are allowed. If successful, must wait for cooldown to stop to do it again
+    public override bool willCamofladge() {
+        if (canCamo) {
+            StartCoroutine(camofladgeCooldownSequence());
+            return true;
+        }
+
+        return false;
+    }
+
+
+    // Camofladge sequence
+    private IEnumerator camofladgeCooldownSequence() {
+        float timer = camoCooldown;
+        WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
+        canCamo = false;
+        mainPlayerUI.displayCamoCooldown(timer, camoCooldown);
+
+        while (timer >= 0f) {
+            yield return waitFrame;
+            timer -= Time.fixedDeltaTime;
+
+            mainPlayerUI.displayCamoCooldown(timer, camoCooldown);
+        }
+
+       canCamo = true;
     }
 
 

@@ -44,4 +44,10 @@ public abstract class ITwitchPlayerUI : MonoBehaviour
     //  Pre: numCoins >= 0
     //  Post: updates all coin related UI to match information
     public abstract void displayCoinsEarned(int numCoins);
+
+
+    // Main function to display cask ammo cost
+    //  Pre: ammoCost >= 0
+    //  Post: cask ammo cost information is updated on UI
+    public abstract void displayCaskAmmoCost(int ammoCost);
 }
