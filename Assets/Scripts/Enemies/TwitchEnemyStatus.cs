@@ -133,8 +133,6 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                     healthBar.setStatus(curHealth, maxHealth);
                 }
 
-                Debug.Log("Health: " + curHealth + ", Poison stacks: " + numPoisonStacks);
-
                 // Check death condition
                 if (curHealth <= 0.0f) {
                     death();

@@ -86,4 +86,32 @@ public class PlayerStatus : ITwitchStatus
 
         Debug.Log("Vials swapped");
     }
+
+
+
+    // --------------------------
+    //  Functions to be implemented if want Twitch to share some features with enemies (poison damage, contaminate burst, etc)
+    // --------------------------
+    
+
+    // Main method to do poison damage (specific to twitch damage)
+    //  initDmg: initial, immediate damage applied to enemy, > 0
+    //  poison: PoisonVial that will be inflicted to this enemy.
+    //  numStacks: number of stacks applied to enemy when doing immediate damage
+    //  Post: damage AND poison will be applied to enemy
+    public override void poisonDamage(float initDmg, IVial poison, int numStacks) {}
+
+
+    // Main method to do poison damage (specific to twitch damage)
+    //  initDmg: initial, immediate damage applied to enemy, > 0
+    //  poison: PoisonVial that will be inflicted to this enemy IFF unit isn't already inflicted with poison
+    //  numStacks: number of stacks applied to enemy when doing immediate damage
+    //  Post: damage AND poison will be applied to enemy
+    public override void weakPoisonDamage(float initDmg, IVial poison, int numStacks) {}
+
+
+    // Main function to contaminate the unit with the poison they already have
+    //  Pre: none
+    //  Post: enemy suffers from severe burst damage
+    public override void contaminate() {}
 }

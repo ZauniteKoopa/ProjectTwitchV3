@@ -11,8 +11,13 @@ public interface IVial
 
 
     // Function to get access to how much ammo left for UI displays
-    //  Post: returns how much ammo left > 0
+    //  Post: returns how much ammo left
     int getAmmoLeft();
+
+
+    // Function to get access to the max vial size (It's a constant)
+    //  Post: return value is > 0
+    int getMaxVialSize();
 
 
     // Function to get access to how much immediate damage a bolt / bullet does
@@ -48,4 +53,10 @@ public interface IVial
     //  Pre: none
     //  Post: return value >= 0
     float getInitCaskDamage();
+
+
+    // Function to get access to the base stats of this vial
+    //  Pre: none
+    //  Post: returns a dictionary with 4 fixed properties: "Poison", "Potency", "Reactivity", and "Stickiness"
+    Dictionary<string, int> getStats();
 }

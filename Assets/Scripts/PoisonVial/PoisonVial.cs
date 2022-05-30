@@ -13,6 +13,7 @@ public class PoisonVial : IVial
 
     // Ammo management
     private int ammo;
+    private const int MAX_AMMO = 60;
 
     //Constants for bullet damage (find a wat to make this editable from the designer)
     private const float BASE_DAMAGE = 2f;
@@ -74,6 +75,13 @@ public class PoisonVial : IVial
     //  Post: returns how much ammo left. Can be negative
     public int getAmmoLeft() {   
         return ammo;
+    }
+
+
+    // Function to get access to the max vial size (It's a constant)
+    public int getMaxVialSize() {
+        Debug.Assert(MAX_AMMO >= 0);
+        return MAX_AMMO;
     }
 
 
@@ -144,5 +152,21 @@ public class PoisonVial : IVial
     //  Post: return value >= 0
     public float getInitCaskDamage() {
         return 2f * getBoltDamage();
+    }
+
+
+    // Function to get access to the base stats of this vial
+    //  Pre: none
+    //  Post: returns a dictionary with 4 fixed properties: "Poison", "Potency", "Reactivity", and "Stickiness"
+    public Dictionary<string, int> getStats() {
+        Dictionary<string, int> statDict = new Dictionary<string, int>();
+
+        statDict.Add("Potency", potency);
+        statDict.Add("Poison", poison);
+        statDict.Add("Reactivity", reactivity);
+        statDict.Add("Stickiness", stickiness);
+
+        Debug.Assert(statDict.ContainsKey("Potency") && statDict.ContainsKey("Poison") && statDict.ContainsKey("Reactivity") && statDict.ContainsKey("Stickiness"));
+        return statDict;
     }
 }

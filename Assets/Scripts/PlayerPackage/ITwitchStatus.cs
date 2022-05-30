@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ITwitchStatus : IUnitStatus
+public abstract class ITwitchStatus : ITwitchUnitStatus
 {
     // Main method to get access to primary poison vial
     //  Pre: none
