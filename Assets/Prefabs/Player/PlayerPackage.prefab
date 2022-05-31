@@ -4390,6 +4390,7 @@ MonoBehaviour:
   unitDeathEvent:
     m_PersistentCalls:
       m_Calls: []
+  characterRenderer: {fileID: 666051070171789298}
   baseMovementSpeed: 12
   mainPlayerUI: {fileID: 666051070539244718}
   boltCost: 1
@@ -4397,6 +4398,14 @@ MonoBehaviour:
   caskCooldown: 10
   camoCooldown: 15
   contaminateCooldown: 9
+  camoAttackRateBuff: 1.5
+  camoMovementSpeedBuff: 1.2
+  camoDuration: 12
+  camoAttackSpeedBuffDuration: 5
+  camoStartup: 1
+  stealthColor: {r: 0.018689921, g: 0.26415092, b: 0.03194912, a: 0.6}
+  buffColor: {r: 0.8091671, g: 0.9607843, b: 0.023529435, a: 1}
+  startupColor: {r: 0, g: 0.38679248, b: 0.068257466, a: 1}
 --- !u!114 &666051070539244714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4532,7 +4541,19 @@ MonoBehaviour:
     m_ActionId: 0542f0aa-9c08-4c22-a642-49cf5856e61e
     m_ActionName: PlayerControls/Expunge[/Keyboard/space]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 666051070539244713}
+        m_TargetAssemblyTypeName: TopDownShooterAttackController, Assembly-CSharp
+        m_MethodName: onCamofladgePress
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 4580bc32-0187-41a2-92b2-f8e2f5b8b203
     m_ActionName: PlayerControls/Stealth[/Keyboard/q]
   - m_PersistentCalls:

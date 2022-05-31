@@ -5,10 +5,16 @@ using UnityEngine.Assertions;
 
 public class PlayerStatus : ITwitchStatus
 {
+    // Other reference variables
+    [SerializeField]
+    private MeshRenderer characterRenderer;
+    private Color normalColor;
+
     // Movement speed variables
     [SerializeField]
     private float baseMovementSpeed = 8.0f;
     private float movementSpeedFactor = 1.0f;
+    private float baseAttackSpeedFactor = 1.0f;
 
     // Poison vial variables
     private IVial primaryPoisonVial;
@@ -34,6 +40,25 @@ public class PlayerStatus : ITwitchStatus
     private bool canCamo = true;
     private bool canContaminate = true;
 
+    [Header("Camofladge variables")]
+    [SerializeField]
+    private float camoAttackRateBuff = 1.5f;
+    [SerializeField]
+    private float camoMovementSpeedBuff = 1.2f;
+    [SerializeField]
+    private float camoDuration = 12f;
+    [SerializeField]
+    private float camoAttackSpeedBuffDuration = 5f;
+    [SerializeField]
+    private float camoStartup = 1f;
+    [SerializeField]
+    private Color stealthColor;
+    [SerializeField]
+    private Color buffColor;
+    [SerializeField]
+    private Color startupColor;
+    private bool inCamofladge = false;
+
 
     //On awake, initialize poison vials (GET RID OF THIS IN CRAFTING) and UI after UI initialized
     private void Start() {
@@ -48,6 +73,7 @@ public class PlayerStatus : ITwitchStatus
 
         primaryPoisonVial = new PoisonVial(3, 0, 2, 0, 40);
         secondaryPoisonVial = new PoisonVial(0, 2, 0, 3, 40);
+        normalColor = characterRenderer.material.color;
         initDefaultUI();
     }
 
@@ -71,7 +97,22 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: none
     //  Post: returns base movement speed with speed factors applied
     public override float getMovementSpeed() {
-        return baseMovementSpeed * movementSpeedFactor;
+        float currentSpeed = baseMovementSpeed * movementSpeedFactor;
+
+        // Checks if camofladged
+        if (inCamofladge) {
+            currentSpeed *= camoMovementSpeedBuff;
+        }
+
+        Debug.Assert(currentSpeed >= 0.0f);
+        return currentSpeed;
+    }
+
+    // Main function to get attack rate effect factor
+    //  Pre: none
+    //  Post: returns a variable > 0.0f;
+    public override float getAttackRateFactor() {
+        return 1.0f / baseAttackSpeedFactor;
     }
 
 
@@ -131,6 +172,12 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: none
     //  Post: returns if successful, If so, reduce primary vial's ammo
     public override bool consumePrimaryVialBullet() {
+        // If using a bullet, get out of camofladge if in it
+        if (inCamofladge) {
+            inCamofladge = false;
+            baseAttackSpeedFactor = camoAttackRateBuff;
+        }
+
         return usePrimaryVialAmmo(boltCost);
     }
 
@@ -145,6 +192,11 @@ public class PlayerStatus : ITwitchStatus
 
         bool usedCask = usePrimaryVialAmmo(caskCost);
         if (usedCask) {
+            // If used a cask while camofladge, get out of camofladge
+            if (inCamofladge) {
+                inCamofladge = false;
+            }
+
             StartCoroutine(caskCooldownSequence());
         }
 
@@ -202,10 +254,10 @@ public class PlayerStatus : ITwitchStatus
 
     // Main function to get permissions to cast camofladge
     //  Pre: none
-    //  Post: return if you are allowed. If successful, must wait for cooldown to stop to do it again
+    //  Post: return true if you can start camofladge. canno camo if in camo sequence
     public override bool willCamofladge() {
         if (canCamo) {
-            StartCoroutine(camofladgeCooldownSequence());
+            StartCoroutine(camofladgeSequence());
             return true;
         }
 
@@ -214,13 +266,37 @@ public class PlayerStatus : ITwitchStatus
 
 
     // Camofladge sequence
-    private IEnumerator camofladgeCooldownSequence() {
-        float timer = camoCooldown;
-        WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
+    private IEnumerator camofladgeSequence() {
         canCamo = false;
-        mainPlayerUI.displayCamoCooldown(timer, camoCooldown);
 
-        while (timer >= 0f) {
+        // Startup
+        mainPlayerUI.displayCamoCooldown(camoCooldown, camoCooldown);
+        characterRenderer.material.color = startupColor;
+        yield return new WaitForSeconds(camoStartup);
+
+        // Start camofladge
+        inCamofladge = true;
+        characterRenderer.material.color = stealthColor;
+
+        float timer = 0f;
+        WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
+
+        while (timer < camoDuration && inCamofladge) {
+            yield return waitFrame;
+            timer += Time.fixedDeltaTime;
+        }
+
+        inCamofladge = false;
+
+        // Apply attack speed buff
+        baseAttackSpeedFactor = camoAttackRateBuff;
+        characterRenderer.material.color = buffColor;
+        Invoke("resetCamofladgeBuff", camoAttackSpeedBuffDuration);
+
+        // Timer to do cooldown
+        timer = camoCooldown;
+
+        while (timer > 0f) {
             yield return waitFrame;
             timer -= Time.fixedDeltaTime;
 
@@ -228,6 +304,13 @@ public class PlayerStatus : ITwitchStatus
         }
 
        canCamo = true;
+    }
+
+
+    // Main function to reset camofladge buff
+    private void resetCamofladgeBuff() {
+        characterRenderer.material.color = normalColor;
+        baseAttackSpeedFactor = 1.0f;
     }
 
 

@@ -97,7 +97,8 @@ public class TopDownShooterAttackController : IAttackModule
             }
 
             // Wait for attack rate to finish
-            yield return new WaitForSeconds(primaryAttackRate);
+            Debug.Log(primaryAttackRate * twitchPlayerStatus.getAttackRateFactor());
+            yield return new WaitForSeconds(primaryAttackRate * twitchPlayerStatus.getAttackRateFactor());
         }
 
         // Set flag to false once sequence ends
@@ -165,6 +166,18 @@ public class TopDownShooterAttackController : IAttackModule
                 contaminateZone.damageAllTargets(0.0f);
             } else {
                 Debug.Log("Cannot contaminate");
+            }
+        }
+    }
+
+
+    // Event handler for camofladge press
+    public void onCamofladgePress(InputAction.CallbackContext value) {
+        if (value.started) {
+            bool camofladgeSuccess = twitchPlayerStatus.willCamofladge();
+
+            if (!camofladgeSuccess) {
+                Debug.Log("Cannot camofladge");
             }
         }
     }

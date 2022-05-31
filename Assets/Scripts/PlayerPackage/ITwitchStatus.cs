@@ -36,6 +36,12 @@ public abstract class ITwitchStatus : ITwitchUnitStatus
 
     // Main function to get permissions to cast camofladge
     //  Pre: none
-    //  Post: return if you are allowed. If successful, must wait for cooldown to stop to do it again
+    //  Post: return if you are allowed. If successful, must wait for sequence to end to do it again
     public abstract bool willCamofladge();
+
+
+    // Main function to get attack rate effect factor
+    //  Pre: none
+    //  Post: returns a variable > 0.0f;
+    public abstract float getAttackRateFactor();
 }
