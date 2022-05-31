@@ -15,6 +15,8 @@ public class TopDownShooterAttackController : IAttackModule
     private Transform primaryBullet = null;
     [SerializeField]
     private Transform secondaryCask = null;
+    [SerializeField]
+    private IPauseMenu pauseMenu = null;
     private ITwitchStatus twitchPlayerStatus;
 
     // Stats for attacking (move to Player Status)
@@ -82,15 +84,17 @@ public class TopDownShooterAttackController : IAttackModule
         // Keep firing projectiles until you stopped holding left click
         while (firingPrimaryAttack) {
 
-            // Create projectile. If poison vial is null, just do weak arrow
-            Transform currentProjectile = Object.Instantiate(primaryBullet, playerCharacter.position, Quaternion.identity);
-            PoisonVialBolt projBehav = currentProjectile.GetComponent<PoisonVialBolt>();
-            Vector3 currentProjectileDir = getWorldAimLocation() - playerCharacter.position;
-            projBehav.setVialDamage(twitchPlayerStatus.getPrimaryVial());
-            projBehav.setUpMovement(currentProjectileDir, primaryBulletSpeed);
+            if (!pauseMenu.inPauseState()) {
+                // Create projectile. If poison vial is null, just do weak arrow
+                Transform currentProjectile = Object.Instantiate(primaryBullet, playerCharacter.position, Quaternion.identity);
+                PoisonVialBolt projBehav = currentProjectile.GetComponent<PoisonVialBolt>();
+                Vector3 currentProjectileDir = getWorldAimLocation() - playerCharacter.position;
+                projBehav.setVialDamage(twitchPlayerStatus.getPrimaryVial());
+                projBehav.setUpMovement(currentProjectileDir, primaryBulletSpeed);
 
-            // Reduce cost if possible (cost will always either be 1 or 0, no if statement needed)
-            twitchPlayerStatus.consumePrimaryVialBullet();
+                // Reduce cost if possible (cost will always either be 1 or 0, no if statement needed)
+                twitchPlayerStatus.consumePrimaryVialBullet();
+            }
 
             // Wait for attack rate to finish
             yield return new WaitForSeconds(primaryAttackRate);
@@ -139,7 +143,7 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Event handler method for when secondary fire button click
     public void onSecondaryButtonClick(InputAction.CallbackContext value) {
-        if (value.started && !caskSequenceRunning) {
+        if (value.started && !caskSequenceRunning && !pauseMenu.inPauseState()) {
             // Check if you're actually able to throw a cask
             IVial curCask = twitchPlayerStatus.getPrimaryVial();
             bool usedCask = twitchPlayerStatus.consumePrimaryVialCask();
@@ -156,7 +160,7 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Event handler for contaminate press
     public void onContaminatePress(InputAction.CallbackContext value) {
-        if (value.started && contaminateZone != null) {
+        if (value.started && contaminateZone != null && !pauseMenu.inPauseState()) {
             if (twitchPlayerStatus.willContaminate()) {
                 contaminateZone.damageAllTargets(0.0f);
             } else {
@@ -168,7 +172,7 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Event handler for swap press
     public void onSwapPress(InputAction.CallbackContext value) {
-        if (value.started) {
+        if (value.started && !pauseMenu.inPauseState()) {
             twitchPlayerStatus.swapVials();
         }
     }

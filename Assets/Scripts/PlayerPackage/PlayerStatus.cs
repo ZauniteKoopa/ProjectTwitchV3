@@ -35,8 +35,8 @@ public class PlayerStatus : ITwitchStatus
     private bool canContaminate = true;
 
 
-    //On awake, initialize poison vials (GET RID OF THIS IN CRAFTING)
-    private void Awake() {
+    //On awake, initialize poison vials (GET RID OF THIS IN CRAFTING) and UI after UI initialized
+    private void Start() {
         // Error check
         if (baseMovementSpeed < 0.0f) {
             Debug.LogError("Player base movement speed cannot be negative: " + transform, transform);
