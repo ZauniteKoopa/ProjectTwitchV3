@@ -97,7 +97,6 @@ public class TopDownShooterAttackController : IAttackModule
             }
 
             // Wait for attack rate to finish
-            Debug.Log(primaryAttackRate * twitchPlayerStatus.getAttackRateFactor());
             yield return new WaitForSeconds(primaryAttackRate * twitchPlayerStatus.getAttackRateFactor());
         }
 
