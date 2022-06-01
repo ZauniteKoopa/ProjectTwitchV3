@@ -15,27 +15,31 @@ public class PoisonVial : IVial
     private int ammo;
     private const int MAX_AMMO = 60;
 
+    // CSV Parsing variables
+    private static bool csvParsed = false;
+    private static string csvFileName = "BasePoisonVialData";
+
     //Constants for bullet damage (find a wat to make this editable from the designer)
-    private const float BASE_DAMAGE = 2f;
-    private const float DMG_GROWTH = 0.65f;
+    private static float BASE_DAMAGE;
+    private static float DMG_GROWTH;
 
     //constants for poison stack damage
-    private const float BASE_POISON = 0f;
-    private const float POISON_GROWTH = 0.15f;
+    private static float BASE_POISON;
+    private static float POISON_GROWTH;
 
     //constants for contaminate damage
-    private const float BASE_CONTAMINATE_DMG = 3f;
-    private const float BASE_CON_GROWTH = 0.5f;
-    private const float BASE_STACK_DMG = 1f;
-    private const float STACK_DMG_GROWTH = 0.25f;
+    private static float BASE_CONTAMINATE_DMG;
+    private static float BASE_CON_GROWTH;
+    private static float BASE_STACK_DMG;
+    private static float STACK_DMG_GROWTH;
 
     //constants for stack slowness
-    private const float BASE_SLOWNESS = 0.9f;
-    private const float SLOWNESS_GROWTH = -0.025f;
+    private static float BASE_SLOWNESS;
+    private static float SLOWNESS_GROWTH;
 
     // Constants for cask slowness
-    private const float BASE_CASK_SLOWNESS = 0.7f;
-    private const float CASK_SLOWNESS_GROWTH = -0.05f;
+    private static float BASE_CASK_SLOWNESS;
+    private static float CASK_SLOWNESS_GROWTH;
 
 
 
@@ -48,11 +52,79 @@ public class PoisonVial : IVial
         Debug.Assert(r >= 0 && r <= 5);
         Debug.Assert(s >= 0 && s <= 5);
 
+        if (!csvParsed) {
+            parseBaseVialCSV();
+        }
+
         potency = pot;
         poison = poi;
         reactivity = r;
         stickiness = s;
         ammo = initialAmmo;
+    }
+
+
+    // Private helper function to parse the CSV
+    //  Pre: csvParsed = false
+    //  Post: static variables have been updated to reflect csv values
+    private void parseBaseVialCSV() {
+        Debug.Assert(!csvParsed);
+
+        // Load CSV text file
+        TextAsset csvFile = Resources.Load<TextAsset>("DesignerCSVs/" + csvFileName);
+        if (csvFile == null) {
+            Debug.LogError("Resources/DesignerCSVs/" + csvFileName + " not found to set Vial stats");
+        }
+
+        // Parse out rows and then get the number of rows that must be considered (found in first row)
+        string[] csvRows = csvFile.text.Split('\n');
+        string[] firstRow = csvRows[0].Split(',');
+        int numRowsConsidered = int.Parse(firstRow[1]);
+
+        // Go through the list accordingly
+        for (int r = 0; r < numRowsConsidered; r++) {
+            // Parse pow
+            int rowIndex = 2 + r;
+            string[] currentRow = csvRows[rowIndex].Split(',');
+
+            // Get information from row
+            string currentAttribute = currentRow[0];
+            float curRowBase = float.Parse(currentRow[1]);
+            float curRowGrowth = float.Parse(currentRow[2]);
+
+            // Connect the information to current stats based on attributes
+            switch(currentAttribute) {
+                case "BoltDamage":
+                    BASE_DAMAGE = curRowBase;
+                    DMG_GROWTH = curRowGrowth;
+                    break;
+                case "Poison DoT":
+                    BASE_POISON = curRowBase;
+                    POISON_GROWTH = curRowGrowth;
+                    break;
+                case "BaseContaminate":
+                    BASE_CONTAMINATE_DMG = curRowBase;
+                    BASE_CON_GROWTH = curRowGrowth;
+                    break;
+                case "ContaminateStackGrowth":
+                    BASE_STACK_DMG = curRowBase;
+                    STACK_DMG_GROWTH = curRowGrowth;
+                    break;
+                case "StackSlowness":
+                    BASE_SLOWNESS = curRowBase;
+                    SLOWNESS_GROWTH = curRowGrowth;
+                    break;
+                case "CaskSlowness":
+                    BASE_CASK_SLOWNESS = curRowBase;
+                    CASK_SLOWNESS_GROWTH = curRowGrowth;
+                    break;
+                default:
+                    Debug.LogError("No matching attribute on row " + (rowIndex + 1) + " of Resources/DesignerCSVs/" + csvFileName);
+                    break;
+            }
+        }
+
+        csvParsed = true;
     }
 
 
@@ -116,7 +188,7 @@ public class PoisonVial : IVial
 
         float curBaseDmg = BASE_CONTAMINATE_DMG + (BASE_CON_GROWTH * reactivity);
         float stackDmg = BASE_STACK_DMG + (STACK_DMG_GROWTH * reactivity);
-        float contaminateDamage = curBaseDmg + (stackDmg * numStacks);
+        float contaminateDamage = curBaseDmg + (stackDmg * (numStacks - 1));
         
         Debug.Assert(contaminateDamage >= 0.0f);
         return contaminateDamage;
