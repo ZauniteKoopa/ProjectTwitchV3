@@ -53,4 +53,8 @@ public abstract class AbstractDamageZone : MonoBehaviour
 
     // Protected method to apply visual effect to targets
     protected abstract void applyVisualEffects();
+
+
+    // Protected method to check if you can use damage zone
+    public abstract bool canUseAbility();
 }

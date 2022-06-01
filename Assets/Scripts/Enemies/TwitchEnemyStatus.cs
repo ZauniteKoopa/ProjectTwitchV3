@@ -245,4 +245,18 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         }
 
     }
+
+
+    // Main function to check if a unit is poisoned
+    //  Pre: none
+    //  Post: returns whether or not the unit is poisoned
+    public override bool isPoisoned() {
+        bool poisoned;
+
+        lock(poisonLock) {
+            poisoned = numPoisonStacks > 0;
+        }
+
+        return poisoned;
+    }
 }

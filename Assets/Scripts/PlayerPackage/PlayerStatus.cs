@@ -59,6 +59,10 @@ public class PlayerStatus : ITwitchStatus
     private Color startupColor;
     private bool inCamofladge = false;
 
+    [Header("Audio")]
+    [SerializeField]
+    private TwitchPlayerAudio audioManager;
+
 
     //On awake, initialize poison vials (GET RID OF THIS IN CRAFTING) and UI after UI initialized
     private void Start() {
@@ -69,6 +73,10 @@ public class PlayerStatus : ITwitchStatus
 
         if (mainPlayerUI == null) {
             Debug.LogError("PlayerStatus not connected to ITwitchPlayerUI object: " + transform, transform);
+        }
+
+        if (audioManager == null) {
+            Debug.LogError("TwitchPlayerAudio not connected to PlayerStatus to make use of sounds");
         }
 
         primaryPoisonVial = new PoisonVial(3, 0, 2, 0, 40);
@@ -178,6 +186,9 @@ public class PlayerStatus : ITwitchStatus
             baseAttackSpeedFactor = camoAttackRateBuff;
         }
 
+        // Play bolt sound, regardless of whether you use poison arrow or weak arrow
+        audioManager.playBoltSound();
+
         return usePrimaryVialAmmo(boltCost);
     }
 
@@ -206,6 +217,8 @@ public class PlayerStatus : ITwitchStatus
     
     // Cask cooldown sequence
     private IEnumerator caskCooldownSequence() {
+        audioManager.playCaskCastSound();
+
         float timer = caskCooldown;
         WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
         canCask = false;
@@ -236,6 +249,8 @@ public class PlayerStatus : ITwitchStatus
 
     // Cask cooldown sequence
     private IEnumerator contaminateCooldownSequence() {
+        audioManager.playContaminateSound();
+
         float timer = contaminateCooldown;
         WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
         canContaminate = false;
@@ -270,6 +285,7 @@ public class PlayerStatus : ITwitchStatus
         canCamo = false;
 
         // Startup
+        audioManager.playStealthCastSound();
         mainPlayerUI.displayCamoCooldown(camoCooldown, camoCooldown);
         characterRenderer.material.color = startupColor;
         yield return new WaitForSeconds(camoStartup);
@@ -340,4 +356,10 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: none
     //  Post: enemy suffers from severe burst damage
     public override void contaminate() {}
+
+
+    // Main function to check if a unit is poisoned
+    //  Pre: none
+    //  Post: returns whether or not the unit is poisoned
+    public override bool isPoisoned() {return false;}
 }

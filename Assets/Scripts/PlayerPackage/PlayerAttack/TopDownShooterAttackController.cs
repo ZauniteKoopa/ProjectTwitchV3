@@ -161,10 +161,17 @@ public class TopDownShooterAttackController : IAttackModule
     // Event handler for contaminate press
     public void onContaminatePress(InputAction.CallbackContext value) {
         if (value.started && contaminateZone != null && !pauseMenu.inPauseState()) {
-            if (twitchPlayerStatus.willContaminate()) {
-                contaminateZone.damageAllTargets(0.0f);
+            // Check if there are any enemies in range and infected
+            if (contaminateZone.canUseAbility()) {
+
+                // Check if you even have the mana cost to contaminate
+                if (twitchPlayerStatus.willContaminate()) {
+                    contaminateZone.damageAllTargets(0.0f);
+                } else {
+                    Debug.Log("Contamination on cooldown");
+                }
             } else {
-                Debug.Log("Cannot contaminate");
+                Debug.Log("Not in range of infected enemies");
             }
         }
     }

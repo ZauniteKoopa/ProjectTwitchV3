@@ -26,4 +26,10 @@ public class CaskZone : AbstractDamageZone
 
     // Protected method to apply visual effect to targets
     protected override void applyVisualEffects() {}
+
+
+    // Protected method to check if you can use damage zone
+    public override bool canUseAbility() {
+        return true;
+    }
 }
