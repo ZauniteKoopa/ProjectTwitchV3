@@ -16,8 +16,8 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
     private IEnemyPassiveBranch passiveBranch;
 
     
-    // On awake, start the behavior tree sequence
-    private void Awake() {
+    // On start, start the behavior tree sequence
+    private void Start() {
         // Error check if branches are connected
         if (passiveBranch == null) {
             Debug.LogError("ERROR, passive branch not connected to this behavior tree: " + transform, transform);

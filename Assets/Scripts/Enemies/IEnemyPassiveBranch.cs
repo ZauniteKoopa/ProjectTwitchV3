@@ -8,5 +8,5 @@ public abstract class IEnemyPassiveBranch : MonoBehaviour
     public abstract IEnumerator execute();
 
     // Main function to reset the branch when the overall tree gets overriden / switch branches
-    public abstract IEnumerator reset();
+    public abstract void reset();
 }
