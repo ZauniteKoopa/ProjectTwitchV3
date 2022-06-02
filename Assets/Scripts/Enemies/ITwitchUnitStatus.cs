@@ -24,4 +24,10 @@ public abstract class ITwitchUnitStatus : IUnitStatus
     //  Pre: none
     //  Post: enemy suffers from severe burst damage
     public abstract void contaminate();
+
+
+    // Main function to check if a unit is poisoned
+    //  Pre: none
+    //  Post: returns whether or not the unit is poisoned
+    public abstract bool isPoisoned();
 }

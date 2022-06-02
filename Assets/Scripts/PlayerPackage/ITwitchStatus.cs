@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ITwitchStatus : IUnitStatus
+public abstract class ITwitchStatus : ITwitchUnitStatus
 {
     // Main method to get access to primary poison vial
     //  Pre: none
@@ -15,9 +15,33 @@ public abstract class ITwitchStatus : IUnitStatus
     //  Post: swaps primary and secondary vials on the fly
     public abstract void swapVials();
 
+    
+    // Main function to use bolt bullet with poison vial wth defined cost
+    //  Pre: none
+    //  Post: returns if successful, If so, reduce primary vial's ammo
+    public abstract bool consumePrimaryVialBullet();
 
-    // Main shorthand method to use primary vial
-    //  Pre: ammoCost >= 0
-    //  Post: returns if successful. If so, reduces primary vial's ammo
-    public abstract bool usePrimaryVialAmmo(int ammoCost);
+
+    // Main function to use cask bullet wth defined cost
+    //  Pre: none
+    //  Post: returns if successful, If so, reduce primary vial's ammo
+    public abstract bool consumePrimaryVialCask();
+
+
+    // Main function to get permissions to cast contaminate
+    //  Pre: none
+    //  Post: return if you are allowed. If successful, must wait for cooldown to stop to do it again
+    public abstract bool willContaminate();
+
+
+    // Main function to get permissions to cast camofladge
+    //  Pre: none
+    //  Post: return if you are allowed. If successful, must wait for sequence to end to do it again
+    public abstract bool willCamofladge();
+
+
+    // Main function to get attack rate effect factor
+    //  Pre: none
+    //  Post: returns a variable > 0.0f;
+    public abstract float getAttackRateFactor();
 }

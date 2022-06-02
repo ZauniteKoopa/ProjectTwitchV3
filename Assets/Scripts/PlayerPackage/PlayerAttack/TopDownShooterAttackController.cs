@@ -15,6 +15,8 @@ public class TopDownShooterAttackController : IAttackModule
     private Transform primaryBullet = null;
     [SerializeField]
     private Transform secondaryCask = null;
+    [SerializeField]
+    private IPauseMenu pauseMenu = null;
     private ITwitchStatus twitchPlayerStatus;
 
     // Stats for attacking (move to Player Status)
@@ -25,8 +27,6 @@ public class TopDownShooterAttackController : IAttackModule
     private float primaryBulletSpeed = 20f;
     [SerializeField]
     private float primaryAttackMoveReduction = 0.6f;
-    [SerializeField]
-    private int bulletCost = 0;
 
 
     // stats for cask throwing
@@ -39,8 +39,6 @@ public class TopDownShooterAttackController : IAttackModule
     private float maxCaskThrowDistance = 5.0f;
     [SerializeField]
     private float caskAnticipationTime = 0.4f;
-    [SerializeField]
-    private int caskCost = 0;
     private bool caskSequenceRunning = false;
     private Vector3 caskAimForward;
 
@@ -86,18 +84,20 @@ public class TopDownShooterAttackController : IAttackModule
         // Keep firing projectiles until you stopped holding left click
         while (firingPrimaryAttack) {
 
-            // Create projectile. If poison vial is null, just do weak arrow
-            Transform currentProjectile = Object.Instantiate(primaryBullet, playerCharacter.position, Quaternion.identity);
-            PoisonVialBolt projBehav = currentProjectile.GetComponent<PoisonVialBolt>();
-            Vector3 currentProjectileDir = getWorldAimLocation() - playerCharacter.position;
-            projBehav.setVialDamage(twitchPlayerStatus.getPrimaryVial());
-            projBehav.setUpMovement(currentProjectileDir, primaryBulletSpeed);
+            if (!pauseMenu.inPauseState()) {
+                // Create projectile. If poison vial is null, just do weak arrow
+                Transform currentProjectile = Object.Instantiate(primaryBullet, playerCharacter.position, Quaternion.identity);
+                PoisonVialBolt projBehav = currentProjectile.GetComponent<PoisonVialBolt>();
+                Vector3 currentProjectileDir = getWorldAimLocation() - playerCharacter.position;
+                projBehav.setVialDamage(twitchPlayerStatus.getPrimaryVial());
+                projBehav.setUpMovement(currentProjectileDir, primaryBulletSpeed);
 
-            // Reduce cost if possible (cost will always either be 1 or 0, no if statement needed)
-            twitchPlayerStatus.usePrimaryVialAmmo(bulletCost);
+                // Reduce cost if possible (cost will always either be 1 or 0, no if statement needed)
+                twitchPlayerStatus.consumePrimaryVialBullet();
+            }
 
             // Wait for attack rate to finish
-            yield return new WaitForSeconds(primaryAttackRate);
+            yield return new WaitForSeconds(primaryAttackRate * twitchPlayerStatus.getAttackRateFactor());
         }
 
         // Set flag to false once sequence ends
@@ -143,16 +143,16 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Event handler method for when secondary fire button click
     public void onSecondaryButtonClick(InputAction.CallbackContext value) {
-        if (value.started && !caskSequenceRunning) {
+        if (value.started && !caskSequenceRunning && !pauseMenu.inPauseState()) {
             // Check if you're actually able to throw a cask
             IVial curCask = twitchPlayerStatus.getPrimaryVial();
-            bool usedCask = twitchPlayerStatus.usePrimaryVialAmmo(caskCost);
+            bool usedCask = twitchPlayerStatus.consumePrimaryVialCask();
 
             if (usedCask) {
                 caskAimForward = (getWorldAimLocation() - transform.position).normalized;
                 StartCoroutine(secondaryAttackSequence(curCask));
             } else {
-                Debug.Log("Not enough poison for cask");
+                Debug.Log("Cannot cask");
             }
         }
     }
@@ -160,15 +160,38 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Event handler for contaminate press
     public void onContaminatePress(InputAction.CallbackContext value) {
-        if (value.started && contaminateZone != null) {
-            contaminateZone.damageAllTargets(0.0f);
+        if (value.started && contaminateZone != null && !pauseMenu.inPauseState()) {
+            // Check if there are any enemies in range and infected
+            if (contaminateZone.canUseAbility()) {
+
+                // Check if you even have the mana cost to contaminate
+                if (twitchPlayerStatus.willContaminate()) {
+                    contaminateZone.damageAllTargets(0.0f);
+                } else {
+                    Debug.Log("Contamination on cooldown");
+                }
+            } else {
+                Debug.Log("Not in range of infected enemies");
+            }
+        }
+    }
+
+
+    // Event handler for camofladge press
+    public void onCamofladgePress(InputAction.CallbackContext value) {
+        if (value.started) {
+            bool camofladgeSuccess = twitchPlayerStatus.willCamofladge();
+
+            if (!camofladgeSuccess) {
+                Debug.Log("Cannot camofladge");
+            }
         }
     }
 
 
     // Event handler for swap press
     public void onSwapPress(InputAction.CallbackContext value) {
-        if (value.started) {
+        if (value.started && !pauseMenu.inPauseState()) {
             twitchPlayerStatus.swapVials();
         }
     }

@@ -43,27 +43,36 @@
                 },
                 {
                     "name": "Stealth",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "4580bc32-0187-41a2-92b2-f8e2f5b8b203",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "QuickSwap",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "7b1bd78f-6c58-49c8-af35-051fddbacd1f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "AimPosition",
                     "type": "Value",
                     "id": "3ed86d7a-97e3-425b-bed7-d25ff507ed65",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Pause",
+                    "type": "Value",
+                    "id": "2552f581-1022-464b-bbe4-006ba0d024d7",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -188,6 +197,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "AimPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c3d69d2b-0e42-4952-96e6-7453cc7fad43",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
