@@ -56,6 +56,8 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
             patrolPointIndex = 0;
         }
 
+        navMeshAgent.isStopped = false;
+
         // Go through the entire path in chronological order
         while (patrolPointIndex < patrolPointLocations.Count) {
             // Set destination
@@ -95,7 +97,7 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
                 if (staticUI != null) {
                     staticUI.forward = uiForward;
                 }
-                
+
                 currentDistance = Vector3.Distance(dest, transform.position);
             }
         }
@@ -105,6 +107,7 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
     // Main function to reset the branch when the overall tree gets overriden / switch branches
     public override void reset() {
         wasReset = true;
+        navMeshAgent.isStopped = true;
     }
 
 
