@@ -37,12 +37,9 @@ public class TopDownMovementController3D : MonoBehaviour
     // On awake, automate initialization of variables and error check
     private void Awake() {
         // Initialize variables
-        unitStatus = GetComponent<IUnitStatus>();
         attackController = GetComponent<IAttackModule>();
 
         // Error check
-        if (unitStatus == null)
-            Debug.LogError("Cannot access unit's movement stats! Please link a Unit Status to " + this, transform);
 
         if (cameraTransform == null)
             Debug.LogError("Cannot find camera to set movement forward to! Please link a camera to " + this, transform);
@@ -55,6 +52,10 @@ public class TopDownMovementController3D : MonoBehaviour
 
         if (attackController == null)
             Debug.LogWarning("Attack Controller not connected to object! Attacking will not affect movement for " + this, transform);
+
+        unitStatus = playerCharacterTransform.GetComponent<IUnitStatus>();
+        if (unitStatus == null)
+            Debug.LogError("Cannot access unit's movement stats! Please link a Unit Status to " + playerCharacterTransform, playerCharacterTransform);
     }
 
 

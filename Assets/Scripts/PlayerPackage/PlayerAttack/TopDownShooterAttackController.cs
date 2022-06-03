@@ -57,8 +57,6 @@ public class TopDownShooterAttackController : IAttackModule
 
     // On awake, error check and initialize variables
     private void Awake() {
-        // get twitch status
-        twitchPlayerStatus = GetComponent<ITwitchStatus>();
 
         // Do error checking
         if (playerCamera == null) {
@@ -69,8 +67,13 @@ public class TopDownShooterAttackController : IAttackModule
             Debug.LogError("Primary Bullet prefab not connected to attack package for " + transform, transform);
         } else if (secondaryCask == null) {
             Debug.LogError("Secondary weapon not connected to attack package for " + transform, transform);
-        } else if (twitchPlayerStatus == null) {
-            Debug.LogError("Player's status script component not connected to attack package for " + transform, transform);
+        }
+
+        // get twitch status
+        twitchPlayerStatus = playerCharacter.GetComponent<ITwitchStatus>();
+        
+        if (twitchPlayerStatus == null) {
+            Debug.LogError("Player's status script component not connected to attack package for " + playerCharacter, playerCharacter);
         }
     }
 

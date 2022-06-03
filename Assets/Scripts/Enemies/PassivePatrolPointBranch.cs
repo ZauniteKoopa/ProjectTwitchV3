@@ -16,6 +16,10 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
     [SerializeField]
     private float stopDuration = 1.0f;
 
+    [SerializeField]
+    private Transform staticUI = null;
+    private Vector3 uiForward;
+
 
     // On awake, set patrolPointLocations immediately and get NavMeshAgent
     private void Awake() {
@@ -29,6 +33,10 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
         patrolPointLocations = new List<Vector3>();
         float yPos = transform.position.y;
 
+        if (staticUI != null) {
+            uiForward = staticUI.forward;
+        }
+
         // record each patrol point location
         foreach (Transform patrolPoint in patrolPoints) {
             patrolPointLocations.Add(new Vector3(patrolPoint.position.x, yPos, patrolPoint.position.z));
@@ -39,34 +47,20 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
 
     // Main function to run the branch
     public override IEnumerator execute() {
-        // Variable to represent waiting a frame and set starting location
-        WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
 
         // If this is the first time running branch or branch was reset, find nearest patrol point to start
         if (wasReset) {
+            wasReset = false;
             patrolPointIndex = getNearestPatrolPoint();
+        } else {
+            patrolPointIndex = 0;
         }
 
         // Go through the entire path in chronological order
         while (patrolPointIndex < patrolPointLocations.Count) {
             // Set destination
             Vector3 destPos = patrolPointLocations[patrolPointIndex];
-            bool pathFound = navMeshAgent.SetDestination(destPos);
-
-            // If path found, go to path
-            if (pathFound) {
-
-                // Wait for path to finish calculating
-                while (navMeshAgent.pathPending) {
-                    yield return waitFrame;
-                }
-
-                // Wait for unit to approach destination
-                float currentDistance = Vector3.Distance(destPos, transform.position);
-                while (currentDistance > nearDistance) {
-                    yield return waitFrame;
-                }
-            }
+            yield return StartCoroutine(goToPosition(destPos));
 
             // Wait for stop duration
             yield return new WaitForSeconds(stopDuration);
@@ -75,6 +69,38 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
             patrolPointIndex++;
         }
     }
+
+
+    // Main function to get unit to go to a specific location
+    //  Pre: dest is the position on the nav mesh that the unit is trying to go to
+    //  Post: unit will move to the position gradually, getting out of sequence once reached position
+    protected IEnumerator goToPosition(Vector3 dest) {
+        bool pathFound = navMeshAgent.SetDestination(dest);
+
+        // If path found, go to path
+        if (pathFound) {
+            // Variable to represent waiting a frame and set starting location
+            WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
+
+            // Wait for path to finish calculating
+            while (navMeshAgent.pathPending) {
+                yield return waitFrame;
+            }
+
+            // Wait for unit to approach destination
+            float currentDistance = Vector3.Distance(dest, transform.position);
+            while (currentDistance > nearDistance) {
+                yield return waitFrame;
+
+                if (staticUI != null) {
+                    staticUI.forward = uiForward;
+                }
+                
+                currentDistance = Vector3.Distance(dest, transform.position);
+            }
+        }
+    }
+
 
     // Main function to reset the branch when the overall tree gets overriden / switch branches
     public override void reset() {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.AI;
 
 public class EnemyComponentBehaviorTree : IEnemyBehavior
 {
@@ -14,6 +15,7 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
     private IEnemyAggroBranch aggressiveBranch;
     [SerializeField]
     private IEnemyPassiveBranch passiveBranch;
+    private NavMeshAgent navMeshAgent;
 
     
     // On start, start the behavior tree sequence
@@ -28,6 +30,8 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
         }
 
         // Execute behav tree for the first time
+        navMeshAgent = GetComponent<NavMeshAgent>();
+
         StartCoroutine(behaviorTreeSequence());
     }
 
