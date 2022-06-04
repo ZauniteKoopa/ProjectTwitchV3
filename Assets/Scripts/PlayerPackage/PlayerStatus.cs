@@ -16,6 +16,15 @@ public class PlayerStatus : ITwitchStatus
     private float movementSpeedFactor = 1.0f;
     private float baseAttackSpeedFactor = 1.0f;
 
+    // Health and Invincibility
+    [SerializeField]
+    private float maxHealth = 60f;
+    private float curHealth;
+    private bool isInvincible = false;
+    [SerializeField]
+    private float invincibilityFrameDuration = 0.6f;
+    private readonly object healthLock = new object();
+
     // Poison vial variables
     private IVial primaryPoisonVial;
     private IVial secondaryPoisonVial;
@@ -79,6 +88,7 @@ public class PlayerStatus : ITwitchStatus
             Debug.LogError("TwitchPlayerAudio not connected to PlayerStatus to make use of sounds");
         }
 
+        curHealth = maxHealth;
         primaryPoisonVial = new PoisonVial(3, 0, 2, 0, 40);
         secondaryPoisonVial = new PoisonVial(0, 2, 0, 3, 40);
         normalColor = characterRenderer.material.color;
@@ -128,9 +138,35 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: damage is a number greater than 0
     //  Post: damage is inflicted on player unit and return is damage is successful
     public override bool damage(float dmg) {
-        Debug.Log("Player suffered " + dmg + " damage");
-        mainPlayerUI.displayHealth(30f, 30f);
+        lock (healthLock) {
+            if (!isInvincible && curHealth > 0f) {
+                // Decrement health
+                curHealth -= dmg;
+                mainPlayerUI.displayHealth(curHealth, maxHealth);
+
+                // If still alive, do I-Frame sequence, else, death
+                IEnumerator postDamageRoutine = (curHealth > 0f) ? invincibilityFrameSequence() : death();
+                StartCoroutine(postDamageRoutine);
+
+            }
+        }
+
         return true;
+    }
+
+
+    // Main Private IEnumerator to do invincibility sequence
+    private IEnumerator invincibilityFrameSequence() {
+        isInvincible = true;
+        yield return new WaitForSeconds(invincibilityFrameDuration);
+        isInvincible = false;
+    }
+
+    
+    // Main private IEnumerator to do death
+    private IEnumerator death() {
+        yield return 0;
+        Debug.Log("I died");
     }
 
 
