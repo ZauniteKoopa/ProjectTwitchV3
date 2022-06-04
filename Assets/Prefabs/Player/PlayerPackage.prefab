@@ -3243,6 +3243,7 @@ GameObject:
   - component: {fileID: 666051070171789297}
   - component: {fileID: 666051069268553061}
   - component: {fileID: 666051069268553060}
+  - component: {fileID: 1209925082}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -3461,6 +3462,38 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ba230685a8c551207a8b1ced6b61ee5d, type: 3}
   caskThrowSounds:
   - {fileID: 8300000, guid: ac3924c84cf7b1420affcc7f98c12325, type: 3}
+--- !u!114 &1209925082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666051070171789292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06b580e24360ce46395737b0a7af14a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitDeathEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  characterRenderer: {fileID: 666051070171789298}
+  baseMovementSpeed: 12
+  mainPlayerUI: {fileID: 666051070539244718}
+  boltCost: 1
+  caskCost: 3
+  caskCooldown: 10
+  camoCooldown: 15
+  contaminateCooldown: 9
+  camoAttackRateBuff: 1.5
+  camoMovementSpeedBuff: 1.2
+  camoDuration: 12
+  camoAttackSpeedBuffDuration: 5
+  camoStartup: 1
+  stealthColor: {r: 0.018689921, g: 0.26415092, b: 0.03194912, a: 0.6}
+  buffColor: {r: 0.8091671, g: 0.9607843, b: 0.023529435, a: 1}
+  startupColor: {r: 0, g: 0.38679248, b: 0.068257466, a: 1}
+  audioManager: {fileID: 666051069268553060}
 --- !u!1 &666051070187809534
 GameObject:
   m_ObjectHideFlags: 0
@@ -4464,7 +4497,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 666051070539244715}
-  - component: {fileID: 666051070539244712}
   - component: {fileID: 666051070539244714}
   - component: {fileID: 666051070539244713}
   - component: {fileID: 666051070539244709}
@@ -4494,38 +4526,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &666051070539244712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 666051070539244708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06b580e24360ce46395737b0a7af14a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  unitDeathEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  characterRenderer: {fileID: 666051070171789298}
-  baseMovementSpeed: 12
-  mainPlayerUI: {fileID: 666051070539244718}
-  boltCost: 1
-  caskCost: 3
-  caskCooldown: 10
-  camoCooldown: 15
-  contaminateCooldown: 9
-  camoAttackRateBuff: 1.5
-  camoMovementSpeedBuff: 1.2
-  camoDuration: 12
-  camoAttackSpeedBuffDuration: 5
-  camoStartup: 1
-  stealthColor: {r: 0.018689921, g: 0.26415092, b: 0.03194912, a: 0.6}
-  buffColor: {r: 0.8091671, g: 0.9607843, b: 0.023529435, a: 1}
-  startupColor: {r: 0, g: 0.38679248, b: 0.068257466, a: 1}
-  audioManager: {fileID: 666051069268553060}
 --- !u!114 &666051070539244714
 MonoBehaviour:
   m_ObjectHideFlags: 0

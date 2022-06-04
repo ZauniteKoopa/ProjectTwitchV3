@@ -126,10 +126,11 @@ public class PlayerStatus : ITwitchStatus
 
     // Main method to damage player unit
     //  Pre: damage is a number greater than 0
-    //  Post: damage is inflicted on player unit
-    public override void damage(float dmg) {
+    //  Post: damage is inflicted on player unit and return is damage is successful
+    public override bool damage(float dmg) {
         Debug.Log("Player suffered " + dmg + " damage");
         mainPlayerUI.displayHealth(30f, 30f);
+        return true;
     }
 
 

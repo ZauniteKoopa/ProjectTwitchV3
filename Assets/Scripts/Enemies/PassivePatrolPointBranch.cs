@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class PassivePatrolPointBranch : IEnemyPassiveBranch
 {
+    private ITwitchUnitStatus enemyStats;
+
     private int patrolPointIndex = 0;
     private List<Vector3> patrolPointLocations;
     private NavMeshAgent navMeshAgent;
@@ -15,10 +17,10 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
     private float nearDistance = 0.25f;
     [SerializeField]
     private float stopDuration = 1.0f;
-
     [SerializeField]
-    private Transform staticUI = null;
-    private Vector3 uiForward;
+    private float firstConfusedDuration = 2.0f;
+    [SerializeField]
+    private float passiveMovementSpeedReduction = 0.75f;
 
 
     // On awake, set patrolPointLocations immediately and get NavMeshAgent
@@ -30,11 +32,16 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
 
         // Initialize variables
         navMeshAgent = GetComponent<NavMeshAgent>();
+        enemyStats = GetComponent<ITwitchUnitStatus>();
         patrolPointLocations = new List<Vector3>();
         float yPos = transform.position.y;
 
-        if (staticUI != null) {
-            uiForward = staticUI.forward;
+        if (navMeshAgent == null){
+            Debug.LogError("No nav mesh agent connected to this unit: " + transform, transform);
+        }
+
+        if (enemyStats == null){
+            Debug.LogError("No ITwitchUnitStatus connected to this unit: " + transform, transform);
         }
 
         // record each patrol point location
@@ -52,11 +59,13 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
         if (wasReset) {
             wasReset = false;
             patrolPointIndex = getNearestPatrolPoint();
+
+            navMeshAgent.isStopped = true;
+            yield return new WaitForSeconds(firstConfusedDuration);
+
         } else {
             patrolPointIndex = 0;
         }
-
-        navMeshAgent.isStopped = false;
 
         // Go through the entire path in chronological order
         while (patrolPointIndex < patrolPointLocations.Count) {
@@ -78,6 +87,8 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
     //  Post: unit will move to the position gradually, getting out of sequence once reached position
     protected IEnumerator goToPosition(Vector3 dest) {
         bool pathFound = navMeshAgent.SetDestination(dest);
+        navMeshAgent.isStopped = false;
+        navMeshAgent.speed = enemyStats.getMovementSpeed() * passiveMovementSpeedReduction;
 
         // If path found, go to path
         if (pathFound) {
@@ -93,19 +104,17 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
             float currentDistance = Vector3.Distance(dest, transform.position);
             while (currentDistance > nearDistance) {
                 yield return waitFrame;
-
-                if (staticUI != null) {
-                    staticUI.forward = uiForward;
-                }
-
                 currentDistance = Vector3.Distance(dest, transform.position);
             }
         }
+
+        navMeshAgent.isStopped = true;
     }
 
 
     // Main function to reset the branch when the overall tree gets overriden / switch branches
     public override void reset() {
+        StopAllCoroutines();
         wasReset = true;
         navMeshAgent.isStopped = true;
     }

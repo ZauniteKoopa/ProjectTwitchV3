@@ -18,5 +18,5 @@ public abstract class IUnitStatus : MonoBehaviour
     // Main method to inflict basic damage on unit
     //  Pre: damage is a number greater than 0
     //  Post: unit gets inflicted with damage 
-    public abstract void damage(float dmg);
+    public abstract bool damage(float dmg);
 }

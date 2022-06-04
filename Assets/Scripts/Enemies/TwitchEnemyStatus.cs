@@ -13,6 +13,12 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     private float curHealth;
     private readonly object healthLock = new object();
 
+    // Movement speed variables
+    [Header("Movement stats")]
+    [SerializeField]
+    private float baseMovementSpeed = 4.0f;
+    private float movementSpeedFactor = 1.0f;
+
     // Poison management damage
     private IVial currentPoison = null;
     private int numPoisonStacks = 0;
@@ -72,7 +78,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  Pre: none
     //  Post: Returns movement speed with speed status effects in mind
     public override float getMovementSpeed() {
-        return 0.0f;
+        return baseMovementSpeed * movementSpeedFactor;
     }
 
 
@@ -120,8 +126,8 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
     // Main method to inflict basic damage on unit
     //  Pre: damage is a number greater than 0
-    //  Post: unit gets inflicted with damage 
-    public override void damage(float dmg) {
+    //  Post: unit gets inflicted with damage and returns if damage was successful
+    public override bool damage(float dmg) {
         // Apply damage. Use a lock to make sure changes to health are synchronized
         lock(healthLock) {
 
@@ -139,6 +145,8 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 }
             }
         }
+
+        return true;
     }
 
 
