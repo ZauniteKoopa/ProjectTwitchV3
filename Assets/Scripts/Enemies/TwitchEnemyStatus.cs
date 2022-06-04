@@ -7,17 +7,20 @@ using UnityEngine.Events;
 public class TwitchEnemyStatus : ITwitchUnitStatus
 {
     // Instance variables concerning health
-    [Header("Health stats")]
+    [Header("Base stats")]
     [SerializeField]
     private float maxHealth = 10;
     private float curHealth;
     private readonly object healthLock = new object();
 
     // Movement speed variables
-    [Header("Movement stats")]
     [SerializeField]
     private float baseMovementSpeed = 4.0f;
     private float movementSpeedFactor = 1.0f;
+
+    // Attack stat
+    [SerializeField]
+    private float baseAttack = 5.0f;
 
     // Poison management damage
     private IVial currentPoison = null;
@@ -79,6 +82,14 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  Post: Returns movement speed with speed status effects in mind
     public override float getMovementSpeed() {
         return baseMovementSpeed * movementSpeedFactor;
+    }
+
+
+    // Main method to get current base attack for sword swings or ranged attacks 
+    //  Pre: none
+    //  Post: Returns a float that represents base attack (> 0)
+    public override float getBaseAttack() {
+        return baseAttack;
     }
 
 

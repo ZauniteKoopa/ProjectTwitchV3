@@ -363,4 +363,10 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: none
     //  Post: returns whether or not the unit is poisoned
     public override bool isPoisoned() {return false;}
+
+
+    // Main method to get current base attack for sword swings or ranged attacks 
+    //  Pre: none
+    //  Post: Returns a float that represents base attack (> 0)
+    public override float getBaseAttack() {return 0.0f;}
 }

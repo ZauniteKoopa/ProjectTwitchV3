@@ -11,8 +11,6 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
     [Header("Hitbox Variables")]
     [SerializeField]
     private EnemyBodyHitbox bodyHitbox;
-    [SerializeField]
-    private float bodyDamage = 5f;
     private bool hitPlayer = false;
 
     [Header("Navigation Sequence Variables")]
@@ -38,14 +36,6 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
             Debug.LogError("No body hitbox connected to crushbot!: " + transform, transform);
         }
 
-        if (bodyDamage < 0f) {
-            Debug.LogError("Negative damage for crushbot?: " + transform, transform);
-        }
-
-        // Hitbox
-        bodyHitbox.init(bodyDamage);
-        bodyHitbox.damageTargetEvent.AddListener(onPlayerHitEnemy);
-
         // Get reference variables and error check
         navMeshAgent = GetComponent<NavMeshAgent>();
         enemyStats = GetComponent<ITwitchUnitStatus>();
@@ -57,6 +47,10 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
         if (enemyStats == null){
             Debug.LogError("No ITwitchUnitStatus connected to this unit: " + transform, transform);
         }
+
+        // Hitbox
+        bodyHitbox.init(enemyStats.getBaseAttack());
+        bodyHitbox.damageTargetEvent.AddListener(onPlayerHitEnemy);
     }
 
 
