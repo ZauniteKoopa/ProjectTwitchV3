@@ -116,9 +116,12 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
             // Wait for unit to either hit the player or path expiration has hit
             float currentDistance = Vector3.Distance(dest, transform.position);
             float timer = 0f;
+            navMeshAgent.speed = enemyStats.getMovementSpeed();
+
             while (!hitPlayer && timer < pathExpiration) {
                 yield return waitFrame;
 
+                navMeshAgent.speed = enemyStats.getMovementSpeed();
                 currentDistance = Vector3.Distance(dest, transform.position);
                 timer += Time.fixedDeltaTime;
             }

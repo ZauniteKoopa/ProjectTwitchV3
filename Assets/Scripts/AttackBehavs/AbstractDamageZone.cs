@@ -22,6 +22,7 @@ public abstract class AbstractDamageZone : MonoBehaviour
         if (colliderTgt != null) {
             lock(targetsLock) {
                 inRangeTargets.Add(colliderTgt);
+                unitEnterZone(colliderTgt);
             }
         }
     }
@@ -34,6 +35,7 @@ public abstract class AbstractDamageZone : MonoBehaviour
         if (colliderTgt != null) {
             lock(targetsLock) {
                 inRangeTargets.Remove(colliderTgt);
+                unitExitZone(colliderTgt);
             }
         }
     }
@@ -43,6 +45,16 @@ public abstract class AbstractDamageZone : MonoBehaviour
     public void damageAllTargets(float dmg) {
         foreach (ITwitchUnitStatus target in inRangeTargets) {
             damageTarget(target, dmg);
+        }
+    }
+
+
+    // When object is destroyed, free all units
+    private void OnDestroy() {
+        lock (targetsLock) {
+            foreach (ITwitchUnitStatus target in inRangeTargets) {
+                unitExitZone(target);
+            }
         }
     }
 
@@ -57,4 +69,12 @@ public abstract class AbstractDamageZone : MonoBehaviour
 
     // Protected method to check if you can use damage zone
     public abstract bool canUseAbility();
+
+
+    // Virtual method that can be overriden: what happens when unit enter
+    protected virtual void unitEnterZone(ITwitchUnitStatus tgt) {}
+
+
+    // Virtual method that can be overriden: what happens when unit enter
+    protected virtual void unitExitZone(ITwitchUnitStatus tgt) {}
 }

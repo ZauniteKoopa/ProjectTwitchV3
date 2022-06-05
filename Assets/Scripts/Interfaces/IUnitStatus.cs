@@ -38,4 +38,10 @@ public abstract class IUnitStatus : MonoBehaviour
     //  Post: If enemy, reset to passive state, not sensing any enemies
     //        If player, reset all cooldowns to 0 and lose collectibles upon death
     public abstract void reset();
+
+
+    // Main function to slow down or speed up by a specifed speed factor
+    //  Pre: speedFactor > 0.0f. If less than 1, slow. Else, fast
+    //  Post: speed is affected accordingly
+    public abstract void affectSpeed(float speedFactor);
 }

@@ -207,12 +207,13 @@ public class PoisonVial : IVial
 
 
     // Function to calculate how much a unit is slowed by stacked poison
-    //  Pre: 0 < numStacks <= 5
+    //  Pre: 0 < numStacks <= 6
     //  Post: 0 < returnValue <= 1.0
     public float getStackSlowness(int numStacks) {
         Debug.Assert(numStacks > 0 && numStacks <= 6);
 
         float stackSlowness = (stickiness > 0) ? BASE_SLOWNESS + (SLOWNESS_GROWTH * (stickiness - 1)) : 1.0f;
+        stackSlowness = Mathf.Lerp(1.0f, stackSlowness, numStacks / 6f);
 
         Debug.Assert(stackSlowness > 0.0f && stackSlowness <= 1.0f);
         return stackSlowness;

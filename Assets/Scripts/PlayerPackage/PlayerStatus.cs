@@ -143,6 +143,14 @@ public class PlayerStatus : ITwitchStatus
         return currentSpeed;
     }
 
+
+    // Main function to slow down or speed up by a specifed speed factor
+    //  Pre: speedFactor > 0.0f. If less than 1, slow. Else, fast
+    //  Post: speed is affected accordingly
+    public override void affectSpeed(float speedFactor) {
+        movementSpeedFactor *= speedFactor;
+    }
+
     // Main function to get attack rate effect factor
     //  Pre: none
     //  Post: returns a variable > 0.0f;

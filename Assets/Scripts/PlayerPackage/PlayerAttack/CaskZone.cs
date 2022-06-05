@@ -32,4 +32,15 @@ public class CaskZone : AbstractDamageZone
     public override bool canUseAbility() {
         return true;
     }
+
+    // Virtual method that can be overriden: what happens when unit enter
+    protected override void unitEnterZone(ITwitchUnitStatus tgt) {
+        tgt.affectSpeed(caskPoison.getCaskSlowness());
+    }
+
+
+    // Virtual method that can be overriden: what happens when unit enter
+    protected override void unitExitZone(ITwitchUnitStatus tgt) {
+        tgt.affectSpeed( 1.0f / caskPoison.getCaskSlowness());
+    }
 }

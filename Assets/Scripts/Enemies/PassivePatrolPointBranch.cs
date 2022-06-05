@@ -88,7 +88,6 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
     protected IEnumerator goToPosition(Vector3 dest) {
         bool pathFound = navMeshAgent.SetDestination(dest);
         navMeshAgent.isStopped = false;
-        navMeshAgent.speed = enemyStats.getMovementSpeed() * passiveMovementSpeedReduction;
 
         // If path found, go to path
         if (pathFound) {
@@ -102,8 +101,11 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
 
             // Wait for unit to approach destination
             float currentDistance = Vector3.Distance(dest, transform.position);
+            navMeshAgent.speed = enemyStats.getMovementSpeed() * passiveMovementSpeedReduction;
+            
             while (currentDistance > nearDistance) {
                 yield return waitFrame;
+                navMeshAgent.speed = enemyStats.getMovementSpeed() * passiveMovementSpeedReduction;
                 currentDistance = Vector3.Distance(dest, transform.position);
             }
         }

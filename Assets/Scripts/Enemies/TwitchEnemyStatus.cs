@@ -87,7 +87,22 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  Pre: none
     //  Post: Returns movement speed with speed status effects in mind
     public override float getMovementSpeed() {
-        return baseMovementSpeed * movementSpeedFactor;
+        float trueMovementSpeed = baseMovementSpeed * movementSpeedFactor;
+
+        // If poisoned, get stack slowness
+        if (currentPoison != null) {
+            trueMovementSpeed *= currentPoison.getStackSlowness(numPoisonStacks);
+        }
+
+        return trueMovementSpeed;
+    }
+
+
+    // Main function to slow down or speed up by a specifed speed factor
+    //  Pre: speedFactor > 0.0f. If less than 1, slow. Else, fast
+    //  Post: speed is affected accordingly
+    public override void affectSpeed(float speedFactor) {
+        movementSpeedFactor *= speedFactor;
     }
 
 
