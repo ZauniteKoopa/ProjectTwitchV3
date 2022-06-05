@@ -16,6 +16,10 @@ public class TwitchPlayerAudio : MonoBehaviour
     AudioClip[] stealthCastSounds = null;
     [SerializeField]
     AudioClip[] caskThrowSounds = null;
+    [SerializeField]
+    AudioClip[] hurtSounds = null;
+    [SerializeField]
+    AudioClip[] deathSounds = null;
 
 
     // On awake, get access to audio source
@@ -57,5 +61,15 @@ public class TwitchPlayerAudio : MonoBehaviour
     // Public method to play cask throw sounds
     public void playCaskCastSound() {
         playRandomClip(caskThrowSounds);
+    }
+
+    // Public method to play hurt sounds
+    public void playHurtSound() {
+        playRandomClip(hurtSounds);
+    }
+
+    // Public method to play death sounds
+    public void playDeathSound() {
+        playRandomClip(deathSounds);
     }
 }

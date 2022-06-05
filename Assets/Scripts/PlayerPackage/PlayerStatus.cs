@@ -170,8 +170,13 @@ public class PlayerStatus : ITwitchStatus
                 mainPlayerUI.displayHealth(curHealth, maxHealth);
 
                 // If still alive, do I-Frame sequence, else, death
-                IEnumerator postDamageRoutine = (curHealth > 0f) ? invincibilityFrameSequence() : death();
-                StartCoroutine(postDamageRoutine);
+                if (curHealth > 0f) {
+                    audioManager.playHurtSound();
+                    StartCoroutine(invincibilityFrameSequence());
+                } else {
+                    audioManager.playDeathSound();
+                    StartCoroutine(death());
+                }
 
             }
         }

@@ -1,5 +1,80 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &738851703
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 738851704}
+  - component: {fileID: 738851706}
+  - component: {fileID: 738851705}
+  m_Layer: 0
+  m_Name: FadeScreen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &738851704
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 738851703}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 666051070648353464}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 800, y: 600}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &738851706
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 738851703}
+  m_CullTransparentMesh: 1
+--- !u!114 &738851705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 738851703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &666051068616515637
 GameObject:
   m_ObjectHideFlags: 0
@@ -3462,6 +3537,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ba230685a8c551207a8b1ced6b61ee5d, type: 3}
   caskThrowSounds:
   - {fileID: 8300000, guid: ac3924c84cf7b1420affcc7f98c12325, type: 3}
+  hurtSounds:
+  - {fileID: 8300000, guid: 9e631fdd64e5515c29aafc6e2e8b008b, type: 3}
+  - {fileID: 8300000, guid: 577921cefd30a938484bc981d98d6e5a, type: 3}
+  - {fileID: 8300000, guid: b6a573dd9ee30ee85a187237cad9690e, type: 3}
+  deathSounds:
+  - {fileID: 8300000, guid: 201a006af1425e96da6f092f80313415, type: 3}
 --- !u!114 &1209925082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3478,7 +3559,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   characterRenderer: {fileID: 666051070171789298}
+  deathColor: {r: 0, g: 0, b: 0, a: 1}
   baseMovementSpeed: 12
+  maxHealth: 10
+  invincibilityFrameDuration: 0.6
+  checkpoint: {fileID: 0}
   mainPlayerUI: {fileID: 666051070539244718}
   boltCost: 1
   caskCost: 3
@@ -3493,6 +3578,8 @@ MonoBehaviour:
   stealthColor: {r: 0.018689921, g: 0.26415092, b: 0.03194912, a: 0.6}
   buffColor: {r: 0.8091671, g: 0.9607843, b: 0.023529435, a: 1}
   startupColor: {r: 0, g: 0.38679248, b: 0.068257466, a: 1}
+  deathShockDuration: 1.5
+  deathFadeDuration: 3
   audioManager: {fileID: 666051069268553060}
 --- !u!1 &666051070187809534
 GameObject:
@@ -4757,6 +4844,8 @@ MonoBehaviour:
   contaminateIcon: {fileID: 666051068616515643}
   readyColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0.2784599, g: 0, b: 0.9811321, a: 1}
+  fadeOutScreen: {fileID: 738851705}
+  solidFadeDuration: 0.5
 --- !u!1 &666051070541734060
 GameObject:
   m_ObjectHideFlags: 0
@@ -5180,6 +5269,7 @@ RectTransform:
   m_Children:
   - {fileID: 666051070054495469}
   - {fileID: 666051070626613542}
+  - {fileID: 738851704}
   m_Father: {fileID: 666051070539244715}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
