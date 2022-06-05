@@ -26,7 +26,8 @@ public class PlayerStatus : ITwitchStatus
     [SerializeField]
     private float invincibilityFrameDuration = 0.6f;
     private readonly object healthLock = new object();
-    private Vector3 spawnPosition;
+    [SerializeField]
+    private Checkpoint checkpoint;
 
     // Poison vial variables
     private IVial primaryPoisonVial;
@@ -100,11 +101,14 @@ public class PlayerStatus : ITwitchStatus
             Debug.LogError("TwitchPlayerAudio not connected to PlayerStatus to make use of sounds");
         }
 
+        if (checkpoint == null) {
+            Debug.LogWarning("No starting checkpoint set for player. Please make sure that it's set immediately when spawn in or that death's not possible in scene", transform);
+        }
+
         curHealth = maxHealth;
         primaryPoisonVial = new PoisonVial(3, 0, 2, 0, 40);
         secondaryPoisonVial = new PoisonVial(0, 2, 0, 3, 40);
         normalColor = characterRenderer.material.color;
-        spawnPosition = transform.position;
         initDefaultUI();
     }
 
@@ -194,8 +198,16 @@ public class PlayerStatus : ITwitchStatus
         mainPlayerUI.executeFadeOut(Color.black, deathFadeDuration);
         yield return new WaitForSeconds(deathFadeDuration);
 
-        // Reset character and trigger respawn at spawn point. Enemy rooms should be connected to respawn event
-        transform.parent.position = spawnPosition;
+        reset();
+    }
+
+    // Main function to reset unit, especially when player dies
+    //  Pre: none
+    //  Post: If enemy, reset to passive state, not sensing any enemies
+    //        If player, reset all cooldowns to 0 and lose collectibles upon death
+    public override void reset() {
+        // Rest player status variable and move entire player package to spawnpoint
+        checkpoint.respawnPlayer(transform.parent);
         curHealth = maxHealth;
         primaryPoisonVial = null;
         secondaryPoisonVial = null;
@@ -227,6 +239,14 @@ public class PlayerStatus : ITwitchStatus
         // Reset UI
         initDefaultUI();
         characterRenderer.material.color = normalColor;
+    }
+
+
+    // Function to set checkpoint
+    //  Pre: checkpoint != null
+    //  Post: character will now be assigned to this checkpoint
+    public override void setCheckpoint(Checkpoint cp) {
+        checkpoint = cp;
     }
 
 

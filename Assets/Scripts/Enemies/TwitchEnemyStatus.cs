@@ -50,6 +50,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     [SerializeField]
     private INumberDisplay poisonStackDisplay = null;
 
+    // Events
+    [Header("Death / Reset")]
+    private Vector3 spawnPoint; 
+    public UnityEvent enemyResetEvent;
+
 
     // On awake, set up variables and error check
     private void Awake() {
@@ -71,6 +76,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         }
 
         // Set variables
+        spawnPoint = transform.position;
         curHealth = maxHealth;
         if (healthBar != null) {
             healthBar.setStatus(curHealth, maxHealth);
@@ -271,6 +277,41 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             }
         }
 
+    }
+
+    // Main function to reset unit, especially when player dies
+    //  Pre: none
+    //  Post: If enemy, reset to passive state, not sensing any enemies
+    //        If player, reset all cooldowns to 0 and lose collectibles upon death
+    public override void reset() {
+        transform.position = spawnPoint;
+        gameObject.SetActive(true);
+
+        // Reset poison variables
+        lock (poisonLock) {
+            if (poisonDotRoutine != null) {
+                StopCoroutine(poisonDotRoutine);
+            }
+
+            numPoisonStacks = 0;
+            currentPoison = null;
+            curTick = 0;
+
+            if (poisonStackDisplay != null) {
+                poisonStackDisplay.displayNumber(numPoisonStacks);
+            }
+        }
+
+        // Reset health variables
+        lock (healthLock) {
+            curHealth = maxHealth;
+
+            if (healthBar != null) {
+                healthBar.setStatus(curHealth, maxHealth);
+            }
+        }
+
+        enemyResetEvent.Invoke();
     }
 
 

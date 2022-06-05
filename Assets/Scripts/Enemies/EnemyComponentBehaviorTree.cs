@@ -74,4 +74,18 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
             StartCoroutine(behaviorTreeSequence());
         }
     }
+
+
+    // Main function to handle reset
+    public override void reset() {
+        lock (treeLock) {
+            playerTgt = null;
+
+            aggressiveBranch.reset();
+            passiveBranch.reset();
+
+            StopAllCoroutines();
+            StartCoroutine(behaviorTreeSequence());
+        }
+    }
 }

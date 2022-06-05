@@ -31,4 +31,11 @@ public abstract class IUnitStatus : MonoBehaviour
     //  Pre: none
     //  Post: returns true is unit is still alive
     public abstract bool isAlive();
+
+
+    // Main function to reset unit, especially when player dies
+    //  Pre: none
+    //  Post: If enemy, reset to passive state, not sensing any enemies
+    //        If player, reset all cooldowns to 0 and lose collectibles upon death
+    public abstract void reset();
 }

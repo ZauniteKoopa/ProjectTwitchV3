@@ -11,4 +11,7 @@ public abstract class IEnemyBehavior : MonoBehaviour
     // Main event handler function for when an enemy lost sight of a player
     //  Pre: enemy lost sight of player and gave up chasing
     public abstract void onLostPlayer();
+
+    // Main function to handle reset
+    public abstract void reset();
 }

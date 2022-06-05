@@ -44,4 +44,10 @@ public abstract class ITwitchStatus : ITwitchUnitStatus
     //  Pre: none
     //  Post: returns a variable > 0.0f;
     public abstract float getAttackRateFactor();
+
+
+    // Function to set checkpoint
+    //  Pre: checkpoint != null
+    //  Post: character will now be assigned to this checkpoint
+    public abstract void setCheckpoint(Checkpoint cp);
 }
