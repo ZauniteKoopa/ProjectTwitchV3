@@ -50,4 +50,10 @@ public abstract class ITwitchPlayerUI : MonoBehaviour
     //  Pre: ammoCost >= 0
     //  Post: cask ammo cost information is updated on UI
     public abstract void displayCaskAmmoCost(int ammoCost);
+
+
+    // Main function to execute fade out sequence
+    //  Pre: fadeColor is the solid color that you want to fade to, and duration is the time it takes to fade to that color
+    //  Post: screen will fade to fadeColor in duration seconds
+    public abstract void executeFadeOut(Color fadeColor, float duration);
 }

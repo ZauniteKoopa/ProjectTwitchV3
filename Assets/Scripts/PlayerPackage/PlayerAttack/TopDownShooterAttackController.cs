@@ -87,7 +87,7 @@ public class TopDownShooterAttackController : IAttackModule
         // Keep firing projectiles until you stopped holding left click
         while (firingPrimaryAttack) {
 
-            if (!pauseMenu.inPauseState()) {
+            if (!pauseMenu.inPauseState() && twitchPlayerStatus.isAlive()) {
                 // Create projectile. If poison vial is null, just do weak arrow
                 Transform currentProjectile = Object.Instantiate(primaryBullet, playerCharacter.position, Quaternion.identity);
                 PoisonVialBolt projBehav = currentProjectile.GetComponent<PoisonVialBolt>();
@@ -146,7 +146,7 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Event handler method for when secondary fire button click
     public void onSecondaryButtonClick(InputAction.CallbackContext value) {
-        if (value.started && !caskSequenceRunning && !pauseMenu.inPauseState()) {
+        if (value.started && !caskSequenceRunning && !pauseMenu.inPauseState() && twitchPlayerStatus.isAlive()) {
             // Check if you're actually able to throw a cask
             IVial curCask = twitchPlayerStatus.getPrimaryVial();
             bool usedCask = twitchPlayerStatus.consumePrimaryVialCask();
@@ -163,7 +163,7 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Event handler for contaminate press
     public void onContaminatePress(InputAction.CallbackContext value) {
-        if (value.started && contaminateZone != null && !pauseMenu.inPauseState()) {
+        if (value.started && contaminateZone != null && !pauseMenu.inPauseState() && twitchPlayerStatus.isAlive()) {
             // Check if there are any enemies in range and infected
             if (contaminateZone.canUseAbility()) {
 
@@ -182,7 +182,7 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Event handler for camofladge press
     public void onCamofladgePress(InputAction.CallbackContext value) {
-        if (value.started) {
+        if (value.started && twitchPlayerStatus.isAlive()) {
             bool camofladgeSuccess = twitchPlayerStatus.willCamofladge();
 
             if (!camofladgeSuccess) {

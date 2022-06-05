@@ -61,11 +61,14 @@ public class TopDownMovementController3D : MonoBehaviour
 
     // FixedUpdate function: runs every frame
     private void FixedUpdate() {
-        if (isMoving) {
-            handleMovement(Time.fixedDeltaTime);
-        }
+        // Only do movement controls if unit is alive
+        if (unitStatus.isAlive()) {
+            if (isMoving) {
+                handleMovement(Time.fixedDeltaTime);
+            }
 
-        setFacingDirection();
+            setFacingDirection();
+        }
     }
 
     // Main method to handle movement

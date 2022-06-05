@@ -9,6 +9,8 @@ public class PlayerStatus : ITwitchStatus
     [SerializeField]
     private MeshRenderer characterRenderer;
     private Color normalColor;
+    [SerializeField]
+    private Color deathColor = Color.black;
 
     // Movement speed variables
     [SerializeField]
@@ -24,6 +26,7 @@ public class PlayerStatus : ITwitchStatus
     [SerializeField]
     private float invincibilityFrameDuration = 0.6f;
     private readonly object healthLock = new object();
+    private Vector3 spawnPosition;
 
     // Poison vial variables
     private IVial primaryPoisonVial;
@@ -48,6 +51,9 @@ public class PlayerStatus : ITwitchStatus
     private bool canCask = true;
     private bool canCamo = true;
     private bool canContaminate = true;
+    private Coroutine runningCaskSequence = null;
+    private Coroutine runningContaminateSequence = null;
+    private Coroutine runningCamoSequence = null;
 
     [Header("Camofladge variables")]
     [SerializeField]
@@ -67,6 +73,12 @@ public class PlayerStatus : ITwitchStatus
     [SerializeField]
     private Color startupColor;
     private bool inCamofladge = false;
+
+    [Header("Death Sequence")]
+    [SerializeField]
+    private float deathShockDuration = 1.5f;
+    [SerializeField]
+    private float deathFadeDuration = 3.0f;
 
     [Header("Audio")]
     [SerializeField]
@@ -92,13 +104,14 @@ public class PlayerStatus : ITwitchStatus
         primaryPoisonVial = new PoisonVial(3, 0, 2, 0, 40);
         secondaryPoisonVial = new PoisonVial(0, 2, 0, 3, 40);
         normalColor = characterRenderer.material.color;
+        spawnPosition = transform.position;
         initDefaultUI();
     }
 
 
     // Main variable to initialize UI
     private void initDefaultUI() {
-        mainPlayerUI.displayHealth(50f, 50f);
+        mainPlayerUI.displayHealth(curHealth, maxHealth);
         mainPlayerUI.displayCoinsEarned(0);
 
         mainPlayerUI.displayPrimaryVial(primaryPoisonVial);
@@ -134,6 +147,14 @@ public class PlayerStatus : ITwitchStatus
     }
 
 
+    // Main function to check if the unit is still alive
+    //  Pre: none
+    //  Post: returns true is unit is still alive
+    public override bool isAlive() {
+        return curHealth > 0f;
+    }
+
+
     // Main method to damage player unit
     //  Pre: damage is a number greater than 0
     //  Post: damage is inflicted on player unit and return is damage is successful
@@ -165,8 +186,47 @@ public class PlayerStatus : ITwitchStatus
     
     // Main private IEnumerator to do death
     private IEnumerator death() {
-        yield return 0;
-        Debug.Log("I died");
+        // Trigger death animation 
+        characterRenderer.material.color = deathColor;
+        yield return new WaitForSeconds(deathShockDuration);
+
+        // Trigger fade out
+        mainPlayerUI.executeFadeOut(Color.black, deathFadeDuration);
+        yield return new WaitForSeconds(deathFadeDuration);
+
+        // Reset character and trigger respawn at spawn point. Enemy rooms should be connected to respawn event
+        transform.parent.position = spawnPosition;
+        curHealth = maxHealth;
+        primaryPoisonVial = null;
+        secondaryPoisonVial = null;
+
+        // Reset cask
+        if (runningCaskSequence != null) {
+            StopCoroutine(runningCaskSequence);
+            runningCaskSequence = null;
+            canCask = true;
+        }
+
+        // Reset Contaminate
+        if (runningContaminateSequence != null) {
+            StopCoroutine(runningContaminateSequence);
+            runningContaminateSequence = null;
+            canContaminate = true;
+        }
+
+        // Reset stealth
+        if (runningCamoSequence != null) {
+            StopCoroutine(runningCamoSequence);
+            runningCamoSequence = null;
+
+            canCamo = true;
+            inCamofladge = false;
+            baseAttackSpeedFactor = 1.0f;
+        }
+
+        // Reset UI
+        initDefaultUI();
+        characterRenderer.material.color = normalColor;
     }
 
 
@@ -245,7 +305,7 @@ public class PlayerStatus : ITwitchStatus
                 inCamofladge = false;
             }
 
-            StartCoroutine(caskCooldownSequence());
+            runningCaskSequence = StartCoroutine(caskCooldownSequence());
         }
 
         return usedCask;
@@ -268,6 +328,7 @@ public class PlayerStatus : ITwitchStatus
             mainPlayerUI.displayCaskCooldown(timer, caskCooldown);
         }
 
+        runningCaskSequence = null;
         canCask = true;
     }
 
@@ -276,7 +337,7 @@ public class PlayerStatus : ITwitchStatus
     //  Post: return if you are allowed. If successful, must wait for cooldown to stop to do it again
     public override bool willContaminate() {
         if (canContaminate) {
-            StartCoroutine(contaminateCooldownSequence());
+            runningContaminateSequence = StartCoroutine(contaminateCooldownSequence());
             return true;
         }
 
@@ -300,6 +361,7 @@ public class PlayerStatus : ITwitchStatus
             mainPlayerUI.displayContaminateCooldown(timer, contaminateCooldown);
         }
 
+        runningContaminateSequence = null;
         canContaminate = true;
     }
 
@@ -309,7 +371,7 @@ public class PlayerStatus : ITwitchStatus
     //  Post: return true if you can start camofladge. canno camo if in camo sequence
     public override bool willCamofladge() {
         if (canCamo) {
-            StartCoroutine(camofladgeSequence());
+            runningCamoSequence = StartCoroutine(camofladgeSequence());
             return true;
         }
 
@@ -356,7 +418,8 @@ public class PlayerStatus : ITwitchStatus
             mainPlayerUI.displayCamoCooldown(timer, camoCooldown);
         }
 
-       canCamo = true;
+        runningCamoSequence = null;
+        canCamo = true;
     }
 
 

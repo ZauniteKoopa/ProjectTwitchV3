@@ -135,6 +135,14 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     }
 
 
+    // Main function to check if the unit is still alive
+    //  Pre: none
+    //  Post: returns true is unit is still alive
+    public override bool isAlive() {
+        return curHealth > 0f;
+    }
+
+
     // Main method to inflict basic damage on unit
     //  Pre: damage is a number greater than 0
     //  Post: unit gets inflicted with damage and returns if damage was successful

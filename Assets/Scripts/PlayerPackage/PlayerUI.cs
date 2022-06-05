@@ -47,6 +47,13 @@ public class PlayerUI : ITwitchPlayerUI
     [SerializeField]
     private Color disabledColor;
 
+    [Header("FadeOut Screen")]
+    [SerializeField]
+    private Image fadeOutScreen;
+    [SerializeField]
+    private float solidFadeDuration = 0.5f;
+    private Coroutine currentFadeSequence;
+
 
     // Awake function to error check
     private void Awake() {
@@ -58,6 +65,10 @@ public class PlayerUI : ITwitchPlayerUI
         // Error check coin UI
         if (coinDisplay == null) {
             Debug.LogError("No number display to show money for player UI: " + transform, transform);
+        }
+
+        if (fadeOutScreen == null) {
+            Debug.LogWarning("No fade out screen detected, lose ability to do screen fade for playerUI: " + transform, transform);
         }
 
         errorCheckVialUI();
@@ -203,5 +214,43 @@ public class PlayerUI : ITwitchPlayerUI
         Debug.Assert(ammoCost >= 0);
 
         caskAmmoCostDisplay.displayNumber(ammoCost);
+    }
+
+
+    // Main function to execute fade out sequence
+    //  Pre: fadeColor is the solid color that you want to fade to, and duration is the time it takes to fade to that color
+    //  Post: screen will fade to fadeColor in duration seconds
+    public override void executeFadeOut(Color fadeColor, float duration) {
+        if (currentFadeSequence != null) {
+            StopCoroutine(currentFadeSequence);
+            currentFadeSequence = null;
+        }
+
+        currentFadeSequence = StartCoroutine(fadeOutSequence(fadeColor, duration));
+    }
+
+
+    // Private IEnumerator to do fadeOut
+    private IEnumerator fadeOutSequence(Color fadeColor, float duration) {
+        fadeOutScreen.gameObject.SetActive(true);
+        fadeOutScreen.color = Color.clear;
+
+        float timer = 0f;
+        WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
+        float screenFadeOutTime = duration - solidFadeDuration;
+
+        while (timer < screenFadeOutTime) {
+            yield return waitFrame;
+
+            timer += Time.fixedDeltaTime;
+            fadeOutScreen.color = Color.Lerp(Color.clear, fadeColor, timer / screenFadeOutTime);
+        }
+
+        fadeOutScreen.color = fadeColor;
+        yield return new WaitForSeconds(solidFadeDuration);
+        fadeOutScreen.color = Color.clear;
+        fadeOutScreen.gameObject.SetActive(false);
+
+        currentFadeSequence = null;
     }
 }

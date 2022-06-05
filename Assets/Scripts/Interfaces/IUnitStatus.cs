@@ -25,4 +25,10 @@ public abstract class IUnitStatus : MonoBehaviour
     //  Pre: damage is a number greater than 0
     //  Post: unit gets inflicted with damage 
     public abstract bool damage(float dmg);
+
+
+    // Main function to check if the unit is still alive
+    //  Pre: none
+    //  Post: returns true is unit is still alive
+    public abstract bool isAlive();
 }
