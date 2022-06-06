@@ -90,4 +90,16 @@ public class Ingredient
         }
     }
 
+
+    // Main function to get the hashcode of a specific object: mostly tied to the name
+    public override int GetHashCode() {
+        return name.GetHashCode();
+    }
+
+
+    // Main function to convert this ingredient to a string
+    public string toString() {
+        return name + ": Potency-" + statProbabilities[POTENCY_INDEX] + ", Poison-" + statProbabilities[POISON_INDEX] + ", Reactivity-" + statProbabilities[REACTIVITY_INDEX] + ", Stickiness-" + statProbabilities[STICKINESS_INDEX];
+    }
+
 }
