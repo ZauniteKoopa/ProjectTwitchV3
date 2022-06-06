@@ -59,4 +59,16 @@ public interface IVial
     //  Pre: none
     //  Post: returns a dictionary with 4 fixed properties: "Poison", "Potency", "Reactivity", and "Stickiness"
     Dictionary<string, int> getStats();
+
+
+    // Function to upgrade Poison using only one ingredient
+    //  Pre: ing != null
+    //  Post: Returns whether upgrade is successful. If successful, vial is updated with this ingredient
+    bool upgrade(Ingredient ing);
+
+
+    // Function to upgrade Poison using only two ingredients
+    //  Pre: ing1 != null && ing2 != null
+    //  Post: Returns whether upgrade is successful. If successful, vial is updated with this ingredient
+    bool upgrade(Ingredient ing1, Ingredient ing2);
 }

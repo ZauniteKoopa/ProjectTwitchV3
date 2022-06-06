@@ -7,9 +7,10 @@ using UnityEngine.Assertions;
 public class Ingredient
 {
     // Private instance variables
+    private string name;
     private float[] statProbabilities;
 
-    private const int NUM_STATS_CONTRIBUTED = 2;
+    public static readonly int NUM_STATS_CONTRIBUTED = 2;
     private const int NUM_STATS_TOTAL = 4;
 
     private const int POTENCY_INDEX = 0;
@@ -21,7 +22,7 @@ public class Ingredient
     // Main constructor for an ingredient
     //  Pre: all stat chances added must be greater than 0f
     //  Post: Ingredient object has been constructed
-    public Ingredient(float pot, float poi, float r, float s) {
+    public Ingredient(float pot, float poi, float r, float s, string n) {
         Debug.Assert(pot >= 0f && poi >= 0f && r >= 0f && s >= 0f);
 
         // Get total to normalize probability
@@ -33,6 +34,9 @@ public class Ingredient
         statProbabilities[POISON_INDEX] = poi / total;
         statProbabilities[REACTIVITY_INDEX] = r / total;
         statProbabilities[STICKINESS_INDEX] = s / total;
+
+        // Set name
+        name = n;
     }
 
 

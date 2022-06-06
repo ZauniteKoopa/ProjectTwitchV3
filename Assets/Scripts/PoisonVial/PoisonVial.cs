@@ -11,9 +11,15 @@ public class PoisonVial : IVial
     private int reactivity;
     private int stickiness;
 
+    private int currentTotalStats;
+    private const int MAX_TOTAL_STATS = 10;
+
     // Ammo management
     private int ammo;
     private const int MAX_AMMO = 60;
+    private const int ONE_ING_AMMO = 40;
+    private const int TWO_ING_AMMO = 60;
+    private const int AMMO_UPGRADE_AMOUNT = 10;
 
     // CSV Parsing variables
     private static bool csvParsed = false;
@@ -43,7 +49,7 @@ public class PoisonVial : IVial
 
 
 
-    // Main constructor for a poison vial
+    // Main raw constructor for a poison vial
     //  Pre: initialAmmo > 0 and 0 <= all stats <= 5
     public PoisonVial(int pot, int poi, int r, int s, int initialAmmo) {
         Debug.Assert(initialAmmo > 0);
@@ -60,7 +66,43 @@ public class PoisonVial : IVial
         poison = poi;
         reactivity = r;
         stickiness = s;
+
+        currentTotalStats = pot + poi + r + s;
         ammo = initialAmmo;
+    }
+
+
+    // Main constructor to craft a poison vial from only 1 ingredient
+    public PoisonVial(Ingredient ing) {
+        if (!csvParsed) {
+            parseBaseVialCSV();
+        }
+
+        potency = 0;
+        poison = 0;
+        reactivity = 0;
+        stickiness = 0;
+        currentTotalStats = 0;
+
+        upgrade(ing);
+        ammo = ONE_ING_AMMO;
+    }
+
+
+    // Main constructor to craft a poison vial from only 1 ingredient
+    public PoisonVial(Ingredient ing1, Ingredient ing2) {
+        if (!csvParsed) {
+            parseBaseVialCSV();
+        }
+
+        potency = 0;
+        poison = 0;
+        reactivity = 0;
+        stickiness = 0;
+        currentTotalStats = 0;
+
+        upgrade(ing1, ing2);
+        ammo = TWO_ING_AMMO;
     }
 
 
@@ -241,5 +283,47 @@ public class PoisonVial : IVial
 
         Debug.Assert(statDict.ContainsKey("Potency") && statDict.ContainsKey("Poison") && statDict.ContainsKey("Reactivity") && statDict.ContainsKey("Stickiness"));
         return statDict;
+    }
+
+
+    // Function to upgrade Poison using only one ingredient
+    //  Pre: ing != null
+    //  Post: Returns whether upgrade is successful. If successful, vial is updated with this ingredient
+    public bool upgrade(Ingredient ing) {
+        Debug.Assert(ing != null);
+
+        if (currentTotalStats + Ingredient.NUM_STATS_CONTRIBUTED > MAX_TOTAL_STATS) {
+            return false;
+        }
+
+        Dictionary<string, int> statGains = ing.calculateStatGains();
+
+        potency += statGains["Potency"];
+        poison += statGains["Poison"];
+        reactivity += statGains["Reactivity"];
+        stickiness += statGains["Stickiness"];
+
+        currentTotalStats += Ingredient.NUM_STATS_CONTRIBUTED;
+        ammo = Mathf.Max(MAX_AMMO, ammo + AMMO_UPGRADE_AMOUNT);
+
+        return true;
+    }
+
+
+    // Function to upgrade Poison using only two ingredients
+    //  Pre: ing1 != null && ing2 != null
+    //  Post: Returns whether upgrade is successful. If successful, vial is updated with this ingredient
+    public bool upgrade(Ingredient ing1, Ingredient ing2) {
+        Debug.Assert(ing1 != null && ing2 != null);
+
+        if (currentTotalStats + (2 * Ingredient.NUM_STATS_CONTRIBUTED) > MAX_TOTAL_STATS) {
+            return false;
+        }
+
+        bool success1 = upgrade(ing1);
+        bool success2 = upgrade(ing2);
+
+        Debug.Assert(success1 && success2);
+        return true;
     }
 }
