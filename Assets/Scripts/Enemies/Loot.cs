@@ -67,9 +67,10 @@ public class Loot : MonoBehaviour
     }
 
 
-    // Loot trigger box: when player enters trigger
-    private void OnTriggerEnter(Collider collider) {
-        Debug.Log(collider);
-        Object.Destroy(gameObject);
-    }
+    // Main function to interact with ingredient
+    public virtual bool onPlayerCollect (ITwitchInventory inventory) {return true;}
+
+
+    // Main function to quick craft with player 
+    public virtual bool onPlayerQuickCraft(ITwitchInventory inventory, bool isPrimary) {return true;}
 }
