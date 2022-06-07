@@ -47,9 +47,9 @@ public class Ingredient
         // Initialize dictionary
         Dictionary<string, int> statGains = new Dictionary<string, int>();
         statGains.Add("Potency", 0);
-        statGains.Add("Poison", 1);
-        statGains.Add("Reactivity", 2);
-        statGains.Add("Stickiness", 3);
+        statGains.Add("Poison", 0);
+        statGains.Add("Reactivity", 0);
+        statGains.Add("Stickiness", 0);
 
         // Add to stat buffs by rolling the dice twice
         for (int i = 0; i < NUM_STATS_CONTRIBUTED; i++) {
@@ -66,9 +66,9 @@ public class Ingredient
 
             // Increment dictionary
             statGains["Potency"] += (currentStat == POTENCY_INDEX) ? 1 : 0;
-            statGains["Poison"] += (currentStat == POTENCY_INDEX) ? 1 : 0;
-            statGains["Reactivity"] += (currentStat == POTENCY_INDEX) ? 1 : 0;
-            statGains["Stickiness"] += (currentStat == POTENCY_INDEX) ? 1 : 0;
+            statGains["Poison"] += (currentStat == POISON_INDEX) ? 1 : 0;
+            statGains["Reactivity"] += (currentStat == REACTIVITY_INDEX) ? 1 : 0;
+            statGains["Stickiness"] += (currentStat == STICKINESS_INDEX) ? 1 : 0;
         }
 
         // Return dictionary

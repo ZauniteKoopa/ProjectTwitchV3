@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class LootDelegate : UnityEvent<Loot> {}
 
@@ -11,11 +12,21 @@ public class LootDropManager : MonoBehaviour
     private HashSet<Loot> nearbyLoot;
     private Loot targetedLoot;
     private Coroutine loopingCheck;
-    private const float proximityCheckDuration = 0.5f;
+    private const float proximityCheckDuration = 0.2f;
     private object lootLock = new object();
+
+    [SerializeField]
+    private ITwitchInventory inventory;
 
     // Public UnityEvent for when TargetedLoot changes
     public LootDelegate targetedLootChangeEvent;
+
+
+    // On awake initialize HashSet
+    private void Awake() {
+        nearbyLoot = new HashSet<Loot>();
+        targetedLootChangeEvent = new LootDelegate();
+    }
 
 
     // Main IEnumerator to keep checking loot Proximity as long as there are nearby objects
@@ -81,6 +92,10 @@ public class LootDropManager : MonoBehaviour
     //  Pre: inv != null
     //  Post: collects the loot and returns if collection is successful
     public bool collectTargetedLoot(ITwitchInventory inv) {
+        if (targetedLoot == null) {
+            return false;
+        }
+        
         // Collect loot
         bool success = targetedLoot.onPlayerCollect(inv);
 
@@ -101,6 +116,10 @@ public class LootDropManager : MonoBehaviour
     //  Pre: inv != null, isPrimary refers to either primary vial or secondary vial
     //  Post: collects the loot and returns if collection is successful
     public bool quickCraftTargetedLoot(ITwitchInventory inv, bool isPrimary) {
+        if (targetedLoot == null) {
+            return false;
+        }
+
         // Quick craft loot
         bool success = targetedLoot.onPlayerQuickCraft(inv, isPrimary);
 
@@ -143,6 +162,29 @@ public class LootDropManager : MonoBehaviour
             lock (lootLock) {
                 nearbyLoot.Remove(testLoot);
             }
+        }
+    }
+
+    // Event handler function for when player presses collect
+    public void onPickUpPress(InputAction.CallbackContext value) {
+        if (value.started) {
+            collectTargetedLoot(inventory);
+        }
+    }
+
+
+    // Event handler function for when player presses collect
+    public void onPrimaryCraftPress(InputAction.CallbackContext value) {
+        if (value.started) {
+            quickCraftTargetedLoot(inventory, true);
+        }
+    }
+
+
+    // Event handler function for when player presses collect
+    public void onSecondaryCraftPress(InputAction.CallbackContext value) {
+        if (value.started) {
+            quickCraftTargetedLoot(inventory, false);
         }
     }
 }

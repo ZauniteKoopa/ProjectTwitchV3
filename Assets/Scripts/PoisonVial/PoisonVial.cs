@@ -304,7 +304,7 @@ public class PoisonVial : IVial
         stickiness += statGains["Stickiness"];
 
         currentTotalStats += Ingredient.NUM_STATS_CONTRIBUTED;
-        ammo = Mathf.Max(MAX_AMMO, ammo + AMMO_UPGRADE_AMOUNT);
+        ammo = Mathf.Min(MAX_AMMO, ammo + AMMO_UPGRADE_AMOUNT);
 
         return true;
     }

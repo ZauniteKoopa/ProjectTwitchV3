@@ -68,9 +68,15 @@ public class Loot : MonoBehaviour
 
 
     // Main function to interact with ingredient
-    public virtual bool onPlayerCollect (ITwitchInventory inventory) {return true;}
+    public virtual bool onPlayerCollect (ITwitchInventory inventory) {
+        Object.Destroy(gameObject);
+        return true;
+    }
 
 
     // Main function to quick craft with player 
-    public virtual bool onPlayerQuickCraft(ITwitchInventory inventory, bool isPrimary) {return true;}
+    public virtual bool onPlayerQuickCraft(ITwitchInventory inventory, bool isPrimary) {
+        Object.Destroy(gameObject);
+        return true;
+    }
 }
