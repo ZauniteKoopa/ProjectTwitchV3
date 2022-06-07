@@ -30,8 +30,7 @@ public class PlayerStatus : ITwitchStatus
     private Checkpoint checkpoint;
 
     // Poison vial variables
-    private IVial primaryPoisonVial;
-    private IVial secondaryPoisonVial;
+    private ITwitchInventory inventory;
 
     // UI variables
     [SerializeField]
@@ -105,9 +104,12 @@ public class PlayerStatus : ITwitchStatus
             Debug.LogWarning("No starting checkpoint set for player. Please make sure that it's set immediately when spawn in or that death's not possible in scene", transform);
         }
 
+        inventory = GetComponent<ITwitchInventory>();
+        if (inventory == null) {
+            Debug.LogError("No inventory found to get Poison vials from");
+        }
+
         curHealth = maxHealth;
-        primaryPoisonVial = new PoisonVial(3, 0, 2, 0, 40);
-        secondaryPoisonVial = new PoisonVial(0, 2, 0, 3, 40);
         normalColor = characterRenderer.material.color;
         initDefaultUI();
     }
@@ -117,9 +119,6 @@ public class PlayerStatus : ITwitchStatus
     private void initDefaultUI() {
         mainPlayerUI.displayHealth(curHealth, maxHealth);
         mainPlayerUI.displayCoinsEarned(0);
-
-        mainPlayerUI.displayPrimaryVial(primaryPoisonVial);
-        mainPlayerUI.displaySecondaryVial(secondaryPoisonVial);
 
         mainPlayerUI.displayCamoCooldown(-1.0f, 1.0f);
         mainPlayerUI.displayCaskCooldown(-1.0f, 1.0f);
@@ -222,8 +221,7 @@ public class PlayerStatus : ITwitchStatus
         // Rest player status variable and move entire player package to spawnpoint
         checkpoint.respawnPlayer(transform.parent);
         curHealth = maxHealth;
-        primaryPoisonVial = null;
-        secondaryPoisonVial = null;
+        inventory.clear();
 
         // Reset cask
         if (runningCaskSequence != null) {
@@ -267,29 +265,7 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: none
     //  Post: returns the primary poison vial that player is using, CAN BE NULL
     public override IVial getPrimaryVial() {
-        return primaryPoisonVial;
-    }
-
-
-    // Main shorthand method to use primary vial. THIS IS THE ONLY ONE CALLING USE VIAL FOR THE PLAYER
-    //  Pre: ammoCost >= 0
-    //  Post: returns if successful. If so, reduces primary vial's ammo. If ammo is <= 0 afterwards, sets it to null
-    private bool usePrimaryVialAmmo(int ammoCost) {
-        Debug.Assert(ammoCost >= 0);
-
-        // If vial is an empty vial, return false immediately
-        if (primaryPoisonVial == null) {
-            return false;
-        }
-
-        // If you actually have a vial, use it to test if successful. then see if you run out of poison
-        bool useSuccess = primaryPoisonVial.useVial(ammoCost);
-        if (primaryPoisonVial.getAmmoLeft() <= 0) {
-            primaryPoisonVial = null;
-        }
-
-        mainPlayerUI.displayPrimaryVial(primaryPoisonVial);
-        return useSuccess;   
+        return inventory.getPrimaryVial();
     }
 
 
@@ -297,12 +273,7 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: none
     //  Post: swaps primary and secondary vials on the fly
     public override void swapVials() {
-        IVial tempVial = primaryPoisonVial;
-        primaryPoisonVial = secondaryPoisonVial;
-        secondaryPoisonVial = tempVial;
-
-        mainPlayerUI.displayPrimaryVial(primaryPoisonVial);
-        mainPlayerUI.displaySecondaryVial(secondaryPoisonVial);
+        inventory.swapVials();
     }
 
 
@@ -319,7 +290,7 @@ public class PlayerStatus : ITwitchStatus
         // Play bolt sound, regardless of whether you use poison arrow or weak arrow
         audioManager.playBoltSound();
 
-        return usePrimaryVialAmmo(boltCost);
+        return inventory.consumePrimaryVial(boltCost);
     }
 
 
@@ -331,7 +302,7 @@ public class PlayerStatus : ITwitchStatus
             return false;
         }
 
-        bool usedCask = usePrimaryVialAmmo(caskCost);
+        bool usedCask = inventory.consumePrimaryVial(caskCost);
         if (usedCask) {
             // If used a cask while camofladge, get out of camofladge
             if (inCamofladge) {

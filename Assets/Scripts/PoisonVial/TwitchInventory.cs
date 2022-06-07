@@ -10,8 +10,8 @@ public class TwitchInventory : ITwitchInventory
     private IVial secondaryVial;
     private Dictionary<Ingredient, int> ingredientInventory;
 
-    private readonly object ingredientsLock;
-    private readonly object vialLock;
+    private readonly object ingredientsLock = new object();
+    private readonly object vialLock = new object();
 
     // UI Elements to signal (Modularize ITwitchPlayerUI? This is also pointed to by PlayerStatus)
     [Header("UI Elements")]
@@ -95,7 +95,17 @@ public class TwitchInventory : ITwitchInventory
         bool success;
 
         lock (vialLock) {
-            success = primaryVial.useVial(ammo);
+            if (primaryVial == null) {
+                success = false;
+            } else {
+                success = primaryVial.useVial(ammo);
+
+                if (primaryVial.getAmmoLeft() <= 0) {
+                    primaryVial = null;
+                }
+            }
+
+            mainPlayerUI.displayPrimaryVial(primaryVial);
         }
 
         return success;
@@ -110,6 +120,10 @@ public class TwitchInventory : ITwitchInventory
             IVial tempVial = primaryVial;
             primaryVial = secondaryVial;
             secondaryVial = tempVial;
+
+            // Display UI
+            mainPlayerUI.displaySecondaryVial(secondaryVial);
+            mainPlayerUI.displayPrimaryVial(primaryVial);
         }
     }
 
@@ -127,6 +141,10 @@ public class TwitchInventory : ITwitchInventory
         lock (vialLock) {
             primaryVial = null;
             secondaryVial = null;
+
+            // Display UI
+            mainPlayerUI.displaySecondaryVial(secondaryVial);
+            mainPlayerUI.displayPrimaryVial(primaryVial);
         }
     }
 
@@ -139,7 +157,14 @@ public class TwitchInventory : ITwitchInventory
         bool success;
 
         lock (vialLock) {
-            success = primaryVial.upgrade(ing);
+            if (primaryVial == null) {
+                primaryVial = new PoisonVial(ing);
+                success = true;
+            } else {
+                success = primaryVial.upgrade(ing);
+            }
+
+            mainPlayerUI.displayPrimaryVial(primaryVial);
         }
 
         return success;
@@ -154,7 +179,14 @@ public class TwitchInventory : ITwitchInventory
         bool success;
 
         lock (vialLock) {
-            success = primaryVial.upgrade(ing1, ing2);
+            if (primaryVial == null) {
+                primaryVial = new PoisonVial(ing1, ing2);
+                success = true;
+            } else {
+                success = primaryVial.upgrade(ing1, ing2);
+            }
+
+            mainPlayerUI.displayPrimaryVial(primaryVial);
         }
 
         return success;
@@ -169,7 +201,14 @@ public class TwitchInventory : ITwitchInventory
         bool success;
 
         lock (vialLock) {
-            success = secondaryVial.upgrade(ing);
+            if (secondaryVial == null) {
+                secondaryVial = new PoisonVial(ing);
+                success = true;
+            } else {
+                success = secondaryVial.upgrade(ing);
+            }
+
+            mainPlayerUI.displaySecondaryVial(secondaryVial);
         }
 
         return success;
@@ -184,7 +223,14 @@ public class TwitchInventory : ITwitchInventory
         bool success;
 
         lock (vialLock) {
-            success = secondaryVial.upgrade(ing1, ing2);
+            if (secondaryVial == null) {
+                secondaryVial = new PoisonVial(ing1, ing2);
+                success = true;
+            } else {
+                success = secondaryVial.upgrade(ing1, ing2);
+            }
+
+            mainPlayerUI.displaySecondaryVial(secondaryVial);
         }
 
         return success;
