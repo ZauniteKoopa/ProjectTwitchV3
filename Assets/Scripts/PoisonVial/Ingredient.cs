@@ -43,10 +43,34 @@ public class Ingredient
     }
 
 
+    // Main function to get modified stat probabilities if one stat is unable to upgrade
+    private float[] getModifiedProbabilities(int ignoredIndex) {
+        float[] modifiedProb = new float[NUM_STATS_TOTAL];
+        float totalProbability = 0.0f;
+
+        // Do one pass to get total probability
+        for (int i = 0; i < NUM_STATS_TOTAL; i++) {
+            if (i != ignoredIndex) {
+                totalProbability += statProbabilities[i];
+            }
+        }
+
+        // Do another pass to renormalize probabilities without ignoredIndex
+        for (int i = 0; i < NUM_STATS_TOTAL; i++) {
+            modifiedProb[i] = (i == ignoredIndex) ? 0.0f : statProbabilities[i] / totalProbability;
+        }
+
+        return modifiedProb;
+    }
+
+
     // Main function to craft an ingredient
     //  Pre: none
     //  Post: returns a dictionary that maps Poison Vial stats to num of stat gains
-    public Dictionary<string, int> calculateStatGains() {
+    public Dictionary<string, int> calculateStatGains(int ignoredStatIndex = -1) {
+        // Get the stat probabilities to be used
+        float[] usedProbabilities = (ignoredStatIndex < 0) ? statProbabilities : getModifiedProbabilities(ignoredStatIndex);
+
         // Initialize dictionary
         Dictionary<string, int> statGains = new Dictionary<string, int>();
         statGains.Add("Potency", 0);
@@ -60,12 +84,12 @@ public class Ingredient
             int currentStat = 0;
 
             // Go down the list of probabilities to see if you get current stat
-            while (currentStat < statProbabilities.Length && diceRoll > statProbabilities[currentStat]) {
-                diceRoll -= statProbabilities[currentStat];
+            while (currentStat < usedProbabilities.Length && diceRoll > usedProbabilities[currentStat]) {
+                diceRoll -= usedProbabilities[currentStat];
                 currentStat++;
             }
 
-            Debug.Assert(currentStat < statProbabilities.Length);
+            Debug.Assert(currentStat < usedProbabilities.Length);
 
             // Increment dictionary
             statGains["Potency"] += (currentStat == POTENCY_INDEX) ? 1 : 0;

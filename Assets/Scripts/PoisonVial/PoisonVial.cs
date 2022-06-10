@@ -306,7 +306,15 @@ public class PoisonVial : IVial
             return false;
         }
 
-        Dictionary<string, int> statGains = ing.calculateStatGains();
+        // Check if there's any stats to ignore when upgrading (reached single max)
+        int ignoredIndex = -1;
+        ignoredIndex = (potency >= MAX_SINGLE_STAT) ? 0 : ignoredIndex;
+        ignoredIndex = (poison >= MAX_SINGLE_STAT) ? 1 : ignoredIndex;
+        ignoredIndex = (reactivity >= MAX_SINGLE_STAT) ? 2 : ignoredIndex;
+        ignoredIndex = (stickiness >= MAX_SINGLE_STAT) ? 3 : ignoredIndex;
+
+        // Calculate stat gains
+        Dictionary<string, int> statGains = ing.calculateStatGains(ignoredIndex);
 
         // Upgrade stats
         potency += statGains["Potency"];
