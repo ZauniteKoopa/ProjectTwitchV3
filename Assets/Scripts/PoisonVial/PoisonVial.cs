@@ -14,6 +14,8 @@ public class PoisonVial : IVial
     private int currentTotalStats;
     private const int MAX_TOTAL_STATS = 10;
 
+    private Color vialColor;
+
     // Ammo management
     private int ammo;
     private const int MAX_AMMO = 60;
@@ -69,6 +71,8 @@ public class PoisonVial : IVial
 
         currentTotalStats = pot + poi + r + s;
         ammo = initialAmmo;
+
+        vialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
     }
 
 
@@ -86,6 +90,8 @@ public class PoisonVial : IVial
 
         upgrade(ing);
         ammo = ONE_ING_AMMO;
+
+        vialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
     }
 
 
@@ -103,6 +109,8 @@ public class PoisonVial : IVial
 
         upgrade(ing1, ing2);
         ammo = TWO_ING_AMMO;
+
+        vialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
     }
 
 
@@ -325,5 +333,13 @@ public class PoisonVial : IVial
 
         Debug.Assert(success1 && success2);
         return true;
+    }
+
+
+    // Function to access the color of this vial
+    //  Pre: null
+    //  Post: Returns a valid color
+    public Color getColor() {
+        return vialColor;
     }
 }

@@ -130,7 +130,7 @@ public class PlayerUI : ITwitchPlayerUI
     public override void displayPrimaryVial(IVial primaryVial) {
         // Get stat information
         float displayedAmmo = (primaryVial == null) ? 0 : primaryVial.getAmmoLeft();
-        float maxAmmo = (primaryVial == null) ? 60 : primaryVial.getMaxVialSize();
+        float maxAmmo = (primaryVial == null) ? 0 : primaryVial.getMaxVialSize();
 
         // Update Ammo bars
         foreach (ResourceBar ammoBar in primaryAmmoBars) {

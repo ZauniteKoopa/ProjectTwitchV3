@@ -18,6 +18,8 @@ public class Ingredient
     private const int REACTIVITY_INDEX = 2;
     private const int STICKINESS_INDEX = 3;
 
+    private Color ingredientColor = Color.black;
+
 
     // Main constructor for an ingredient
     //  Pre: all stat chances added must be greater than 0f
@@ -102,4 +104,9 @@ public class Ingredient
         return name + ": Potency-" + statProbabilities[POTENCY_INDEX] + ", Poison-" + statProbabilities[POISON_INDEX] + ", Reactivity-" + statProbabilities[REACTIVITY_INDEX] + ", Stickiness-" + statProbabilities[STICKINESS_INDEX];
     }
 
+
+    // Main function to get the color of this ingredient
+    public Color getColor() {
+        return ingredientColor;
+    }
 }

@@ -9536,6 +9536,26 @@ PrefabInstance:
       propertyPath: checkpoint
       value: 
       objectReference: {fileID: 804063192}
+    - target: {fileID: 666051068958230191, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 666051068958230191, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 666051070168948760, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+      propertyPath: m_text
+      value: 20/60
+      objectReference: {fileID: 0}
+    - target: {fileID: 666051070168948760, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+      propertyPath: m_margin.x
+      value: 85.08853
+      objectReference: {fileID: 0}
+    - target: {fileID: 666051070168948760, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+      propertyPath: m_margin.z
+      value: 84.959915
+      objectReference: {fileID: 0}
     - target: {fileID: 666051070539244708, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: m_Name
       value: PlayerPackage
