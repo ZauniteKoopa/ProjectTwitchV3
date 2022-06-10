@@ -13,8 +13,7 @@ public class PoisonVial : IVial
 
     private int currentTotalStats;
     private const int MAX_TOTAL_STATS = 10;
-
-    private Color vialColor;
+    private const int MAX_SINGLE_STAT = 5;
 
     // Ammo management
     private int ammo;
@@ -22,6 +21,13 @@ public class PoisonVial : IVial
     private const int ONE_ING_AMMO = 40;
     private const int TWO_ING_AMMO = 60;
     private const int AMMO_UPGRADE_AMOUNT = 10;
+
+    // Colors for color mixing
+    private static Color potentColor = Color.red;
+    private static Color poisonColor = Color.green;
+    private static Color reactiveColor = new Color(0.5f, 0f, 1f);
+    private static Color stickinessColor = Color.blue;
+    private Color vialColor;
 
     // CSV Parsing variables
     private static bool csvParsed = false;
@@ -68,11 +74,11 @@ public class PoisonVial : IVial
         poison = poi;
         reactivity = r;
         stickiness = s;
+        vialColor = calculateColor();
 
         currentTotalStats = pot + poi + r + s;
         ammo = initialAmmo;
 
-        vialColor = Color.grey;
     }
 
 
@@ -87,8 +93,6 @@ public class PoisonVial : IVial
         reactivity = 0;
         stickiness = 0;
         currentTotalStats = 0;
-
-        vialColor = Color.grey;
 
         upgrade(ing);
         ammo = ONE_ING_AMMO;
@@ -106,7 +110,6 @@ public class PoisonVial : IVial
         reactivity = 0;
         stickiness = 0;
         currentTotalStats = 0;
-        vialColor = Color.grey;
 
         upgrade(ing1, ing2);
         ammo = TWO_ING_AMMO;
@@ -314,9 +317,7 @@ public class PoisonVial : IVial
 
         // Upgrade ammo
         ammo = Mathf.Min(MAX_AMMO, ammo + AMMO_UPGRADE_AMOUNT);
-
-        // Upgrade color: get color vector and then simply add that to vialColor
-        vialColor = Color.Lerp(vialColor, ing.getColor(), 0.5f);
+        vialColor = calculateColor();
 
         return true;
     }
@@ -342,8 +343,32 @@ public class PoisonVial : IVial
 
     // Function to access the color of this vial
     //  Pre: null
-    //  Post: Returns a valid color
+    //  Post: Returns a valid color based on stats
     public Color getColor() {
+        // Get interpolated colors with a magnitude of 1/10 the color spectrum distance (white to black)
+        Color normPotency = Color.Lerp(Color.black, potentColor, 1f / (float)currentTotalStats);
+        Color normPoison = Color.Lerp(Color.black, poisonColor, 1f / (float)currentTotalStats);
+        Color normReactivity = Color.Lerp(Color.black, reactiveColor, 1f / (float)currentTotalStats);
+        Color normStickiness = Color.Lerp(Color.black, stickinessColor, 1f / (float)currentTotalStats);
+
+        // Mix colors via vector addition
+        Vector3 finalColorVector = Vector3.zero;
+        finalColorVector += (new Vector3(normPotency.r, normPotency.g, normPotency.b) * potency);
+        finalColorVector += (new Vector3(normPoison.r, normPoison.g, normPoison.b) * poison);
+        finalColorVector += (new Vector3(normReactivity.r, normReactivity.g, normReactivity.b) * reactivity);
+        finalColorVector += (new Vector3(normStickiness.r, normStickiness.g, normStickiness.b) * stickiness);
+
+        // Get color components individually
+        float redComp = Mathf.Min(finalColorVector.x, 1.0f);
+        float greenComp = Mathf.Min(finalColorVector.y, 1.0f);
+        float blueComp = Mathf.Min(finalColorVector.z, 1.0f);
+
+        return new Color(redComp, greenComp, blueComp);
+    }
+
+
+    // Funtion to calculate color
+    private Color calculateColor() {
         return vialColor;
     }
 }

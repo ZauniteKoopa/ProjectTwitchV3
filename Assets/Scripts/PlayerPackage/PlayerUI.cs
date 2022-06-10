@@ -16,19 +16,11 @@ public class PlayerUI : ITwitchPlayerUI
 
     [Header("Primary Vial UI")]
     [SerializeField]
-    private ResourceBar[] primaryAmmoBars;
-    [SerializeField]
-    private INumberDisplay potencyStatDisplay;
-    [SerializeField]
-    private INumberDisplay poisonStatDisplay;
-    [SerializeField]
-    private INumberDisplay reactivityStatDisplay;
-    [SerializeField]
-    private INumberDisplay stickinessStatDisplay;
+    private VialIcon primaryVialDisplay;
 
     [Header("Secondary Vial UI")]
     [SerializeField]
-    private INumberDisplay secondaryAmmoCount;
+    private VialIcon secondaryVialDisplay;
 
     [Header("Ability Icons")]
     [SerializeField]
@@ -83,16 +75,8 @@ public class PlayerUI : ITwitchPlayerUI
     
     // Private helper function to error check vial UI
     private void errorCheckVialUI() {
-        if (primaryAmmoBars.Length == 0) {
-            Debug.LogError("No ammo bars for primary vial UI for player UI: " + transform, transform);
-        }
-
-        if (potencyStatDisplay == null || poisonStatDisplay == null || reactivityStatDisplay == null && stickinessStatDisplay == null) {
-            Debug.LogError("Stat displays for primary vial not correctly set up for player UI: " + transform, transform);
-        }
-
-        if (secondaryAmmoCount == null) {
-            Debug.LogError("Ammo count for secondary vial not connected to player UI: " + transform, transform);
+        if (primaryVialDisplay == null || secondaryVialDisplay == null) {
+            Debug.LogError("A vial display is missing for default UI", transform);
         }
     }
 
@@ -128,29 +112,7 @@ public class PlayerUI : ITwitchPlayerUI
     //  Pre: primaryVial CAN either be non-null or null
     //  Post: updates primary vial related UI to reflect vial if not null or an empty vial
     public override void displayPrimaryVial(IVial primaryVial) {
-        // Get stat information
-        float displayedAmmo = (primaryVial == null) ? 0 : primaryVial.getAmmoLeft();
-        float maxAmmo = (primaryVial == null) ? 0 : primaryVial.getMaxVialSize();
-
-        // Update Ammo bars
-        foreach (ResourceBar ammoBar in primaryAmmoBars) {
-            ammoBar.setStatus(displayedAmmo, maxAmmo);
-        }
-
-        // Update stat information
-        if (primaryVial == null) {
-            potencyStatDisplay.displayNumber(0);
-            poisonStatDisplay.displayNumber(0);
-            reactivityStatDisplay.displayNumber(0);
-            stickinessStatDisplay.displayNumber(0);
-        } else {
-            Dictionary<string, int> vialStats = primaryVial.getStats();
-
-            potencyStatDisplay.displayNumber(vialStats["Potency"]);
-            poisonStatDisplay.displayNumber(vialStats["Poison"]);
-            reactivityStatDisplay.displayNumber(vialStats["Reactivity"]);
-            stickinessStatDisplay.displayNumber(vialStats["Stickiness"]);
-        }
+        primaryVialDisplay.DisplayVial(primaryVial);
 
     }
 
@@ -159,8 +121,7 @@ public class PlayerUI : ITwitchPlayerUI
     //  Pre: secondary vial can either be non-null OR null
     //  Post: updates secondary vial related UI to reflect vial if not null or an empty vial
     public override void displaySecondaryVial(IVial secondaryVial) {
-        int displayedAmmo = (secondaryVial == null) ? 0 : secondaryVial.getAmmoLeft();
-        secondaryAmmoCount.displayNumber(displayedAmmo);
+        secondaryVialDisplay.DisplayVial(secondaryVial);
     }
 
 

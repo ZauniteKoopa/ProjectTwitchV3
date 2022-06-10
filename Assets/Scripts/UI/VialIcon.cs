@@ -28,16 +28,12 @@ public class VialIcon : AbilityIcon
     public void DisplayVial(IVial pv)
     {
         vial = pv;
+        Color vialColor = (pv == null) ? Color.black : pv.getColor();
         
         //Enable or disable
-        if (pv != null)
+        if (vialDisplay != null)
         {
-            ShowEnabled();
-            vialDisplay.color = pv.getColor();
-        }
-        else
-        {
-            ShowDisabled();
+            vialDisplay.color = vialColor;
         }
 
         // Get ammo information
