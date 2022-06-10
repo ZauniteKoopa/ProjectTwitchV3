@@ -24,7 +24,7 @@ public class Ingredient
     // Main constructor for an ingredient
     //  Pre: all stat chances added must be greater than 0f
     //  Post: Ingredient object has been constructed
-    public Ingredient(float pot, float poi, float r, float s, string n) {
+    public Ingredient(float pot, float poi, float r, float s, string n, Color color) {
         Debug.Assert(pot >= 0f && poi >= 0f && r >= 0f && s >= 0f);
 
         // Get total to normalize probability
@@ -39,6 +39,7 @@ public class Ingredient
 
         // Set name
         name = n;
+        ingredientColor = color;
     }
 
 

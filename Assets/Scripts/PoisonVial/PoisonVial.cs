@@ -72,7 +72,7 @@ public class PoisonVial : IVial
         currentTotalStats = pot + poi + r + s;
         ammo = initialAmmo;
 
-        vialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+        vialColor = Color.grey;
     }
 
 
@@ -88,10 +88,10 @@ public class PoisonVial : IVial
         stickiness = 0;
         currentTotalStats = 0;
 
+        vialColor = Color.grey;
+
         upgrade(ing);
         ammo = ONE_ING_AMMO;
-
-        vialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
     }
 
 
@@ -106,11 +106,10 @@ public class PoisonVial : IVial
         reactivity = 0;
         stickiness = 0;
         currentTotalStats = 0;
+        vialColor = Color.grey;
 
         upgrade(ing1, ing2);
         ammo = TWO_ING_AMMO;
-
-        vialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
     }
 
 
@@ -306,13 +305,18 @@ public class PoisonVial : IVial
 
         Dictionary<string, int> statGains = ing.calculateStatGains();
 
+        // Upgrade stats
         potency += statGains["Potency"];
         poison += statGains["Poison"];
         reactivity += statGains["Reactivity"];
         stickiness += statGains["Stickiness"];
-
         currentTotalStats += Ingredient.NUM_STATS_CONTRIBUTED;
+
+        // Upgrade ammo
         ammo = Mathf.Min(MAX_AMMO, ammo + AMMO_UPGRADE_AMOUNT);
+
+        // Upgrade color: get color vector and then simply add that to vialColor
+        vialColor = Color.Lerp(vialColor, ing.getColor(), 0.5f);
 
         return true;
     }

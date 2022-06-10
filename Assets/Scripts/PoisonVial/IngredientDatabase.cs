@@ -11,7 +11,7 @@ public class IngredientDatabase : ScriptableObject
     private static bool parsedCSVs = false;
     private static Dictionary<string, Ingredient> database;
 
-    private const int STARTING_PARSE_ROW = 3;
+    private const int STARTING_PARSE_ROW = 2;
 
 
     // Public function to parse CSV (MUST BE DONE BEFORE ASKING FOR INGREDIENTS)
@@ -41,9 +41,16 @@ public class IngredientDatabase : ScriptableObject
                 float poisonChance = float.Parse(currentRow[2].Substring(0, currentRow[2].Length - 1));
                 float reactivityChance = float.Parse(currentRow[3].Substring(0, currentRow[3].Length - 1));
                 float stickinessChance = float.Parse(currentRow[4].Substring(0, currentRow[4].Length - 1));
+                string hexColor = currentRow[5];
+
+                // Parse color
+                Color ingColor;
+                if (!ColorUtility.TryParseHtmlString(hexColor, out ingColor)) {
+                    Debug.LogError("Error in row " + (r + 1) + ": color not in HTML hexadecimal format");
+                }
 
                 // Make ingredient
-                Ingredient currentIng = new Ingredient(potencyChance, poisonChance, reactivityChance, stickinessChance, ingName);
+                Ingredient currentIng = new Ingredient(potencyChance, poisonChance, reactivityChance, stickinessChance, ingName, ingColor);
                 database.Add(ingName, currentIng);
             }
         }
