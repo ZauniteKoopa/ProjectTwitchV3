@@ -1,0 +1,16 @@
+metal tink (SFX_General_MetalTink): https://freesound.org/people/EminYILDIRIM/sounds/536104/
+
+switch flip (SFX_Object_SwitchHit): https://soundbible.com/772-Button.html
+
+
+helicopter whrrr (SFX_Enemy_LostDroneMovement): https://freesound.org/people/lezaarth/sounds/232818/
+
+thunk thunk movement for crushbot (SFX_Enemy_CrushBotMovement): https://freesound.org/people/jaredi/sounds/215308/
+
+Enemy Explode (SFX_Enemy_CrushBotDeath):  https://pixabay.com/sound-effects/hit-someting-6037/
+
+laser fire (SFX_Enemy_StealthLaserProjectile):
+https://freesound.org/people/Valenspire/sounds/337110/
+
+item pickup (SFX_Player_IngredientPickup):
+https://freesound.org/people/kafokafo/sounds/128349/
