@@ -43,6 +43,7 @@ public class VialIcon : AbilityIcon
         // Update Ammo bars
         foreach (ResourceBar ammoBar in ammoBars) {
             ammoBar.setStatus(displayedAmmo, maxAmmo);
+            ammoBar.setColor(pv.getColor());
         }
 
         // Update stat information IFF stat displays are available
