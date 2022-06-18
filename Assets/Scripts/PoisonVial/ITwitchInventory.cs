@@ -62,4 +62,16 @@ public abstract class ITwitchInventory : MonoBehaviour
     //  Pre: Ing1 != null && ing2 != null
     //  Post: Returns a bool that says if its successful. If so, secondary vial gets upgraded
     public abstract bool upgradeSecondaryVial(Ingredient ing1, Ingredient ing2);
+
+
+    // Main function to display ingredients given an array of ingredient icons
+    //  Pre: array of icons != null with non-null elements AND array length >= number of distinct ingredient types
+    //  Post: Displays ingredients onto ingredient icons
+    public abstract void displayIngredients(IngredientIcon[] ingredientIcons);
+
+
+    // Main function to display secondary vial in an icon
+    //  Pre: VialIcon must not be null
+    //  Post: VialIcon will now display secondaryVial
+    public abstract void displaySecondaryVial(VialIcon vialIcon);
 }

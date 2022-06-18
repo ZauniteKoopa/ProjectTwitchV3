@@ -22,8 +22,8 @@ public class TwitchInventory : ITwitchInventory
     // On awake, initialize backend instance variables
     private void Awake() {
         // Initialize variables
-        primaryVial = new PoisonVial(3, 0, 2, 0, 40);
-        secondaryVial = new PoisonVial(0, 2, 0, 3, 40);
+        primaryVial = new PoisonVial(2, 0, 2, 0, 40);
+        secondaryVial = new PoisonVial(0, 2, 0, 2, 40);
         ingredientInventory = new Dictionary<Ingredient, int>();
 
         // Display UI
@@ -234,5 +234,43 @@ public class TwitchInventory : ITwitchInventory
         }
 
         return success;
+    }
+
+
+    // Main function to display ingredients given an array of ingredient icons
+    //  Pre: array of icons != null with non-null elements AND array length >= number of distinct ingredient types
+    //  Post: Displays ingredients onto ingredient icons
+    public override void displayIngredients(IngredientIcon[] ingredientIcons) {
+        // Pre condition
+        Debug.Assert(ingredientIcons != null && ingredientIcons.Length >= ingredientInventory.Count);
+
+        // Index used to access the icons array
+        int iconIndex = 0;
+
+        // Iterate over each entry within the dictionary
+        foreach (KeyValuePair<Ingredient, int> entry in ingredientInventory) {
+            // Set up each ingredient icon
+            IngredientIcon currentIcon = ingredientIcons[iconIndex];
+            Debug.Assert(currentIcon != null);
+            currentIcon.SetUpIcon(entry.Key, entry.Value);
+
+            // Increment iconIndex
+            iconIndex++;
+        }
+
+        // You end on the last iconIndex that's empty, clear out all remaining icons
+        for (int i = iconIndex; i < ingredientIcons.Length; i++) {
+            IngredientIcon currentIcon = ingredientIcons[i];
+            Debug.Assert(currentIcon != null);
+            currentIcon.ClearIcon();
+        }
+    }
+
+
+    // Main function to display secondary vial in an icon
+    //  Pre: VialIcon must not be null
+    //  Post: VialIcon will now display secondaryVial
+    public override void displaySecondaryVial(VialIcon vialIcon) {
+        vialIcon.DisplayVial(secondaryVial);
     }
 }

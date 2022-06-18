@@ -63,9 +63,15 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     //Method to clear icon
     public void ClearIcon()
     {
+        if (rectTransform == null && canvasGroup == null) {
+            rectTransform = GetComponent<RectTransform>();
+            canvasGroup = GetComponent<CanvasGroup>();
+        }
+        
         icon.color = emptyColor;
         countText.text = "0";
         ingredient = null;
+
         rectTransform.anchoredPosition = startPosition;
         startPosition = rectTransform.anchoredPosition;
     }

@@ -218,6 +218,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &240965585 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1191993608, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+  m_PrefabInstance: {fileID: 666051069268553058}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &361748183 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 234062657, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+  m_PrefabInstance: {fileID: 666051069268553058}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &361748184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361748183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1427b2cc9fe10721ab6d532bd232b9c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: {fileID: 1660023984}
+  countText: {fileID: 0}
+  emptyColor: {r: 0, g: 0, b: 0, a: 0}
+  canvas: {fileID: 0}
+  dropped: 0
+  OnIngredientSelect:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &366488405
 GameObject:
   m_ObjectHideFlags: 0
@@ -1003,6 +1039,32 @@ Transform:
   m_Father: {fileID: 2107184477}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &766967647 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 117113375, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+  m_PrefabInstance: {fileID: 666051069268553058}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &766967648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766967647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3520fb951ba1a4f782916cdfdb48326, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disabled: {fileID: 0}
+  ammoBars: []
+  potencyStatDisplay: {fileID: 0}
+  poisonStatDisplay: {fileID: 0}
+  reactivityStatDisplay: {fileID: 0}
+  stickinessStatDisplay: {fileID: 0}
+  vialDisplay: {fileID: 240965585}
+  canvas: {fileID: 1232263372}
+  dropped: 0
 --- !u!1 &782752585
 GameObject:
   m_ObjectHideFlags: 0
@@ -1638,11 +1700,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!223 &1232263372 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 666051070648353471, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+  m_PrefabInstance: {fileID: 666051069268553058}
+  m_PrefabAsset: {fileID: 0}
 --- !u!20 &1279298828 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 666051070279409774, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
   m_PrefabInstance: {fileID: 666051069268553058}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1372889466 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 338630828, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+  m_PrefabInstance: {fileID: 666051069268553058}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1372889467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1372889466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9a7904131cf594848f6f580398b8778, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ingredients: []
+  primaryVialIcon: {fileID: 0}
+  secondaryVialIcon: {fileID: 0}
+  craftIngSlot1: {fileID: 0}
+  craftIngSlot2: {fileID: 0}
+  craftVialSlot: {fileID: 0}
+  twitchInventory: {fileID: 0}
 --- !u!1 &1387591678
 GameObject:
   m_ObjectHideFlags: 0
@@ -1782,6 +1873,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.299}
+--- !u!114 &1413836005 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1410460700, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+  m_PrefabInstance: {fileID: 666051069268553058}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1468994290
 GameObject:
   m_ObjectHideFlags: 0
@@ -2063,6 +2165,17 @@ Transform:
   m_Father: {fileID: 432335707}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1660023984 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 176173136, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+  m_PrefabInstance: {fileID: 666051069268553058}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1669519473
 GameObject:
   m_ObjectHideFlags: 0
@@ -2343,6 +2456,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.299}
+--- !u!1 &1798567606 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 846442000, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+  m_PrefabInstance: {fileID: 666051069268553058}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1798567607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798567606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3520fb951ba1a4f782916cdfdb48326, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disabled: {fileID: 0}
+  ammoBars: []
+  potencyStatDisplay: {fileID: 0}
+  poisonStatDisplay: {fileID: 0}
+  reactivityStatDisplay: {fileID: 0}
+  stickinessStatDisplay: {fileID: 0}
+  vialDisplay: {fileID: 1413836005}
+  canvas: {fileID: 1232263372}
+  dropped: 0
 --- !u!1 &1844402591
 GameObject:
   m_ObjectHideFlags: 0
@@ -2661,6 +2800,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 176173134, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+      propertyPath: m_Name
+      value: IngredientEmpty
+      objectReference: {fileID: 0}
+    - target: {fileID: 338630828, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1209925082, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: checkpoint
       value: 
