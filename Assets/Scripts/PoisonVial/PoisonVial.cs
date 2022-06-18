@@ -25,8 +25,8 @@ public class PoisonVial : IVial
     // Colors for color mixing
     private static Color potentColor = Color.red;
     private static Color poisonColor = Color.green;
-    private static Color reactiveColor = new Color(0.5f, 0f, 1f);
-    private static Color stickinessColor = Color.blue;
+    private static Color reactiveColor = Color.blue;
+    private static Color stickinessColor = new Color(0.5f, 0f, 1f);
     private Color vialColor;
 
     // CSV Parsing variables
