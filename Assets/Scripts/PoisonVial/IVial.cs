@@ -77,4 +77,17 @@ public interface IVial
     //  Pre: null
     //  Post: Returns a valid color
     Color getColor();
+
+
+    // Main function to access total stat count
+    //  Pre: none
+    //  Post: returns the total number of stats. <= than maxStat
+    int getCurrentTotalStat();
+
+
+    // Main function to access max stat count
+    //  Pre: none
+    //  Post: returns max stat count for this instance
+    int getMaxTotalStat();
+
 }

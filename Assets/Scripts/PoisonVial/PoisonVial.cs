@@ -74,9 +74,9 @@ public class PoisonVial : IVial
         poison = poi;
         reactivity = r;
         stickiness = s;
+        currentTotalStats = pot + poi + r + s;
         vialColor = calculateColor();
 
-        currentTotalStats = pot + poi + r + s;
         ammo = initialAmmo;
 
     }
@@ -353,6 +353,12 @@ public class PoisonVial : IVial
     //  Pre: null
     //  Post: Returns a valid color based on stats
     public Color getColor() {
+        return vialColor;
+    }
+
+
+    // Funtion to calculate color so that you don't have to constantly calculate color every time color is accessed
+    private Color calculateColor() {
         // Get interpolated colors with a magnitude of 1/10 the color spectrum distance (white to black)
         Color normPotency = Color.Lerp(Color.black, potentColor, 1f / (float)currentTotalStats);
         Color normPoison = Color.Lerp(Color.black, poisonColor, 1f / (float)currentTotalStats);
@@ -375,8 +381,18 @@ public class PoisonVial : IVial
     }
 
 
-    // Funtion to calculate color
-    private Color calculateColor() {
-        return vialColor;
+    // Main function to access total stat count
+    //  Pre: none
+    //  Post: returns the total number of stats. <= than maxStat
+    public int getCurrentTotalStat() {
+        return currentTotalStats;
+    }
+
+
+    // Main function to access max stat count
+    //  Pre: none
+    //  Post: returns max stat count for this instance
+    public int getMaxTotalStat() {
+        return MAX_TOTAL_STATS;
     }
 }

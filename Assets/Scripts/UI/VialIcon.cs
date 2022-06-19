@@ -19,6 +19,8 @@ public class VialIcon : AbilityIcon
     private INumberDisplay stickinessStatDisplay;
     [SerializeField]
     private Image vialDisplay;
+    [SerializeField]
+    private ResourceBar totalStats;
 
     // Private instance variables
     private IVial vial;
@@ -31,8 +33,7 @@ public class VialIcon : AbilityIcon
         Color vialColor = (pv == null) ? Color.black : pv.getColor();
         
         //Enable or disable
-        if (vialDisplay != null)
-        {
+        if (vialDisplay != null) {
             vialDisplay.color = vialColor;
         }
 
@@ -48,19 +49,21 @@ public class VialIcon : AbilityIcon
 
         // Update stat information IFF stat displays are available
         if (potencyStatDisplay != null) {
-            if (pv == null) {
-                potencyStatDisplay.displayNumber(0);
-                poisonStatDisplay.displayNumber(0);
-                reactivityStatDisplay.displayNumber(0);
-                stickinessStatDisplay.displayNumber(0);
-            } else {
-                Dictionary<string, int> vialStats = pv.getStats();
+            Dictionary<string, int> vialStats = (pv == null) ? null : pv.getStats();
+            int potency = (pv == null) ? 0 : vialStats["Potency"];
+            int poison = (pv == null) ? 0 : vialStats["Poison"];
+            int reactivity = (pv == null) ? 0 : vialStats["Reactivity"];
+            int stickiness = (pv == null) ? 0 : vialStats["Stickiness"];
 
-                potencyStatDisplay.displayNumber(vialStats["Potency"]);
-                poisonStatDisplay.displayNumber(vialStats["Poison"]);
-                reactivityStatDisplay.displayNumber(vialStats["Reactivity"]);
-                stickinessStatDisplay.displayNumber(vialStats["Stickiness"]);
-            }
+            potencyStatDisplay.displayNumber(potency);
+            poisonStatDisplay.displayNumber(poison);
+            reactivityStatDisplay.displayNumber(reactivity);
+            stickinessStatDisplay.displayNumber(stickiness);
+        }
+
+        // If totalStats bar given, update information
+        if (totalStats != null) {
+            totalStats.setStatus(pv.getCurrentTotalStat(), pv.getMaxTotalStat());
         }
     }
 

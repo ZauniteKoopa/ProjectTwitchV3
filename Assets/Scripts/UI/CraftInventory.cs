@@ -21,6 +21,10 @@ public class CraftInventory : MonoBehaviour
     [SerializeField]
     private CraftVialSlot craftVialSlot;
 
+    // Information display
+    [SerializeField]
+    private VialIcon selectedVialInfo;
+
     // Inventory to display
     [SerializeField]
     private ITwitchInventory twitchInventory;
@@ -62,6 +66,13 @@ public class CraftInventory : MonoBehaviour
         }
 
         gameObject.SetActive(inInventory);
+    }
+
+
+    // Main event handler function to handle when the selected vial changes
+    public void onCraftVialChange(IVial vial) {
+        Debug.Log("event gotten");
+        selectedVialInfo.DisplayVial(vial);
     }
 
 

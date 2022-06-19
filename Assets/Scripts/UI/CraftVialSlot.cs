@@ -25,7 +25,6 @@ public class CraftVialSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
     //On awake, set up event
     void Awake()
     {
-        OnCraftVialSelect = new VialSelectDelegate();
         audioFX = GetComponent<AudioSource>();
     }
 
@@ -34,7 +33,7 @@ public class CraftVialSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
     {
         if (pv != null)
         {
-             audioFX.Play(0);
+            //audioFX.Play(0);
             vial = pv;
             vialSlot.sprite = ui.GetSprite();
             vialSlot.color = pv.getColor();
@@ -69,6 +68,7 @@ public class CraftVialSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
             if (vialIcon != null && vialIcon.GetVial() != null)
             {
                 SetUpCraftVial(vialIcon.GetVial(), vialIcon);
+                Debug.Log("start event");
                 OnCraftVialSelect.Invoke(vial);
             }
         }
