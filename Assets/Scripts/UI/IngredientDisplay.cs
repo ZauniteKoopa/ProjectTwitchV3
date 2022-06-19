@@ -16,6 +16,7 @@ public class IngredientDisplay : MonoBehaviour
     // Public function to display information
     public void displayIngredient(Ingredient ing) {
         if (ing != null) {
+            gameObject.SetActive(true);
             ing.displayStatChances(probabilityDisplays);
             ingredientImage.color = ing.getColor();
         } else {

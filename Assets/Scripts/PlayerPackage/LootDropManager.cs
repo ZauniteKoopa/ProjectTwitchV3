@@ -17,6 +17,8 @@ public class LootDropManager : MonoBehaviour
 
     [SerializeField]
     private ITwitchInventory inventory;
+    [SerializeField]
+    private IngredientDisplay tgtLootDisplay;
 
     // Public UnityEvent for when TargetedLoot changes
     public LootDelegate targetedLootChangeEvent;
@@ -49,6 +51,9 @@ public class LootDropManager : MonoBehaviour
 
             if (prevTargetedLoot != targetedLoot) {
                 targetedLootChangeEvent.Invoke(targetedLoot);
+
+                // update display
+                updateIngredientDisplay();
             }
 
             // Check if loot is still nearby
@@ -106,6 +111,7 @@ public class LootDropManager : MonoBehaviour
             }
 
             targetedLoot = getNearestLoot();
+            updateIngredientDisplay();
         }
 
         return success;
@@ -130,6 +136,7 @@ public class LootDropManager : MonoBehaviour
             }
 
             targetedLoot = getNearestLoot();
+            updateIngredientDisplay();
         }
 
         return success;
@@ -148,8 +155,20 @@ public class LootDropManager : MonoBehaviour
             // If no looping check running, activate looping check and set this testLoot as targeted (it's the first one)
             if (loopingCheck == null) {
                 targetedLoot = testLoot;
+                updateIngredientDisplay();
                 loopingCheck = StartCoroutine(lootProximityCheck());
             }
+        }
+    }
+
+
+    // Main private helper function to update the ingredient display
+    private void updateIngredientDisplay() {
+        // Only go in here when the display exists
+        if (tgtLootDisplay != null) {
+            // Get ingredient from loot and display it using display
+            Ingredient displayedIng = (targetedLoot == null) ? null : targetedLoot.getIngredient();
+            tgtLootDisplay.displayIngredient(displayedIng);
         }
     }
 

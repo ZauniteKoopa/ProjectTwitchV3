@@ -79,4 +79,9 @@ public class Loot : MonoBehaviour
         Object.Destroy(gameObject);
         return true;
     }
+
+    // Main function to get ingredient associated with this loot
+    public virtual Ingredient getIngredient() {
+        return null;
+    }
 }

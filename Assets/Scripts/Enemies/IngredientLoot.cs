@@ -41,4 +41,10 @@ public class IngredientLoot : Loot
 
         return success;
     }
+
+
+    // Main function to access ingredient
+    public override Ingredient getIngredient() {
+        return ingInstance;
+    }
 }
