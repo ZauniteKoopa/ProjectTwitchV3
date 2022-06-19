@@ -39,12 +39,12 @@ public class VialIcon : AbilityIcon
 
         // Get ammo information
         float displayedAmmo = (pv == null) ? 0 : pv.getAmmoLeft();
-        float maxAmmo = (pv == null) ? 0 : pv.getMaxVialSize();
+        float maxAmmo = (pv == null) ? 60 : pv.getMaxVialSize();
 
         // Update Ammo bars
         foreach (ResourceBar ammoBar in ammoBars) {
             ammoBar.setStatus(displayedAmmo, maxAmmo);
-            ammoBar.setColor(pv.getColor());
+            ammoBar.setColor(vialColor);
         }
 
         // Update stat information IFF stat displays are available
@@ -63,7 +63,9 @@ public class VialIcon : AbilityIcon
 
         // If totalStats bar given, update information
         if (totalStats != null) {
-            totalStats.setStatus(pv.getCurrentTotalStat(), pv.getMaxTotalStat());
+            float currentTotalStat = (pv == null) ? 0 : pv.getCurrentTotalStat();
+            float currentMaxStat = (pv == null) ? 10 : pv.getMaxTotalStat();
+            totalStats.setStatus(currentTotalStat, currentMaxStat);
         }
     }
 

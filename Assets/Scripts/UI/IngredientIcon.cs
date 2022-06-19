@@ -39,7 +39,6 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         dropped = false;
-        OnIngredientSelect = new IngredientSelectDelegate();
     }
 
     //Method to set up ingredient
@@ -67,7 +66,7 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
             rectTransform = GetComponent<RectTransform>();
             canvasGroup = GetComponent<CanvasGroup>();
         }
-        
+
         icon.color = emptyColor;
         countText.text = "0";
         ingredient = null;
@@ -114,8 +113,9 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     //Event handler when clicking down on icon
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (ingredient != null && count > 0)
+        if (ingredient != null && count > 0) {
             OnIngredientSelect.Invoke(ingredient);
+        }
     }
 
     //Event handler when beginning to drag

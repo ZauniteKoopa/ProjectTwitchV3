@@ -35,7 +35,7 @@ public class CraftIngredientSlot : MonoBehaviour, IDropHandler, IPointerDownHand
             IngredientIcon ingIcon = eventData.pointerDrag.GetComponent<IngredientIcon>();
             if (ingIcon != null && ingIcon.IngredientExists())
             {
-                audioFX.Play(0);
+                //audioFX.Play(0);
 
                 //if there's an ingredient icon already in here, give an ingredient back to that icon
                 if (ingredientIcon != null)
@@ -53,7 +53,7 @@ public class CraftIngredientSlot : MonoBehaviour, IDropHandler, IPointerDownHand
     //Event handler when clicking down on icon
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (ingredientIcon.GetIngredient() != null)
+        if (ingredientIcon != null && ingredientIcon.GetIngredient() != null)
             OnIngredientSelect.Invoke(ingredientIcon.GetIngredient());
     }
 

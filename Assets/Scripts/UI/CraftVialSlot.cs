@@ -68,7 +68,6 @@ public class CraftVialSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
             if (vialIcon != null && vialIcon.GetVial() != null)
             {
                 SetUpCraftVial(vialIcon.GetVial(), vialIcon);
-                Debug.Log("start event");
                 OnCraftVialSelect.Invoke(vial);
             }
         }

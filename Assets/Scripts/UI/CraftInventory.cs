@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class CraftInventory : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class CraftInventory : MonoBehaviour
     // Information display
     [SerializeField]
     private VialIcon selectedVialInfo;
+    [SerializeField]
+    private IngredientDisplay ingredientInfo;
 
     // Inventory to display
     [SerializeField]
@@ -34,6 +37,15 @@ public class CraftInventory : MonoBehaviour
     private float prevTimeScale = 1.0f;
 
 
+    // On awake, do additional setup and connect
+    private void Awake() {
+        // Connect all ingredient icons to onIngredientSelect event handler when ingredient is selected
+        foreach (IngredientIcon ingIcon in ingredients) {
+            ingIcon.OnIngredientSelect.AddListener(onIngredientSelect);
+        }
+    }
+
+
     // Function to update the current inventory with a new state
     //  Pre: None
     //  Post: Inventory UI has been updated with the latest version and change records are reset
@@ -42,6 +54,15 @@ public class CraftInventory : MonoBehaviour
         twitchInventory.displayIngredients(ingredients);
         primaryVialIcon.DisplayVial(twitchInventory.getPrimaryVial());
         twitchInventory.displaySecondaryVial(secondaryVialIcon);
+
+        // Reset craft window
+        craftIngSlot1.Reset();
+        craftIngSlot2.Reset();
+        craftVialSlot.Reset();
+
+        // Reset information displays
+        ingredientInfo.uiClear();
+        selectedVialInfo.DisplayVial(null);
     }
 
 
@@ -70,9 +91,22 @@ public class CraftInventory : MonoBehaviour
 
 
     // Main event handler function to handle when the selected vial changes
+    //  Pre: none
+    //  Post: selectedVial information will be updated with currently selected vial
     public void onCraftVialChange(IVial vial) {
-        Debug.Log("event gotten");
         selectedVialInfo.DisplayVial(vial);
+    }
+
+
+    // Main event handler function for ingredient select
+    public void onIngredientSelect(Ingredient ing) {
+
+        // If ing is null, do a UI clear. Else, display ingredient
+        if (ing != null) {
+            ingredientInfo.displayIngredient(ing);
+        } else {
+            ingredientInfo.uiClear();
+        }
     }
 
 
@@ -88,4 +122,22 @@ public class CraftInventory : MonoBehaviour
             onInventoryButtonPress();
         }
     }
+
+
+    // Main event handler function when the reset button is pressed
+    public void onCraftResetButtonPress() {
+        craftIngSlot1.Reset();
+        craftIngSlot2.Reset();
+        craftVialSlot.Reset();
+
+        ingredientInfo.uiClear();
+        selectedVialInfo.DisplayVial(null);
+    }
+
+
+    // Main event handler function when the craft button is pressed
+    public void onCraftButtonPress() {
+        Debug.Log("CRAFT!");
+    }
 }
+

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
-
+using TMPro;
 
 public class Ingredient
 {
@@ -108,12 +108,12 @@ public class Ingredient
     // Main function to present stat chances
     //  Pre: probDisplays.Length == 4 and match in this order [Potency, Poison, Reactivity, Stickiness]
     //  Post: update probability displays to show the probability chance of getting stat contributed
-    public void displayStatChances(INumberDisplay[] probDisplays) {
+    public void displayStatChances(TMP_Text[] probDisplays) {
         Debug.Assert(probDisplays.Length == NUM_STATS_TOTAL);
 
         for (int i = 0; i < NUM_STATS_TOTAL; i++) {
             int percentChance = Mathf.RoundToInt(statProbabilities[i] * 100f);
-            probDisplays[i].displayNumber(percentChance);
+            probDisplays[i].text = percentChance + "%";
         }
     }
 
