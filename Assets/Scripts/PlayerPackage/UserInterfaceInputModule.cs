@@ -9,6 +9,8 @@ public class UserInterfaceInputModule : MonoBehaviour
     private CraftInventory inventoryUI;
     [SerializeField]
     private IPauseMenu pauseMenu;
+    [SerializeField]
+    private IUnitStatus playerStatus;
 
 
     // On awake, error check
@@ -19,6 +21,10 @@ public class UserInterfaceInputModule : MonoBehaviour
 
         if (pauseMenu == null) {
             Debug.LogError("User Interface Input Module not connected to player's pause menu");
+        }
+
+        if (playerStatus == null) {
+            Debug.LogError("User Interface Input Module not connected to player status");
         }
     }
 
@@ -35,7 +41,7 @@ public class UserInterfaceInputModule : MonoBehaviour
     //  Pre: InputSystem sensed Input context for assigned input mapping
     //  Post: Pauses or unpauses menu
     public void onPauseKeyInputPress(InputAction.CallbackContext value) {
-        if (value.started && !inventoryUI.inventoryInterfaceActive()) {
+        if (value.started && !inventoryUI.inventoryInterfaceActive() && playerStatus.isAlive()) {
             pauseMenu.onPauseButtonPress();
         }
     }
@@ -43,7 +49,7 @@ public class UserInterfaceInputModule : MonoBehaviour
 
     // Main function to handle inventory button press
     public void onInventoryKeyInputPress(InputAction.CallbackContext value) {
-        if (value.started && !pauseMenu.inPauseState()) {
+        if (value.started && !pauseMenu.inPauseState() && playerStatus.isAlive()) {
             inventoryUI.onInventoryButtonPress();
         }
     }

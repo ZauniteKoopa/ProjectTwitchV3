@@ -926,7 +926,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &338630829
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5618,6 +5618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: {fileID: 666051068752060888}
+  colorImage: {fileID: 0}
 --- !u!1 &666051068815279123
 GameObject:
   m_ObjectHideFlags: 0
@@ -5899,6 +5900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: {fileID: 666051068828311819}
+  colorImage: {fileID: 0}
 --- !u!1 &666051068897021045
 GameObject:
   m_ObjectHideFlags: 0
@@ -6819,6 +6821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: {fileID: 666051069288241265}
+  colorImage: {fileID: 0}
 --- !u!1 &666051069316360237
 GameObject:
   m_ObjectHideFlags: 0
@@ -7973,6 +7976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: {fileID: 666051070067607824}
+  colorImage: {fileID: 0}
 --- !u!1 &666051070100593433
 GameObject:
   m_ObjectHideFlags: 0
@@ -9431,6 +9435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: {fileID: 666051070366142582}
+  colorImage: {fileID: 0}
 --- !u!1 &666051070371712202
 GameObject:
   m_ObjectHideFlags: 0
@@ -10058,6 +10063,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 6357588895468003737}
   pauseMenu: {fileID: 666051070626613543}
+  playerStatus: {fileID: 1209925082}
 --- !u!1 &666051070541734060
 GameObject:
   m_ObjectHideFlags: 0
@@ -10701,6 +10707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: {fileID: 666051070674050117}
+  colorImage: {fileID: 0}
 --- !u!1 &666051070691998153
 GameObject:
   m_ObjectHideFlags: 0
@@ -11629,6 +11636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: {fileID: 7328650296905147606}
+  colorImage: {fileID: 0}
 --- !u!1 &1379748482649562553
 GameObject:
   m_ObjectHideFlags: 0
@@ -16834,6 +16842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: {fileID: 3685960756711028410}
+  colorImage: {fileID: 0}
 --- !u!1 &5419172175967291646
 GameObject:
   m_ObjectHideFlags: 0
@@ -17058,6 +17067,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: {fileID: 8042335271382498507}
+  colorImage: {fileID: 0}
 --- !u!1 &5610145362132730183
 GameObject:
   m_ObjectHideFlags: 0
@@ -21021,6 +21031,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: {fileID: 307035901374244345}
+  colorImage: {fileID: 0}
 --- !u!1 &8605400384719509155
 GameObject:
   m_ObjectHideFlags: 0
