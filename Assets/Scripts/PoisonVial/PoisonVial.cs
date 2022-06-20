@@ -25,8 +25,8 @@ public class PoisonVial : IVial
     // Colors for color mixing
     private static Color potentColor = Color.red;
     private static Color poisonColor = Color.green;
-    private static Color reactiveColor = Color.blue;
-    private static Color stickinessColor = new Color(0.5f, 0f, 1f);
+    private static Color reactiveColor = new Color(0.5f, 0f, 1f);
+    private static Color stickinessColor = Color.blue;
     private Color vialColor;
 
     // CSV Parsing variables
@@ -302,7 +302,7 @@ public class PoisonVial : IVial
     public bool upgrade(Ingredient ing) {
         Debug.Assert(ing != null);
 
-        if (currentTotalStats + Ingredient.NUM_STATS_CONTRIBUTED > MAX_TOTAL_STATS) {
+        if (currentTotalStats >= MAX_TOTAL_STATS) {
             return false;
         }
 
@@ -313,15 +313,16 @@ public class PoisonVial : IVial
         ignoredIndex = (reactivity >= MAX_SINGLE_STAT) ? 2 : ignoredIndex;
         ignoredIndex = (stickiness >= MAX_SINGLE_STAT) ? 3 : ignoredIndex;
 
-        // Calculate stat gains
-        Dictionary<string, int> statGains = ing.calculateStatGains(ignoredIndex);
+        // Calculate stat gains: make sure you either contribute all stats or just enough to hit 
+        int numStats = Mathf.Min(Ingredient.NUM_STATS_CONTRIBUTED, MAX_TOTAL_STATS - currentTotalStats);
+        Dictionary<string, int> statGains = ing.calculateStatGains(numStats, ignoredIndex);
 
         // Upgrade stats
         potency += statGains["Potency"];
         poison += statGains["Poison"];
         reactivity += statGains["Reactivity"];
         stickiness += statGains["Stickiness"];
-        currentTotalStats += Ingredient.NUM_STATS_CONTRIBUTED;
+        currentTotalStats += numStats;
 
         // Upgrade ammo
         ammo = Mathf.Min(MAX_AMMO, ammo + AMMO_UPGRADE_AMOUNT);

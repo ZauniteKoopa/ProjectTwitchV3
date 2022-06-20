@@ -322,11 +322,7 @@ public class TwitchInventory : ITwitchInventory
         if (targetVial == null) {
             return true;
         }
-
-        // Calculate stat contributions and see if it's still less than targetVial.getMaxTotalStat
-        int ingContribution1 = (ing1 == null) ? 0 : ing1.getNumStatContribution();
-        int ingContribution2 = (ing2 == null) ? 0 : ing2.getNumStatContribution();
-        
-        return ingContribution1 + ingContribution2 <= targetVial.getMaxTotalStat();
+ 
+        return targetVial.getCurrentTotalStat() <= targetVial.getMaxTotalStat();
     }
 }

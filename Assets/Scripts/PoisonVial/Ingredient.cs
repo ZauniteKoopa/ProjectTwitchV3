@@ -67,7 +67,7 @@ public class Ingredient
     // Main function to craft an ingredient
     //  Pre: none
     //  Post: returns a dictionary that maps Poison Vial stats to num of stat gains
-    public Dictionary<string, int> calculateStatGains(int ignoredStatIndex = -1) {
+    public Dictionary<string, int> calculateStatGains(int numStats, int ignoredStatIndex = -1) {
         // Get the stat probabilities to be used
         float[] usedProbabilities = (ignoredStatIndex < 0) ? statProbabilities : getModifiedProbabilities(ignoredStatIndex);
 
@@ -79,7 +79,7 @@ public class Ingredient
         statGains.Add("Stickiness", 0);
 
         // Add to stat buffs by rolling the dice twice
-        for (int i = 0; i < NUM_STATS_CONTRIBUTED; i++) {
+        for (int i = 0; i < numStats; i++) {
             float diceRoll = Random.Range(0f, 1f);
             int currentStat = 0;
 
@@ -100,7 +100,7 @@ public class Ingredient
 
         // Return dictionary
         Debug.Assert(statGains.ContainsKey("Potency") && statGains.ContainsKey("Poison") && statGains.ContainsKey("Reactivity") && statGains.ContainsKey("Stickiness"));
-        Debug.Assert(statGains["Potency"] + statGains["Poison"] + statGains["Reactivity"] + statGains["Stickiness"] == NUM_STATS_CONTRIBUTED);
+        Debug.Assert(statGains["Potency"] + statGains["Poison"] + statGains["Reactivity"] + statGains["Stickiness"] == numStats);
         return statGains;
     }
 
