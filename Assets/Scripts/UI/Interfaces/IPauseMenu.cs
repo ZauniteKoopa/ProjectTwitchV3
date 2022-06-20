@@ -17,12 +17,6 @@ public abstract class IPauseMenu : MonoBehaviour
     public abstract void onExitApplication();
 
 
-    // Main event handler function for when pause input sensed on keyboard / controller
-    //  Pre: InputSystem sensed Input context for assigned input mapping
-    //  Post: Pauses or unpauses menu
-    public abstract void onPauseKeyInputPress(InputAction.CallbackContext value);
-
-
     // Accessor function to check if you're in the pause state
     //  Pre: None
     //  Post: returns whether you're in pause state

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 // Pause menu class: MUST BE CONNECTED TO THE PAUSE MENU GAME OBJECT TO BE USED
 public class PauseMenu : IPauseMenu
@@ -38,16 +37,6 @@ public class PauseMenu : IPauseMenu
     public override void onExitApplication() {
         if (paused) {
             Application.Quit();
-        }
-    }
-
-
-    // Main event handler function for when pause input sensed on keyboard / controller
-    //  Pre: InputSystem sensed Input context for assigned input mapping
-    //  Post: Pauses or unpauses menu
-    public override void onPauseKeyInputPress(InputAction.CallbackContext value) {
-        if (value.started) {
-            onPauseButtonPress();
         }
     }
 

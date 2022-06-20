@@ -20,12 +20,29 @@ public class LootDropManager : MonoBehaviour
     [SerializeField]
     private IngredientDisplay tgtLootDisplay;
 
+    // Other modules
+    [Header("Other input modules")]
+    [SerializeField]
+    private UserInterfaceInputModule uiModule;
+
     // Public UnityEvent for when TargetedLoot changes
     public LootDelegate targetedLootChangeEvent;
 
 
     // On awake initialize HashSet
     private void Awake() {
+        if (inventory == null) {
+            Debug.LogError("Loot Drop Manager not connected to Inventory");
+        }
+
+        if (uiModule == null) {
+            Debug.LogError("Loot drop manager not connected to UI Manager: cannot handle case for pausing");
+        }
+
+        if (tgtLootDisplay == null) {
+            Debug.LogWarning("Loot Drop Manager not connected to targeted loot display: will not show info of nearest loot");
+        }
+
         nearbyLoot = new HashSet<Loot>();
         targetedLootChangeEvent = new LootDelegate();
     }
@@ -186,7 +203,7 @@ public class LootDropManager : MonoBehaviour
 
     // Event handler function for when player presses collect
     public void onPickUpPress(InputAction.CallbackContext value) {
-        if (value.started) {
+        if (value.started && !uiModule.inMenu()) {
             collectTargetedLoot(inventory);
         }
     }
@@ -194,7 +211,7 @@ public class LootDropManager : MonoBehaviour
 
     // Event handler function for when player presses collect
     public void onPrimaryCraftPress(InputAction.CallbackContext value) {
-        if (value.started) {
+        if (value.started && !uiModule.inMenu()) {
             quickCraftTargetedLoot(inventory, true);
         }
     }
@@ -202,7 +219,7 @@ public class LootDropManager : MonoBehaviour
 
     // Event handler function for when player presses collect
     public void onSecondaryCraftPress(InputAction.CallbackContext value) {
-        if (value.started) {
+        if (value.started && !uiModule.inMenu()) {
             quickCraftTargetedLoot(inventory, false);
         }
     }

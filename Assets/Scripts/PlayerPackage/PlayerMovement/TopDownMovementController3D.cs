@@ -30,6 +30,11 @@ public class TopDownMovementController3D : MonoBehaviour
     [SerializeField]
     private IBlockerSensor rightSensor;
 
+    // Other modules
+    [Header("Other input modules")]
+    [SerializeField]
+    private UserInterfaceInputModule uiModule;
+
     // Unit status
     private IUnitStatus unitStatus;
 
@@ -40,7 +45,6 @@ public class TopDownMovementController3D : MonoBehaviour
         attackController = GetComponent<IAttackModule>();
 
         // Error check
-
         if (cameraTransform == null)
             Debug.LogError("Cannot find camera to set movement forward to! Please link a camera to " + this, transform);
         
@@ -52,6 +56,10 @@ public class TopDownMovementController3D : MonoBehaviour
 
         if (attackController == null)
             Debug.LogWarning("Attack Controller not connected to object! Attacking will not affect movement for " + this, transform);
+
+        if (uiModule == null) {
+            Debug.LogError("UI Module not connected to attack package for " + transform, transform);
+        }
 
         unitStatus = playerCharacterTransform.GetComponent<IUnitStatus>();
         if (unitStatus == null)

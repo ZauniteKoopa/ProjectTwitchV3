@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using TMPro;
 
@@ -155,14 +154,6 @@ public class CraftInventory : MonoBehaviour
     // Main function to check if you are in paused state for this inventory
     public bool inventoryInterfaceActive() {
         return inInventory;
-    }
-
-
-    // Main function to handle inventory button press
-    public void onInventoryKeyInputPress(InputAction.CallbackContext value) {
-        if (value.started) {
-            onInventoryButtonPress();
-        }
     }
 
 

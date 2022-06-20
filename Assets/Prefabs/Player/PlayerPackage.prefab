@@ -4033,6 +4033,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 1211125687}
   tgtLootDisplay: {fileID: 8969537588608592055}
+  uiModule: {fileID: 8019651722588253373}
 --- !u!1 &1953484008
 GameObject:
   m_ObjectHideFlags: 0
@@ -9724,6 +9725,7 @@ GameObject:
   - component: {fileID: 666051070539244713}
   - component: {fileID: 666051070539244709}
   - component: {fileID: 666051070539244718}
+  - component: {fileID: 8019651722588253373}
   m_Layer: 0
   m_Name: PlayerPackage
   m_TagString: Untagged
@@ -9768,6 +9770,7 @@ MonoBehaviour:
   backSensor: {fileID: 666051070126448295}
   leftSensor: {fileID: 666051070187809475}
   rightSensor: {fileID: 666051069895407839}
+  uiModule: {fileID: 8019651722588253373}
 --- !u!114 &666051070539244713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9784,7 +9787,6 @@ MonoBehaviour:
   playerCharacter: {fileID: 666051070171789296}
   primaryBullet: {fileID: 7053607081528903385, guid: b336ce3f20ea722edac9589d3d0cc306, type: 3}
   secondaryCask: {fileID: 6518441157454951942, guid: 4e7de23ec2160a0f19bde635ad78c3c0, type: 3}
-  pauseMenu: {fileID: 666051070626613543}
   primaryAttackRate: 0.5
   primaryBulletSpeed: 20
   primaryAttackMoveReduction: 0.6
@@ -9794,6 +9796,7 @@ MonoBehaviour:
   caskThrowWallOffset: 1
   maxCaskThrowDistance: 6
   caskAnticipationTime: 0.25
+  uiModule: {fileID: 8019651722588253373}
   contaminateZone: {fileID: 666051070473934571}
 --- !u!114 &666051070539244709
 MonoBehaviour:
@@ -9934,8 +9937,8 @@ MonoBehaviour:
     m_ActionName: PlayerControls/AimPosition[/Mouse/position]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 666051070626613543}
-        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+      - m_Target: {fileID: 8019651722588253373}
+        m_TargetAssemblyTypeName: UserInterfaceInputModule, Assembly-CSharp
         m_MethodName: onPauseKeyInputPress
         m_Mode: 0
         m_Arguments:
@@ -9998,8 +10001,8 @@ MonoBehaviour:
     m_ActionName: PlayerControls/PickUp[/Keyboard/e]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6357588895468003737}
-        m_TargetAssemblyTypeName: CraftInventory, Assembly-CSharp
+      - m_Target: {fileID: 8019651722588253373}
+        m_TargetAssemblyTypeName: UserInterfaceInputModule, Assembly-CSharp
         m_MethodName: onInventoryKeyInputPress
         m_Mode: 0
         m_Arguments:
@@ -10042,6 +10045,20 @@ MonoBehaviour:
   disabledColor: {r: 0.2784599, g: 0, b: 0.9811321, a: 1}
   fadeOutScreen: {fileID: 738851705}
   solidFadeDuration: 0.5
+--- !u!114 &8019651722588253373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666051070539244708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb23704670956f04b88246727e784069, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryUI: {fileID: 6357588895468003737}
+  pauseMenu: {fileID: 666051070626613543}
 --- !u!1 &666051070541734060
 GameObject:
   m_ObjectHideFlags: 0
