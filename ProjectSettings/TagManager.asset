@@ -17,8 +17,8 @@ TagManager:
   - EnemyHitboxes
   - EnemyHurtboxes
   - EnemySensing
-  - 
-  - 
+  - LootSensor
+  - Loot
   - 
   - 
   - 

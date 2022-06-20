@@ -14,6 +14,13 @@ public class PoisonVialBolt : AbstractStraightProjectile
     // Main method to set poison vial to calculate the damage. If newPoison is null, just use default damage
     public void setVialDamage(IVial newPoison) {
         poison = newPoison;
+        MeshRenderer meshRender = GetComponent<MeshRenderer>();
+        
+        if (newPoison == null) {
+            meshRender.material.color = Color.black;
+        } else {
+            meshRender.material.color = newPoison.getColor();
+        }
     }
 
     // Main method to do damage to this target

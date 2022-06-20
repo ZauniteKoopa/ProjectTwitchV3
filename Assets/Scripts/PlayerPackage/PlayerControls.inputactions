@@ -76,6 +76,42 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "PrimaryQuickCraft",
+                    "type": "Value",
+                    "id": "adbadfe3-f6b4-4f79-87b7-212b6440770a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SecondaryQuickCraft",
+                    "type": "Value",
+                    "id": "d89bc920-929f-454d-a814-f0dd11b14d73",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "PickUp",
+                    "type": "Button",
+                    "id": "c7bc45f9-916b-4327-8daa-a4a64c62b61e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CraftInventory",
+                    "type": "Button",
+                    "id": "267cc405-620c-4c40-b579-de084641b6db",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -170,7 +206,7 @@
                 {
                     "name": "",
                     "id": "fc4e6db0-844c-45b3-9c0f-473003ab8a5e",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -181,7 +217,7 @@
                 {
                     "name": "",
                     "id": "1d03270a-b5e3-49cb-8f9f-72e237531313",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -208,6 +244,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bd2ce9bb-d106-43f0-b52f-834f7867c843",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PrimaryQuickCraft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c5cefb29-e321-412a-b643-e5d615859fe2",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SecondaryQuickCraft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "13a7a23c-db02-4731-91be-f1ea6cb43460",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PickUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c7cffd5-b09d-4d25-877a-aaf5915dc95c",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CraftInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

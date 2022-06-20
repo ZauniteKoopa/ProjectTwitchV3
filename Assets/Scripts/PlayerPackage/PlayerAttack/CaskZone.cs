@@ -14,6 +14,7 @@ public class CaskZone : AbstractDamageZone
     public void setCaskPoison(IVial vial) {
         Debug.Assert(vial != null);
         caskPoison = vial;
+        GetComponent<MeshRenderer>().material.color = vial.getColor();
     }
 
     // Protected method to override that does damage effect to inRangeTarget

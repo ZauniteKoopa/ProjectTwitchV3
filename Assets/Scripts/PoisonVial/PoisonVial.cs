@@ -11,9 +11,23 @@ public class PoisonVial : IVial
     private int reactivity;
     private int stickiness;
 
+    private int currentTotalStats;
+    private const int MAX_TOTAL_STATS = 10;
+    private const int MAX_SINGLE_STAT = 5;
+
     // Ammo management
     private int ammo;
     private const int MAX_AMMO = 60;
+    private const int ONE_ING_AMMO = 40;
+    private const int TWO_ING_AMMO = 60;
+    private const int AMMO_UPGRADE_AMOUNT = 10;
+
+    // Colors for color mixing
+    private static Color potentColor = Color.red;
+    private static Color poisonColor = Color.green;
+    private static Color reactiveColor = new Color(0.5f, 0f, 1f);
+    private static Color stickinessColor = Color.blue;
+    private Color vialColor;
 
     // CSV Parsing variables
     private static bool csvParsed = false;
@@ -43,7 +57,7 @@ public class PoisonVial : IVial
 
 
 
-    // Main constructor for a poison vial
+    // Main raw constructor for a poison vial
     //  Pre: initialAmmo > 0 and 0 <= all stats <= 5
     public PoisonVial(int pot, int poi, int r, int s, int initialAmmo) {
         Debug.Assert(initialAmmo > 0);
@@ -60,7 +74,45 @@ public class PoisonVial : IVial
         poison = poi;
         reactivity = r;
         stickiness = s;
+        currentTotalStats = pot + poi + r + s;
+        vialColor = calculateColor();
+
         ammo = initialAmmo;
+
+    }
+
+
+    // Main constructor to craft a poison vial from only 1 ingredient
+    public PoisonVial(Ingredient ing) {
+        if (!csvParsed) {
+            parseBaseVialCSV();
+        }
+
+        potency = 0;
+        poison = 0;
+        reactivity = 0;
+        stickiness = 0;
+        currentTotalStats = 0;
+
+        upgrade(ing);
+        ammo = ONE_ING_AMMO;
+    }
+
+
+    // Main constructor to craft a poison vial from only 1 ingredient
+    public PoisonVial(Ingredient ing1, Ingredient ing2) {
+        if (!csvParsed) {
+            parseBaseVialCSV();
+        }
+
+        potency = 0;
+        poison = 0;
+        reactivity = 0;
+        stickiness = 0;
+        currentTotalStats = 0;
+
+        upgrade(ing1, ing2);
+        ammo = TWO_ING_AMMO;
     }
 
 
@@ -241,5 +293,107 @@ public class PoisonVial : IVial
 
         Debug.Assert(statDict.ContainsKey("Potency") && statDict.ContainsKey("Poison") && statDict.ContainsKey("Reactivity") && statDict.ContainsKey("Stickiness"));
         return statDict;
+    }
+
+
+    // Function to upgrade Poison using only one ingredient
+    //  Pre: ing != null
+    //  Post: Returns whether upgrade is successful. If successful, vial is updated with this ingredient
+    public bool upgrade(Ingredient ing) {
+        Debug.Assert(ing != null);
+
+        if (currentTotalStats >= MAX_TOTAL_STATS) {
+            return false;
+        }
+
+        // Check if there's any stats to ignore when upgrading (reached single max)
+        int ignoredIndex = -1;
+        ignoredIndex = (potency >= MAX_SINGLE_STAT) ? 0 : ignoredIndex;
+        ignoredIndex = (poison >= MAX_SINGLE_STAT) ? 1 : ignoredIndex;
+        ignoredIndex = (reactivity >= MAX_SINGLE_STAT) ? 2 : ignoredIndex;
+        ignoredIndex = (stickiness >= MAX_SINGLE_STAT) ? 3 : ignoredIndex;
+
+        // Calculate stat gains: make sure you either contribute all stats or just enough to hit 
+        int numStats = Mathf.Min(Ingredient.NUM_STATS_CONTRIBUTED, MAX_TOTAL_STATS - currentTotalStats);
+        Dictionary<string, int> statGains = ing.calculateStatGains(numStats, ignoredIndex);
+
+        // Upgrade stats
+        potency += statGains["Potency"];
+        poison += statGains["Poison"];
+        reactivity += statGains["Reactivity"];
+        stickiness += statGains["Stickiness"];
+        currentTotalStats += numStats;
+
+        // Upgrade ammo
+        ammo = Mathf.Min(MAX_AMMO, ammo + AMMO_UPGRADE_AMOUNT);
+        vialColor = calculateColor();
+
+        return true;
+    }
+
+
+    // Function to upgrade Poison using only two ingredients
+    //  Pre: ing1 != null && ing2 != null
+    //  Post: Returns whether upgrade is successful. If successful, vial is updated with this ingredient
+    public bool upgrade(Ingredient ing1, Ingredient ing2) {
+        Debug.Assert(ing1 != null && ing2 != null);
+
+        if (currentTotalStats + (2 * Ingredient.NUM_STATS_CONTRIBUTED) > MAX_TOTAL_STATS) {
+            return false;
+        }
+
+        bool success1 = upgrade(ing1);
+        bool success2 = upgrade(ing2);
+
+        Debug.Assert(success1 && success2);
+        return true;
+    }
+
+
+    // Function to access the color of this vial
+    //  Pre: null
+    //  Post: Returns a valid color based on stats
+    public Color getColor() {
+        return vialColor;
+    }
+
+
+    // Funtion to calculate color so that you don't have to constantly calculate color every time color is accessed
+    private Color calculateColor() {
+        // Get interpolated colors with a magnitude of 1/10 the color spectrum distance (white to black)
+        Color normPotency = Color.Lerp(Color.black, potentColor, 1f / (float)currentTotalStats);
+        Color normPoison = Color.Lerp(Color.black, poisonColor, 1f / (float)currentTotalStats);
+        Color normReactivity = Color.Lerp(Color.black, reactiveColor, 1f / (float)currentTotalStats);
+        Color normStickiness = Color.Lerp(Color.black, stickinessColor, 1f / (float)currentTotalStats);
+
+        // Mix colors via vector addition
+        Vector3 finalColorVector = Vector3.zero;
+        finalColorVector += (new Vector3(normPotency.r, normPotency.g, normPotency.b) * potency);
+        finalColorVector += (new Vector3(normPoison.r, normPoison.g, normPoison.b) * poison);
+        finalColorVector += (new Vector3(normReactivity.r, normReactivity.g, normReactivity.b) * reactivity);
+        finalColorVector += (new Vector3(normStickiness.r, normStickiness.g, normStickiness.b) * stickiness);
+
+        // Get color components individually
+        float redComp = Mathf.Min(finalColorVector.x, 1.0f);
+        float greenComp = Mathf.Min(finalColorVector.y, 1.0f);
+        float blueComp = Mathf.Min(finalColorVector.z, 1.0f);
+
+        return new Color(redComp, greenComp, blueComp);
+    }
+
+
+    // Main function to access total stat count
+    //  Pre: none
+    //  Post: returns the total number of stats. <= than maxStat
+    public int getCurrentTotalStat() {
+        return currentTotalStats;
+    }
+
+
+    // Main function to access max stat count
+    //  Pre: none
+    //  Post: returns max stat count for this instance
+    public int getMaxTotalStat() {
+        return MAX_TOTAL_STATS;
     }
 }

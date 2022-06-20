@@ -42,4 +42,13 @@ public class ResourceBar : MonoBehaviour
             resourceText.text = curResources + "/" + maxResources;
         }
     }
+
+
+    // Main function to change the color of this resource bar
+    //  Pre: color is not null
+    public void setColor(Color color) {
+        if (resourceBar != null) {
+            resourceBar.color = color;
+        }
+    }
 }
