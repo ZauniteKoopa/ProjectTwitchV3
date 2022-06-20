@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class VialInventoryIcon : VialIcon, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
@@ -12,7 +13,10 @@ public class VialInventoryIcon : VialIcon, IBeginDragHandler, IEndDragHandler, I
     private Vector3 startPosition;
     [SerializeField]
     private Canvas canvas = null;
+    [SerializeField]
+    private Image vialHighlight;
     public bool dropped;
+    public UnityEvent iconSelectedEvent;
 
     // Start is called before the first frame update
     void Awake()
@@ -28,6 +32,7 @@ public class VialInventoryIcon : VialIcon, IBeginDragHandler, IEndDragHandler, I
     {
         if (GetVial() != null)
         {
+            iconSelectedEvent.Invoke();
             canvasGroup.blocksRaycasts = false;
             canvasGroup.alpha = 0.6f;
         }
@@ -53,5 +58,13 @@ public class VialInventoryIcon : VialIcon, IBeginDragHandler, IEndDragHandler, I
         }
 
         dropped = false;
+    }
+
+
+    // Main function to highlight this vial icon
+    //  Pre: on represents whether to turn highlight on or off
+    //  Post: sets highlight depending on boolean sent in
+    public void setHighlight(bool on) {
+        vialHighlight.enabled = on;
     }
 }

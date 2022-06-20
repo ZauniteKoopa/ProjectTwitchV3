@@ -134,4 +134,10 @@ public class Ingredient
     public Color getColor() {
         return ingredientColor;
     }
+
+    
+    // Main function to access the number of stats contributed by this ingredient
+    public int getNumStatContribution() {
+        return NUM_STATS_CONTRIBUTED;
+    }
 }

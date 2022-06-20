@@ -46,10 +46,16 @@ public abstract class ITwitchInventory : MonoBehaviour
     public abstract bool upgradePrimaryVial(Ingredient ing);
 
 
-    // Main function to upgrade primary vial with one ingredient
+    // Main function to upgrade primary vial with two ingredients
     //  Pre: Ing1 != null && ing2 != null
     //  Post: Returns a bool that says if its successful. If so, primary vial gets upgraded
     public abstract bool upgradePrimaryVial(Ingredient ing1, Ingredient ing2);
+
+
+    // Main function to upgrade primary vial with one ingredient
+    //  Pre: at least 1 of the ingredients is not null
+    //  Post: Returns a bool that says if its successful. If so, primary vial gets replaced by new vial made by 2 ingredients
+    public abstract bool replacePrimaryVial(Ingredient ing1, Ingredient ing2);
 
 
     // Main function to upgrade secondary vial with one ingredient
@@ -58,10 +64,16 @@ public abstract class ITwitchInventory : MonoBehaviour
     public abstract bool upgradeSecondaryVial(Ingredient ing);
 
 
-    // Main function to upgrade primary vial with one ingredient
+    // Main function to upgrade secondary vial with two ingredient
     //  Pre: Ing1 != null && ing2 != null
     //  Post: Returns a bool that says if its successful. If so, secondary vial gets upgraded
     public abstract bool upgradeSecondaryVial(Ingredient ing1, Ingredient ing2);
+
+
+    // Main function to upgrade secondary vial with one ingredient
+    //  Pre: at least 1 of the ingredients is not null
+    //  Post: Returns a bool that says if its successful. If so, secondary vial gets replaced by new vial made by 2 ingredients
+    public abstract bool replaceSecondaryVial(Ingredient ing1, Ingredient ing2);
 
 
     // Main function to display ingredients given an array of ingredient icons
@@ -74,4 +86,11 @@ public abstract class ITwitchInventory : MonoBehaviour
     //  Pre: VialIcon must not be null
     //  Post: VialIcon will now display secondaryVial
     public abstract void displaySecondaryVial(VialIcon vialIcon);
+
+
+    // Main function to check if you can upgrade a vial
+    //  Pre: Ing1 and Ing2 are ingredients used to upgrade (can be null) and isPrimary is a bool: true - upgrade primary, false - upgrade secondary
+    //  Post: returns a bool to check if you can really upgrade, if vial is null, returns true immediately
+    public abstract bool canUpgradeVial(Ingredient ing1, Ingredient ing2, bool isPrimary);
+
 }

@@ -1029,6 +1029,7 @@ MonoBehaviour:
   craftIngSlot1: {fileID: 7139455548574619072}
   craftIngSlot2: {fileID: 3216978732367396977}
   craftVialSlot: {fileID: 763786020208773023}
+  craftErrorMessage: {fileID: 1337673487}
   selectedVialInfo: {fileID: 4487423918322892498}
   ingredientInfo: {fileID: 1938323903753924763}
   twitchInventory: {fileID: 1211125687}
@@ -1526,19 +1527,7 @@ MonoBehaviour:
   vialSlot: {fileID: 600120814}
   OnCraftVialSelect:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6357588895468003737}
-        m_TargetAssemblyTypeName: CraftInventory, Assembly-CSharp
-        m_MethodName: onCraftVialChange
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &620139778
 GameObject:
   m_ObjectHideFlags: 0
@@ -3011,7 +3000,11 @@ MonoBehaviour:
   vialDisplay: {fileID: 1191993608}
   totalStats: {fileID: 0}
   canvas: {fileID: 666051070648353471}
+  vialHighlight: {fileID: 117113377}
   dropped: 0
+  iconSelectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &8422564148433016610
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3036,7 +3029,7 @@ GameObject:
   - component: {fileID: 1337673488}
   - component: {fileID: 1337673487}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: ErrorMessage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3256,7 +3249,11 @@ MonoBehaviour:
   vialDisplay: {fileID: 1410460700}
   totalStats: {fileID: 0}
   canvas: {fileID: 666051070648353471}
+  vialHighlight: {fileID: 846442002}
   dropped: 0
+  iconSelectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &3432350154618539678
 CanvasGroup:
   m_ObjectHideFlags: 0

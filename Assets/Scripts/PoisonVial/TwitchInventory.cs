@@ -193,6 +193,24 @@ public class TwitchInventory : ITwitchInventory
     }
 
 
+    // Main function to upgrade primary vial with one ingredient
+    //  Pre: at least 1 of the ingredients is not null
+    //  Post: Returns a bool that says if its successful. If so, primary vial gets replaced by new vial made by 2 ingredients
+    public override bool replacePrimaryVial(Ingredient ing1, Ingredient ing2) {
+        Debug.Assert(ing1 != null || ing2 != null);
+
+        // If only 1 ingredient is non null, use the single constructor
+        if (ing1 == null || ing2 == null) {
+            Ingredient currentIng = (ing1 != null) ? ing1 : ing2;
+            primaryVial = new PoisonVial(currentIng);
+        } else {
+            primaryVial = new PoisonVial(ing1, ing2);
+        }
+
+        return true;
+    }
+
+
     // Main function to upgrade secondary vial with one ingredient
     //  Pre: Ing != null
     //  Post: Returns a bool that says if its successful. If so, secondary vial gets upgraded
@@ -237,6 +255,24 @@ public class TwitchInventory : ITwitchInventory
     }
 
 
+    // Main function to upgrade secondary vial with one ingredient
+    //  Pre: at least 1 of the ingredients is not null
+    //  Post: Returns a bool that says if its successful. If so, secondary vial gets replaced by new vial made by 2 ingredients
+    public override bool replaceSecondaryVial(Ingredient ing1, Ingredient ing2) {
+        Debug.Assert(ing1 != null || ing2 != null);
+
+        // If only 1 ingredient is non null, use the single constructor
+        if (ing1 == null || ing2 == null) {
+            Ingredient currentIng = (ing1 != null) ? ing1 : ing2;
+            secondaryVial = new PoisonVial(currentIng);
+        } else {
+            secondaryVial = new PoisonVial(ing1, ing2);
+        }
+
+        return true;
+    }
+
+
     // Main function to display ingredients given an array of ingredient icons
     //  Pre: array of icons != null with non-null elements AND array length >= number of distinct ingredient types
     //  Post: Displays ingredients onto ingredient icons
@@ -272,5 +308,25 @@ public class TwitchInventory : ITwitchInventory
     //  Post: VialIcon will now display secondaryVial
     public override void displaySecondaryVial(VialIcon vialIcon) {
         vialIcon.DisplayVial(secondaryVial);
+    }
+
+
+    // Main function to check if you can upgrade a vial
+    //  Pre: Ing1 and Ing2 are ingredients used to upgrade (can be null) and isPrimary is a bool: true - upgrade primary, false - upgrade secondary
+    //  Post: returns a bool to check if you can really upgrade, if vial is null, returns true immediately
+    public override bool canUpgradeVial(Ingredient ing1, Ingredient ing2, bool isPrimary) {
+        // Get the target vial
+        IVial targetVial = (isPrimary) ? primaryVial : secondaryVial;
+        
+        // If null, return true immediately
+        if (targetVial == null) {
+            return true;
+        }
+
+        // Calculate stat contributions and see if it's still less than targetVial.getMaxTotalStat
+        int ingContribution1 = (ing1 == null) ? 0 : ing1.getNumStatContribution();
+        int ingContribution2 = (ing2 == null) ? 0 : ing2.getNumStatContribution();
+        
+        return ingContribution1 + ingContribution2 <= targetVial.getMaxTotalStat();
     }
 }
