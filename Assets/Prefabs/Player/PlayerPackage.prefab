@@ -2969,7 +2969,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 9f3bf7d11fc04ce0ba8c6a556d1a8332, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3218,7 +3218,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 9f3bf7d11fc04ce0ba8c6a556d1a8332, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10041,7 +10041,6 @@ MonoBehaviour:
   caskIcon: {fileID: 666051068935387617}
   caskAmmoCostDisplay: {fileID: 666051070067607827}
   contaminateIcon: {fileID: 666051068616515643}
-  readyColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0.2784599, g: 0, b: 0.9811321, a: 1}
   fadeOutScreen: {fileID: 738851705}
   solidFadeDuration: 0.5

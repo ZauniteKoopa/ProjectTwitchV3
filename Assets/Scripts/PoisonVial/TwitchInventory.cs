@@ -6,8 +6,8 @@ using UnityEngine.Assertions;
 public class TwitchInventory : ITwitchInventory
 {
     // Private instance variables
-    private IVial primaryVial;
-    private IVial secondaryVial;
+    private IVial primaryVial = null;
+    private IVial secondaryVial = null;
     private Dictionary<Ingredient, int> ingredientInventory;
 
     private readonly object ingredientsLock = new object();

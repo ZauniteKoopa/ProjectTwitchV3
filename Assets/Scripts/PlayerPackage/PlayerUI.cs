@@ -34,8 +34,7 @@ public class PlayerUI : ITwitchPlayerUI
     [SerializeField]
     private ResourceBar contaminateIcon;
     private Image contaminateImage;
-    [SerializeField]
-    private Color readyColor;
+    private Color readyColor = Color.white;
     [SerializeField]
     private Color disabledColor;
 
@@ -112,8 +111,11 @@ public class PlayerUI : ITwitchPlayerUI
     //  Pre: primaryVial CAN either be non-null or null
     //  Post: updates primary vial related UI to reflect vial if not null or an empty vial
     public override void displayPrimaryVial(IVial primaryVial) {
+        if (caskImage == null) {
+            caskImage = caskIcon.GetComponent<Image>();
+        }
         primaryVialDisplay.DisplayVial(primaryVial);
-
+        caskImage.color = primaryVial != null ? primaryVial.getColor() : disabledColor;
     }
 
     
@@ -143,7 +145,7 @@ public class PlayerUI : ITwitchPlayerUI
         Debug.Assert(curCooldown <= maxCooldown & maxCooldown > 0.0f);
 
         caskIcon.setStatus(curCooldown, maxCooldown);
-        caskImage.color = (curCooldown > 0.0f) ? disabledColor : readyColor;
+        //caskImage.color = (curCooldown > 0.0f) ? disabledColor : readyColor;
     }
 
 

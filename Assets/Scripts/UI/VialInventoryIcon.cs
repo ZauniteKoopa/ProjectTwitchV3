@@ -32,10 +32,11 @@ public class VialInventoryIcon : VialIcon, IBeginDragHandler, IEndDragHandler, I
     {
         if (GetVial() != null)
         {
-            iconSelectedEvent.Invoke();
             canvasGroup.blocksRaycasts = false;
             canvasGroup.alpha = 0.6f;
         }
+
+        iconSelectedEvent.Invoke();
     }
 
     //Event handler when dragging icon
