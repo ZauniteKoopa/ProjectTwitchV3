@@ -208,6 +208,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
             if (poisonStackDisplay != null) {
                 poisonStackDisplay.displayNumber(numPoisonStacks);
+                poisonStackDisplay.displayColor(poison.getColor());
             }
 
             // Run poison sequence if none are running at this point
@@ -245,6 +246,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             numPoisonStacks = Mathf.Min(numPoisonStacks + numStacks, MAX_STACKS);
             if (poisonStackDisplay != null) {
                 poisonStackDisplay.displayNumber(numPoisonStacks);
+                poisonStackDisplay.displayColor(currentPoison.getColor());
             }
         }
 

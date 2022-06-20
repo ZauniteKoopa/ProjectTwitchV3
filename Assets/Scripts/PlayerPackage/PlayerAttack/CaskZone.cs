@@ -21,7 +21,12 @@ public class CaskZone : AbstractDamageZone
     //  Pre: tgt != null and dmg >= 0
     protected override void damageTarget(ITwitchUnitStatus tgt, float dmg) {
         Debug.Assert(tgt != null && dmg >= 0.0f);
-        tgt.weakPoisonDamage(dmg, caskPoison, 1);
+
+        if (dmg > 0.01f) {
+            tgt.poisonDamage(dmg, caskPoison, 1);
+        } else {
+            tgt.weakPoisonDamage(dmg, caskPoison, 1);
+        }
     }
 
 

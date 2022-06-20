@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class TextNumberDisplay : INumberDisplay
 {
     [SerializeField]
-    private TMP_Text label = null;
+    private TMP_Text label;
+    [SerializeField]
+    private Image colorImage;
 
 
     // Main function to change the number displayed
@@ -14,4 +17,12 @@ public class TextNumberDisplay : INumberDisplay
         label.text = number + "";
     }
 
+    // Main function to change the color of this INumberDisplay
+    //  Pre: color is the color you want to change to
+    //  Post: updates color accordingly
+    public override void displayColor(Color color) {
+        if (colorImage != null) {
+            colorImage.color = color;
+        }
+    }
 }
