@@ -99,7 +99,7 @@ public interface IVial
 
     // Main function to get side effect information
     //  Pre: none
-    //  Post: returns an array in the following format: [name, description]
-    string[] getSideEffectInfo();
+    //  Post: returns an array in the following format: [name, description], outputs the side effect's specialization as a separate object
+    string[] getSideEffectInfo(out Specialization specialization);
 
 }

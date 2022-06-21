@@ -431,11 +431,13 @@ public class PoisonVial : IVial
 
     // Main function to get side effect information
     //  Pre: none
-    //  Post: returns an array in the following format: [name, description]
-    public string[] getSideEffectInfo() {
+    //  Post: returns an array in the following format: [name, description], outputs the side effect's specialization as a separate object
+    public string[] getSideEffectInfo(out Specialization specialization) {
         string[] sideEffectInfo = new string[2];
         sideEffectInfo[0] = sideEffect.getName();
         sideEffectInfo[1] = sideEffect.getDescription();
+        
+        specialization = sideEffect.getSpecialization();
 
         return sideEffectInfo;
     }
