@@ -28,10 +28,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     private readonly object poisonLock = new object();
 
     // Poison timer
-    private int curTick = 0;
-    private const float TIME_PER_TICK = 1.0f;
     private const int MAX_STACKS = 6;
-    private const int MAX_TICKS = 6;
+    private const float MAX_POISON_TICK_TIME = 6.0f;
+    private float poisonTimer = 0.0f;
     private Coroutine poisonDotRoutine = null;
 
     // Loot drops
@@ -115,13 +114,18 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
 
     // Main function to handle poison loop
-    //  Pre: curTick <= MAX_TICKS
+    //  Pre: poisonTimer < MAX_POISON_TICK_TIME
     //  Post: does damage over time using IEnumerators
     private IEnumerator poisonDotLoop() {
-        Debug.Assert(curTick <= MAX_TICKS);
+        Debug.Assert(poisonTimer <= MAX_POISON_TICK_TIME);
         
         // Wait for first poison tick
-        yield return new WaitForSeconds(TIME_PER_TICK);
+        float currentTickDuration = 1f;
+        lock (poisonLock) {
+            currentTickDuration = currentPoison.getPoisonDecayRate();
+        }
+
+        yield return new WaitForSeconds(currentTickDuration);
 
         // Main tick loop
         bool onLastTick = false;
@@ -131,19 +135,23 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             float poisonTickDamage;
             lock(poisonLock) {
                 poisonTickDamage = currentPoison.getPoisonDamage(numPoisonStacks);
-                curTick++;
-                onLastTick = curTick == MAX_TICKS;
+
+                currentTickDuration = currentPoison.getPoisonDecayRate();
+                poisonTimer += currentTickDuration;
+                onLastTick = poisonTimer >= MAX_POISON_TICK_TIME;
             }
 
             damage(poisonTickDamage);
 
             // Wait for the next tick
-            yield return new WaitForSeconds(TIME_PER_TICK);
+            if (!onLastTick) {
+                yield return new WaitForSeconds(currentTickDuration);
+            }
         }
 
         // At the end of the last tick, get rid of poison
         lock (poisonLock) {
-            curTick = 0;
+            poisonTimer = 0f;
             numPoisonStacks = 0;
             currentPoison = null;
             poisonDotRoutine = null;
@@ -203,7 +211,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         lock(poisonLock) {
             // Edit poison variables
             currentPoison = poison;
-            curTick = 0;
+            poisonTimer = 0f;
             numPoisonStacks = Mathf.Min(numPoisonStacks + numStacks, MAX_STACKS);
 
             if (poisonStackDisplay != null) {
@@ -242,7 +250,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             }
 
             // Change poison stacks
-            curTick = 0;
+            poisonTimer = 0f;
             numPoisonStacks = Mathf.Min(numPoisonStacks + numStacks, MAX_STACKS);
             if (poisonStackDisplay != null) {
                 poisonStackDisplay.displayNumber(numPoisonStacks);
@@ -312,7 +320,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
             numPoisonStacks = 0;
             currentPoison = null;
-            curTick = 0;
+            poisonTimer = 0f;
 
             if (poisonStackDisplay != null) {
                 poisonStackDisplay.displayNumber(numPoisonStacks);

@@ -31,6 +31,12 @@ public interface IVial
     float getPoisonDamage(int numStacks);
 
 
+    // Function to get the decay rate of this poison when dealing DoT to enemies
+    //  Pre: none
+    //  Post: a float that's greater than 0
+    float getPoisonDecayRate();
+
+
     // Function to calculate how much contaminate burst damage a unit suffers
     //  Pre: 0 < numStacks <= 5
     //  Post: returns burst damage based on number of stacks and vial's stats > 0

@@ -41,6 +41,7 @@ public class PoisonVial : IVial
     //constants for poison stack damage
     private static float BASE_POISON;
     private static float POISON_GROWTH;
+    private static float BASE_POISON_DECAY = 1.0f;
 
     //constants for contaminate damage
     private static float BASE_CONTAMINATE_DMG;
@@ -239,6 +240,17 @@ public class PoisonVial : IVial
     }
 
 
+    // Function to get the decay rate of this poison when dealing DoT to enemies
+    //  Pre: none
+    //  Post: a float that's greater than 0
+    public float getPoisonDecayRate() {
+        float decayRate = BASE_POISON_DECAY * sideEffect.decayRateMultiplier();
+
+        Debug.Assert(decayRate > 0.0f);
+        return decayRate;
+    }
+
+
     // Function to calculate how much contaminate burst damage a unit suffers
     //  Pre: 0 < numStacks <= 5
     //  Post: returns burst damage based on number of stacks and vial's stats > 0
@@ -345,7 +357,7 @@ public class PoisonVial : IVial
     //  Post: Updates the side effects to one that has specialization IFF the requirements in pre-cond holds up
     private void upgradeSideEffect() {
         if (sideEffect.getSpecialization() == Specialization.NONE) {
-            sideEffect = new SprayAndPray();
+            sideEffect = new FasterDecay();
         }
     }
 
