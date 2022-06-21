@@ -500,7 +500,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxHealth: 40
-  baseMovementSpeed: 4
+  baseMovementSpeed: 5.5
   baseAttack: 5
   maxLootDrops: 2
   minLootDrops: 2
@@ -573,7 +573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyHitbox: {fileID: 1592029466}
   surprisedDuration: 0.5
-  pathExpirationInterval: 1.5
+  pathExpirationInterval: 0.5
   recoilDistance: 1
   recoilStunDuration: 2.5
   recoilKnockbackDuration: 0.25

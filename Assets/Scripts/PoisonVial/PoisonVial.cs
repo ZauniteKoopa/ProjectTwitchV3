@@ -284,6 +284,7 @@ public class PoisonVial : IVial
         Debug.Assert(numStacks > 0 && numStacks <= 6);
 
         float stackSlowness = (stickiness > 0) ? BASE_SLOWNESS + (SLOWNESS_GROWTH * (stickiness - 1)) : 1.0f;
+        stackSlowness = sideEffect.modifyStackSpeedFactor(stackSlowness);
         stackSlowness = Mathf.Lerp(1.0f, stackSlowness, numStacks / 6f);
 
         Debug.Assert(stackSlowness > 0.0f && stackSlowness <= 1.0f);
@@ -357,7 +358,7 @@ public class PoisonVial : IVial
     //  Post: Updates the side effects to one that has specialization IFF the requirements in pre-cond holds up
     private void upgradeSideEffect() {
         if (sideEffect.getSpecialization() == Specialization.NONE) {
-            sideEffect = new FasterDecay();
+            sideEffect = new InducedParalysis();
         }
     }
 

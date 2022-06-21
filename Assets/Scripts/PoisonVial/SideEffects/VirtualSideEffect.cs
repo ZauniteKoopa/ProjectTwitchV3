@@ -73,8 +73,10 @@ public class VirtualSideEffect
 
 
     // Main function to get the slow rate multiplier: can be overriden
-    public virtual float stackSlownessMultiplier() {
-        return 1.0f;
+    //  Pre: speedFactor > 0.0f;
+    //  Post: speedFactor will be greater than 0.0f
+    public virtual float modifyStackSpeedFactor(float speedFactor) {
+        return speedFactor;
     }
 
 
