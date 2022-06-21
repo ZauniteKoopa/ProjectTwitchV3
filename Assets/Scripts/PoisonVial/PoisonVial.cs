@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+// Vial class
 public class PoisonVial : IVial
 {
     // Main stats
@@ -55,6 +56,9 @@ public class PoisonVial : IVial
     private static float BASE_CASK_SLOWNESS;
     private static float CASK_SLOWNESS_GROWTH;
 
+    // Side Effect used
+    private VirtualSideEffect sideEffect;
+
 
 
     // Main raw constructor for a poison vial
@@ -78,7 +82,7 @@ public class PoisonVial : IVial
         vialColor = calculateColor();
 
         ammo = initialAmmo;
-
+        sideEffect = new VirtualSideEffect();
     }
 
 
@@ -94,6 +98,7 @@ public class PoisonVial : IVial
         stickiness = 0;
         currentTotalStats = 0;
 
+        sideEffect = new VirtualSideEffect();
         upgrade(ing);
         ammo = ONE_ING_AMMO;
     }
@@ -111,6 +116,7 @@ public class PoisonVial : IVial
         stickiness = 0;
         currentTotalStats = 0;
 
+        sideEffect = new VirtualSideEffect();
         upgrade(ing1, ing2);
         ammo = TWO_ING_AMMO;
     }
@@ -213,6 +219,7 @@ public class PoisonVial : IVial
     //  Post: returns how much damage a bullet does based on current stats > 0
     public float getBoltDamage() {
         float boltDamage = BASE_DAMAGE + (DMG_GROWTH * potency);
+        boltDamage *= sideEffect.boltDamageMultiplier();
 
         Debug.Assert(boltDamage >= 0.0f);
         return boltDamage;
@@ -326,9 +333,20 @@ public class PoisonVial : IVial
 
         // Upgrade ammo
         ammo = Mathf.Min(MAX_AMMO, ammo + AMMO_UPGRADE_AMOUNT);
+        upgradeSideEffect();
         vialColor = calculateColor();
 
         return true;
+    }
+
+
+    // Main private helper function to obtain specialization if possible
+    //  Pre: only updates IFF current side effect has no specialization && one of the stats have reached side effect threshold
+    //  Post: Updates the side effects to one that has specialization IFF the requirements in pre-cond holds up
+    private void upgradeSideEffect() {
+        if (sideEffect.getSpecialization() == Specialization.NONE) {
+            sideEffect = new SprayAndPray();
+        }
     }
 
 
@@ -395,5 +413,17 @@ public class PoisonVial : IVial
     //  Post: returns max stat count for this instance
     public int getMaxTotalStat() {
         return MAX_TOTAL_STATS;
+    }
+
+
+    // Main function to get side effect information
+    //  Pre: none
+    //  Post: returns an array in the following format: [name, description]
+    public string[] getSideEffectInfo() {
+        string[] sideEffectInfo = new string[2];
+        sideEffectInfo[0] = sideEffect.getName();
+        sideEffectInfo[1] = sideEffect.getDescription();
+
+        return sideEffectInfo;
     }
 }

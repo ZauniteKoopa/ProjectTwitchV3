@@ -90,4 +90,10 @@ public interface IVial
     //  Post: returns max stat count for this instance
     int getMaxTotalStat();
 
+
+    // Main function to get side effect information
+    //  Pre: none
+    //  Post: returns an array in the following format: [name, description]
+    string[] getSideEffectInfo();
+
 }

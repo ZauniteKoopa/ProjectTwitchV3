@@ -2999,6 +2999,8 @@ MonoBehaviour:
   stickinessStatDisplay: {fileID: 0}
   vialDisplay: {fileID: 1191993608}
   totalStats: {fileID: 0}
+  sideEffectName: {fileID: 0}
+  sideEffectDescription: {fileID: 0}
   canvas: {fileID: 666051070648353471}
   vialHighlight: {fileID: 117113377}
   dropped: 0
@@ -3248,6 +3250,8 @@ MonoBehaviour:
   stickinessStatDisplay: {fileID: 0}
   vialDisplay: {fileID: 1410460700}
   totalStats: {fileID: 0}
+  sideEffectName: {fileID: 0}
+  sideEffectDescription: {fileID: 0}
   canvas: {fileID: 666051070648353471}
   vialHighlight: {fileID: 846442002}
   dropped: 0
@@ -3749,7 +3753,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Side Efffect: Spray and Pray'
+  m_text: 'Side Effect: Spray and Pray'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3776,8 +3780,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3923,6 +3927,8 @@ MonoBehaviour:
   stickinessStatDisplay: {fileID: 9072738375821648758}
   vialDisplay: {fileID: 0}
   totalStats: {fileID: 5528888286435179069}
+  sideEffectName: {fileID: 1770581902}
+  sideEffectDescription: {fileID: 778677434}
 --- !u!1 &1864559682
 GameObject:
   m_ObjectHideFlags: 0
@@ -7470,7 +7476,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'SE: ??????????'
+  m_text: 'Side Effect: Spray and Pray'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7497,8 +7503,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -9152,6 +9158,8 @@ MonoBehaviour:
   stickinessStatDisplay: {fileID: 666051070674050116}
   vialDisplay: {fileID: 0}
   totalStats: {fileID: 0}
+  sideEffectName: {fileID: 666051069908960130}
+  sideEffectDescription: {fileID: 0}
 --- !u!1 &666051070356587601
 GameObject:
   m_ObjectHideFlags: 0
@@ -9717,6 +9725,8 @@ MonoBehaviour:
   stickinessStatDisplay: {fileID: 0}
   vialDisplay: {fileID: 666051070525693062}
   totalStats: {fileID: 0}
+  sideEffectName: {fileID: 0}
+  sideEffectDescription: {fileID: 0}
 --- !u!1 &666051070539244708
 GameObject:
   m_ObjectHideFlags: 0

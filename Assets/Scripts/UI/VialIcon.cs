@@ -21,6 +21,10 @@ public class VialIcon : AbilityIcon
     private Image vialDisplay;
     [SerializeField]
     private ResourceBar totalStats;
+    [SerializeField]
+    private TMP_Text sideEffectName;
+    [SerializeField]
+    private TMP_Text sideEffectDescription;
 
     // Private instance variables
     private IVial vial;
@@ -66,6 +70,16 @@ public class VialIcon : AbilityIcon
             float currentTotalStat = (pv == null) ? 0 : pv.getCurrentTotalStat();
             float currentMaxStat = (pv == null) ? 10 : pv.getMaxTotalStat();
             totalStats.setStatus(currentTotalStat, currentMaxStat);
+        }
+
+        // Get side effect information
+        string[] sideEffectInfo = pv.getSideEffectInfo();
+        if (sideEffectName != null) {
+            sideEffectName.text = "Side Effect: " + sideEffectInfo[0];
+        }
+
+        if (sideEffectDescription != null) {
+            sideEffectDescription.text = sideEffectInfo[1];
         }
     }
 
