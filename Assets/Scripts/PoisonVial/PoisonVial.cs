@@ -59,7 +59,7 @@ public class PoisonVial : IVial
 
     // Side Effect used
     private VirtualSideEffect sideEffect;
-
+    private const int SIDE_EFFECT_UPGRADE_THRESHOLD = 3;
 
 
     // Main raw constructor for a poison vial
@@ -80,10 +80,10 @@ public class PoisonVial : IVial
         reactivity = r;
         stickiness = s;
         currentTotalStats = pot + poi + r + s;
-        vialColor = calculateColor();
 
         ammo = initialAmmo;
         sideEffect = new VirtualSideEffect();
+        vialColor = calculateColor();
     }
 
 
@@ -357,8 +357,50 @@ public class PoisonVial : IVial
     //  Pre: only updates IFF current side effect has no specialization && one of the stats have reached side effect threshold
     //  Post: Updates the side effects to one that has specialization IFF the requirements in pre-cond holds up
     private void upgradeSideEffect() {
+        // Only upgrade is the current side effect has no specialization
         if (sideEffect.getSpecialization() == Specialization.NONE) {
-            sideEffect = new InducedParalysis();
+            // Make a possible list 
+            List<Specialization> possibleSpecializations = new List<Specialization>();
+
+            // Add to the list if certain conditions are met
+            if (potency >= SIDE_EFFECT_UPGRADE_THRESHOLD) {
+                possibleSpecializations.Add(Specialization.POTENCY);
+            }
+
+            if (poison >= SIDE_EFFECT_UPGRADE_THRESHOLD) {
+                possibleSpecializations.Add(Specialization.POISON);
+            }
+
+            if (reactivity >= SIDE_EFFECT_UPGRADE_THRESHOLD) {
+                possibleSpecializations.Add(Specialization.REACTIVITY);
+            }
+
+            if (stickiness >= SIDE_EFFECT_UPGRADE_THRESHOLD) {
+                possibleSpecializations.Add(Specialization.STICKINESS);
+            }
+
+            
+            // If there are stats available, choose a specialization
+            if (possibleSpecializations.Count > 0) {
+                Specialization selectedSpecialization = possibleSpecializations[Random.Range(0, possibleSpecializations.Count)];
+
+                // With specialization in mind, choose a side effect
+                switch (selectedSpecialization) {
+                    case Specialization.POTENCY:
+                        sideEffect = new SprayAndPray();
+                        break;
+                    case Specialization.POISON:
+                        sideEffect = new FasterDecay();
+                        break;
+                    case Specialization.REACTIVITY:
+                        Debug.Log("You got something reactive. It will come eventually");
+                        break;
+                    case Specialization.STICKINESS:
+                        sideEffect = new InducedParalysis();
+                        break;
+                }
+            }
+
         }
     }
 
@@ -397,12 +439,19 @@ public class PoisonVial : IVial
         Color normReactivity = Color.Lerp(Color.black, reactiveColor, 1f / (float)currentTotalStats);
         Color normStickiness = Color.Lerp(Color.black, stickinessColor, 1f / (float)currentTotalStats);
 
+        // Get possible multipliers to emphasize color
+        Specialization vialSpec = sideEffect.getSpecialization();
+        float potencyMultiplier = (vialSpec != Specialization.NONE && vialSpec != Specialization.POTENCY) ? 0.5f : 1.0f;
+        float poisonMultiplier = (vialSpec != Specialization.NONE && vialSpec != Specialization.POISON) ? 0.5f : 1.0f;
+        float reactiveMultiplier = (vialSpec != Specialization.NONE && vialSpec != Specialization.REACTIVITY) ? 0.5f : 1.0f;
+        float stickyMultiplier = (vialSpec != Specialization.NONE && vialSpec != Specialization.STICKINESS) ? 0.5f : 1.0f;
+
         // Mix colors via vector addition
         Vector3 finalColorVector = Vector3.zero;
-        finalColorVector += (new Vector3(normPotency.r, normPotency.g, normPotency.b) * potency);
-        finalColorVector += (new Vector3(normPoison.r, normPoison.g, normPoison.b) * poison);
-        finalColorVector += (new Vector3(normReactivity.r, normReactivity.g, normReactivity.b) * reactivity);
-        finalColorVector += (new Vector3(normStickiness.r, normStickiness.g, normStickiness.b) * stickiness);
+        finalColorVector += (new Vector3(normPotency.r, normPotency.g, normPotency.b) * potency * potencyMultiplier);
+        finalColorVector += (new Vector3(normPoison.r, normPoison.g, normPoison.b) * poison * poisonMultiplier);
+        finalColorVector += (new Vector3(normReactivity.r, normReactivity.g, normReactivity.b) * reactivity * reactiveMultiplier);
+        finalColorVector += (new Vector3(normStickiness.r, normStickiness.g, normStickiness.b) * stickiness * stickyMultiplier);
 
         // Get color components individually
         float redComp = Mathf.Min(finalColorVector.x, 1.0f);
