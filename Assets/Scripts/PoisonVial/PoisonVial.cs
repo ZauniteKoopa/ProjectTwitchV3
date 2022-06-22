@@ -60,6 +60,7 @@ public class PoisonVial : IVial
     // Side Effect used
     private VirtualSideEffect sideEffect;
     private const int SIDE_EFFECT_UPGRADE_THRESHOLD = 3;
+    private const int AURA_THRESHOLD = 4;
 
 
     // Main raw constructor for a poison vial
@@ -390,10 +391,10 @@ public class PoisonVial : IVial
                         sideEffect = new SprayAndPray();
                         break;
                     case Specialization.POISON:
-                        sideEffect = new FasterDecay();
+                        sideEffect = new Contagion();
                         break;
                     case Specialization.REACTIVITY:
-                        Debug.Log("You got something reactive. It will come eventually");
+                        sideEffect = new RadioactiveExpunge();
                         break;
                     case Specialization.STICKINESS:
                         sideEffect = new InducedParalysis();
@@ -457,6 +458,7 @@ public class PoisonVial : IVial
         float redComp = Mathf.Min(finalColorVector.x, 1.0f);
         float greenComp = Mathf.Min(finalColorVector.y, 1.0f);
         float blueComp = Mathf.Min(finalColorVector.z, 1.0f);
+        Color finalColor = new Color(redComp, greenComp, blueComp);
 
         return new Color(redComp, greenComp, blueComp);
     }
@@ -489,5 +491,25 @@ public class PoisonVial : IVial
         specialization = sideEffect.getSpecialization();
 
         return sideEffectInfo;
+    }
+
+
+    // Main function to apply Enemy Aura effects
+    //  Pre: aura != null, auraType is an enum within VirtualSideEffect that specifies what type of effect you're looking for, 6 >= numStacks >= 0
+    //  Post: If auraType matches side effect, apply the appropriate effects
+    public void applyEnemyAuraEffects(EnemyAura aura, AuraType auraType, int numStacks) {
+        Debug.Assert(aura != null && numStacks >= 0 && numStacks <= 6);
+
+        sideEffect.executeAuraDamage(aura, auraType, numStacks, this);
+    }
+
+
+    // If enemy aura can be present. return true;
+    //  Pre: 0 <= numStacks <= 6
+    //  Post: returns whether the enemy aura can be present
+    public bool isEnemyAuraPresent(int numStacks) {
+        Debug.Assert(numStacks >= 0 && numStacks <= 6);
+
+        return numStacks >= AURA_THRESHOLD && sideEffect.isAuraSideEffect();
     }
 }

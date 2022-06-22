@@ -13,7 +13,7 @@ public enum Specialization {
 
 // Enum that considers Aura Requirements
 public enum AuraType {
-    EXPLOSIVE_EXPUNGE,
+    RADIOACTIVE_EXPUNGE,
     CONTAGION
 };
 
@@ -81,6 +81,14 @@ public class VirtualSideEffect
 
 
     // Main function to execute enemy aura with consideration of aura type
-    public virtual void executeAuraDamage(AbstractDamageZone aura, AuraType auraType) {}
+    //  Pre: aura != null, vial != null, 0 <= numStacks <= 6
+    public virtual void executeAuraDamage(EnemyAura aura, AuraType auraType, int numStacks, IVial vial) {}
+
+
+    // Main function to check if this is an aura side effect
+    //  Pre; none
+    public virtual bool isAuraSideEffect() {
+        return false;
+    }
 
 }

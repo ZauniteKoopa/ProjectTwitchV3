@@ -27,11 +27,17 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     private int numPoisonStacks = 0;
     private readonly object poisonLock = new object();
 
-    // Poison timer
+    // Poison timer (MODULARIZE CONTAGION SOMEWHERE ELSE)
     private const int MAX_STACKS = 6;
     private const float MAX_POISON_TICK_TIME = 6.0f;
+    private const float AURA_TICK_TIME = 3.0f;
     private float poisonTimer = 0.0f;
     private Coroutine poisonDotRoutine = null;
+
+    // Enemy AURA
+    [Header("Enemy Aura")]
+    [SerializeField]
+    private EnemyAura enemyAura;
 
     // Loot drops
     [Header("Loot variables")]
@@ -72,6 +78,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
         if (poisonStackDisplay == null) {
             Debug.LogWarning("No poison stack display connected to this unit. Stacks will not be visible to player: " + transform, transform);
+        }
+
+        if (enemyAura == null) {
+            Debug.LogWarning("No Enemy aura detected for this enemy, Aura based side effects of vial will not work", transform);
         }
 
         // Set variables
@@ -129,19 +139,40 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
         // Main tick loop
         bool onLastTick = false;
+        float auraTimer = 0f;
         while (currentPoison != null && !onLastTick) {
 
             // Inflict poison damage and update tick status
             float poisonTickDamage;
+            int currentStacks;
+            IVial tempVial;
+
             lock(poisonLock) {
+                tempVial = currentPoison;
                 poisonTickDamage = currentPoison.getPoisonDamage(numPoisonStacks);
 
                 currentTickDuration = currentPoison.getPoisonDecayRate();
+                currentStacks = numPoisonStacks;
+
                 poisonTimer += currentTickDuration;
+
+                if (currentPoison.isEnemyAuraPresent(numPoisonStacks)) {
+                    auraTimer += currentTickDuration;
+                }
+
                 onLastTick = poisonTimer >= MAX_POISON_TICK_TIME;
             }
 
             damage(poisonTickDamage);
+
+            // Apply aura effects if poison side effect matches "CONTAGION"
+            if (auraTimer >= AURA_TICK_TIME) {
+                auraTimer = 0f;
+
+                if (enemyAura != null && currentPoison.isEnemyAuraPresent(numPoisonStacks)) {
+                    tempVial.applyEnemyAuraEffects(enemyAura, AuraType.CONTAGION, currentStacks);
+                }
+            }
 
             // Wait for the next tick
             if (!onLastTick) {
@@ -158,6 +189,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
             if (poisonStackDisplay != null) {
                 poisonStackDisplay.displayNumber(numPoisonStacks);
+            }
+
+            if (enemyAura != null) {
+                enemyAura.setActive(false);
             }
         }
 
@@ -214,9 +249,19 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             poisonTimer = 0f;
             numPoisonStacks = Mathf.Min(numPoisonStacks + numStacks, MAX_STACKS);
 
+            // Display poison
             if (poisonStackDisplay != null) {
                 poisonStackDisplay.displayNumber(numPoisonStacks);
                 poisonStackDisplay.displayColor(poison.getColor());
+            }
+
+            // Enable enemy aura if aura is allowed to be present
+            if (enemyAura != null && currentPoison.isEnemyAuraPresent(numPoisonStacks)) {
+                enemyAura.setCaskPoison(currentPoison);
+                enemyAura.setActive(true);
+
+            } else if (enemyAura != null) {
+                enemyAura.setActive(false);
             }
 
             // Run poison sequence if none are running at this point
@@ -244,17 +289,28 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 currentPoison = poison;
             }
 
-            // Update poisonDoT Sequence if updated
-            if (poisonDotRoutine == null) {
-                poisonDotRoutine = StartCoroutine(poisonDotLoop());
-            }
-
             // Change poison stacks
             poisonTimer = 0f;
             numPoisonStacks = Mathf.Min(numPoisonStacks + numStacks, MAX_STACKS);
+
+            // Set poison display
             if (poisonStackDisplay != null) {
                 poisonStackDisplay.displayNumber(numPoisonStacks);
                 poisonStackDisplay.displayColor(currentPoison.getColor());
+            }
+
+            // Enable enemy aura if aura is allowed to be present
+            if (enemyAura != null && currentPoison.isEnemyAuraPresent(numPoisonStacks)) {
+                enemyAura.setCaskPoison(currentPoison);
+                enemyAura.setActive(true);
+
+            } else if (enemyAura != null) {
+                enemyAura.setActive(false);
+            }
+
+            // Update poisonDoT Sequence if updated
+            if (poisonDotRoutine == null) {
+                poisonDotRoutine = StartCoroutine(poisonDotLoop());
             }
         }
 
@@ -279,6 +335,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         // Apply damage
         if (tempVial != null) {
             damage(tempVial.getContaminateDamage(tempStacks));
+
+            // Apply aura damage if possible
+            if (enemyAura != null) {
+                tempVial.applyEnemyAuraEffects(enemyAura, AuraType.RADIOACTIVE_EXPUNGE, tempStacks);
+            }
         }
     }
 
@@ -324,6 +385,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
             if (poisonStackDisplay != null) {
                 poisonStackDisplay.displayNumber(numPoisonStacks);
+            }
+
+            if (enemyAura != null) {
+                enemyAura.setActive(false);
             }
         }
 

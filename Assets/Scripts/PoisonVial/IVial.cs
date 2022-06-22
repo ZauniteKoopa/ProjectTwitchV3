@@ -102,4 +102,16 @@ public interface IVial
     //  Post: returns an array in the following format: [name, description], outputs the side effect's specialization as a separate object
     string[] getSideEffectInfo(out Specialization specialization);
 
+
+    // Main function to apply Enemy Aura effects
+    //  Pre: aura != null and auraType is an enum within VirtualSideEffect that specifies what type of effect you're looking for
+    //  Post: If auraType matches side effect, apply the appropriate effects
+    void applyEnemyAuraEffects(EnemyAura aura, AuraType auraType, int numStacks);
+
+
+    // If enemy aura can be present. return true;
+    //  Pre: 0 <= numStacks <= 6
+    //  Post: returns whether the enemy aura can be present
+    bool isEnemyAuraPresent(int numStacks);
+
 }
