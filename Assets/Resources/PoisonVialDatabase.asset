@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd951a6b1be902303b430515b7438f40, type: 3}
   m_Name: PoisonVialDatabase
   m_EditorClassIdentifier: 
+  sideEffectTSV: {fileID: 4900000, guid: e455ee9adcac997c089757c9bd8c9125, type: 3}

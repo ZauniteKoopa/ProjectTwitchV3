@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class RadioactiveExpunge : VirtualSideEffect
 {
-    private const float EXPUNGE_AURA_DAMAGE = 0.5f;
+    private float expungeAuraDamage;
 
 
     // Default constructor
-    public RadioactiveExpunge() : base (
+    public RadioactiveExpunge(string description, Specialization s, float auraDamage) : base (
         "Radioactive Expunge",
-        "Upon contaminating an enemy with 4 or more poison stacks, the enemy will explode, dealing " + EXPUNGE_AURA_DAMAGE + "x the contaminate damage to enemies around them",
-        Specialization.REACTIVITY
-    ) {}
+        description,
+        s
+    ) {
+        expungeAuraDamage = auraDamage;
+    }
 
 
     // Main function to execute enemy aura with consideration of aura type
@@ -21,7 +23,7 @@ public class RadioactiveExpunge : VirtualSideEffect
         Debug.Assert(aura != null && vial != null && 0 <= numStacks && numStacks <= 6);
 
         if (auraType == AuraType.RADIOACTIVE_EXPUNGE) {
-            float additionalExpungeDamage = vial.getContaminateDamage(numStacks) * EXPUNGE_AURA_DAMAGE;
+            float additionalExpungeDamage = vial.getContaminateDamage(numStacks) * expungeAuraDamage;
             aura.damageAllTargets(additionalExpungeDamage);
         }
     }

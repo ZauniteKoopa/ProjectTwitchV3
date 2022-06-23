@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class FasterDecay : VirtualSideEffect
 {
-    private const float DECAY_RATE_REDUCTION = 0.5f;
+    private float decayRateReduction;
 
     // Main constructor
-    public FasterDecay() : base(
+    public FasterDecay(string description, Specialization s, float reduction) : base(
         "Faster Decay",
-        "Poison will effect enemy units at a faster rate! (" + (1f / DECAY_RATE_REDUCTION) +"x the norm) The time that a unit remains poisoned stays the same",
-        Specialization.POISON
-    ) {}
+        description,
+        s
+    ) {
+        decayRateReduction = reduction;
+    }
 
 
     // Main override function: decay rate
     public override float decayRateMultiplier() {
-        return DECAY_RATE_REDUCTION;
+        return decayRateReduction;
     }
 }

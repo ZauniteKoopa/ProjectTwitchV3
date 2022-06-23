@@ -9,6 +9,9 @@ public class PoisonVialDatabase : ScriptableObject
 {
     // Main variables to keep track of set up
     private static bool isSetUp = false;
+    [SerializeField]
+    private TextAsset sideEffectTSV;
+    private const int FIRST_SIDE_EFFECT_ROW = 3;
 
     // Dictionary mapping specialization to List of Side effects
     private static Dictionary<Specialization, List<VirtualSideEffect>> sideEffects;
@@ -25,24 +28,25 @@ public class PoisonVialDatabase : ScriptableObject
                 sideEffects.Add(specialization, new List<VirtualSideEffect>());
             }
 
+            // Add in default none side effect
+            sideEffects[Specialization.NONE].Add(new VirtualSideEffect());
+
+            // From TSV file, Parse out rows and then get the number of rows that must be considered (found in first row)
+            string[] tsvRows = sideEffectTSV.text.Split('\n');
+            string[] firstRow = tsvRows[0].Split('\t');
+            int numSideEffects = int.Parse(firstRow[1]);
+
             // Parse CSV (right now it's hardcoded)
-            VirtualSideEffect curSideEffect = new VirtualSideEffect();
-            sideEffects[Specialization.NONE].Add(curSideEffect);
+            for (int i = FIRST_SIDE_EFFECT_ROW; i < FIRST_SIDE_EFFECT_ROW + numSideEffects; i++) {
+                string[] curSideEffectRow = tsvRows[i].Split('\t');
+                Specialization spec;
+                VirtualSideEffect sideEffect = parseSideEffect(curSideEffectRow, i + 1, out spec);
 
-            curSideEffect = new SprayAndPray();
-            sideEffects[Specialization.POTENCY].Add(curSideEffect);
-
-            curSideEffect = new FasterDecay();
-            sideEffects[Specialization.POISON].Add(curSideEffect);
-
-            curSideEffect = new Contagion();
-            sideEffects[Specialization.POISON].Add(curSideEffect);
-
-            curSideEffect = new RadioactiveExpunge();
-            sideEffects[Specialization.REACTIVITY].Add(curSideEffect);
-
-            curSideEffect = new InducedParalysis();
-            sideEffects[Specialization.STICKINESS].Add(curSideEffect);
+                // If parsed side effect not successful (is null), skip the row. Else, add it to one of the lists
+                if (sideEffect != null) {
+                    sideEffects[spec].Add(sideEffect);
+                }
+            }
         }
     }
 
@@ -56,6 +60,66 @@ public class PoisonVialDatabase : ScriptableObject
         }
 
         List<VirtualSideEffect> specializedList = sideEffects[specialization];
+        Debug.Log(specializedList.Count + " " + specialization);
         return specializedList[UnityEngine.Random.Range(0, specializedList.Count)];
+    }
+
+
+    // Private helper function to parse out a side effect
+    //  Pre: tsvRow.length >= 3, rowNumber > 0
+    //  Post: If successful, returns an actual side effect to be used in database. Else, return null
+    private VirtualSideEffect parseSideEffect(string[] tsvRow, int rowNumber, out Specialization spec) {
+        Debug.Assert(tsvRow.Length >= 3 && rowNumber > 0);
+
+        // Parse basic information
+        string rawName = tsvRow[0];
+        string rawDescription = tsvRow[1];
+        spec = parseSpecialization(tsvRow[2], rowNumber);
+
+        // If spec is NONE, return null
+        if (spec == Specialization.NONE) {
+            return null;
+        }
+
+        // Switch statement concerning Name
+        switch (rawName) {
+            case "Spray and Pray":
+                return new SprayAndPray(rawDescription, spec, float.Parse(tsvRow[4]), float.Parse(tsvRow[6]));
+            case "Contagion":
+                return new Contagion(rawDescription, spec, float.Parse(tsvRow[4]));
+            case "Faster Decay":
+                return new FasterDecay(rawDescription, spec, float.Parse(tsvRow[4]));
+            case "Radioactive Expunge":
+                return new RadioactiveExpunge(rawDescription, spec, float.Parse(tsvRow[4]));
+            case "Induced Paralysis":
+                return new InducedParalysis(rawDescription, spec, float.Parse(tsvRow[4]));
+            default:
+                Debug.LogWarning("Warning: In row " + rowNumber + " name given was not classified. Is this a typo: " + rawName);
+                return null;
+        }
+    }
+
+
+    // Private helper function to parse specialization from a raw string
+    //  Pre: specialization can be any string, rowNumber > 0
+    //  Post: returns the specialization associated with the string. If none found, return NONE;
+    private Specialization parseSpecialization(string specialization, int rowNumber) {
+        Debug.Assert(rowNumber > 0);
+
+        specialization = specialization.ToLower();
+
+        switch (specialization) {
+            case "potency":
+                return Specialization.POTENCY;
+            case "poison":
+                return Specialization.POISON;
+            case "reactivity":
+                return Specialization.REACTIVITY;
+            case "stickiness":
+                return Specialization.STICKINESS;
+            default:
+                Debug.LogWarning("Warning: In Row " + rowNumber +" specialization is misspelled: " + specialization);
+                return Specialization.NONE;
+        }
     }
 }

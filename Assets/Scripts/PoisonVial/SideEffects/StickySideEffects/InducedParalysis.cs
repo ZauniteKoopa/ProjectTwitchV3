@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class InducedParalysis : VirtualSideEffect
 {
-    private const float PARALYSIS_SLOW_MULTIPLIER = 3.5f;
+    private float paralysisSlowMultiplier = 3.5f;
 
 
     // Main constructor
-    public InducedParalysis() : base(
+    public InducedParalysis(string description, Specialization s, float slowMultiplier) : base(
         "Induced Paralysis",
-        "Poison will passivly slow down enemies more (" + PARALYSIS_SLOW_MULTIPLIER + "x the norm)",
-        Specialization.STICKINESS
-    ) {}
+        description,
+        s
+    ) {
+        paralysisSlowMultiplier = slowMultiplier;
+    }
 
 
     // Main function to get the slow rate multiplier: can be overriden
@@ -20,7 +22,7 @@ public class InducedParalysis : VirtualSideEffect
     //  Post: speedFactor will be greater than 0.0f
     public override float modifyStackSpeedFactor(float speedFactor) {
         float slowReduction = 1.0f - speedFactor;
-        slowReduction *= PARALYSIS_SLOW_MULTIPLIER;
+        slowReduction *= paralysisSlowMultiplier;
 
         return 1.0f - slowReduction;
     }
