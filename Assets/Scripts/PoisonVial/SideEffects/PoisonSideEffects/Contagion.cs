@@ -7,7 +7,7 @@ public class Contagion : VirtualSideEffect
     // Default constructor
     public Contagion() : base (
         "Contagion",
-        "Upon contaminating an enemy with 4 or more poison stacks, enemies will emit a poison fog, infecting those around them with one poison stack every 3 seconds",
+        "Upon inflcting an enemy with 4 or more poison stacks, enemies will emit a poison fog, infecting those around them with one poison stack every 3 seconds",
         Specialization.POISON
     ) {}
 

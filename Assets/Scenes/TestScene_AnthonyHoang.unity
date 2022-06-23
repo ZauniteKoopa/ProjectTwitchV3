@@ -844,6 +844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ingredientDatabase: {fileID: 11400000, guid: c3b8a68c4410acc0ea2d37b899e0d594, type: 2}
+  vialDatabase: {fileID: 11400000, guid: 9fca0ccb50a90b560bfec3d5e73d7759, type: 2}
 --- !u!4 &1387591680
 Transform:
   m_ObjectHideFlags: 0

@@ -83,7 +83,7 @@ public class PoisonVial : IVial
         currentTotalStats = pot + poi + r + s;
 
         ammo = initialAmmo;
-        sideEffect = new VirtualSideEffect();
+        sideEffect = PoisonVialDatabase.getRandomSideEffect(Specialization.NONE);
         vialColor = calculateColor();
     }
 
@@ -100,7 +100,7 @@ public class PoisonVial : IVial
         stickiness = 0;
         currentTotalStats = 0;
 
-        sideEffect = new VirtualSideEffect();
+        sideEffect = PoisonVialDatabase.getRandomSideEffect(Specialization.NONE);
         upgrade(ing);
         ammo = ONE_ING_AMMO;
     }
@@ -118,7 +118,7 @@ public class PoisonVial : IVial
         stickiness = 0;
         currentTotalStats = 0;
 
-        sideEffect = new VirtualSideEffect();
+        sideEffect = PoisonVialDatabase.getRandomSideEffect(Specialization.NONE);
         upgrade(ing1, ing2);
         ammo = TWO_ING_AMMO;
     }
@@ -384,22 +384,7 @@ public class PoisonVial : IVial
             // If there are stats available, choose a specialization
             if (possibleSpecializations.Count > 0) {
                 Specialization selectedSpecialization = possibleSpecializations[Random.Range(0, possibleSpecializations.Count)];
-
-                // With specialization in mind, choose a side effect
-                switch (selectedSpecialization) {
-                    case Specialization.POTENCY:
-                        sideEffect = new SprayAndPray();
-                        break;
-                    case Specialization.POISON:
-                        sideEffect = new Contagion();
-                        break;
-                    case Specialization.REACTIVITY:
-                        sideEffect = new RadioactiveExpunge();
-                        break;
-                    case Specialization.STICKINESS:
-                        sideEffect = new InducedParalysis();
-                        break;
-                }
+                sideEffect = PoisonVialDatabase.getRandomSideEffect(selectedSpecialization);
             }
 
         }
