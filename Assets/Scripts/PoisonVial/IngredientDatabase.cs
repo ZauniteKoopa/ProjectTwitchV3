@@ -37,10 +37,10 @@ public class IngredientDatabase : ScriptableObject
 
                 // Parse data: ASSUMES PERCENTAGE FORMAT
                 string ingName = currentRow[0];
-                float potencyChance = float.Parse(currentRow[1].Substring(0, currentRow[1].Length - 1));
-                float poisonChance = float.Parse(currentRow[2].Substring(0, currentRow[2].Length - 1));
-                float reactivityChance = float.Parse(currentRow[3].Substring(0, currentRow[3].Length - 1));
-                float stickinessChance = float.Parse(currentRow[4].Substring(0, currentRow[4].Length - 1));
+                float potencyChance = float.Parse(currentRow[1]);
+                float poisonChance = float.Parse(currentRow[2]);
+                float reactivityChance = float.Parse(currentRow[3]);
+                float stickinessChance = float.Parse(currentRow[4]);
                 string hexColor = currentRow[5];
 
                 // Parse color

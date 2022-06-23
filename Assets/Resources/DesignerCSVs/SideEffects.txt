@@ -3,6 +3,6 @@ Total Number	5
 Name	Description	Type	Other Variables			
 Spray and Pray	40% chance to do critical damage with bolts and cask throws! Critical strikes deal 2.25x more damage than usual	Potency	Crit Chance	40	Crit Multiplier	2.25
 Contagion	Upon inflcting an enemy with 4 or more poison stacks, enemies will emit a poison fog, infecting those around them with one poison stack every 3 seconds	Poison	Poison Spread Time	3		
-Faster Decay	Poison will affect enemy units at a faster rate! (2x the norm) The time that a unit remains poisoned stays the same	Poison	Decay Rate Reduction	0.5		
+Faster Decay	Poison will affect enemy units at a faster rate! (1.50001500015x the norm) The time that a unit remains poisoned stays the same	Poison	Decay Rate Reduction	0.66666		
 Radioactive Expunge	Upon contaminating an enemy with 4 or more poison stacks, the enemy will explode, dealing 0.5x the contaminate damage to enemies around them	Reactivity	Expunge AOE Damage	0.5		
 Induced Paralysis	Poison will passively slow down enemies more (3.5x the norm)	Stickiness	Stack slow multiplier	3.5		

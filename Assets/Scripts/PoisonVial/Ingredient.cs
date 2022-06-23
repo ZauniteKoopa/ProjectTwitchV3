@@ -64,44 +64,25 @@ public class Ingredient
     }
 
 
-    // Main function to craft an ingredient
-    //  Pre: none
-    //  Post: returns a dictionary that maps Poison Vial stats to num of stat gains
-    public Dictionary<string, int> calculateStatGains(int numStats, int ignoredStatIndex = -1) {
+    // Main function to get stat gain
+    //  Pre: ignoredStatIndex is the stat to ignore, refering to this order: [Potency, Poison, Reactivity, Stickiness]. If negative, ignore no stat
+    //  Post: returns an int representing the stat in the index order described in pre-cond
+    public int calculateStatGain(int ignoredStatIndex = -1) {
         // Get the stat probabilities to be used
         float[] usedProbabilities = (ignoredStatIndex < 0) ? statProbabilities : getModifiedProbabilities(ignoredStatIndex);
 
-        // Initialize dictionary
-        Dictionary<string, int> statGains = new Dictionary<string, int>();
-        statGains.Add("Potency", 0);
-        statGains.Add("Poison", 0);
-        statGains.Add("Reactivity", 0);
-        statGains.Add("Stickiness", 0);
+        // Calculate which stat using rng
+        float diceRoll = Random.Range(0f, 1f);
+        int currentStat = 0;
 
-        // Add to stat buffs by rolling the dice twice
-        for (int i = 0; i < numStats; i++) {
-            float diceRoll = Random.Range(0f, 1f);
-            int currentStat = 0;
-
-            // Go down the list of probabilities to see if you get current stat
-            while (currentStat < usedProbabilities.Length && diceRoll > usedProbabilities[currentStat]) {
-                diceRoll -= usedProbabilities[currentStat];
-                currentStat++;
-            }
-
-            Debug.Assert(currentStat < usedProbabilities.Length);
-
-            // Increment dictionary
-            statGains["Potency"] += (currentStat == POTENCY_INDEX) ? 1 : 0;
-            statGains["Poison"] += (currentStat == POISON_INDEX) ? 1 : 0;
-            statGains["Reactivity"] += (currentStat == REACTIVITY_INDEX) ? 1 : 0;
-            statGains["Stickiness"] += (currentStat == STICKINESS_INDEX) ? 1 : 0;
+        // Go down the list of probabilities to see if you get current stat
+        while (currentStat < usedProbabilities.Length && diceRoll > usedProbabilities[currentStat]) {
+            diceRoll -= usedProbabilities[currentStat];
+            currentStat++;
         }
 
-        // Return dictionary
-        Debug.Assert(statGains.ContainsKey("Potency") && statGains.ContainsKey("Poison") && statGains.ContainsKey("Reactivity") && statGains.ContainsKey("Stickiness"));
-        Debug.Assert(statGains["Potency"] + statGains["Poison"] + statGains["Reactivity"] + statGains["Stickiness"] == numStats);
-        return statGains;
+        Debug.Assert(currentStat < usedProbabilities.Length);
+        return currentStat;
     }
 
 
@@ -115,6 +96,12 @@ public class Ingredient
             int percentChance = Mathf.RoundToInt(statProbabilities[i] * 100f);
             probDisplays[i].text = percentChance + "%";
         }
+    }
+
+
+    // Main function to get name
+    public string getName() {
+        return name;
     }
 
 

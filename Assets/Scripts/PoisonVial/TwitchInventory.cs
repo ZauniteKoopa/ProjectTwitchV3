@@ -322,7 +322,11 @@ public class TwitchInventory : ITwitchInventory
         if (targetVial == null) {
             return true;
         }
+
+        int projectedStat = targetVial.getCurrentTotalStat();
+        projectedStat += (ing1 == null) ? 0 : ing1.getNumStatContribution();
+        projectedStat += (ing2 == null) ? 0 : ing2.getNumStatContribution();
  
-        return targetVial.getCurrentTotalStat() <= targetVial.getMaxTotalStat();
+        return projectedStat <= targetVial.getMaxTotalStat();
     }
 }

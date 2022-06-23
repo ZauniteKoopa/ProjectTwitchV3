@@ -46,8 +46,12 @@ public class VialIcon : AbilityIcon
         float maxAmmo = (pv == null) ? 60 : pv.getMaxVialSize();
 
         // Get side effect info
-        Specialization vialSpecialization;
-        string[] sideEffectInfo = pv.getSideEffectInfo(out vialSpecialization);
+        Specialization vialSpecialization = Specialization.NONE;
+        string[] sideEffectInfo = new string[] {"?????", "IT'S EMPTY!"};
+
+        if (pv != null) {
+            sideEffectInfo = pv.getSideEffectInfo(out vialSpecialization);
+        }
 
         // Update Ammo bars
         foreach (ResourceBar ammoBar in ammoBars) {

@@ -10,6 +10,8 @@ public class IngredientDisplay : MonoBehaviour
     [SerializeField]
     private TMP_Text[] probabilityDisplays;
     [SerializeField]
+    private TMP_Text nameDisplay;
+    [SerializeField]
     private Image ingredientImage;
 
 
@@ -19,6 +21,10 @@ public class IngredientDisplay : MonoBehaviour
             gameObject.SetActive(true);
             ing.displayStatChances(probabilityDisplays);
             ingredientImage.color = ing.getColor();
+
+            if (nameDisplay != null) {
+                nameDisplay.text = ing.getName();
+            }
         } else {
             clear();
         }
@@ -35,6 +41,10 @@ public class IngredientDisplay : MonoBehaviour
     public void uiClear() {
         foreach (TMP_Text probDisplay in probabilityDisplays) {
             probDisplay.text = "0%";
+        }
+
+        if (nameDisplay != null) {
+            nameDisplay.text = "Select an Ingredient";
         }
 
         ingredientImage.color = Color.black;

@@ -327,26 +327,41 @@ public class PoisonVial : IVial
             return false;
         }
 
-        // Check if there's any stats to ignore when upgrading (reached single max)
-        int ignoredIndex = -1;
-        ignoredIndex = (potency >= MAX_SINGLE_STAT) ? 0 : ignoredIndex;
-        ignoredIndex = (poison >= MAX_SINGLE_STAT) ? 1 : ignoredIndex;
-        ignoredIndex = (reactivity >= MAX_SINGLE_STAT) ? 2 : ignoredIndex;
-        ignoredIndex = (stickiness >= MAX_SINGLE_STAT) ? 3 : ignoredIndex;
-
         // Calculate stat gains: make sure you either contribute all stats or just enough to hit 
         int numStats = Mathf.Min(Ingredient.NUM_STATS_CONTRIBUTED, MAX_TOTAL_STATS - currentTotalStats);
-        Dictionary<string, int> statGains = ing.calculateStatGains(numStats, ignoredIndex);
 
-        // Upgrade stats
-        potency += statGains["Potency"];
-        poison += statGains["Poison"];
-        reactivity += statGains["Reactivity"];
-        stickiness += statGains["Stickiness"];
-        currentTotalStats += numStats;
+        // Increment by number of stats possible
+        for (int i = 0; i < numStats; i++) {
+            // Check if there's any stats to ignore when upgrading (reached single max)
+            int ignoredIndex = -1;
+            ignoredIndex = (potency >= MAX_SINGLE_STAT) ? 0 : ignoredIndex;
+            ignoredIndex = (poison >= MAX_SINGLE_STAT) ? 1 : ignoredIndex;
+            ignoredIndex = (reactivity >= MAX_SINGLE_STAT) ? 2 : ignoredIndex;
+            ignoredIndex = (stickiness >= MAX_SINGLE_STAT) ? 3 : ignoredIndex;
+
+            // Calculate stat gain
+            int currentStatGain = ing.calculateStatGain(ignoredIndex);
+
+            // Switch on stat gain
+            switch(currentStatGain) {
+                case 0:
+                    potency++;
+                    break;
+                case 1:
+                    poison++;
+                    break;
+                case 2:
+                    reactivity++;
+                    break;
+                case 3:
+                    stickiness++;
+                    break;
+            }
+        }
 
         // Upgrade ammo
         ammo = Mathf.Min(MAX_AMMO, ammo + AMMO_UPGRADE_AMOUNT);
+        currentTotalStats += numStats;
         upgradeSideEffect();
         vialColor = calculateColor();
 
