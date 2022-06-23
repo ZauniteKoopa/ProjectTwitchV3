@@ -60,7 +60,6 @@ public class PoisonVialDatabase : ScriptableObject
         }
 
         List<VirtualSideEffect> specializedList = sideEffects[specialization];
-        Debug.Log(specializedList.Count + " " + specialization);
         return specializedList[UnityEngine.Random.Range(0, specializedList.Count)];
     }
 
