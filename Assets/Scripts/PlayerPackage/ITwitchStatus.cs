@@ -50,4 +50,10 @@ public abstract class ITwitchStatus : ITwitchUnitStatus
     //  Pre: checkpoint != null
     //  Post: character will now be assigned to this checkpoint
     public abstract void setCheckpoint(Checkpoint cp);
+
+
+    // Function to see if you can see the player is visible to enemy
+    //  Pre: enemy != null
+    //  Post: returns whether the enemy can see the player. Does not consider distance or walls inbetween
+    public abstract bool isVisible(Collider enemy);
 }

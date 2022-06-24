@@ -72,6 +72,8 @@ public class PlayerStatus : ITwitchStatus
     private Color buffColor;
     [SerializeField]
     private Color startupColor;
+    [SerializeField]
+    private InvisibilityVisionSensor invisSensor;
     private bool inCamofladge = false;
 
     [Header("Death Sequence")]
@@ -124,6 +126,9 @@ public class PlayerStatus : ITwitchStatus
         mainPlayerUI.displayCaskCooldown(-1.0f, 1.0f);
         mainPlayerUI.displayContaminateCooldown(-1.0f, 1.0f);
         mainPlayerUI.displayCaskAmmoCost(caskCost);
+
+        mainPlayerUI.displayInvisibilityTimer(camoDuration, camoDuration, false);
+        invisSensor.makeVisible(false);
     }
 
 
@@ -395,17 +400,24 @@ public class PlayerStatus : ITwitchStatus
 
         // Start camofladge
         inCamofladge = true;
+        invisSensor.makeVisible(true);
+        mainPlayerUI.displayInvisibilityTimer(camoDuration, camoDuration, true);
         characterRenderer.material.color = stealthColor;
 
+        // Camofladge timer
         float timer = 0f;
         WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
 
         while (timer < camoDuration && inCamofladge) {
             yield return waitFrame;
             timer += Time.fixedDeltaTime;
+            mainPlayerUI.displayInvisibilityTimer(camoDuration - timer, camoDuration, true);
         }
 
+        // camo expires
         inCamofladge = false;
+        invisSensor.makeVisible(false);
+        mainPlayerUI.displayInvisibilityTimer(0, camoDuration, false);
 
         // Apply attack speed buff
         baseAttackSpeedFactor = camoAttackRateBuff;
@@ -431,6 +443,14 @@ public class PlayerStatus : ITwitchStatus
     private void resetCamofladgeBuff() {
         characterRenderer.material.color = normalColor;
         baseAttackSpeedFactor = 1.0f;
+    }
+
+
+    // Function to see if you can see the player is visible to enemy
+    //  Pre: enemy != null
+    //  Post: returns whether the enemy can see the player. Does not consider distance or walls inbetween
+    public override bool isVisible(Collider enemy)  {
+        return !inCamofladge || invisSensor.isInInvisibilityRange(enemy);
     }
 
 

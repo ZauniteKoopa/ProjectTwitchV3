@@ -349,7 +349,7 @@ MonoBehaviour:
   visionMask:
     serializedVersion: 2
     m_Bits: 8
-  forgetDuration: 3
+  forgetDuration: 1.25
   brain: {fileID: 2050020950324005093}
 --- !u!1 &2050020950228161218
 GameObject:

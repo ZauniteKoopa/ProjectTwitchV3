@@ -56,4 +56,10 @@ public abstract class ITwitchPlayerUI : MonoBehaviour
     //  Pre: fadeColor is the solid color that you want to fade to, and duration is the time it takes to fade to that color
     //  Post: screen will fade to fadeColor in duration seconds
     public abstract void executeFadeOut(Color fadeColor, float duration);
+
+
+    // Main function to display invisibility timer
+    //  Pre: timeLeft <= maxTime  && 0 < maxTime && isVisible just references whether or not this timer should be visible
+    //  Post: If isVisible is true, updates timer with current progress. Else, just disable timer
+    public abstract void displayInvisibilityTimer(float timeLeft, float maxTime, bool isVisible);
 }

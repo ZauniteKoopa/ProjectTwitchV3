@@ -18,6 +18,24 @@ public class EnemyVisionSensor : MonoBehaviour
     // Main method to invoke events onto brain
     [SerializeField]
     private IEnemyBehavior brain;
+    private Collider body;
+
+
+    // On awake, error check and get body
+    private void Awake() {
+        if (forgetDuration < 0f) {
+            Debug.LogError("Forget duration for enemy sensor is negative. Should be zero or positive", transform);
+        }
+
+        if (brain == null) {
+            Debug.LogError("Enemy Sensor is not connected to a behavior tree or AI behavior handler", transform);
+        }
+
+        body = brain.GetComponent<Collider>();
+        if (body == null) {
+            Debug.LogError("Enemy sensor not connected to a collider to check with. Ensure that a collider is connected to the part with the brain", brain.transform);
+        }
+    }
 
 
     // On each fixed update frame, 
@@ -66,14 +84,20 @@ public class EnemyVisionSensor : MonoBehaviour
             return false;
         }
 
-        // Get information for the ray
+        // Get information for the ray: you can see the player if there are no barriers between player and enemy
         Vector3 targetPosition = nearbyTarget.transform.position;
         Vector3 rayDir = targetPosition - transform.position;
         float rayDist = rayDir.magnitude;
         rayDir.Normalize();
+        bool seePlayer = !Physics.Raycast(transform.position, rayDir, rayDist, visionMask);
+
+        // If you can see the player, check if the player is visible to consider invisibility
+        if (seePlayer) {
+            seePlayer = nearbyTarget.isVisible(body);
+        }
 
         // Return whether or not ray cast dir met any barriers
-        return !Physics.Raycast(transform.position, rayDir, rayDist, visionMask);
+        return seePlayer;
     }
 
 
