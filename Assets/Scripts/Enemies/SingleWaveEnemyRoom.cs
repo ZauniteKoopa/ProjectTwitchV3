@@ -8,6 +8,8 @@ public class SingleWaveEnemyRoom : IEnemyGroup
     // Private instance variable: collection of enemies to keep track of
     [SerializeField]
     private ITwitchUnitStatus[] enemies;
+    [SerializeField]
+    private IHittable[] hittableStageElements;
     private int numEnemiesLeft;
     public UnityEvent allEnemiesDeadEvent;
     public UnityEvent resetEvent;
@@ -32,6 +34,11 @@ public class SingleWaveEnemyRoom : IEnemyGroup
         numEnemiesLeft = enemies.Length;
         foreach(ITwitchUnitStatus enemy in enemies) {
             enemy.reset();
+        }
+
+        // Reset stage elements
+        foreach(IHittable stageElement in hittableStageElements) {
+            stageElement.reset();
         }
 
         // Reset any doors associated

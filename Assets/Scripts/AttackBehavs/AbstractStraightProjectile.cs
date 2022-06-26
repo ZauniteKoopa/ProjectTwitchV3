@@ -45,12 +45,19 @@ public abstract class AbstractStraightProjectile : MonoBehaviour
     //  MUST only consider solid enviornment (walls) or hurtboxes
     private void OnTriggerEnter(Collider collider) {
         ITwitchUnitStatus colliderHurtbox = collider.GetComponent<ITwitchUnitStatus>();
+        IHittable stageElementHurtbox = collider.GetComponent<IHittable>();
 
         // If hit a valid hurtbox, do damage to enemy. Else, destroy projectile
         if (colliderHurtbox != null) {
             damageTarget(colliderHurtbox);
             onTargetHit();
         } else {
+            // If hit something that's hittable, hit it
+            if (stageElementHurtbox != null) {
+                stageElementHurtbox.hit();
+            }
+
+            // Destroy gameobject afterwards
             Object.Destroy(gameObject);
         }
     }
