@@ -6,8 +6,6 @@ using UnityEngine.Assertions;
 
 public class CrushbotAggroBranch : IEnemyAggroBranch
 {
-    private ITwitchUnitStatus enemyStats;
-
     [Header("Hitbox Variables")]
     [SerializeField]
     private EnemyBodyHitbox bodyHitbox;
@@ -18,7 +16,6 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
     private float surprisedDuration = 0.5f;
     [SerializeField]
     private float pathExpirationInterval = 1.5f;
-    private NavMeshAgent navMeshAgent;
 
     [Header("Recoil Variables")]
     [SerializeField]
@@ -29,23 +26,13 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
     private float recoilKnockbackDuration = 0.5f;
 
 
-    // On awake, initialize
-    private void Awake() {
+    // Main function to do additional initialization for branch
+    //  Pre: none
+    //  Post: sets branch up
+    protected override void initialize() {
         // Error check
         if (bodyHitbox == null) {
             Debug.LogError("No body hitbox connected to crushbot!: " + transform, transform);
-        }
-
-        // Get reference variables and error check
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        enemyStats = GetComponent<ITwitchUnitStatus>();
-
-        if (navMeshAgent == null){
-            Debug.LogError("No nav mesh agent connected to this unit: " + transform, transform);
-        }
-
-        if (enemyStats == null){
-            Debug.LogError("No ITwitchUnitStatus connected to this unit: " + transform, transform);
         }
 
         // Hitbox
@@ -93,43 +80,6 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
         }
     }
 
-    // Main function to get unit to go to a specific location
-    //  Pre: dest is the position on the nav mesh that the unit is trying to go to, pathExpiration is the time it takes for path to be stale (> 0f)
-    //  Post: unit will move to the position gradually, getting out of sequence once reached position. Ends when path expires or hit player
-    protected IEnumerator goToPosition(Vector3 dest, float pathExpiration) {
-        Debug.Assert(pathExpiration > 0f);
-
-        bool pathFound = navMeshAgent.SetDestination(dest);
-        navMeshAgent.isStopped = false;
-        navMeshAgent.speed = enemyStats.getMovementSpeed();
-
-        // If path found, go to path
-        if (pathFound) {
-            // Variable to represent waiting a frame and set starting location
-            WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
-
-            // Wait for path to finish calculating
-            while (navMeshAgent.pathPending) {
-                yield return waitFrame;
-            }
-
-            // Wait for unit to either hit the player or path expiration has hit
-            float currentDistance = Vector3.Distance(dest, transform.position);
-            float timer = 0f;
-            navMeshAgent.speed = enemyStats.getMovementSpeed();
-
-            while (!hitPlayer && timer < pathExpiration) {
-                yield return waitFrame;
-
-                navMeshAgent.speed = enemyStats.getMovementSpeed();
-                currentDistance = Vector3.Distance(dest, transform.position);
-                timer += Time.fixedDeltaTime;
-            }
-        }
-
-        navMeshAgent.isStopped = true;
-    }
-
 
     // Main function to reset the branch when the overall tree gets overriden / switch branches
     public override void reset() {
@@ -140,5 +90,13 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
     // Main event handler function for when this enemy hits the player
     public void onPlayerHitEnemy() {
         hitPlayer = true;
+    }
+
+
+    // Main function to check for stop conditions when going to position
+    //  Pre: none
+    //  Post: returns whether a stop condition has been met
+    protected override bool reachedStopCondition() {
+        return hitPlayer;
     }
 }
