@@ -86,29 +86,29 @@ public class MageAggroBranch : IEnemyAggroBranch
     protected override bool reachedStopCondition() {
         // If enemy is chasing, just see if you're in range. If in sidestep mode, just see if they reached the side step position
         if (chasing) {
-            return isInRange();
+            return isInRange() && navMeshAgent.remainingDistance <= curNavRangedDistance;
         } else {
             return navMeshAgent.remainingDistance <= sideStepNearDistance;
         }
     }
 
 
-    // Main private helper function to check if you're already in range given curNavRangedDistance
-    //  Pre: curNavRangedDistance is set to a nonNegative number
+    // Main private helper function to check if you're already in range given by max and min ranged distance
+    //  Pre: none
     //  Post: checks if player is already in range
     private bool isInRange() {
-        Debug.Assert(curNavRangedDistance > 0.0f);
 
         // Get distance
         Vector3 flattenTgt = new Vector3(target.position.x, transform.position.y, target.position.z);
         float distToPlayer = Vector3.Distance(transform.position, flattenTgt);
+        bool inProximity = distToPlayer <= maxRangedDistance;
 
         // Get raycast
         Vector3 rayDir = (flattenTgt - transform.position).normalized;
         bool seeTarget = !Physics.Raycast(transform.position, rayDir, distToPlayer, eyeSightMask);
 
 
-        return distToPlayer <= curNavRangedDistance && seeTarget;
+        return inProximity && seeTarget;
     }
 
 

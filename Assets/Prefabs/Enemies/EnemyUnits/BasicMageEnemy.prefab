@@ -720,7 +720,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxHealth: 40
-  baseMovementSpeed: 4.5
+  baseMovementSpeed: 5.5
   baseAttack: 5
   enemyAura: {fileID: 2493249463432704148}
   maxLootDrops: 2
@@ -828,7 +828,7 @@ MonoBehaviour:
   eyeSightMask:
     serializedVersion: 2
     m_Bits: 8
-  projectileSpeed: 14
+  projectileSpeed: 13
 --- !u!1 &2455479538349781434
 GameObject:
   m_ObjectHideFlags: 0
