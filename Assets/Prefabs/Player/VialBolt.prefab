@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4625042596327511327}
   - component: {fileID: 6037795676511933546}
   m_Layer: 7
-  m_Name: Bullet
+  m_Name: VialBolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

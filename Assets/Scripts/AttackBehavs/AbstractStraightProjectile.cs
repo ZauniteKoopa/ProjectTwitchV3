@@ -37,6 +37,8 @@ public abstract class AbstractStraightProjectile : MonoBehaviour
     public void setUpMovement(Vector3 projDir, float projSpeed) {
         projectileDir = projDir.normalized;
         projectileSpeed = projSpeed;
+        transform.forward = projDir;
+
         moving = true;
     }
 

@@ -24,13 +24,15 @@ public class MageAggroBranch : IEnemyAggroBranch
 
     [Header("Attacks")]
     [SerializeField]
-    private AbstractStraightProjectile projectile;
+    private BasicEnemyProjectile projectile;
     [SerializeField]
     private float projectileAttackAnticipation = 0.25f;
     [SerializeField]
     private float projectileAttackStop = 0.4f;
     [SerializeField]
     private LayerMask eyeSightMask;
+    [SerializeField]
+    private float projectileSpeed = 14f;
 
 
     // Main function to do additional initialization for branch
@@ -67,6 +69,7 @@ public class MageAggroBranch : IEnemyAggroBranch
             // Face player to attack
             transform.forward = (tgt.position - transform.position).normalized;
             yield return new WaitForSeconds(projectileAttackAnticipation);
+            fireProjectile();
             yield return new WaitForSeconds(projectileAttackStop);
 
         }
@@ -106,5 +109,15 @@ public class MageAggroBranch : IEnemyAggroBranch
 
 
         return distToPlayer <= curNavRangedDistance && seeTarget;
+    }
+
+
+    // Main function to fire the projectile
+    //  Pre: none
+    //  Post: fires a projectile at the direction of the target
+    private void fireProjectile() {
+        BasicEnemyProjectile currentProjectile = Object.Instantiate(projectile, transform.position, Quaternion.identity);
+        currentProjectile.setDamage(enemyStats.getBaseAttack());
+        currentProjectile.setUpMovement(target.position - transform.position, projectileSpeed);
     }
 }

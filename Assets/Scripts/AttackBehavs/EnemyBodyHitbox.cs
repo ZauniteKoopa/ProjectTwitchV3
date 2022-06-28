@@ -8,6 +8,11 @@ public class EnemyBodyHitbox : MonoBehaviour
     public UnityEvent damageTargetEvent;
     private float bodyDamage;
 
+    // On awake, just set basic body damage to 3
+    private void Awake() {
+        bodyDamage = 3f;
+    }
+
     // Main OnTriggerStay event: do damage to unit on every frame
     private void OnTriggerStay(Collider collider) {
         // get appropriate IUnitStatus from this collider
