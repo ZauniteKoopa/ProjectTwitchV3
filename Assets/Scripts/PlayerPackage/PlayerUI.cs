@@ -16,11 +16,11 @@ public class PlayerUI : ITwitchPlayerUI
 
     [Header("Primary Vial UI")]
     [SerializeField]
-    private VialIcon primaryVialDisplay;
+    private VialIcon[] primaryVialDisplays;
 
     [Header("Secondary Vial UI")]
     [SerializeField]
-    private VialIcon secondaryVialDisplay;
+    private VialIcon[] secondaryVialDisplays;
 
     [Header("Ability Icons")]
     [SerializeField]
@@ -78,7 +78,7 @@ public class PlayerUI : ITwitchPlayerUI
     
     // Private helper function to error check vial UI
     private void errorCheckVialUI() {
-        if (primaryVialDisplay == null || secondaryVialDisplay == null) {
+        if (primaryVialDisplays.Length == 0 || secondaryVialDisplays.Length == 0) {
             Debug.LogError("A vial display is missing for default UI", transform);
         }
     }
@@ -118,7 +118,11 @@ public class PlayerUI : ITwitchPlayerUI
         if (caskImage == null) {
             caskImage = caskIcon.GetComponent<Image>();
         }
-        primaryVialDisplay.DisplayVial(primaryVial);
+
+        foreach (VialIcon primaryVialDisplay in primaryVialDisplays) {
+            primaryVialDisplay.DisplayVial(primaryVial);
+        }
+        
         caskImage.color = primaryVial != null ? primaryVial.getColor() : disabledColor;
     }
 
@@ -127,7 +131,9 @@ public class PlayerUI : ITwitchPlayerUI
     //  Pre: secondary vial can either be non-null OR null
     //  Post: updates secondary vial related UI to reflect vial if not null or an empty vial
     public override void displaySecondaryVial(IVial secondaryVial) {
-        secondaryVialDisplay.DisplayVial(secondaryVial);
+        foreach (VialIcon secondaryVialDisplay in secondaryVialDisplays) {
+            secondaryVialDisplay.DisplayVial(secondaryVial);
+        }
     }
 
 
