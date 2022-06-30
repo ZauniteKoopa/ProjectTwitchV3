@@ -75,6 +75,8 @@ public class PlayerStatus : ITwitchStatus
     [SerializeField]
     private InvisibilityVisionSensor invisSensor;
     private bool inCamofladge = false;
+    private int numCamoBuffs = 0;
+    private readonly object camoBuffLock = new object();
 
     [Header("Death Sequence")]
     [SerializeField]
@@ -379,7 +381,7 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: none
     //  Post: return true if you can start camofladge. canno camo if in camo sequence
     public override bool willCamofladge() {
-        if (canCamo) {
+        if (canCamo && runningCamoSequence == null) {
             runningCamoSequence = StartCoroutine(camofladgeSequence());
             return true;
         }
@@ -389,6 +391,8 @@ public class PlayerStatus : ITwitchStatus
 
 
     // Camofladge sequence
+    //  Pre: none
+    //  Post: start camoflage sequence for player
     private IEnumerator camofladgeSequence() {
         canCamo = false;
 
@@ -398,6 +402,41 @@ public class PlayerStatus : ITwitchStatus
         characterRenderer.material.color = startupColor;
         yield return new WaitForSeconds(camoStartup);
 
+        yield return goInvisible();
+
+        // Apply attack speed buff
+        lock (camoBuffLock) {
+            baseAttackSpeedFactor = camoAttackRateBuff;
+            characterRenderer.material.color = buffColor;
+            numCamoBuffs++;
+        }
+
+        Invoke("resetCamofladgeBuff", camoAttackSpeedBuffDuration);
+
+        // Timer to do cooldown IF canCamo is false. If it's true, you killed someone during camo sequence
+        if (!canCamo) {
+            float timer = camoCooldown;
+            WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
+            
+            while (timer > 0f && !canCamo) {
+                yield return waitFrame;
+                timer -= Time.fixedDeltaTime;
+
+                mainPlayerUI.displayCamoCooldown(timer, camoCooldown);
+            }
+            canCamo = true;
+        }
+
+        // Set camo running sequence to false
+        mainPlayerUI.displayCamoCooldown(0, camoCooldown);
+        runningCamoSequence = null;
+    }
+
+
+    // Private helper function for camofladge sequence: main sequence to go invisible
+    //  Pre: none
+    //  Post: you start invisibility sequence of stealth in which you will go invisible for a short amount of time
+    private IEnumerator goInvisible() {
         // Start camofladge
         inCamofladge = true;
         invisSensor.makeVisible(true);
@@ -418,31 +457,20 @@ public class PlayerStatus : ITwitchStatus
         inCamofladge = false;
         invisSensor.makeVisible(false);
         mainPlayerUI.displayInvisibilityTimer(0, camoDuration, false);
-
-        // Apply attack speed buff
-        baseAttackSpeedFactor = camoAttackRateBuff;
-        characterRenderer.material.color = buffColor;
-        Invoke("resetCamofladgeBuff", camoAttackSpeedBuffDuration);
-
-        // Timer to do cooldown
-        timer = camoCooldown;
-
-        while (timer > 0f) {
-            yield return waitFrame;
-            timer -= Time.fixedDeltaTime;
-
-            mainPlayerUI.displayCamoCooldown(timer, camoCooldown);
-        }
-
-        runningCamoSequence = null;
-        canCamo = true;
     }
 
 
     // Main function to reset camofladge buff
     private void resetCamofladgeBuff() {
-        characterRenderer.material.color = normalColor;
-        baseAttackSpeedFactor = 1.0f;
+        lock (camoBuffLock) {
+            numCamoBuffs--;
+
+            // If this was the last camo buff affecting unit, turn back to normal
+            if (numCamoBuffs <= 0) {
+                characterRenderer.material.color = normalColor;
+                baseAttackSpeedFactor = 1.0f;
+            }
+        }
     }
 
 
@@ -458,7 +486,7 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: Stealth resets IFF the player has killed at least one unit with expunge
     //  Post: stealth cooldown will reset. HOWEVER, cannot use camofladge when stealth sequence already running
     public override void onStealthReset() {
-        Debug.Log("stealth cooldown reset");
+        canCamo = true;
     }
 
 

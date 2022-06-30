@@ -9485,8 +9485,8 @@ MonoBehaviour:
   boltCost: 1
   caskCost: 3
   caskCooldown: 10
-  camoCooldown: 15
-  contaminateCooldown: 9
+  camoCooldown: 16
+  contaminateCooldown: 8
   camoAttackRateBuff: 1.5
   camoMovementSpeedBuff: 1.2
   camoDuration: 12
@@ -10456,6 +10456,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e3b25e76ea4f9fe2831468a0be33a07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetKilledEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &666051070525693056
 GameObject:
   m_ObjectHideFlags: 0
