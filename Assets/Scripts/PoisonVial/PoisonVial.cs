@@ -24,10 +24,10 @@ public class PoisonVial : IVial
     private const int AMMO_UPGRADE_AMOUNT = 10;
 
     // Colors for color mixing
-    private static Color potentColor = Color.red;
+    private static Color potentColor = Color.magenta;
     private static Color poisonColor = Color.green;
-    private static Color reactiveColor = new Color(0.5f, 0f, 1f);
-    private static Color stickinessColor = Color.blue;
+    private static Color reactiveColor = Color.yellow;
+    private static Color stickinessColor = Color.cyan;
     private Color vialColor;
 
     // CSV Parsing variables
@@ -434,33 +434,67 @@ public class PoisonVial : IVial
 
     // Funtion to calculate color so that you don't have to constantly calculate color every time color is accessed
     private Color calculateColor() {
-        // Get interpolated colors with a magnitude of 1/10 the color spectrum distance (white to black)
-        Color normPotency = Color.Lerp(Color.black, potentColor, 1f / (float)currentTotalStats);
-        Color normPoison = Color.Lerp(Color.black, poisonColor, 1f / (float)currentTotalStats);
-        Color normReactivity = Color.Lerp(Color.black, reactiveColor, 1f / (float)currentTotalStats);
-        Color normStickiness = Color.Lerp(Color.black, stickinessColor, 1f / (float)currentTotalStats);
+        Color maxColor;
+        int maxStatValue;
 
-        // Get possible multipliers to emphasize color
-        Specialization vialSpec = sideEffect.getSpecialization();
-        float potencyMultiplier = (vialSpec != Specialization.NONE && vialSpec != Specialization.POTENCY) ? 0.5f : 1.0f;
-        float poisonMultiplier = (vialSpec != Specialization.NONE && vialSpec != Specialization.POISON) ? 0.5f : 1.0f;
-        float reactiveMultiplier = (vialSpec != Specialization.NONE && vialSpec != Specialization.REACTIVITY) ? 0.5f : 1.0f;
-        float stickyMultiplier = (vialSpec != Specialization.NONE && vialSpec != Specialization.STICKINESS) ? 0.5f : 1.0f;
+        // switch statement for getting max color
+        switch (sideEffect.getSpecialization()) {
+            case Specialization.POTENCY:
+                maxStatValue = potency;
+                maxColor = potentColor;
+                break;
 
-        // Mix colors via vector addition
-        Vector3 finalColorVector = Vector3.zero;
-        finalColorVector += (new Vector3(normPotency.r, normPotency.g, normPotency.b) * potency * potencyMultiplier);
-        finalColorVector += (new Vector3(normPoison.r, normPoison.g, normPoison.b) * poison * poisonMultiplier);
-        finalColorVector += (new Vector3(normReactivity.r, normReactivity.g, normReactivity.b) * reactivity * reactiveMultiplier);
-        finalColorVector += (new Vector3(normStickiness.r, normStickiness.g, normStickiness.b) * stickiness * stickyMultiplier);
+            case Specialization.POISON:
+                maxStatValue = poison;
+                maxColor = poisonColor;
+                break;
 
-        // Get color components individually
-        float redComp = Mathf.Min(finalColorVector.x, 1.0f);
-        float greenComp = Mathf.Min(finalColorVector.y, 1.0f);
-        float blueComp = Mathf.Min(finalColorVector.z, 1.0f);
-        Color finalColor = new Color(redComp, greenComp, blueComp);
+            case Specialization.REACTIVITY:
+                maxStatValue = reactivity;
+                maxColor = reactiveColor;
+                break;
+            
+            case Specialization.STICKINESS:
+                maxStatValue = stickiness;
+                maxColor = stickinessColor;
+                break;
+            
+            default:
+                // Find the max stat value
+                maxStatValue = potency;
+                maxStatValue = Mathf.Max(maxStatValue, poison);
+                maxStatValue = Mathf.Max(maxStatValue, reactivity);
+                maxStatValue = Mathf.Max(maxStatValue, stickiness);
 
-        return new Color(redComp, greenComp, blueComp);
+                // Get the list of colors to mix
+                List<Color> maxStatColors = new List<Color>();
+                if (potency == maxStatValue) {
+                    maxStatColors.Add(potentColor);
+                }
+
+                if (poison == maxStatValue) {
+                    maxStatColors.Add(poisonColor);
+                }
+
+                if (reactivity == maxStatValue) {
+                    maxStatColors.Add(reactiveColor);
+                }
+
+                if (stickiness == maxStatValue) {
+                    maxStatColors.Add(stickinessColor);
+                }
+
+                // Get max color
+                maxColor = maxStatColors[0];
+                for (int i = 1; i < maxStatColors.Count; i++) {
+                    maxColor = (maxColor + maxStatColors[i]) / 2f;
+                }
+                
+                break;
+        }
+
+        // Return the linear interpolation of that color
+        return Color.Lerp(Color.gray, maxColor, (float)maxStatValue / (float)MAX_SINGLE_STAT);
     }
 
 
