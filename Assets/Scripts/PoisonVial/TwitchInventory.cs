@@ -329,4 +329,13 @@ public class TwitchInventory : ITwitchInventory
  
         return projectedStat <= targetVial.getMaxTotalStat();
     }
+
+
+    // Main function to update vial displays
+    //  Pre: none
+    //  Post: makes sure that the vial icons displaying vials in this inventory are up to date
+    public override void updateVialIcons() {
+        mainPlayerUI.displayPrimaryVial(primaryVial);
+        mainPlayerUI.displaySecondaryVial(secondaryVial);
+    }
 }

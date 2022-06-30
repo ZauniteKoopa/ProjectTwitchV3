@@ -723,8 +723,8 @@ MonoBehaviour:
   baseMovementSpeed: 5.5
   baseAttack: 5
   enemyAura: {fileID: 2493249463432704148}
-  maxLootDrops: 2
-  minLootDrops: 2
+  maxLootDrops: 1
+  minLootDrops: 1
   possibleLoot:
   - {fileID: 8328922755592592645, guid: 740c7a2ed8a1fcf1b99c4da6c026ea3d, type: 3}
   - {fileID: 2958984616688009020, guid: 433a457c7004df31b8bb277100d7da9b, type: 3}
@@ -1456,6 +1456,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e0f6827e121e9b76885d397ea0af4a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetKilledEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8712341754291270548
 GameObject:
   m_ObjectHideFlags: 0

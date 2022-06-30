@@ -101,6 +101,7 @@ public class CraftInventory : MonoBehaviour
         } else {
             inInventory = false;
             Time.timeScale = prevTimeScale;
+            twitchInventory.updateVialIcons();
         }
 
         gameObject.SetActive(inInventory);

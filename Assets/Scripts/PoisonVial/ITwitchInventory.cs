@@ -93,4 +93,9 @@ public abstract class ITwitchInventory : MonoBehaviour
     //  Post: returns a bool to check if you can really upgrade, if vial is null, returns true immediately
     public abstract bool canUpgradeVial(Ingredient ing1, Ingredient ing2, bool isPrimary);
 
+
+    // Main function to update vial displays
+    //  Pre: none
+    //  Post: makes sure that the vial icons displaying vials in this inventory are up to date
+    public abstract void updateVialIcons();
 }
