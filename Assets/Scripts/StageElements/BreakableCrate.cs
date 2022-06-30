@@ -9,6 +9,7 @@ public class BreakableCrate : IHittable
     //  Post: activates an object on hit
     public override void hit() {
         gameObject.SetActive(false);
+        onBreak();
     }
 
 
@@ -18,4 +19,8 @@ public class BreakableCrate : IHittable
     public override void reset() {
         gameObject.SetActive(true);
     }
+
+
+    // Main function to handle when it breaks
+    public virtual void onBreak() {}
 }

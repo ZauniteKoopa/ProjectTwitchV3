@@ -22,8 +22,8 @@ public class TwitchInventory : ITwitchInventory
     // On awake, initialize backend instance variables
     private void Start() {
         // Initialize variables
-        primaryVial = new PoisonVial(2, 0, 2, 0, 40);
-        secondaryVial = new PoisonVial(0, 2, 0, 2, 40);
+        // primaryVial = new PoisonVial(2, 0, 2, 0, 40);
+        // secondaryVial = new PoisonVial(0, 2, 0, 2, 40);
         ingredientInventory = new Dictionary<Ingredient, int>();
 
         // Display UI
