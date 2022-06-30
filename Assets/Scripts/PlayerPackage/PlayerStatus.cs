@@ -454,6 +454,13 @@ public class PlayerStatus : ITwitchStatus
     }
 
 
+    // Event handler for when stealth has been reset.
+    //  Pre: Stealth resets IFF the player has killed at least one unit with expunge
+    //  Post: stealth cooldown will reset. HOWEVER, cannot use camofladge when stealth sequence already running
+    public override void onStealthReset() {
+        Debug.Log("stealth cooldown reset");
+    }
+
 
     // --------------------------
     //  Functions to be implemented if want Twitch to share some features with enemies (poison damage, contaminate burst, etc)

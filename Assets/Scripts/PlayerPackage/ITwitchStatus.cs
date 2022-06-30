@@ -56,4 +56,10 @@ public abstract class ITwitchStatus : ITwitchUnitStatus
     //  Pre: enemy != null
     //  Post: returns whether the enemy can see the player. Does not consider distance or walls inbetween
     public abstract bool isVisible(Collider enemy);
+
+
+    // Event handler for when stealth has been reset.
+    //  Pre: Stealth resets IFF the player has killed at least one unit with expunge
+    //  Post: stealth cooldown will reset. HOWEVER, cannot use camofladge when stealth sequence already running
+    public abstract void onStealthReset();
 }

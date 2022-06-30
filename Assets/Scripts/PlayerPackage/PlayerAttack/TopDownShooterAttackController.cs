@@ -80,6 +80,11 @@ public class TopDownShooterAttackController : IAttackModule
         if (twitchPlayerStatus == null) {
             Debug.LogError("Player's status script component not connected to attack package for " + playerCharacter, playerCharacter);
         }
+
+        // Connect to contaminate zone kill event to stealth reset
+        if (contaminateZone != null) {
+            contaminateZone.targetKilledEvent.AddListener(twitchPlayerStatus.onStealthReset);
+        }
     }
 
 
