@@ -140,4 +140,4 @@ MonoBehaviour:
   - {fileID: 440725830103984159, guid: 08343bdce02726b049c2a6d5bc61c11b, type: 3}
   - {fileID: 2043418166772776471, guid: 58c7919f4eafed2f898ccfa29c36f3d0, type: 3}
   - {fileID: 8446025507433597091, guid: d3fec0edf4e1216369a83098b67b7b96, type: 3}
-  numLootDrops: 4
+  numLootDrops: 2
