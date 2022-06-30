@@ -9478,8 +9478,8 @@ MonoBehaviour:
   characterRenderer: {fileID: 666051070171789298}
   deathColor: {r: 0, g: 0, b: 0, a: 1}
   baseMovementSpeed: 12
-  maxHealth: 10
-  invincibilityFrameDuration: 0.6
+  maxHealth: 40
+  invincibilityFrameDuration: 1.5
   checkpoint: {fileID: 0}
   mainPlayerUI: {fileID: 666051070539244718}
   boltCost: 1
