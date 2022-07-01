@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class TopDownShooterAttackController : IAttackModule
 {
@@ -48,7 +49,7 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Constaminate zone
     [SerializeField]
-    private AbstractDamageZone contaminateZone;
+    private ContaminateZone contaminateZone;
 
     // Variables for aiming
     private Vector2 inputMouseCoordinates;
@@ -84,6 +85,8 @@ public class TopDownShooterAttackController : IAttackModule
         // Connect to contaminate zone kill event to stealth reset
         if (contaminateZone != null) {
             contaminateZone.targetKilledEvent.AddListener(twitchPlayerStatus.onStealthReset);
+            twitchPlayerStatus.contaminateReadyEvent.AddListener(contaminateZone.onContaminateReady);
+            twitchPlayerStatus.contaminateUsedEvent.AddListener(contaminateZone.onContaminateUsed);
         }
     }
 

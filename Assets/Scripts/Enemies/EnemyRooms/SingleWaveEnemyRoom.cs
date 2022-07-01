@@ -17,7 +17,7 @@ public class SingleWaveEnemyRoom : IEnemyGroup
     private readonly object enemyLock = new object();
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         numEnemiesLeft = enemies.Length;
 

@@ -8,6 +8,8 @@ public class ContaminateZone : AbstractDamageZone
     private MeshRenderer meshRender;
     [SerializeField]
     private ContaminateVisionTrigger visionTrigger;
+    private bool poisonedEnemiesNearby = false;
+    private bool contaminateReady = true;
 
 
     // Initializing variables and event connections
@@ -61,13 +63,34 @@ public class ContaminateZone : AbstractDamageZone
 
     // Main event handler for when someone starts getting poisoned nearby
     private void onEnemyPoisonNearby() {
-        meshRender.enabled = true;
+        poisonedEnemiesNearby = true;
+        updateVisibility();
     }
 
 
     // Main event handler for when someone starts getting poisoned nearby
     private void onAllPoisonedEnemiesGone() {
-        meshRender.enabled = false;
+        poisonedEnemiesNearby = false;
+        updateVisibility();
+    }
+
+    // Main event handler for when contaminate ability is ready
+    public void onContaminateReady() {
+        contaminateReady = true;
+        updateVisibility();
+    }
+
+
+    // Main event handler for when contamin ability is used
+    public void onContaminateUsed() {
+        contaminateReady = false;
+        updateVisibility();
+    }
+
+
+    // Private helper function to update visibility
+    private void updateVisibility() {
+        meshRender.enabled = contaminateReady && poisonedEnemiesNearby;
     }
 
 }

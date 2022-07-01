@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 
 public class PlayerStatus : ITwitchStatus
 {
@@ -360,6 +361,7 @@ public class PlayerStatus : ITwitchStatus
     // Cask cooldown sequence
     private IEnumerator contaminateCooldownSequence() {
         audioManager.playContaminateSound();
+        contaminateUsedEvent.Invoke();
 
         float timer = contaminateCooldown;
         WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
@@ -373,6 +375,7 @@ public class PlayerStatus : ITwitchStatus
             mainPlayerUI.displayContaminateCooldown(timer, contaminateCooldown);
         }
 
+        contaminateReadyEvent.Invoke();
         runningContaminateSequence = null;
         canContaminate = true;
     }

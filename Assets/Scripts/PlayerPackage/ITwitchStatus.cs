@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class ITwitchStatus : ITwitchUnitStatus
 {
+    public UnityEvent contaminateUsedEvent;
+    public UnityEvent contaminateReadyEvent;
+
     // Main method to get access to primary poison vial
     //  Pre: none
     //  Post: returns the primary poison vial that player is using, CAN BE NULL
