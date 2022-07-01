@@ -25,8 +25,10 @@ public abstract class AbstractDamageZone : MonoBehaviour
 
         if (colliderTgt != null) {
             lock(targetsLock) {
-                inRangeTargets.Add(colliderTgt);
-                unitEnterZone(colliderTgt);
+                if (!inRangeTargets.Contains(colliderTgt)) {
+                    inRangeTargets.Add(colliderTgt);
+                    unitEnterZone(colliderTgt);
+                }
             }
         }
     }
@@ -38,8 +40,10 @@ public abstract class AbstractDamageZone : MonoBehaviour
 
         if (colliderTgt != null) {
             lock(targetsLock) {
-                inRangeTargets.Remove(colliderTgt);
-                unitExitZone(colliderTgt);
+                if (inRangeTargets.Contains(colliderTgt)) {
+                    inRangeTargets.Remove(colliderTgt);
+                    unitExitZone(colliderTgt);  
+                }
             }
         }
     }
@@ -50,13 +54,29 @@ public abstract class AbstractDamageZone : MonoBehaviour
     //  Post: applies damage to all targets, if at least one of the targets die, trigger targetKilledEvent
     public void damageAllTargets(float dmg) {
         int numTargetsKilled = 0;
+        List<ITwitchUnitStatus> damagedTargets = new List<ITwitchUnitStatus>();
 
-        // Go through each target to apply damage
-        foreach (ITwitchUnitStatus target in inRangeTargets) {
+        // Go through the original list to make a copy
+        lock (targetsLock) {
+            foreach (ITwitchUnitStatus target in inRangeTargets) {
+                damagedTargets.Add(target);
+            }
+        }
+
+        // Go through the copy to damage targets
+        foreach (ITwitchUnitStatus target in damagedTargets) {
             damageTarget(target, dmg);
 
+            // Check if target is alive afterwards
             if (!target.isAlive()) {
                 numTargetsKilled++;
+
+                // Remove from list if you haven't already
+                lock (targetsLock) {
+                    if (inRangeTargets.Contains(target)) {
+                        inRangeTargets.Remove(target);
+                    }
+                }
             }
         }
 
