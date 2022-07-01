@@ -27,6 +27,7 @@ public abstract class AbstractDamageZone : MonoBehaviour
             lock(targetsLock) {
                 if (!inRangeTargets.Contains(colliderTgt)) {
                     inRangeTargets.Add(colliderTgt);
+                    colliderTgt.unitDeathEvent.AddListener(onTargetDeath);
                     unitEnterZone(colliderTgt);
                 }
             }
@@ -42,6 +43,7 @@ public abstract class AbstractDamageZone : MonoBehaviour
             lock(targetsLock) {
                 if (inRangeTargets.Contains(colliderTgt)) {
                     inRangeTargets.Remove(colliderTgt);
+                    colliderTgt.unitDeathEvent.RemoveListener(onTargetDeath);
                     unitExitZone(colliderTgt);  
                 }
             }
@@ -70,19 +72,25 @@ public abstract class AbstractDamageZone : MonoBehaviour
             // Check if target is alive afterwards
             if (!target.isAlive()) {
                 numTargetsKilled++;
-
-                // Remove from list if you haven't already
-                lock (targetsLock) {
-                    if (inRangeTargets.Contains(target)) {
-                        inRangeTargets.Remove(target);
-                    }
-                }
             }
         }
 
         // Trigger event if at least 1 enemy is killed
         if (numTargetsKilled > 0) {
             targetKilledEvent.Invoke();
+        }
+    }
+
+
+    // Main event handler function for when enemy dies
+    private void onTargetDeath(IUnitStatus status) {
+        ITwitchUnitStatus twitchUnitStatus = status as ITwitchUnitStatus;
+
+        lock (targetsLock) {
+            if (twitchUnitStatus != null && inRangeTargets.Contains(twitchUnitStatus)) {
+                inRangeTargets.Remove(twitchUnitStatus);
+                unitExitZone(twitchUnitStatus);  
+            }
         }
     }
 

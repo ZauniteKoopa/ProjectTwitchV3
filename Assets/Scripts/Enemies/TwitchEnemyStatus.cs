@@ -85,6 +85,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         }
 
         // Set variables
+        unitDeathEvent = new UnitDelegate();
         spawnPoint = transform.position;
         curHealth = maxHealth;
         if (healthBar != null) {
@@ -349,7 +350,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     private void death() {
         Debug.Assert(possibleLoot.Length != 0);
 
-        unitDeathEvent.Invoke();
+        unitDeathEvent.Invoke(this);
         gameObject.SetActive(false);
         
         // Only drop loot if this unit drops loot

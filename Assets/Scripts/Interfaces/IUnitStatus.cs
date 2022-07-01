@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+public class UnitDelegate : UnityEvent<IUnitStatus> {};
+
 public abstract class IUnitStatus : MonoBehaviour
 {
     // Main death event
-    public UnityEvent unitDeathEvent;
+    //public UnityEvent unitDeathEvent;
+    public UnitDelegate unitDeathEvent;
     
 
     // Main method to get current movement speed considering all speed status effects on unit

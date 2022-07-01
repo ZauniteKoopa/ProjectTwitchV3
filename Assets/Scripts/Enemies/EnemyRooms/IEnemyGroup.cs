@@ -11,7 +11,7 @@ public abstract class IEnemyGroup : MonoBehaviour
 
 
     // Event handler function to handle when an enemy belong to this room has been killed
-    //  Pre: an enemy belong to this enemy group has been killed
+    //  Pre: an enemy belong to this enemy group has been killed, represented by its sent status
     //  Post: keeps track of how many enemies killed. If all enemies killed currently, do something
-    public abstract void onEnemyKilled();
+    public abstract void onEnemyKilled(IUnitStatus status);
 }
