@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class ITwitchUnitStatus : IUnitStatus
 {
+    // Main events for when enemy starts getting poisoned
+    public UnityEvent unitPoisonedEvent;
+    public UnityEvent unitCurePoisonEvent;
+
     // Main method to do poison damage (specific to twitch damage)
     //  initDmg: initial, immediate damage applied to enemy, > 0
     //  poison: PoisonVial that will be inflicted to this enemy.

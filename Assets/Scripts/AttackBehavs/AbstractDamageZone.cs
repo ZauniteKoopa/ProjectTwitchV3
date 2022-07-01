@@ -16,7 +16,12 @@ public abstract class AbstractDamageZone : MonoBehaviour
     // On awake, initialize
     private void Awake() {
         inRangeTargets = new HashSet<ITwitchUnitStatus>();
+        initialize();
     }
+
+
+    // Any additional initialization
+    protected virtual void initialize() {}
 
     
     // On trigger enter, see if you hit ITwitchUnitStatus, if so, add it to targets
@@ -89,6 +94,7 @@ public abstract class AbstractDamageZone : MonoBehaviour
         lock (targetsLock) {
             if (twitchUnitStatus != null && inRangeTargets.Contains(twitchUnitStatus)) {
                 inRangeTargets.Remove(twitchUnitStatus);
+                status.unitDeathEvent.RemoveListener(onTargetDeath);
                 unitExitZone(twitchUnitStatus);  
             }
         }

@@ -24,9 +24,10 @@ public class InvisibilityVisionSensor : MonoBehaviour
     private void OnTriggerEnter(Collider collider) {
         ITwitchUnitStatus testEnemy = collider.GetComponent<ITwitchUnitStatus>();
 
-        if (testEnemy != null) {
-            lock (enemyLock) {
+        lock (enemyLock) {
+            if (testEnemy != null && !inRangeEnemies.Contains(collider)) {
                 inRangeEnemies.Add(collider);
+                testEnemy.unitDeathEvent.AddListener(onTargetDeath);
             }
         }
     }
@@ -39,6 +40,20 @@ public class InvisibilityVisionSensor : MonoBehaviour
         lock (enemyLock) {
             if (testEnemy != null && inRangeEnemies.Contains(collider)) {
                 inRangeEnemies.Remove(collider);
+                testEnemy.unitDeathEvent.RemoveListener(onTargetDeath);
+            }
+        }
+    }
+
+
+    // Main event handler function for when enemy dies
+    private void onTargetDeath(IUnitStatus status) {
+        Collider unitCollider = status.GetComponent<Collider>();
+
+        lock (enemyLock) {
+            if (unitCollider != null && inRangeEnemies.Contains(unitCollider)) {
+                inRangeEnemies.Remove(unitCollider);
+                status.unitDeathEvent.RemoveListener(onTargetDeath);
             }
         }
     }

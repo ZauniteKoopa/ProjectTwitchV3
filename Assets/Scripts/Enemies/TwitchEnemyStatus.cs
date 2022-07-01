@@ -183,6 +183,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
         // At the end of the last tick, get rid of poison
         lock (poisonLock) {
+            // Only invoke event if currentPoison not null before
+            if (currentPoison != null) {
+                unitCurePoisonEvent.Invoke();
+            }
+
             poisonTimer = 0f;
             numPoisonStacks = 0;
             currentPoison = null;
@@ -245,6 +250,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
         // Change poison and start poison DoT loop if it hadn't started already
         lock(poisonLock) {
+            // If you were not poisoned before, trigger poisoned event
+            if (currentPoison == null) {
+                unitPoisonedEvent.Invoke();
+            }
+
             // Edit poison variables
             currentPoison = poison;
             poisonTimer = 0f;
@@ -285,8 +295,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
         // Edit poison variables
         lock(poisonLock) {
-            // Change poison
+            // Change poison ONLY IF you were not poisoned
             if (currentPoison == null) {
+                unitPoisonedEvent.Invoke();
                 currentPoison = poison;
             }
 
@@ -378,6 +389,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         lock (poisonLock) {
             if (poisonDotRoutine != null) {
                 StopCoroutine(poisonDotRoutine);
+            }
+
+            // Only invoke event if currentPoison not null before
+            if (currentPoison != null) {
+                unitCurePoisonEvent.Invoke();
             }
 
             numPoisonStacks = 0;

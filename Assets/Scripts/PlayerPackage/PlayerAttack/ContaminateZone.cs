@@ -4,6 +4,32 @@ using UnityEngine;
 
 public class ContaminateZone : AbstractDamageZone
 {
+    // Initialize access to the mesh renderer
+    private MeshRenderer meshRender;
+    [SerializeField]
+    private ContaminateVisionTrigger visionTrigger;
+
+
+    // Initializing variables and event connections
+    protected override void initialize() {
+        // Set up mesh renderer
+        meshRender = GetComponent<MeshRenderer>();
+        if (meshRender == null) {
+            Debug.LogError("No mesh renderer connected");
+        }
+
+        meshRender.enabled = false;
+
+        // Set up visionTrigger
+        if (visionTrigger == null) {
+            Debug.LogError("No contaminate vision trigger connected");
+        }
+
+        visionTrigger.enemyPoisonFoundEvent.AddListener(onEnemyPoisonNearby);
+        visionTrigger.enemyPoisonGoneEvent.AddListener(onAllPoisonedEnemiesGone);
+    }
+
+
     // Protected method to override that does damage effect to inRangeTarget
     protected override void damageTarget(ITwitchUnitStatus tgt, float dmg) {
         tgt.contaminate();
@@ -31,4 +57,17 @@ public class ContaminateZone : AbstractDamageZone
 
         return canUse;
     }
+
+
+    // Main event handler for when someone starts getting poisoned nearby
+    private void onEnemyPoisonNearby() {
+        meshRender.enabled = true;
+    }
+
+
+    // Main event handler for when someone starts getting poisoned nearby
+    private void onAllPoisonedEnemiesGone() {
+        meshRender.enabled = false;
+    }
+
 }
