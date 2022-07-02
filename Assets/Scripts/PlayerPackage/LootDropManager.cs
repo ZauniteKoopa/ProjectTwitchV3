@@ -19,6 +19,8 @@ public class LootDropManager : MonoBehaviour
     private ITwitchInventory inventory;
     [SerializeField]
     private IngredientDisplay tgtLootDisplay;
+    [SerializeField]
+    private IUnitStatus unitStatus;
 
     // Other modules
     [Header("Other input modules")]
@@ -203,7 +205,7 @@ public class LootDropManager : MonoBehaviour
 
     // Event handler function for when player presses collect
     public void onPickUpPress(InputAction.CallbackContext value) {
-        if (value.started && !uiModule.inMenu()) {
+        if (value.started && !uiModule.inMenu() && unitStatus.canMove()) {
             collectTargetedLoot(inventory);
         }
     }
@@ -211,7 +213,7 @@ public class LootDropManager : MonoBehaviour
 
     // Event handler function for when player presses collect
     public void onPrimaryCraftPress(InputAction.CallbackContext value) {
-        if (value.started && !uiModule.inMenu()) {
+        if (value.started && !uiModule.inMenu() && unitStatus.canMove()) {
             quickCraftTargetedLoot(inventory, true);
         }
     }
@@ -219,7 +221,7 @@ public class LootDropManager : MonoBehaviour
 
     // Event handler function for when player presses collect
     public void onSecondaryCraftPress(InputAction.CallbackContext value) {
-        if (value.started && !uiModule.inMenu()) {
+        if (value.started && !uiModule.inMenu() && unitStatus.canMove()) {
             quickCraftTargetedLoot(inventory, false);
         }
     }

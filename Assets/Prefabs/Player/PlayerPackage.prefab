@@ -4870,6 +4870,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 1211125687}
   tgtLootDisplay: {fileID: 8969537588608592055}
+  unitStatus: {fileID: 1209925082}
   uiModule: {fileID: 8019651722588253373}
 --- !u!1 &1953484008
 GameObject:
@@ -9592,6 +9593,12 @@ MonoBehaviour:
   unitCurePoisonEvent:
     m_PersistentCalls:
       m_Calls: []
+  contaminateUsedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  contaminateReadyEvent:
+    m_PersistentCalls:
+      m_Calls: []
   characterRenderer: {fileID: 666051070171789298}
   deathColor: {r: 0, g: 0, b: 0, a: 1}
   baseMovementSpeed: 12
@@ -9604,6 +9611,7 @@ MonoBehaviour:
   caskCooldown: 10
   camoCooldown: 16
   contaminateCooldown: 8
+  craftingTime: 0.75
   camoAttackRateBuff: 1.5
   camoMovementSpeedBuff: 1.2
   camoDuration: 12
@@ -9629,6 +9637,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainPlayerUI: {fileID: 666051070539244718}
+  playerCraftEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &666051070187809534
 GameObject:
   m_ObjectHideFlags: 0
