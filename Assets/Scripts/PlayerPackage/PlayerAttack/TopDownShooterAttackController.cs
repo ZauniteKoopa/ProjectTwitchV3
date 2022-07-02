@@ -100,7 +100,7 @@ public class TopDownShooterAttackController : IAttackModule
         // Keep firing projectiles until you stopped holding left click
         while (firingPrimaryAttack) {
 
-            if (!uiModule.inMenu() && twitchPlayerStatus.isAlive()) {
+            if (!uiModule.inMenu() && twitchPlayerStatus.canMove()) {
                 // Create projectile. If poison vial is null, just do weak arrow
                 Transform currentProjectile = Object.Instantiate(primaryBullet, playerCharacter.position, Quaternion.identity);
                 PoisonVialBolt projBehav = currentProjectile.GetComponent<PoisonVialBolt>();
@@ -124,6 +124,7 @@ public class TopDownShooterAttackController : IAttackModule
     // Invokable function to start cask throwing sequence
     private IEnumerator secondaryAttackSequence(IVial curPoison) {
         caskSequenceRunning = true;
+        twitchPlayerStatus.stun(true);
 
         yield return new WaitForSeconds(caskAnticipationTime);
 
@@ -132,6 +133,7 @@ public class TopDownShooterAttackController : IAttackModule
         Vector3 caskDestination = getCaskDestination();
         currentCask.GetComponent<VenomCask>().launch(caskDestination, curPoison);
 
+        twitchPlayerStatus.stun(false);
         caskSequenceRunning = false;
     }
 
@@ -159,7 +161,7 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Event handler method for when secondary fire button click
     public void onSecondaryButtonClick(InputAction.CallbackContext value) {
-        if (value.started && !caskSequenceRunning && !uiModule.inMenu() && twitchPlayerStatus.isAlive()) {
+        if (value.started && !caskSequenceRunning && !uiModule.inMenu() && twitchPlayerStatus.canMove()) {
             // Check if you're actually able to throw a cask
             IVial curCask = twitchPlayerStatus.getPrimaryVial();
             bool usedCask = twitchPlayerStatus.consumePrimaryVialCask();
@@ -176,7 +178,7 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Event handler for contaminate press
     public void onContaminatePress(InputAction.CallbackContext value) {
-        if (value.started && contaminateZone != null && !uiModule.inMenu() && twitchPlayerStatus.isAlive()) {
+        if (value.started && contaminateZone != null && !uiModule.inMenu() && twitchPlayerStatus.canMove()) {
             // Check if there are any enemies in range and infected
             if (contaminateZone.canUseAbility()) {
 
@@ -195,7 +197,7 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Event handler for camofladge press
     public void onCamofladgePress(InputAction.CallbackContext value) {
-        if (value.started && twitchPlayerStatus.isAlive()) {
+        if (value.started && twitchPlayerStatus.canMove()) {
             bool camofladgeSuccess = twitchPlayerStatus.willCamofladge();
 
             if (!camofladgeSuccess) {
@@ -250,9 +252,7 @@ public class TopDownShooterAttackController : IAttackModule
     //  Pre: none
     //  Post: returns a float that tells how much movement speed should be reduced by currently
     public override float getMovementSpeedFactor() {
-        if (caskSequenceRunning) {
-            return 0.0f;
-        } else if (primaryAttackSequenceRunning) {
+        if (primaryAttackSequenceRunning) {
             return primaryAttackMoveReduction;
         } else {
             return 1.0f;

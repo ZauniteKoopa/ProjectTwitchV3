@@ -7,6 +7,11 @@ public class UnitDelegate : UnityEvent<IUnitStatus> {};
 
 public abstract class IUnitStatus : MonoBehaviour
 {
+    // Main function to handle the movement
+    private int stunners = 0;
+    private readonly object stunLock = new object();
+
+
     // Main death event
     //public UnityEvent unitDeathEvent;
     public UnitDelegate unitDeathEvent;
@@ -47,4 +52,28 @@ public abstract class IUnitStatus : MonoBehaviour
     //  Pre: speedFactor > 0.0f. If less than 1, slow. Else, fast
     //  Post: speed is affected accordingly
     public abstract void affectSpeed(float speedFactor);
+
+
+    // Main function to check if a unit canMove or not
+    //  Pre: none
+    //  Post: returns whether a unit can move or not
+    public bool canMove() {
+        bool isStunned;
+
+        lock (stunLock) {
+            isStunned = stunners > 0;
+        }
+
+        return !isStunned && isAlive();
+    }
+
+
+    // Main function to enable or disable movement. Can handle multiple requests
+    //  Pre: a boolean that represents enabling (true) or disabling (false) movement
+    //  Post: if the unit is not stunned and true, stun. If unit is stunned and false, unstun UNLESS another stun is active
+    public void stun(bool willStun) {
+        lock (stunLock) {
+            stunners += (willStun) ? 1 : -1;
+        }
+    }
 }
