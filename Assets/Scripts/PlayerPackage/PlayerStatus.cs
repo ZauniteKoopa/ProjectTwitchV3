@@ -505,11 +505,7 @@ public class PlayerStatus : ITwitchStatus
     // Sequence for handling crafting
     private IEnumerator craftSequence() {
         stun(true);
-        Debug.Log("Craft Start");
-
         yield return inventory.craftSequence(craftingTime);
-
-        Debug.Log("Craft done!");
         stun(false);
     }
 

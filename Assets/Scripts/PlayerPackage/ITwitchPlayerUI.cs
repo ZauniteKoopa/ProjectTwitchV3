@@ -62,4 +62,10 @@ public abstract class ITwitchPlayerUI : MonoBehaviour
     //  Pre: timeLeft <= maxTime  && 0 < maxTime && isVisible just references whether or not this timer should be visible
     //  Post: If isVisible is true, updates timer with current progress. Else, just disable timer
     public abstract void displayInvisibilityTimer(float timeLeft, float maxTime, bool isVisible);
+
+
+    // Main function to display invisibility timer
+    //  Pre: timeLeft <= maxTime  && 0 < maxTime && isVisible just references whether or not this timer should be visible
+    //  Post: If isVisible is true, updates timer with current progress. Else, just disable timer
+    public abstract void displayCraftingTimer(float timeLeft, float maxTime, bool isVisible);
 }

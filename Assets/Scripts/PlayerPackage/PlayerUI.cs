@@ -49,6 +49,10 @@ public class PlayerUI : ITwitchPlayerUI
     [SerializeField]
     private ResourceBar camoTimerBar;
 
+    [Header("Crafting Sequence")]
+    [SerializeField]
+    private ResourceBar craftTimerBar;
+
 
     // Awake function to error check
     private void Awake() {
@@ -232,12 +236,28 @@ public class PlayerUI : ITwitchPlayerUI
     //  Pre: timeLeft <= maxTime  && 0 < maxTime && isVisible just references whether or not this timer should be visible
     //  Post: If isVisible is true, updates timer with current progress. Else, just disable timer
     public override void displayInvisibilityTimer(float timeLeft, float maxTime, bool isVisible) {
-        Debug.Assert(timeLeft <= maxTime && maxTime > 0);
+        Debug.Assert(maxTime > 0f);
 
+        timeLeft = Mathf.Min(timeLeft, maxTime);
         camoTimerBar.gameObject.SetActive(isVisible);
 
         if (isVisible) {
             camoTimerBar.setStatus(timeLeft, maxTime);
+        }
+    }
+
+
+    // Main function to display invisibility timer
+    //  Pre: timeLeft <= maxTime  && 0 < maxTime && isVisible just references whether or not this timer should be visible
+    //  Post: If isVisible is true, updates timer with current progress. Else, just disable timer
+    public override void displayCraftingTimer(float timeLeft, float maxTime, bool isVisible) {
+        Debug.Assert(maxTime > 0f);
+        timeLeft = Mathf.Min(timeLeft, maxTime);
+
+        craftTimerBar.gameObject.SetActive(isVisible);
+
+        if (isVisible) {
+            craftTimerBar.setStatus(timeLeft, maxTime);
         }
     }
 }

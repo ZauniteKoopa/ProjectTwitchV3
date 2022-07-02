@@ -30,6 +30,7 @@ public class TwitchInventory : ITwitchInventory
         // Display UI
         mainPlayerUI.displaySecondaryVial(secondaryVial);
         mainPlayerUI.displayPrimaryVial(primaryVial);
+        mainPlayerUI.displayCraftingTimer(0.0f, 10.0f, false);
     }
 
 
@@ -386,9 +387,20 @@ public class TwitchInventory : ITwitchInventory
     public override IEnumerator craftSequence(float craftTime) {
         Debug.Assert(craftTime > 0.0f);
 
-        yield return new WaitForSeconds(craftTime);
+        // Timer sequence
+        float timer = 0.0f;
+        WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
+        mainPlayerUI.displayCraftingTimer(0.0f, craftTime, true);
+
+        while (timer <= craftTime) {
+            yield return waitFrame;
+
+            timer += Time.deltaTime;
+            mainPlayerUI.displayCraftingTimer(timer, craftTime, true);
+        }
 
         // Update all possible UI
+        mainPlayerUI.displayCraftingTimer(0.0f, craftTime, false);
         mainPlayerUI.displaySecondaryVial(secondaryVial);
         mainPlayerUI.displayPrimaryVial(primaryVial);
     }
