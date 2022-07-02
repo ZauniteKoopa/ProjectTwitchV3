@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 
 public class TwitchInventory : ITwitchInventory
 {
@@ -17,13 +18,13 @@ public class TwitchInventory : ITwitchInventory
     [Header("UI Elements")]
     [SerializeField]
     private ITwitchPlayerUI mainPlayerUI;
+    public UnityEvent playerCraftEvent;
+
 
 
     // On awake, initialize backend instance variables
     private void Start() {
         // Initialize variables
-        // primaryVial = new PoisonVial(2, 0, 2, 0, 40);
-        // secondaryVial = new PoisonVial(0, 2, 0, 2, 40);
         ingredientInventory = new Dictionary<Ingredient, int>();
 
         // Display UI
@@ -163,7 +164,12 @@ public class TwitchInventory : ITwitchInventory
             } else {
                 success = primaryVial.upgrade(ing);
             }
+        }
 
+        // If successful and UnityEvent != null, trigger event
+        if (success && playerCraftEvent != null) {
+            playerCraftEvent.Invoke();
+        } else if (playerCraftEvent == null) {
             mainPlayerUI.displayPrimaryVial(primaryVial);
         }
 
@@ -185,7 +191,12 @@ public class TwitchInventory : ITwitchInventory
             } else {
                 success = primaryVial.upgrade(ing1, ing2);
             }
+        }
 
+        // If successful and UnityEvent != null, trigger event
+        if (success && playerCraftEvent != null) {
+            playerCraftEvent.Invoke();
+        } else if (playerCraftEvent == null) {
             mainPlayerUI.displayPrimaryVial(primaryVial);
         }
 
@@ -207,6 +218,13 @@ public class TwitchInventory : ITwitchInventory
             primaryVial = new PoisonVial(ing1, ing2);
         }
 
+        // If successful and UnityEvent != null, trigger event
+        if (playerCraftEvent != null) {
+            playerCraftEvent.Invoke();
+        } else {
+            mainPlayerUI.displayPrimaryVial(primaryVial);
+        }
+
         return true;
     }
 
@@ -225,7 +243,12 @@ public class TwitchInventory : ITwitchInventory
             } else {
                 success = secondaryVial.upgrade(ing);
             }
+        }
 
+        // If successful and UnityEvent != null, trigger event
+        if (success && playerCraftEvent != null) {
+            playerCraftEvent.Invoke();
+        } else if (playerCraftEvent == null) {
             mainPlayerUI.displaySecondaryVial(secondaryVial);
         }
 
@@ -251,6 +274,13 @@ public class TwitchInventory : ITwitchInventory
             mainPlayerUI.displaySecondaryVial(secondaryVial);
         }
 
+        // If successful and UnityEvent != null, trigger event
+        if (success && playerCraftEvent != null) {
+            playerCraftEvent.Invoke();
+        } else if (playerCraftEvent == null) {
+            mainPlayerUI.displaySecondaryVial(secondaryVial);
+        }
+
         return success;
     }
 
@@ -267,6 +297,13 @@ public class TwitchInventory : ITwitchInventory
             secondaryVial = new PoisonVial(currentIng);
         } else {
             secondaryVial = new PoisonVial(ing1, ing2);
+        }
+
+        // If successful and UnityEvent != null, trigger event
+        if (playerCraftEvent != null) {
+            playerCraftEvent.Invoke();
+        } else {
+            mainPlayerUI.displaySecondaryVial(secondaryVial);
         }
 
         return true;
@@ -331,11 +368,28 @@ public class TwitchInventory : ITwitchInventory
     }
 
 
-    // Main function to update vial displays
-    //  Pre: none
-    //  Post: makes sure that the vial icons displaying vials in this inventory are up to date
-    public override void updateVialIcons() {
-        mainPlayerUI.displayPrimaryVial(primaryVial);
+    // Main function to add craft event listener
+    //  Pre: eventHandler does not equal null
+    //  Post: eventHandler will listen to craftEvent of inventory. Will also initialize event if it has not been initialized yet
+    public override void addCraftListener(UnityAction eventHandler) {
+        if (playerCraftEvent == null) {
+            playerCraftEvent = new UnityEvent();
+        }
+
+        playerCraftEvent.AddListener(eventHandler);
+    }
+
+
+    // Main function to run craftingSequence
+    //  Pre: float to determin how long the crafting lasts > 0, NO CONCONCURRENT CRAFTING
+    //  Post: runs crafting sequence
+    public override IEnumerator craftSequence(float craftTime) {
+        Debug.Assert(craftTime > 0.0f);
+
+        yield return new WaitForSeconds(craftTime);
+
+        // Update all possible UI
         mainPlayerUI.displaySecondaryVial(secondaryVial);
+        mainPlayerUI.displayPrimaryVial(primaryVial);
     }
 }

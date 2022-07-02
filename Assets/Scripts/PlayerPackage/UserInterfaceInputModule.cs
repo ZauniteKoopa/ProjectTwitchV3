@@ -49,7 +49,7 @@ public class UserInterfaceInputModule : MonoBehaviour
 
     // Main function to handle inventory button press
     public void onInventoryKeyInputPress(InputAction.CallbackContext value) {
-        if (value.started && !pauseMenu.inPauseState() && playerStatus.isAlive()) {
+        if (value.started && !pauseMenu.inPauseState() && playerStatus.canMove()) {
             inventoryUI.onInventoryButtonPress();
         }
     }

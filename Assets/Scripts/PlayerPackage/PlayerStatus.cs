@@ -48,6 +48,8 @@ public class PlayerStatus : ITwitchStatus
     private float camoCooldown = 15f;
     [SerializeField]
     private float contaminateCooldown = 9f;
+    [SerializeField]
+    private float craftingTime = 1.25f;
 
     private bool canCask = true;
     private bool canCamo = true;
@@ -116,6 +118,7 @@ public class PlayerStatus : ITwitchStatus
 
         curHealth = maxHealth;
         normalColor = characterRenderer.material.color;
+        inventory.addCraftListener(onPlayerCraft);
         unitDeathEvent = new UnitDelegate();
         initDefaultUI();
     }
@@ -491,6 +494,23 @@ public class PlayerStatus : ITwitchStatus
     //  Post: stealth cooldown will reset. HOWEVER, cannot use camofladge when stealth sequence already running
     public override void onStealthReset() {
         canCamo = true;
+    }
+
+
+    // Private event handler function for inventory crafting
+    private void onPlayerCraft() {
+        StartCoroutine(craftSequence());
+    }
+
+    // Sequence for handling crafting
+    private IEnumerator craftSequence() {
+        stun(true);
+        Debug.Log("Craft Start");
+
+        yield return inventory.craftSequence(craftingTime);
+
+        Debug.Log("Craft done!");
+        stun(false);
     }
 
 

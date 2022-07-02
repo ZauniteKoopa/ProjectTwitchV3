@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class ITwitchInventory : MonoBehaviour
 {
@@ -94,8 +95,14 @@ public abstract class ITwitchInventory : MonoBehaviour
     public abstract bool canUpgradeVial(Ingredient ing1, Ingredient ing2, bool isPrimary);
 
 
-    // Main function to update vial displays
-    //  Pre: none
-    //  Post: makes sure that the vial icons displaying vials in this inventory are up to date
-    public abstract void updateVialIcons();
+    // Main function to add craft event listener
+    //  Pre: eventHandler does not equal null
+    //  Post: eventHandler will listen to craftEvent of inventory. Will also initialize event if it has not been initialized yet
+    public abstract void addCraftListener(UnityAction eventHandler);
+
+
+    // Main function to run craftingSequence
+    //  Pre: float to determin how long the crafting lasts > 0, NO CONCONCURRENT CRAFTING
+    //  Post: runs crafting sequence
+    public abstract IEnumerator craftSequence(float craftTime);
 }

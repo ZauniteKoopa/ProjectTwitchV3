@@ -1522,6 +1522,10 @@ PrefabInstance:
       propertyPath: checkpoint
       value: 
       objectReference: {fileID: 804063192}
+    - target: {fileID: 1209925082, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
+      propertyPath: craftingTime
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 666051070539244708, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: m_Name
       value: PlayerPackage

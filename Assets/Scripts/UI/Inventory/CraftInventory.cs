@@ -83,6 +83,16 @@ public class CraftInventory : MonoBehaviour
     }
 
 
+    // Private instance function to close Inventory UI
+    //  Pre: closes inventory UI and resumes game
+    //  Post: finishes UI
+    private void closeInventory() {
+        inInventory = false;
+        Time.timeScale = prevTimeScale;
+        gameObject.SetActive(false);
+    }
+
+
     // Main event handler for when using the tab button
     //  Post: open or closes the inventory depending on the inInventory state
     public void onInventoryButtonPress() {
@@ -95,16 +105,13 @@ public class CraftInventory : MonoBehaviour
             Time.timeScale = 0.0f;
 
             // Open Inventory so that UI has latest version
+            gameObject.SetActive(true);
             openInventory();
 
         // If you are in inventory, close inventory
         } else {
-            inInventory = false;
-            Time.timeScale = prevTimeScale;
-            twitchInventory.updateVialIcons();
+            closeInventory();
         }
-
-        gameObject.SetActive(inInventory);
     }
 
 
@@ -252,6 +259,7 @@ public class CraftInventory : MonoBehaviour
         craftVialSlot.Reset();
 
         updateInfo();
+        closeInventory();
     }
 
 
