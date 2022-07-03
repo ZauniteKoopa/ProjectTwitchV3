@@ -15,11 +15,6 @@ public interface IVial
     int getAmmoLeft();
 
 
-    // Function to get access to the max vial size (It's a constant)
-    //  Post: return value is > 0
-    int getMaxVialSize();
-
-
     // Function to get access to how much immediate damage a bolt / bullet does
     //  Post: returns how much damage a bullet does based on current stats > 0
     float getBoltDamage();

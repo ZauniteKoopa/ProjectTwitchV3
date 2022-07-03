@@ -18,10 +18,10 @@ public class PoisonVial : IVial
 
     // Ammo management
     private int ammo;
-    private const int MAX_AMMO = 60;
-    private const int ONE_ING_AMMO = 40;
-    private const int TWO_ING_AMMO = 60;
-    private const int AMMO_UPGRADE_AMOUNT = 10;
+    private static int MAX_AMMO = 60;
+    private static int ONE_ING_AMMO = 40;
+    private static int TWO_ING_AMMO = 50;
+    private static int AMMO_UPGRADE_AMOUNT = 10;
 
     // Colors for color mixing
     private static Color potentColor = Color.magenta;
@@ -73,7 +73,7 @@ public class PoisonVial : IVial
         Debug.Assert(s >= 0 && s <= 5);
 
         if (!csvParsed) {
-            parseBaseVialCSV();
+            Debug.LogError("Poison Vial base stats not set up, did you forget a loader?");
         }
 
         potency = pot;
@@ -91,7 +91,7 @@ public class PoisonVial : IVial
     // Main constructor to craft a poison vial from only 1 ingredient
     public PoisonVial(Ingredient ing) {
         if (!csvParsed) {
-            parseBaseVialCSV();
+            Debug.LogError("Poison Vial base stats not set up, did you forget a loader?");
         }
 
         potency = 0;
@@ -109,7 +109,7 @@ public class PoisonVial : IVial
     // Main constructor to craft a poison vial from only 1 ingredient
     public PoisonVial(Ingredient ing1, Ingredient ing2) {
         if (!csvParsed) {
-            parseBaseVialCSV();
+            Debug.LogError("Poison Vial base stats not set up, did you forget a loader?");
         }
 
         potency = 0;
@@ -125,66 +125,109 @@ public class PoisonVial : IVial
 
 
     // Private helper function to parse the CSV
-    //  Pre: csvParsed = false
+    //  Pre: none
     //  Post: static variables have been updated to reflect csv values
-    private void parseBaseVialCSV() {
-        Debug.Assert(!csvParsed);
+    public static void parseBaseVialCSV() {
+        // Only load if csv wasn't parsed
+        if (!csvParsed) {
+            // Load CSV text file
+            TextAsset csvFile = Resources.Load<TextAsset>("DesignerCSVs/" + csvFileName);
+            if (csvFile == null) {
+                Debug.LogError("Resources/DesignerCSVs/" + csvFileName + " not found to set Vial stats");
+            }
 
-        // Load CSV text file
-        TextAsset csvFile = Resources.Load<TextAsset>("DesignerCSVs/" + csvFileName);
-        if (csvFile == null) {
-            Debug.LogError("Resources/DesignerCSVs/" + csvFileName + " not found to set Vial stats");
+            // Parse out rows and then get the number of rows that must be considered (found in first row)
+            string[] csvRows = csvFile.text.Split('\n');
+            string[] firstRow = csvRows[0].Split(',');
+            int numRowsConsidered = int.Parse(firstRow[1]);
+
+            // Go through the list accordingly
+            for (int r = 0; r < numRowsConsidered; r++) {
+                // Parse pow
+                int rowIndex = 2 + r;
+                string[] currentRow = csvRows[rowIndex].Split(',');
+
+                // Get information from row
+                string currentAttribute = currentRow[0];
+                float curRowBase = float.Parse(currentRow[1]);
+                float curRowGrowth = float.Parse(currentRow[2]);
+
+                // Connect the information to current stats based on attributes
+                switch(currentAttribute) {
+                    case "BoltDamage":
+                        BASE_DAMAGE = curRowBase;
+                        DMG_GROWTH = curRowGrowth;
+                        break;
+                    case "Poison DoT":
+                        BASE_POISON = curRowBase;
+                        POISON_GROWTH = curRowGrowth;
+                        break;
+                    case "BaseContaminate":
+                        BASE_CONTAMINATE_DMG = curRowBase;
+                        BASE_CON_GROWTH = curRowGrowth;
+                        break;
+                    case "ContaminateStackGrowth":
+                        BASE_STACK_DMG = curRowBase;
+                        STACK_DMG_GROWTH = curRowGrowth;
+                        break;
+                    case "StackSlowness":
+                        BASE_SLOWNESS = curRowBase;
+                        SLOWNESS_GROWTH = curRowGrowth;
+                        break;
+                    case "CaskSlowness":
+                        BASE_CASK_SLOWNESS = curRowBase;
+                        CASK_SLOWNESS_GROWTH = curRowGrowth;
+                        break;
+                    default:
+                        Debug.LogError("No matching attribute on row " + (rowIndex + 1) + " of Resources/DesignerCSVs/" + csvFileName);
+                        break;
+                }
+            }
+
+            // Collect ammo info
+            parseAmmoInformation(numRowsConsidered, csvRows);
+
+            csvParsed = true;
         }
+    }
 
-        // Parse out rows and then get the number of rows that must be considered (found in first row)
-        string[] csvRows = csvFile.text.Split('\n');
-        string[] firstRow = csvRows[0].Split(',');
-        int numRowsConsidered = int.Parse(firstRow[1]);
 
-        // Go through the list accordingly
-        for (int r = 0; r < numRowsConsidered; r++) {
+    // Private helper function to parse ammo information
+    //  Pre: numStatRowsConsidered >= 0 and csvRows.Length >= numStatRowsConsidered + 6
+    //  Post: static ammo variables are set
+    private static void parseAmmoInformation(int numStatRowsConsidered, string[] csvRows) {
+        Debug.Assert(numStatRowsConsidered >= 0 && csvRows.Length >= numStatRowsConsidered + 6);
+
+        for (int r = 0; r < 4; r++) {
             // Parse pow
-            int rowIndex = 2 + r;
+            int rowIndex = 2 + numStatRowsConsidered + r;
             string[] currentRow = csvRows[rowIndex].Split(',');
+            int curRowNumber = int.Parse(currentRow[1]);
 
-            // Get information from row
-            string currentAttribute = currentRow[0];
-            float curRowBase = float.Parse(currentRow[1]);
-            float curRowGrowth = float.Parse(currentRow[2]);
-
-            // Connect the information to current stats based on attributes
-            switch(currentAttribute) {
-                case "BoltDamage":
-                    BASE_DAMAGE = curRowBase;
-                    DMG_GROWTH = curRowGrowth;
+            // Switch statement for ammo information
+            switch (r) {
+                case 0:
+                    ONE_ING_AMMO = curRowNumber;
                     break;
-                case "Poison DoT":
-                    BASE_POISON = curRowBase;
-                    POISON_GROWTH = curRowGrowth;
+                
+                case 1:
+                    TWO_ING_AMMO = curRowNumber;
                     break;
-                case "BaseContaminate":
-                    BASE_CONTAMINATE_DMG = curRowBase;
-                    BASE_CON_GROWTH = curRowGrowth;
+                
+                case 2:
+                    AMMO_UPGRADE_AMOUNT = curRowNumber;
                     break;
-                case "ContaminateStackGrowth":
-                    BASE_STACK_DMG = curRowBase;
-                    STACK_DMG_GROWTH = curRowGrowth;
+                
+                case 3:
+                    MAX_AMMO = curRowNumber;
                     break;
-                case "StackSlowness":
-                    BASE_SLOWNESS = curRowBase;
-                    SLOWNESS_GROWTH = curRowGrowth;
-                    break;
-                case "CaskSlowness":
-                    BASE_CASK_SLOWNESS = curRowBase;
-                    CASK_SLOWNESS_GROWTH = curRowGrowth;
-                    break;
+                
                 default:
-                    Debug.LogError("No matching attribute on row " + (rowIndex + 1) + " of Resources/DesignerCSVs/" + csvFileName);
+                    Debug.LogError("Invalid row");
                     break;
             }
-        }
 
-        csvParsed = true;
+        }
     }
 
 
@@ -211,7 +254,7 @@ public class PoisonVial : IVial
 
 
     // Function to get access to the max vial size (It's a constant)
-    public int getMaxVialSize() {
+    public static int getMaxVialSize() {
         Debug.Assert(MAX_AMMO >= 0);
         return MAX_AMMO;
     }

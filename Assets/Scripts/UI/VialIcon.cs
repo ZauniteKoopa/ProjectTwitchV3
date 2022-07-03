@@ -43,7 +43,7 @@ public class VialIcon : AbilityIcon
 
         // Get ammo information
         float displayedAmmo = (pv == null) ? 0 : pv.getAmmoLeft();
-        float maxAmmo = (pv == null) ? 60 : pv.getMaxVialSize();
+        float maxAmmo = PoisonVial.getMaxVialSize();
 
         // Get side effect info
         Specialization vialSpecialization = Specialization.NONE;
