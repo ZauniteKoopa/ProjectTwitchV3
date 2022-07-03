@@ -11,8 +11,10 @@ public class SingleWaveEnemyRoom : IEnemyGroup
     [SerializeField]
     private IHittable[] hittableStageElements;
     private int numEnemiesLeft;
+    private Collider roomTrigger = null;
     public UnityEvent allEnemiesDeadEvent;
     public UnityEvent resetEvent;
+    public UnityEvent triggerRoomEvent;
 
     private readonly object enemyLock = new object();
 
@@ -24,6 +26,14 @@ public class SingleWaveEnemyRoom : IEnemyGroup
         foreach(ITwitchUnitStatus enemy in enemies) {
             enemy.unitDeathEvent.AddListener(onEnemyKilled);
         }
+
+        roomTrigger = GetComponent<Collider>();
+        if (roomTrigger == null) {
+            Debug.LogError("No trigger box collider found for triggering the room", transform);
+        }
+
+        // Trigger reset event so that everything is appropriate by first frame
+        resetEvent.Invoke();
     }
 
     // Main function to reset enemy group
@@ -43,6 +53,7 @@ public class SingleWaveEnemyRoom : IEnemyGroup
 
         // Reset any doors associated
         resetEvent.Invoke();
+        roomTrigger.enabled = true;
     }
 
 
@@ -60,4 +71,16 @@ public class SingleWaveEnemyRoom : IEnemyGroup
             }
         }
     }
+
+
+    // Main trigger for when player enter the room
+    private void OnTriggerEnter(Collider collider) {
+        ITwitchStatus playerStatus = collider.GetComponent<ITwitchStatus>();
+
+        if (playerStatus != null) {
+            roomTrigger.enabled = false;
+            triggerRoomEvent.Invoke();
+        }
+    }
+
 }
