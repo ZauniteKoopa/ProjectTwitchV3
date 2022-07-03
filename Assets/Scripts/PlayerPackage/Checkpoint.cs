@@ -7,11 +7,14 @@ public class Checkpoint : MonoBehaviour
     // Private instance variables
     [SerializeField]
     private IEnemyGroup[] enemyRooms;
+    [SerializeField]
+    private IngredientCrate ingredientCrate;
 
     
     // If player dies, respawn
     public void respawnPlayer(Transform player) {
         player.position = transform.position;
+        ingredientCrate.reset();
 
         foreach(IEnemyGroup enemyRoom in enemyRooms) {
             enemyRoom.reset();

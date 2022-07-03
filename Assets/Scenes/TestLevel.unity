@@ -2633,10 +2633,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyRooms:
-  - {fileID: 2026903287}
+  - {fileID: 856460759}
   - {fileID: 1134173849}
   - {fileID: 1081593332}
-  - {fileID: 856460759}
+  ingredientCrate: {fileID: 424134784}
 --- !u!23 &804063194
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6716,7 +6716,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2026903286}
-  - component: {fileID: 2026903287}
   - component: {fileID: 2026903288}
   m_Layer: 0
   m_Name: Room1
@@ -6746,30 +6745,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2026903287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2026903285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67a2adfa23ec26ee0a6760f33c6c07d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemies: []
-  hittableStageElements:
-  - {fileID: 424134784}
-  allEnemiesDeadEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  resetEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  triggerRoomEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!65 &2026903288
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6970,7 +6945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1209925082, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: maxHealth
-      value: 10
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 1209925082, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: checkpoint
