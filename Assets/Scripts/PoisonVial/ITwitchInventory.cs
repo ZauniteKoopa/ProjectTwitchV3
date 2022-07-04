@@ -42,9 +42,9 @@ public abstract class ITwitchInventory : MonoBehaviour
 
 
     // Main function to upgrade primary vial with one ingredient
-    //  Pre: Ing != null
+    //  Pre: Ing != null, inMenu indicated whether or not you are doing crafting in inventory
     //  Post: Returns a bool that says if its successful. If so, primary vial gets upgraded
-    public abstract bool upgradePrimaryVial(Ingredient ing);
+    public abstract bool upgradePrimaryVial(Ingredient ing, bool inMenu);
 
 
     // Main function to upgrade primary vial with two ingredients
@@ -60,9 +60,9 @@ public abstract class ITwitchInventory : MonoBehaviour
 
 
     // Main function to upgrade secondary vial with one ingredient
-    //  Pre: Ing != null
+    //  Pre: Ing != null, inMenu indicated whether or not you are doing crafting in inventory
     //  Post: Returns a bool that says if its successful. If so, secondary vial gets upgraded
-    public abstract bool upgradeSecondaryVial(Ingredient ing);
+    public abstract bool upgradeSecondaryVial(Ingredient ing, bool inMenu);
 
 
     // Main function to upgrade secondary vial with two ingredient
