@@ -169,8 +169,6 @@ public class TopDownShooterAttackController : IAttackModule
             if (usedCask) {
                 caskAimForward = (getWorldAimLocation() - transform.position).normalized;
                 StartCoroutine(secondaryAttackSequence(curCask));
-            } else {
-                Debug.Log("Cannot cask");
             }
         }
     }

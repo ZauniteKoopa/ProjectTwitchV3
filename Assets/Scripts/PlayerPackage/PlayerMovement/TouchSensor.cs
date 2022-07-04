@@ -53,9 +53,9 @@ public class TouchSensor : IBlockerSensor
     }
 
 
-    //
-    //
-    //
+    // Main event handler function for when an object player was leaning on is destroyed
+    //  Pre: destroyedObj != null, represents the object that's destroyed
+    //  Post: decrements numWalls you are leaning on and stop listening to that object's event
     private void onHittableDestroyed(IHittable destroyedObj) {
         lock(numWallsLock) {
             numWallsTouched -= (numWallsTouched == 0) ? 0 : 1;
