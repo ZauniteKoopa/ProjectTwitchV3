@@ -9994,14 +9994,14 @@ MonoBehaviour:
   characterRenderer: {fileID: 666051070171789298}
   deathColor: {r: 0, g: 0, b: 0, a: 1}
   baseMovementSpeed: 12
-  maxHealth: 10
+  maxHealth: 40
   invincibilityFrameDuration: 1.5
   checkpoint: {fileID: 0}
   mainPlayerUI: {fileID: 666051070539244718}
   boltCost: 1
   caskCost: 3
-  caskCooldown: 10
-  camoCooldown: 16
+  caskCooldown: 6
+  camoCooldown: 12
   contaminateCooldown: 8
   craftingTime: 0.75
   camoAttackRateBuff: 1.5
