@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TouchSensor : IBlockerSensor
 {
@@ -28,6 +29,12 @@ public class TouchSensor : IBlockerSensor
         lock(numWallsLock) {
             numWallsTouched++;
         }
+
+        // Hittable object
+        IHittable hittableObj = collider.GetComponent<IHittable>();
+        if (hittableObj != null) {
+            hittableObj.destroyedEvent.AddListener(onHittableDestroyed);
+        }
     }
 
     // Main event handler function to remove colliders when they exit the trigger box
@@ -37,5 +44,23 @@ public class TouchSensor : IBlockerSensor
         lock(numWallsLock) {
             numWallsTouched -= (numWallsTouched == 0) ? 0 : 1;
         }
+
+        // Hittable object
+        IHittable hittableObj = collider.GetComponent<IHittable>();
+        if (hittableObj != null) {
+            hittableObj.destroyedEvent.RemoveListener(onHittableDestroyed);
+        }
+    }
+
+
+    //
+    //
+    //
+    private void onHittableDestroyed(IHittable destroyedObj) {
+        lock(numWallsLock) {
+            numWallsTouched -= (numWallsTouched == 0) ? 0 : 1;
+        }
+
+        destroyedObj.destroyedEvent.RemoveListener(onHittableDestroyed);
     }
 }
