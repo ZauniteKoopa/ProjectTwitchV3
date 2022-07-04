@@ -352,9 +352,14 @@ public class PlayerStatus : ITwitchStatus
     }
 
     // Main function to get permissions to cast contaminate
-    //  Pre: none
+    //  Pre: bool representing if you are within range of an infected enemy
     //  Post: return if you are allowed. If successful, must wait for cooldown to stop to do it again
-    public override bool willContaminate() {
+    public override bool willContaminate(bool withinContaminateRange) {
+        if (!withinContaminateRange) {
+            mainPlayerUI.displayContaminateRangeError();
+            return false;
+        }
+
         if (canContaminate) {
             runningContaminateSequence = StartCoroutine(contaminateCooldownSequence());
             return true;
