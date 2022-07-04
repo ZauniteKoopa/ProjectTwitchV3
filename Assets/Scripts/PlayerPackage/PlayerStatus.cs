@@ -311,6 +311,7 @@ public class PlayerStatus : ITwitchStatus
     //  Post: returns if successful, If so, reduce primary vial's ammo
     public override bool consumePrimaryVialCask() {
         if (!canCask) {
+            mainPlayerUI.displayAbilityCooldownError();
             return false;
         }
 
@@ -322,6 +323,8 @@ public class PlayerStatus : ITwitchStatus
             }
 
             runningCaskSequence = StartCoroutine(caskCooldownSequence());
+        } else {
+            mainPlayerUI.displayVialAmmoError();
         }
 
         return usedCask;
@@ -357,6 +360,7 @@ public class PlayerStatus : ITwitchStatus
             return true;
         }
 
+        mainPlayerUI.displayAbilityCooldownError();
         return false;
     }
 
@@ -393,6 +397,7 @@ public class PlayerStatus : ITwitchStatus
             return true;
         }
 
+        mainPlayerUI.displayAbilityCooldownError();
         return false;
     }
 

@@ -62,6 +62,8 @@ public class PlayerUI : ITwitchPlayerUI
     private string abilityUseErrorMessage = "The ability you are trying to use is on cooldown";
     [SerializeField]
     private string contaminateRangeErrorMessage = "Not in range of infected enemies";
+    [SerializeField]
+    private string vialAmmoErrorMessage = "Not enough ammo for attempted ability";
 
 
     // Awake function to error check
@@ -296,12 +298,22 @@ public class PlayerUI : ITwitchPlayerUI
     }
 
 
-    // Main function to display ability cooldown error
-    //  Pre: None, player tried to use an ability when it was on cooldown
-    //  Post: Notifies player that the ability they wanted to use was on cooldown
+    // Main function to display contaminate range error
+    //  Pre: None, player tried to use contaminate when there are no infected units around
+    //  Post: Notifies player of error
     public override void displayContaminateRangeError() {
         if (errorMessage != null){
             errorMessage.executeErrorMessage(contaminateRangeErrorMessage);
+        }
+    }
+
+
+    // Main function to display vial range error
+    //  Pre: None, player tried to use ability even though it required more ammo than the player had
+    //  Post: Notifies player of error
+    public override void displayVialAmmoError() {
+        if (errorMessage != null){
+            errorMessage.executeErrorMessage(vialAmmoErrorMessage);
         }
     }
 }

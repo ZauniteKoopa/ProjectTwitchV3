@@ -24,7 +24,7 @@ public class TemporaryErrorMessage : MonoBehaviour
             Debug.LogError("Error time not configured properly for temporary error message", transform);
         }
 
-        errorText.gameObject.SetActive(false);
+        errorText.enabled = false;
     }
 
 
@@ -38,22 +38,22 @@ public class TemporaryErrorMessage : MonoBehaviour
         }
 
         // Start the coroutine
-        StartCoroutine(errorMessage);
+        runningErrorSequence = StartCoroutine(errorMessageSequence(errorMessage));
     }
 
 
     // Private IEnumerator sequence for doing error message
     //  Pre: error message to display
     //  Post: shows error message briefly before disappearing abruptly
-    private void errorMessageSequence(string errorMessage) {
+    private IEnumerator errorMessageSequence(string errorMessage) {
         // Display error message
         errorText.text = errorMessage;
-        errorText.gameObject.SetActive(true);
+        errorText.enabled = true;
 
         // Wait for the specified duration
         yield return new WaitForSeconds(errorTime);
 
         // make error message disappear
-        errorText.gameObject.SetActive(false);
+        errorText.enabled = false;
     }
 }
