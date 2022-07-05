@@ -132,9 +132,10 @@ public class XZ_AimAssist : IAimAssist
     private void OnTriggerEnter(Collider collider) {
         ITwitchUnitStatus enemy = collider.GetComponent<ITwitchUnitStatus>();
 
-        if (enemy != null) {
-            lock (enemyLock) {
+        lock (enemyLock) {
+            if (enemy != null && !nearbyEnemies.Contains(enemy)) {
                 nearbyEnemies.Add(enemy);
+                enemy.unitDeathEvent.AddListener(onEnemyDeath);
             }
         }
     }
@@ -144,12 +145,26 @@ public class XZ_AimAssist : IAimAssist
     private void OnTriggerExit(Collider collider) {
         ITwitchUnitStatus enemy = collider.GetComponent<ITwitchUnitStatus>();
 
-        if (enemy != null) {
-            lock (enemyLock) {
+        lock (enemyLock) {
+            if (enemy != null && nearbyEnemies.Contains(enemy)) {
                 nearbyEnemies.Remove(enemy);
+                enemy.unitDeathEvent.RemoveListener(onEnemyDeath);
             }
         }
     }
 
+
+    // On enemy death, remove listener and remove them from the list
+    private void onEnemyDeath(IUnitStatus deadUnit) {
+        ITwitchUnitStatus deadEnemy = deadUnit as ITwitchUnitStatus;
+
+        if (deadEnemy != null) {
+            lock (enemyLock) {
+                nearbyEnemies.Remove(deadEnemy);
+            }
+
+            deadEnemy.unitDeathEvent.RemoveListener(onEnemyDeath);
+        }
+    }
 
 }
