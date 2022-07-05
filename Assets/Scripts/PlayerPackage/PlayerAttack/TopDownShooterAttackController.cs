@@ -169,8 +169,6 @@ public class TopDownShooterAttackController : IAttackModule
             if (usedCask) {
                 caskAimForward = (getWorldAimLocation() - transform.position).normalized;
                 StartCoroutine(secondaryAttackSequence(curCask));
-            } else {
-                Debug.Log("Cannot cask");
             }
         }
     }
@@ -179,17 +177,9 @@ public class TopDownShooterAttackController : IAttackModule
     // Event handler for contaminate press
     public void onContaminatePress(InputAction.CallbackContext value) {
         if (value.started && contaminateZone != null && !uiModule.inMenu() && twitchPlayerStatus.canMove()) {
-            // Check if there are any enemies in range and infected
-            if (contaminateZone.canUseAbility()) {
-
-                // Check if you even have the mana cost to contaminate
-                if (twitchPlayerStatus.willContaminate()) {
-                    contaminateZone.damageAllTargets(0.0f);
-                } else {
-                    Debug.Log("Contamination on cooldown");
-                }
-            } else {
-                Debug.Log("Not in range of infected enemies");
+            // Check both twitchPlayerStatus (cooldown) and contaminate zone (in range)
+            if (twitchPlayerStatus.willContaminate(contaminateZone.canUseAbility())) {
+                contaminateZone.damageAllTargets(0.0f);
             }
         }
     }
@@ -199,10 +189,6 @@ public class TopDownShooterAttackController : IAttackModule
     public void onCamofladgePress(InputAction.CallbackContext value) {
         if (value.started && twitchPlayerStatus.canMove()) {
             bool camofladgeSuccess = twitchPlayerStatus.willCamofladge();
-
-            if (!camofladgeSuccess) {
-                Debug.Log("Cannot camofladge");
-            }
         }
     }
 

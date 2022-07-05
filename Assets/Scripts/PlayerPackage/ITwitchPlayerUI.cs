@@ -68,4 +68,28 @@ public abstract class ITwitchPlayerUI : MonoBehaviour
     //  Pre: timeLeft <= maxTime  && 0 < maxTime && isVisible just references whether or not this timer should be visible
     //  Post: If isVisible is true, updates timer with current progress. Else, just disable timer
     public abstract void displayCraftingTimer(float timeLeft, float maxTime, bool isVisible);
+
+
+    // Main function to display ability cooldown error
+    //  Pre: None, player tried to use an ability when it was on cooldown
+    //  Post: Notifies player that the ability they wanted to use was on cooldown
+    public abstract void displayAbilityCooldownError();
+
+
+    // Main function to display quick crafting error
+    //  Pre: none, player tried to quick craft a vial that was already max stat
+    //  Post: notifies player that they're quick crafting a max vial
+    public abstract void displayQuickCraftingError();
+
+
+    // Main function to display contaminate range error
+    //  Pre: None, player tried to use contaminate when there are no infected units around
+    //  Post: Notifies player of error
+    public abstract void displayContaminateRangeError();
+
+
+    // Main function to display vial range error
+    //  Pre: None, player tried to use ability even though it required more ammo than the player had
+    //  Post: Notifies player of error
+    public abstract void displayVialAmmoError();
 }

@@ -154,7 +154,7 @@ public class TwitchInventory : ITwitchInventory
     // Main function to upgrade primary vial with one ingredient
     //  Pre: Ing != null
     //  Post: Returns a bool that says if its successful. If so, primary vial gets upgraded
-    public override bool upgradePrimaryVial(Ingredient ing) {
+    public override bool upgradePrimaryVial(Ingredient ing, bool inMenu) {
         Debug.Assert(ing != null);
         bool success;
 
@@ -172,6 +172,11 @@ public class TwitchInventory : ITwitchInventory
             playerCraftEvent.Invoke();
         } else if (playerCraftEvent == null) {
             mainPlayerUI.displayPrimaryVial(primaryVial);
+        }
+
+        // Display error message if quick crafting and not successful
+        if (!success && !inMenu) {
+            mainPlayerUI.displayQuickCraftingError();
         }
 
         return success;
@@ -231,9 +236,9 @@ public class TwitchInventory : ITwitchInventory
 
 
     // Main function to upgrade secondary vial with one ingredient
-    //  Pre: Ing != null
+    //  Pre: Ing != null, inMenu is simply a flag that says if you are in a menu or not (defaulted to false)
     //  Post: Returns a bool that says if its successful. If so, secondary vial gets upgraded
-    public override bool upgradeSecondaryVial(Ingredient ing) {
+    public override bool upgradeSecondaryVial(Ingredient ing, bool inMenu) {
         Debug.Assert(ing != null);
         bool success;
 
@@ -251,6 +256,11 @@ public class TwitchInventory : ITwitchInventory
             playerCraftEvent.Invoke();
         } else if (playerCraftEvent == null) {
             mainPlayerUI.displaySecondaryVial(secondaryVial);
+        }
+
+        // Display error if you're quick crafting
+        if (!success && !inMenu) {
+            mainPlayerUI.displayQuickCraftingError();
         }
 
         return success;

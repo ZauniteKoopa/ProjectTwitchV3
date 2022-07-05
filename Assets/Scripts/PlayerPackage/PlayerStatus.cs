@@ -311,6 +311,7 @@ public class PlayerStatus : ITwitchStatus
     //  Post: returns if successful, If so, reduce primary vial's ammo
     public override bool consumePrimaryVialCask() {
         if (!canCask) {
+            mainPlayerUI.displayAbilityCooldownError();
             return false;
         }
 
@@ -322,6 +323,8 @@ public class PlayerStatus : ITwitchStatus
             }
 
             runningCaskSequence = StartCoroutine(caskCooldownSequence());
+        } else {
+            mainPlayerUI.displayVialAmmoError();
         }
 
         return usedCask;
@@ -349,14 +352,20 @@ public class PlayerStatus : ITwitchStatus
     }
 
     // Main function to get permissions to cast contaminate
-    //  Pre: none
+    //  Pre: bool representing if you are within range of an infected enemy
     //  Post: return if you are allowed. If successful, must wait for cooldown to stop to do it again
-    public override bool willContaminate() {
+    public override bool willContaminate(bool withinContaminateRange) {
+        if (!withinContaminateRange) {
+            mainPlayerUI.displayContaminateRangeError();
+            return false;
+        }
+
         if (canContaminate) {
             runningContaminateSequence = StartCoroutine(contaminateCooldownSequence());
             return true;
         }
 
+        mainPlayerUI.displayAbilityCooldownError();
         return false;
     }
 
@@ -393,6 +402,7 @@ public class PlayerStatus : ITwitchStatus
             return true;
         }
 
+        mainPlayerUI.displayAbilityCooldownError();
         return false;
     }
 

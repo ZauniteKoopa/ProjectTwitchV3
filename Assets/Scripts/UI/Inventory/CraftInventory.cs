@@ -230,9 +230,9 @@ public class CraftInventory : MonoBehaviour
                 Ingredient currentIngredient = (ing1 != null) ? ing1 : ing2;
 
                 if (primaryVialSelected) {
-                    twitchInventory.upgradePrimaryVial(currentIngredient);
+                    twitchInventory.upgradePrimaryVial(currentIngredient, true);
                 } else {
-                    twitchInventory.upgradeSecondaryVial(currentIngredient);
+                    twitchInventory.upgradeSecondaryVial(currentIngredient, true);
                 }
 
             // When both ingredients are available

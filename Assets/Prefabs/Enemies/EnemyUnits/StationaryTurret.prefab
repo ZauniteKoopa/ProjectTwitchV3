@@ -494,7 +494,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360218b3a8a8b2f478f2739cf3c4b98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitDeathEvent:
+  unitPoisonedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  unitCurePoisonEvent:
     m_PersistentCalls:
       m_Calls: []
   maxHealth: 40
@@ -595,7 +598,7 @@ MonoBehaviour:
   fullLaserColor: {r: 1, g: 0, b: 0, a: 1}
   chargingLaserColor: {r: 1, g: 0, b: 0, a: 0.29803923}
   lateLaserBlinkDuration: 0.05
-  laserSpeed: 100
+  laserSpeed: 75
   projectile: {fileID: 1717678275212191763, guid: d398e08eec674201081df999dbd7c150, type: 3}
 --- !u!120 &3408818156048896808
 LineRenderer:

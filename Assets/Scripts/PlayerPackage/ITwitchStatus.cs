@@ -33,9 +33,9 @@ public abstract class ITwitchStatus : ITwitchUnitStatus
 
 
     // Main function to get permissions to cast contaminate
-    //  Pre: none
+    //  Pre: bool representing if you are within range of an infected enemy
     //  Post: return if you are allowed. If successful, must wait for cooldown to stop to do it again
-    public abstract bool willContaminate();
+    public abstract bool willContaminate(bool withinContaminateRange);
 
 
     // Main function to get permissions to cast camofladge

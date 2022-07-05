@@ -9,6 +9,7 @@ public class BreakableCrate : IHittable
     //  Post: activates an object on hit
     public override void hit() {
         gameObject.SetActive(false);
+        destroyedEvent.Invoke(this);
         onBreak();
     }
 

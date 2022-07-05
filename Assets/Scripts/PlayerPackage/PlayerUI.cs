@@ -53,6 +53,18 @@ public class PlayerUI : ITwitchPlayerUI
     [SerializeField]
     private ResourceBar craftTimerBar;
 
+    [Header("Error Messaging")]
+    [SerializeField]
+    private TemporaryErrorMessage errorMessage = null;
+    [SerializeField]
+    private string quickCraftErrorMessage = "You are attempting to quick craft a vial that already reached the max stat cap";
+    [SerializeField]
+    private string abilityUseErrorMessage = "The ability you are trying to use is on cooldown";
+    [SerializeField]
+    private string contaminateRangeErrorMessage = "Not in range of infected enemies";
+    [SerializeField]
+    private string vialAmmoErrorMessage = "Not enough ammo for attempted ability";
+
 
     // Awake function to error check
     private void Awake() {
@@ -68,6 +80,10 @@ public class PlayerUI : ITwitchPlayerUI
 
         if (fadeOutScreen == null) {
             Debug.LogWarning("No fade out screen detected, lose ability to do screen fade for playerUI: " + transform, transform);
+        }
+
+        if (errorMessage == null) {
+            Debug.LogWarning("No error message detected for player UI. Lose ability to give feedback to player on certain errors", transform);
         }
 
         errorCheckVialUI();
@@ -258,6 +274,46 @@ public class PlayerUI : ITwitchPlayerUI
 
         if (isVisible) {
             craftTimerBar.setStatus(timeLeft, maxTime);
+        }
+    }
+
+
+    // Main function to display ability cooldown error
+    //  Pre: None, player tried to use an ability when it was on cooldown
+    //  Post: Notifies player that the ability they wanted to use was on cooldown
+    public override void displayAbilityCooldownError() {
+        if (errorMessage != null) {
+            errorMessage.executeErrorMessage(abilityUseErrorMessage);
+        }
+    }
+
+
+    // Main function to display quick crafting error
+    //  Pre: none, player tried to quick craft a vial that was already max stat
+    //  Post: notifies player that they're quick crafting a max vial
+    public override void displayQuickCraftingError() {
+        if (errorMessage != null){
+            errorMessage.executeErrorMessage(quickCraftErrorMessage);
+        }
+    }
+
+
+    // Main function to display contaminate range error
+    //  Pre: None, player tried to use contaminate when there are no infected units around
+    //  Post: Notifies player of error
+    public override void displayContaminateRangeError() {
+        if (errorMessage != null){
+            errorMessage.executeErrorMessage(contaminateRangeErrorMessage);
+        }
+    }
+
+
+    // Main function to display vial range error
+    //  Pre: None, player tried to use ability even though it required more ammo than the player had
+    //  Post: Notifies player of error
+    public override void displayVialAmmoError() {
+        if (errorMessage != null){
+            errorMessage.executeErrorMessage(vialAmmoErrorMessage);
         }
     }
 }

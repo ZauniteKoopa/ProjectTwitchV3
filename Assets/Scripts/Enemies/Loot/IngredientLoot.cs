@@ -34,7 +34,7 @@ public class IngredientLoot : Loot
     // Main function to quick craft with player 
     public override bool onPlayerQuickCraft(ITwitchInventory inventory, bool isPrimary) {
 
-        bool success = (isPrimary) ? inventory.upgradePrimaryVial(ingInstance) : inventory.upgradeSecondaryVial(ingInstance);
+        bool success = (isPrimary) ? inventory.upgradePrimaryVial(ingInstance, false) : inventory.upgradeSecondaryVial(ingInstance, false);
         if (success) {
             gameObject.SetActive(false);
         }
