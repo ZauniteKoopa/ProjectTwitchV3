@@ -30,7 +30,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     // Poison timer (MODULARIZE CONTAGION SOMEWHERE ELSE)
     private const int MAX_STACKS = 6;
     private const float MAX_POISON_TICK_TIME = 6.0f;
-    private const float AURA_TICK_TIME = 3.0f;
+    private const float AURA_TICK_TIME = 2.0f;
     private float poisonTimer = 0.0f;
     private Coroutine poisonDotRoutine = null;
 
