@@ -26,6 +26,8 @@ public class TopDownShooterAttackController : IAttackModule
     private float primaryBulletSpeed = 20f;
     [SerializeField]
     private float primaryAttackMoveReduction = 0.6f;
+    [SerializeField]
+    private IAimAssist aimAssist;
 
 
     // stats for cask throwing
@@ -88,6 +90,10 @@ public class TopDownShooterAttackController : IAttackModule
             twitchPlayerStatus.contaminateReadyEvent.AddListener(contaminateZone.onContaminateReady);
             twitchPlayerStatus.contaminateUsedEvent.AddListener(contaminateZone.onContaminateUsed);
         }
+
+        if (aimAssist == null) {
+            Debug.LogWarning("Aim assist not connected to attack controller of player. Player might need help aiming. It's a raw direction vector.", transform);
+        }
     }
 
 
@@ -105,6 +111,10 @@ public class TopDownShooterAttackController : IAttackModule
                 Transform currentProjectile = Object.Instantiate(primaryBullet, playerCharacter.position, Quaternion.identity);
                 PoisonVialBolt projBehav = currentProjectile.GetComponent<PoisonVialBolt>();
                 Vector3 currentProjectileDir = getWorldAimLocation() - playerCharacter.position;
+                if (aimAssist != null) {
+                    currentProjectileDir = aimAssist.adjustAim(currentProjectileDir, playerCharacter.position);
+                }
+
                 projBehav.setVialDamage(twitchPlayerStatus.getPrimaryVial());
                 projBehav.setUpMovement(currentProjectileDir, primaryBulletSpeed);
 
