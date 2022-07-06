@@ -1,0 +1,75 @@
+@startuml
+
+class EnemyComponentBehaviorTree {
+    {field} The "brain" of the enemy responsible for making decisions on what action to take
+
+    {method} + EnemyPassiveBranch: Passive branch to execute when enemy has not found player yet
+    {method} + EnemyAggroBranch: Aggressive branch to execute when enemy has found the player
+}
+
+class EnemyStatus {
+    {field} Contains all base stats and health, managing all changes to the folowing stats
+
+    {method} + EnemyAura: Executes aura effects when infected with a vial with an aura side effect
+    {method} + EnemyUI: Updates enemy UI so that accurate information is displayed to player
+}
+
+class EnemyAura {
+    {field} Represents the aura around enemies when enemy is infected with an aura side effect
+}
+
+class EnemyVisionSensor {
+    {field} Represents the eyesight of the enemy, the area of the game in which the enemy can see
+
+    {method} + EnemyComponentBehaviorTree: Alerts the behavior tree on certain events concerning sensing the player
+}
+
+class PlayerEvents {
+    {field} General category of events that occurs when the player does something to interact with the enemy
+
+    {method} + EnemyStatus: Damaging and poisoning the enemy with poison vials
+    {method} + EnemyVisionSensor: Player going in and out of line of sight
+}
+
+class EnemyUI {
+    {field} Main UI component to display info about enemy. Only contains a health bar and a Poison Halo
+}
+
+class EnemyAggroBranch {
+    {field} Main aggressive branch of a behavior tree: what the enemy does when seeing the player
+
+    {method} - EnemyStatus: Reads base stats and permissions to execute aggressive behavior
+    {method} - NavMeshAgent: Main interface to navigate around the world
+}
+
+class EnemyPassiveBranch {
+    {field} Main passive branch of a behavior tree: what the enemy does when not seeing the player
+
+    {method} - EnemyStatus: Reads base stats and permissions to execute aggressive behavior
+    {method} - NavMeshAgent: Main interface to navigate around the world
+}
+
+class NavMeshAgent {
+    {field} Using Unity's builtin NavMesh, allows enemy to navigate across the enviornment
+}
+
+
+EnemyComponentBehaviorTree *-- EnemyAggroBranch
+EnemyComponentBehaviorTree *-- EnemyPassiveBranch
+
+EnemyVisionSensor *-- EnemyComponentBehaviorTree
+
+EnemyAggroBranch *-- EnemyStatus
+EnemyAggroBranch *-- NavMeshAgent
+
+EnemyPassiveBranch *-- EnemyStatus
+EnemyPassiveBranch *-- NavMeshAgent
+
+EnemyStatus *-- EnemyAura
+EnemyStatus *-- EnemyUI
+
+PlayerEvents -> EnemyVisionSensor
+PlayerEvents -> EnemyStatus
+
+
+@enduml
