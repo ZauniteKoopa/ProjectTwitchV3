@@ -1,0 +1,123 @@
+@startuml
+
+class PlayerStatus {
+    {field} Class meant to hold base stats, health and cooldown information of the player
+
+    {method} + PlayerUI (screen UI): Updates info displayed based on stat changes
+    {method} + PlayerAudio: Plays sound clips on audio events affecting player
+    {method} - TwitchInventory: Reads Poison Vial information to be used in attacks
+}
+
+class TopDownShooterAttackController {
+    {field} Input module for handling input for attacks and executing attacks
+
+    {method} - PlayerStatus: Get permissions for doing attack (cooldowns) and get attack info
+    {method} - UserInterfaceInputModule: Check if player is in menus before doing anything
+}
+
+class LootDropManager {
+    {field} Input module for handling loot found in the world: quick craft and collecting
+
+    {method} + TwitchInventory: Update Vial and Ingredient collection on pick up / crafting
+    {method} - Ingredient: Senses nearby ingredients found in the world to collect or quick craft
+    {method} - PlayerStatus: Get permissions for doing actions (are you stunned)
+    {method} - UserInterfaceInputModule: Check if player is in menus before doing anything
+}
+
+class PlayerInput {
+    {field} Main class representing Unity Input System for players
+
+    {method} + TopDownShooterAttackController: Cask throw / Contaminate / Stealth / Shoot 
+    {method} + TopDownMovementController: Basic 4 directional movement
+    {method} + UserInterfaceInputModule: Opening pause menu or crafting menu
+    {method} + LootDropManager: Quick Crafting / Picking Up Ingredients
+}
+
+class PlayerUI {
+    {field} Main class to handle what gets displayed on the runtime screen UI
+}
+
+class PlayerAudioManager {
+    {field} Main class to manage audio events regarding the player
+}
+
+class UserInterfaceInputModule {
+    {field} Input module for handling user input regarding menus
+
+    {method} + PauseMenu: Ability to open and close pause menu
+    {method} + CraftInventoryUI: Ability to open and close CraftInventoryUI
+    {method} - PlayerStatus: Get permissions to open certain menus (are you stunned)
+}
+
+class TopDownMovementController {
+    {field} Input module for handling 4 directional movement on a top down perspective
+
+    {method} - PlayerStatus: Get permissions to move and get movement info (speed)
+    {method} - UserInterfaceInputModule: Check if player is in menus before doing anything
+}
+
+class TwitchInventory {
+    {field} Main backend Inventory holding all of the items that the player has and handles direct crafting
+
+    {method} + PlayerUI: Updates runtime UI of vial information
+    {method} + PoisonVial: Holds PoisonVials and upgrades them when asked to be crafted
+    {method} - Ingredient: Holds Ingredients and reads its information when crafting
+}
+
+class PoisonVial {
+    {field} The main source of damage against all enemies in the game for the player
+
+    {method} - SideEffect: Reads side effect information to enact upgrades
+}
+
+class SideEffect {
+    {field} Massive upgrade vials obtain when upgraded enough
+}
+
+class CraftInventoryUI {
+    {field} The manager for the UI crafting menu that displays the inventory
+
+    {method} + TwitchInventory: Reads inventory in and makes changes to it upon player actions on the menu
+}
+
+class PauseMenu {
+    {field} Main manager for handling the PauseMenu
+}
+
+class Ingredient {
+    {field} The building blocks to making vials and loot found when killing enemies
+}
+
+PlayerInput -> UserInterfaceInputModule
+PlayerInput -> TopDownMovementController
+PlayerInput -> TopDownShooterAttackController
+PlayerInput -> LootDropManager
+
+TopDownShooterAttackController *- UserInterfaceInputModule
+TopDownShooterAttackController *- PlayerStatus
+
+TopDownMovementController *- PlayerStatus
+TopDownMovementController *- UserInterfaceInputModule
+
+LootDropManager *- PlayerStatus
+LootDropManager *-- UserInterfaceInputModule
+LootDropManager *-- TwitchInventory
+LootDropManager *-- Ingredient
+
+UserInterfaceInputModule *-- PauseMenu
+UserInterfaceInputModule *-- CraftInventoryUI
+UserInterfaceInputModule *-- PlayerStatus
+
+PlayerStatus *-- TwitchInventory
+PlayerStatus *-- PlayerUI
+PlayerStatus *-- PlayerAudioManager
+
+TwitchInventory *-- PoisonVial
+TwitchInventory *-- Ingredient
+TwitchInventory *-- PlayerUI
+
+CraftInventoryUI *-- TwitchInventory
+
+PoisonVial *-- SideEffect
+
+@enduml
