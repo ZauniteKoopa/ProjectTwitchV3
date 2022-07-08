@@ -59,6 +59,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     [Header("Death / Reset")]
     private Vector3 spawnPoint; 
     public UnityEvent enemyResetEvent;
+    [SerializeField]
+    private SpawnInEffect spawnInEffect;
+    [SerializeField]
+    private float spawnInTime = 1.25f;
 
 
     // On awake, set up variables and error check
@@ -82,6 +86,12 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
         if (enemyAura == null) {
             Debug.LogWarning("No Enemy aura detected for this enemy, Aura based side effects of vial will not work", transform);
+        }
+
+        if (spawnInEffect == null) {
+            Debug.LogWarning("No spawn in effect detected for current enemy. When spawning in within a room, the enemy will just appear instantly with no anticipation", transform);
+        } else {
+            spawnInEffect.effectFinishedEvent.AddListener(onSpawnInEffectFinished);
         }
 
         // Set variables
@@ -433,5 +443,23 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         }
 
         return poisoned;
+    }
+
+
+    // Main function to handle spwning in of the unit (Player enters the game or enemies spawn in the area)
+    //  Pre: none
+    //  Post: spawns the enemy in IFF not spawned in game yet
+    public override void spawnIn() {
+        if (spawnInEffect != null) {
+            spawnInEffect.activateEffect(transform.position, transform.position, spawnInTime);
+        } else {
+            base.spawnIn();
+        }
+    }
+
+
+    // Main event handler for when spawn in finished
+    private void onSpawnInEffectFinished() {
+        base.spawnIn();
     }
 }
