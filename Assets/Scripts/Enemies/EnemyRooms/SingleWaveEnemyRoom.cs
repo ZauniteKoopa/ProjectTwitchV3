@@ -10,6 +10,8 @@ public class SingleWaveEnemyRoom : IEnemyGroup
     private ITwitchUnitStatus[] enemies;
     [SerializeField]
     private IHittable[] hittableStageElements;
+    [SerializeField]
+    private bool spawnIn = false;
     private int numEnemiesLeft;
     private Collider roomTrigger = null;
     public UnityEvent allEnemiesDeadEvent;
@@ -21,10 +23,17 @@ public class SingleWaveEnemyRoom : IEnemyGroup
     // Start is called before the first frame update
     void Start()
     {
+        // Set up enemies. If this room is set to spawnIn, despawn enemies. They will only spawn in when player enters the room
         numEnemiesLeft = enemies.Length;
-
         foreach(ITwitchUnitStatus enemy in enemies) {
+            if (enemy == null) {
+                Debug.LogError("Null enemy found inside enemy room");
+            }
+
             enemy.unitDeathEvent.AddListener(onEnemyKilled);
+            if (spawnIn) {
+                enemy.despawn();
+            }
         }
 
         roomTrigger = GetComponent<Collider>();
@@ -43,7 +52,11 @@ public class SingleWaveEnemyRoom : IEnemyGroup
         // reset enemies
         numEnemiesLeft = enemies.Length;
         foreach(ITwitchUnitStatus enemy in enemies) {
-            enemy.reset();
+            if (spawnIn) {
+                enemy.despawn();
+            } else {
+                enemy.reset();
+            }
         }
 
         // Reset stage elements
@@ -80,6 +93,12 @@ public class SingleWaveEnemyRoom : IEnemyGroup
         if (playerStatus != null) {
             roomTrigger.enabled = false;
             triggerRoomEvent.Invoke();
+
+            if (spawnIn) {
+                foreach(ITwitchUnitStatus enemy in enemies) {
+                    enemy.spawnIn();
+                }
+            }
         }
     }
 

@@ -35,4 +35,24 @@ public abstract class ITwitchUnitStatus : IUnitStatus
     //  Pre: none
     //  Post: returns whether or not the unit is poisoned
     public abstract bool isPoisoned();
+
+
+    // Main function to handle spwning in of the unit (Player enters the game or enemies spawn in the area)
+    //  Pre: none
+    //  Post: spawns the enemy in IFF not spawned in game yet
+    public virtual void spawnIn() {
+        reset();
+        gameObject.SetActive(true);
+    }
+
+
+    // Main function to handle units despawning from game. (Player disconnects (netcode) or enemy despawns)
+    //  Pre: none
+    //  Post: spawns the enemy in IFF not spawned in game yet
+    public virtual void despawn() {
+        gameObject.SetActive(false);
+    }
+
+    
+
 }
