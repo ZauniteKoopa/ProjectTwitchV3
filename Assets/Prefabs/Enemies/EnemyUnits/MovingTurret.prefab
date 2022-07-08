@@ -1017,7 +1017,7 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 105076131007230084}
   - {fileID: 105076131860480339}
-  nearDistance: 0.25
+  nearDistance: 0.5
   stopDuration: 1
   firstConfusedDuration: 2
   passiveMovementSpeedReduction: 0.75
