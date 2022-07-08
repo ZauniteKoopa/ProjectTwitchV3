@@ -565,7 +565,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360218b3a8a8b2f478f2739cf3c4b98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitDeathEvent:
+  unitPoisonedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  unitCurePoisonEvent:
     m_PersistentCalls:
       m_Calls: []
   maxHealth: 40
@@ -668,7 +671,7 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 2050020949279639779}
   - {fileID: 2050020950228161219}
-  nearDistance: 0.25
+  nearDistance: 0.5
   stopDuration: 1
   firstConfusedDuration: 2
   passiveMovementSpeedReduction: 0.75
