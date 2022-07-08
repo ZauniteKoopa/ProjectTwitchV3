@@ -31,7 +31,13 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
 
         // Execute behav tree for the first time
         navMeshAgent = GetComponent<NavMeshAgent>();
+        TwitchEnemyStatus unitStatus = GetComponent<TwitchEnemyStatus>();
 
+        if (unitStatus == null || navMeshAgent == null) {
+            Debug.LogError("No unit status and nav mesh agent found for this enemy", transform);
+        }
+
+        unitStatus.enemyResetEvent.AddListener(reset);
         StartCoroutine(behaviorTreeSequence());
     }
 
