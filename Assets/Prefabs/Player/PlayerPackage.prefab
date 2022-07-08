@@ -11272,7 +11272,7 @@ MonoBehaviour:
   primaryBullet: {fileID: 7053607081528903385, guid: b336ce3f20ea722edac9589d3d0cc306, type: 3}
   secondaryCask: {fileID: 6518441157454951942, guid: 4e7de23ec2160a0f19bde635ad78c3c0, type: 3}
   primaryAttackRate: 0.5
-  primaryBulletSpeed: 20
+  primaryBulletSpeed: 60
   primaryAttackMoveReduction: 0.6
   aimAssist: {fileID: 2101866501}
   caskCollisionMask:
