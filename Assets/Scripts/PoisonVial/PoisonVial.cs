@@ -441,6 +441,7 @@ public class PoisonVial : IVial
             
             // If there are stats available, choose a specialization
             if (possibleSpecializations.Count > 0) {
+                Debug.Log("get side effct");
                 Specialization selectedSpecialization = possibleSpecializations[Random.Range(0, possibleSpecializations.Count)];
                 sideEffect = PoisonVialDatabase.getRandomSideEffect(selectedSpecialization);
             }
@@ -588,5 +589,24 @@ public class PoisonVial : IVial
         Debug.Assert(numStacks >= 0 && numStacks <= 6);
 
         return numStacks >= AURA_THRESHOLD && sideEffect.isAuraSideEffect();
+    }
+
+
+    // If player aura can be present. return true;
+    //  Pre: none
+    //  Post: returns whether the player aura can be present
+    public bool isPlayerAuraPresent() {
+        return sideEffect.isPlayerAuraEffect();
+    }
+
+
+    // Returns the aura rate of the vial
+    //  Pre: none
+    //  Post: returns aura rate >= 0.0f
+    public float getAuraRate() {
+        float returnVal = sideEffect.getAuraRate();
+        Debug.Assert(returnVal >= 0.0f);
+
+        return returnVal;
     }
 }

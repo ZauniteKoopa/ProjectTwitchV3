@@ -21,6 +21,12 @@ public class TwitchInventory : ITwitchInventory
     public UnityEvent playerCraftEvent;
 
 
+    // Player Aura Elements
+    [SerializeField]
+    private EnemyAura playerAura;
+    private Coroutine currentAuraSequence = null;
+
+
 
     // On awake, initialize backend instance variables
     private void Start() {
@@ -31,8 +37,45 @@ public class TwitchInventory : ITwitchInventory
         mainPlayerUI.displaySecondaryVial(secondaryVial);
         mainPlayerUI.displayPrimaryVial(primaryVial);
         mainPlayerUI.displayCraftingTimer(0.0f, 10.0f, false);
+
+        // Error check
+        if (mainPlayerUI == null) {
+            Debug.LogError("Inventory not connected to main player UI");
+        }
+
+        if (playerAura == null) {
+            Debug.LogWarning("No PlayerAura connected to inventory. Player Aura side effects may not be active");
+        }
     }
 
+
+    // IEnumerator sequence for when player aura effect is active
+    //  It will stop on its own if the vial changes during the sequence
+    private IEnumerator poisonVialAuraSequence() {
+
+        // Main loop for doing damage
+        bool playerAuraActive;
+        lock (vialLock) {
+            playerAuraActive = (primaryVial != null && primaryVial.isPlayerAuraPresent());
+        }
+
+        while (playerAuraActive) {
+            // wait for aura tick time
+            yield return new WaitForSeconds(primaryVial.getAuraRate());
+
+            // Get aura status
+            lock (vialLock) {
+                playerAuraActive = (primaryVial != null && primaryVial.isPlayerAuraPresent());
+
+                // Do damage to all nearby enemies IFF conditions still apply
+                if (playerAuraActive) {
+                    primaryVial.applyEnemyAuraEffects(playerAura, AuraType.NO_TOUCHING, 0);
+                }  
+            }
+        }
+
+        currentAuraSequence = null;
+    }
 
 
     // Main function to add an Ingredient to the current inventory
@@ -104,6 +147,7 @@ public class TwitchInventory : ITwitchInventory
 
                 if (primaryVial.getAmmoLeft() <= 0) {
                     primaryVial = null;
+                    onPrimaryVialChange();
                 }
             }
 
@@ -127,6 +171,8 @@ public class TwitchInventory : ITwitchInventory
             mainPlayerUI.displaySecondaryVial(secondaryVial);
             mainPlayerUI.displayPrimaryVial(primaryVial);
         }
+
+        onPrimaryVialChange();
     }
 
 
@@ -148,6 +194,28 @@ public class TwitchInventory : ITwitchInventory
             mainPlayerUI.displaySecondaryVial(secondaryVial);
             mainPlayerUI.displayPrimaryVial(primaryVial);
         }
+
+        onPrimaryVialChange();
+    }
+
+
+    // Main helper function for handling the event for when the primary vial changed
+    private void onPrimaryVialChange() {
+        // Check if player aura is active because of upgrade
+        if (playerAura != null) {
+
+            // If conditions are met AND no running coroutine at this moment
+            if (primaryVial != null && primaryVial.isPlayerAuraPresent() && currentAuraSequence == null) {
+                playerAura.setCaskPoison(primaryVial);
+                playerAura.setActive(true);
+                currentAuraSequence = StartCoroutine(poisonVialAuraSequence());
+
+            // If conditions are not met, deactivate aura
+            } else if (primaryVial == null || !primaryVial.isPlayerAuraPresent()) {
+                playerAura.setActive(false);
+            }
+        }
+
     }
 
 
@@ -172,6 +240,7 @@ public class TwitchInventory : ITwitchInventory
             playerCraftEvent.Invoke();
         } else if (playerCraftEvent == null) {
             mainPlayerUI.displayPrimaryVial(primaryVial);
+            onPrimaryVialChange();
         }
 
         // Display error message if quick crafting and not successful
@@ -204,6 +273,7 @@ public class TwitchInventory : ITwitchInventory
             playerCraftEvent.Invoke();
         } else if (playerCraftEvent == null) {
             mainPlayerUI.displayPrimaryVial(primaryVial);
+            onPrimaryVialChange();
         }
 
         return success;
@@ -229,6 +299,7 @@ public class TwitchInventory : ITwitchInventory
             playerCraftEvent.Invoke();
         } else {
             mainPlayerUI.displayPrimaryVial(primaryVial);
+            onPrimaryVialChange();
         }
 
         return true;
@@ -413,5 +484,7 @@ public class TwitchInventory : ITwitchInventory
         mainPlayerUI.displayCraftingTimer(0.0f, craftTime, false);
         mainPlayerUI.displaySecondaryVial(secondaryVial);
         mainPlayerUI.displayPrimaryVial(primaryVial);
+
+        onPrimaryVialChange();
     }
 }

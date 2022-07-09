@@ -14,7 +14,8 @@ public enum Specialization {
 // Enum that considers Aura Requirements
 public enum AuraType {
     RADIOACTIVE_EXPUNGE,
-    CONTAGION
+    CONTAGION,
+    NO_TOUCHING
 };
 
 // Class that gives a basic side effect that has no effect on stats
@@ -85,10 +86,21 @@ public class VirtualSideEffect
     public virtual void executeAuraDamage(EnemyAura aura, AuraType auraType, int numStacks, IVial vial) {}
 
 
-    // Main function to check if this is an aura side effect
+    // Main function to check if this is an aura side effect (Enemy)
     //  Pre; none
     public virtual bool isAuraSideEffect() {
         return false;
+    }
+
+    // Main function to check if this is a player aura side effect (Player)
+    public virtual bool isPlayerAuraEffect() {
+        return false;
+    }
+
+
+    // Main function to get the aura rate (if applicable)
+    public virtual float getAuraRate() {
+        return 0f;
     }
 
 }

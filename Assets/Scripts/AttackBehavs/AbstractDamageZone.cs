@@ -129,4 +129,5 @@ public abstract class AbstractDamageZone : MonoBehaviour
 
     // Virtual method that can be overriden: what happens when unit enter
     protected virtual void unitExitZone(ITwitchUnitStatus tgt) {}
+
 }

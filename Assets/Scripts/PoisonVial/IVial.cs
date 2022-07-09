@@ -92,6 +92,13 @@ public interface IVial
     int getMaxTotalStat();
 
 
+
+    // -----------------
+    // Side effect specific functions
+    // -----------------
+
+
+
     // Main function to get side effect information
     //  Pre: none
     //  Post: returns an array in the following format: [name, description], outputs the side effect's specialization as a separate object
@@ -108,5 +115,17 @@ public interface IVial
     //  Pre: 0 <= numStacks <= 6
     //  Post: returns whether the enemy aura can be present
     bool isEnemyAuraPresent(int numStacks);
+
+
+    // If player aura can be present. return true;
+    //  Pre: none
+    //  Post: returns whether the player aura can be present
+    bool isPlayerAuraPresent();
+
+
+    // Returns the aura rate of the vial
+    //  Pre: none
+    //  Post: returns aura rate >= 0.0f
+    float getAuraRate();
 
 }
