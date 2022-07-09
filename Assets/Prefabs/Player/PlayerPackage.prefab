@@ -10217,7 +10217,7 @@ MonoBehaviour:
   characterRenderer: {fileID: 666051070171789298}
   deathColor: {r: 0, g: 0, b: 0, a: 1}
   baseMovementSpeed: 12
-  maxHealth: 5
+  maxHealth: 40
   invincibilityFrameDuration: 1.5
   checkpoint: {fileID: 0}
   mainPlayerUI: {fileID: 666051070539244718}
@@ -11613,6 +11613,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 267cc405-620c-4c40-b579-de084641b6db
     m_ActionName: PlayerControls/CraftInventory[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bbbcd540-96b6-4491-84b2-75eaf66df54e
+    m_ActionName: PlayerControls/Ultimate[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerControls

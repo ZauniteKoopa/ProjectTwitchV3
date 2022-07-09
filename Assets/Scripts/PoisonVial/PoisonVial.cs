@@ -441,7 +441,6 @@ public class PoisonVial : IVial
             
             // If there are stats available, choose a specialization
             if (possibleSpecializations.Count > 0) {
-                Debug.Log("get side effct");
                 Specialization selectedSpecialization = possibleSpecializations[Random.Range(0, possibleSpecializations.Count)];
                 sideEffect = PoisonVialDatabase.getRandomSideEffect(selectedSpecialization);
             }
@@ -608,5 +607,55 @@ public class PoisonVial : IVial
         Debug.Assert(returnVal >= 0.0f);
 
         return returnVal;
+    }
+
+
+    // Main function to check if you can actually use the ultimate
+    //  Pre: none
+    //  Post: returns whether or not you can run ultimate
+    public bool hasUltimate() {
+        return sideEffect.getUltType() != UltimateType.NONE;
+    }
+
+
+    // Returns ultimate cooldown
+    //  Pre: none
+    //  Post: returns a float >= 0.0f
+    public float getUltimateCooldown() {
+        return sideEffect.getUltimateCooldown();
+    }
+
+
+    // Returns ultimate cost
+    //  Pre: none
+    //  Post: returns an int >= 0
+    public int getUltimateCost() {
+        return sideEffect.getUltimateCost();
+    }
+
+
+    // Main function to execute ultimate
+    //  Pre: player != null
+    //  Post: executes the ultimate listed in side effects, returns true if successful
+    public bool executeUltimate(ITwitchStatus player) {
+        Debug.Assert(player != null);
+
+        // Check if you even have enough ammo
+        if (getUltimateCost() > getAmmoLeft()){
+            return false;
+        }
+        
+        switch (sideEffect.getUltType()) {
+            case UltimateType.NONE:
+                return false;
+
+            case UltimateType.STEROID:
+                sideEffect.applySteroid(player);
+                return true;
+
+            default:
+                Debug.LogError("Invalid ult type");
+                return false;
+        }
     }
 }

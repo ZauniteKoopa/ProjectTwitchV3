@@ -18,6 +18,13 @@ public enum AuraType {
     NO_TOUCHING
 };
 
+
+// Enum for ultimate types
+public enum UltimateType {
+    NONE,
+    STEROID
+};
+
 // Class that gives a basic side effect that has no effect on stats
 public class VirtualSideEffect
 {
@@ -103,4 +110,32 @@ public class VirtualSideEffect
         return 0f;
     }
 
+
+    // Main function to check if this is an ultimate
+    //  Pre: none
+    //  Post: returns the ultimate type for Twitch's Juice. If return NONE, cannot use this as an ultimate
+    public virtual UltimateType getUltType() {
+        return UltimateType.NONE;
+    }
+
+
+    // Main function to get ultimate cooldown
+    //  Pre: none
+    //  Post: cooldown >= 0f
+    public virtual float getUltimateCooldown() {
+        return 0f;
+    }
+
+    // Main function to get ultimate ammo cost
+    //  Pre: none
+    //  Post: cost >= 0f
+    public virtual int getUltimateCost() {
+        return 0;
+    }
+
+
+    // Main function to apply steroid to player character
+    //  Pre: playerStatus != null
+    //  Post: Applies status effect on player
+    public virtual void applySteroid(ITwitchStatus player) {}
 }

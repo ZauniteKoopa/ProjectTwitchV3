@@ -128,4 +128,27 @@ public interface IVial
     //  Post: returns aura rate >= 0.0f
     float getAuraRate();
 
+
+    // Main function to check if you can actually use the ultimate
+    //  Pre: none
+    //  Post: returns whether or not you can run ultimate DOESN'T CONSIDER COOLDOWNS
+    bool hasUltimate();
+
+
+    // Returns ultimate cooldown
+    //  Pre: none
+    //  Post: returns a float >= 0.0f
+    float getUltimateCooldown();
+
+
+    // Returns ultimate cost
+    //  Pre: none
+    //  Post: returns an int >= 0
+    int getUltimateCost();
+
+
+    // Main function to execute ultimate
+    //  Pre: player != null
+    //  Post: executes the ultimate listed in side effects, returns true if successful
+    bool executeUltimate(ITwitchStatus player);
 }

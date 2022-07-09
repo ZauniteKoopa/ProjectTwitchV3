@@ -54,6 +54,7 @@ public class PlayerStatus : ITwitchStatus
     private bool canCask = true;
     private bool canCamo = true;
     private bool canContaminate = true;
+    private bool canUlt = true;
     private Coroutine runningCaskSequence = null;
     private Coroutine runningContaminateSequence = null;
     private Coroutine runningCamoSequence = null;
@@ -262,6 +263,14 @@ public class PlayerStatus : ITwitchStatus
         // Reset UI
         initDefaultUI();
         characterRenderer.material.color = normalColor;
+    }
+
+
+    // Function to access the max health of the player
+    //  Pre: none
+    //  Post: max health > 0
+    public override float getMaxHealth() {
+        return maxHealth;
     }
 
 
@@ -507,6 +516,30 @@ public class PlayerStatus : ITwitchStatus
     }
 
 
+    // Main function to check if you can do your ultimate
+    //  Pre: none
+    //  Post: return if ult execution is successful, returns false otherwise
+    public override bool willExecuteUltimate() {
+        IVial currentPrimaryVial = inventory.getPrimaryVial();
+
+        // Check if vial even has an ultimate
+        if (currentPrimaryVial != null && currentPrimaryVial.hasUltimate()) {
+            // Check if vial's ultimate can be used in this current time
+            if (canUlt && currentPrimaryVial.executeUltimate(this)) {
+                inventory.consumePrimaryVial(currentPrimaryVial.getUltimateCost());
+                return true;
+            } else {
+                Debug.Log("Cannot use ability");
+            }
+
+        } else {
+            Debug.Log("No ultimate found with current vial");
+        }
+
+        return false;
+    }
+
+
     // Private event handler function for inventory crafting
     private void onPlayerCraft() {
         StartCoroutine(craftSequence());
@@ -517,6 +550,37 @@ public class PlayerStatus : ITwitchStatus
         stun(true);
         yield return inventory.craftSequence(craftingTime);
         stun(false);
+    }
+
+
+    // Function for when you want to apply health regen status effect
+    //  Pre: healthPerFrame >= 0.0f and duration >= 0.0f
+    //  Post: applies health regen effect that lasts for duration seconds, healing healthPerFrame every frame
+    public override void applyHealthRegenEffect(float healthPerFrame, float duration) {
+        StartCoroutine(healthRegenEffectSequence(healthPerFrame, duration));
+    }
+
+
+    // Function for when you want to apply health regen status effect
+    //  Pre: healthPerFrame >= 0.0f and duration >= 0.0f
+    //  Post: sequence is now running
+    private IEnumerator healthRegenEffectSequence(float healthPerFrame, float duration) {
+        float timer = 0.0f;
+        WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
+
+        // Main loop
+        while (timer < duration) {
+            yield return waitFrame;
+
+            // Update health
+            lock (healthLock) {
+                curHealth = Mathf.Min(curHealth + healthPerFrame, maxHealth);
+                mainPlayerUI.displayHealth(curHealth, maxHealth);
+            }
+
+            // Update timer
+            timer += Time.fixedDeltaTime;
+        }
     }
 
 

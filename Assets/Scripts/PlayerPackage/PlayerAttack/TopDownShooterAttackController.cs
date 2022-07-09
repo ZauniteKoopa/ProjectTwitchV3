@@ -197,7 +197,7 @@ public class TopDownShooterAttackController : IAttackModule
 
     // Event handler for camofladge press
     public void onCamofladgePress(InputAction.CallbackContext value) {
-        if (value.started && twitchPlayerStatus.canMove()) {
+        if (value.started && twitchPlayerStatus.canMove() && !uiModule.inMenu()) {
             bool camofladgeSuccess = twitchPlayerStatus.willCamofladge();
         }
     }
@@ -207,6 +207,14 @@ public class TopDownShooterAttackController : IAttackModule
     public void onSwapPress(InputAction.CallbackContext value) {
         if (value.started && !uiModule.inMenu()) {
             twitchPlayerStatus.swapVials();
+        }
+    }
+
+
+    // Event handler for ultimate press
+    public void onUltPress(InputAction.CallbackContext value) {
+        if (value.started && twitchPlayerStatus.canMove() && !uiModule.inMenu()) {
+            twitchPlayerStatus.willExecuteUltimate();
         }
     }
 

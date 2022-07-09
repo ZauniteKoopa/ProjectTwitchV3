@@ -59,10 +59,10 @@ public class PoisonVialDatabase : ScriptableObject
             Debug.LogError("Database has not been set up yet. Accessing this function must come AFTER awake. Did you forget to put an initial loader in your level?");
         }
 
-        // return new NoTouching();
+        return new TwitchJuice();
 
-        List<VirtualSideEffect> specializedList = sideEffects[specialization];
-        return specializedList[UnityEngine.Random.Range(0, specializedList.Count)];
+        // List<VirtualSideEffect> specializedList = sideEffects[specialization];
+        // return specializedList[UnityEngine.Random.Range(0, specializedList.Count)];
     }
 
 

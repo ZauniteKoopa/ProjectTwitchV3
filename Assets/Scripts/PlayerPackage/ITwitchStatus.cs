@@ -44,6 +44,12 @@ public abstract class ITwitchStatus : ITwitchUnitStatus
     public abstract bool willCamofladge();
 
 
+    // Main function to check if you can do your ultimate
+    //  Pre: none
+    //  Post: return if ult execution is successful, returns false otherwise
+    public abstract bool willExecuteUltimate();
+
+
     // Main function to get attack rate effect factor
     //  Pre: none
     //  Post: returns a variable > 0.0f;
@@ -66,4 +72,16 @@ public abstract class ITwitchStatus : ITwitchUnitStatus
     //  Pre: Stealth resets IFF the player has killed at least one unit with expunge
     //  Post: stealth cooldown will reset. HOWEVER, cannot use camofladge when stealth sequence already running
     public abstract void onStealthReset();
+
+
+    // Function for when you want to apply health regen status effect
+    //  Pre: healthPerFrame >= 0.0f and duration >= 0.0f
+    //  Post: applies health regen effect that lasts for duration seconds, healing healthPerFrame every frame
+    public abstract void applyHealthRegenEffect(float healthPerFrame, float duration);
+
+
+    // Function to access the max health of the player
+    //  Pre: none
+    //  Post: max health > 0
+    public abstract float getMaxHealth();
 }
