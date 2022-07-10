@@ -218,17 +218,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &237065973 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 666051070539244713, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
-  m_PrefabInstance: {fileID: 666051069268553058}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f470ec8ca9b812d2a98f55f76ec14fb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &241481658
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1535,56 +1524,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1209925082, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
-      propertyPath: maxHealth
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 1209925082, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: checkpoint
       value: 
       objectReference: {fileID: 804063192}
     - target: {fileID: 666051070539244708, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: m_Name
       value: PlayerPackage
-      objectReference: {fileID: 0}
-    - target: {fileID: 666051070539244709, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
-      propertyPath: m_ActionEvents.Array.size
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 666051070539244709, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
-      propertyPath: m_ActionEvents.Array.data[12].m_ActionId
-      value: bbbcd540-96b6-4491-84b2-75eaf66df54e
-      objectReference: {fileID: 0}
-    - target: {fileID: 666051070539244709, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
-      propertyPath: m_ActionEvents.Array.data[12].m_ActionName
-      value: PlayerControls/Ultimate[/Keyboard/r]
-      objectReference: {fileID: 0}
-    - target: {fileID: 666051070539244709, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
-      propertyPath: m_ActionEvents.Array.data[12].m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 666051070539244709, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
-      propertyPath: m_ActionEvents.Array.data[12].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 666051070539244709, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
-      propertyPath: m_ActionEvents.Array.data[12].m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 237065973}
-    - target: {fileID: 666051070539244709, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
-      propertyPath: m_ActionEvents.Array.data[12].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 666051070539244709, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
-      propertyPath: m_ActionEvents.Array.data[12].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: onUltPress
-      objectReference: {fileID: 0}
-    - target: {fileID: 666051070539244709, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
-      propertyPath: m_ActionEvents.Array.data[12].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: TopDownShooterAttackController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 666051070539244709, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
-      propertyPath: m_ActionEvents.Array.data[12].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 666051070539244715, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: m_RootOrder

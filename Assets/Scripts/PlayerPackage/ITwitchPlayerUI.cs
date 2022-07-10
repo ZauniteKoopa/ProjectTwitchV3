@@ -70,6 +70,19 @@ public abstract class ITwitchPlayerUI : MonoBehaviour
     public abstract void displayCraftingTimer(float timeLeft, float maxTime, bool isVisible);
 
 
+    // Main function to display Ult cooldown timer
+    //  Pre: timeLeft <= maxTime && 0 < maxTime;
+    //  Post: updates ult resource bar
+    public abstract void updateUltCooldown(float timeLeft, float maxTime);
+
+
+    // Main function to change ult display to reflect current vial
+    //  Pre: Vial can be anything (null or non-null)
+    //  Post: updates ult display accordingly
+    public abstract void updateUltDisplay(IVial vial);
+
+
+
     // Main function to display ability cooldown error
     //  Pre: None, player tried to use an ability when it was on cooldown
     //  Post: Notifies player that the ability they wanted to use was on cooldown

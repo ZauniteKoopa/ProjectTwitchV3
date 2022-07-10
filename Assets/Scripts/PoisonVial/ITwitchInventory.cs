@@ -105,4 +105,10 @@ public abstract class ITwitchInventory : MonoBehaviour
     //  Pre: float to determin how long the crafting lasts > 0, NO CONCONCURRENT CRAFTING
     //  Post: runs crafting sequence
     public abstract IEnumerator craftSequence(float craftTime);
+
+
+    // Main function to check if you can do your ultimate
+    //  Pre: none
+    //  Post: return if ult execution is successful, returns false otherwise
+    public abstract bool willExecutePrimaryUltimate(ITwitchStatus player);
 }

@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 
 public class TwitchJuice : VirtualSideEffect
 {
-    private static float healthPercentHealed = 0.3f;
+    private static float healthPercentHealed = 0.25f;
     private static float healTime = 6f;
     private static float ultCooldown = 12f;
     private static int ultCost = 5;

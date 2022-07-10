@@ -10,6 +10,7 @@ public class TwitchInventory : ITwitchInventory
     private IVial primaryVial = null;
     private IVial secondaryVial = null;
     private Dictionary<Ingredient, int> ingredientInventory;
+    private Dictionary<IVial, Coroutine> vialUltCooldownManager;
 
     private readonly object ingredientsLock = new object();
     private readonly object vialLock = new object();
@@ -32,6 +33,7 @@ public class TwitchInventory : ITwitchInventory
     private void Start() {
         // Initialize variables
         ingredientInventory = new Dictionary<Ingredient, int>();
+        vialUltCooldownManager = new Dictionary<IVial, Coroutine>();
 
         // Display UI
         mainPlayerUI.displaySecondaryVial(secondaryVial);
@@ -146,6 +148,13 @@ public class TwitchInventory : ITwitchInventory
                 success = primaryVial.useVial(ammo);
 
                 if (primaryVial.getAmmoLeft() <= 0) {
+                    // Get rid of cooldown IF IT EXIST
+                    if (vialUltCooldownManager.ContainsKey(primaryVial)) {
+                        StopCoroutine(vialUltCooldownManager[primaryVial]);
+                        vialUltCooldownManager.Remove(primaryVial);
+                    }
+
+                    // Set primary vial to null and invoke event handler
                     primaryVial = null;
                     onPrimaryVialChange();
                 }
@@ -214,6 +223,11 @@ public class TwitchInventory : ITwitchInventory
             } else if (primaryVial == null || !primaryVial.isPlayerAuraPresent()) {
                 playerAura.setActive(false);
             }
+        }
+
+        // Update Ultimate icon
+        if (!vialUltCooldownManager.ContainsKey(primaryVial)) {
+            mainPlayerUI.updateUltCooldown(0f, 1f);
         }
 
     }
@@ -486,5 +500,70 @@ public class TwitchInventory : ITwitchInventory
         mainPlayerUI.displayPrimaryVial(primaryVial);
 
         onPrimaryVialChange();
+    }
+
+
+    // Main function to check if you can do your ultimate
+    //  Pre: none
+    //  Post: return if ult execution is successful, returns false otherwise
+    public override bool willExecutePrimaryUltimate(ITwitchStatus player) {
+        // Get reference to current primary vial
+        IVial currentPrimaryVial;
+        lock (vialLock) {
+            currentPrimaryVial = primaryVial;
+        }
+
+        // Check if vial even has an ultimate
+        if (currentPrimaryVial != null && currentPrimaryVial.hasUltimate()) {
+            // Check if cooldown is NOT running (NOT found in cooldown manager) AND that you could even execute this ultimate
+            if (!vialUltCooldownManager.ContainsKey(currentPrimaryVial) && currentPrimaryVial.executeUltimate(player)) {
+                // Update costs
+                consumePrimaryVial(currentPrimaryVial.getUltimateCost());
+
+                // Only run cooldown coroutine if primary vial doesn't become empty afterwards
+                if (primaryVial != null) {
+                    Coroutine currentCooldown = StartCoroutine(ultimateCooldownSequence(currentPrimaryVial.getUltimateCooldown(), currentPrimaryVial));
+                    vialUltCooldownManager.Add(currentPrimaryVial, currentCooldown);
+                }
+
+                return true;
+            } else {
+                Debug.Log("Cannot use ability");
+            }
+
+        } else {
+            Debug.Log("No ultimate found with current vial");
+        }
+
+        return false;
+    }
+
+
+    // Main Ult cooldown sequence to handle ultimates
+    private IEnumerator ultimateCooldownSequence(float ultCooldown, IVial vial) {
+        // Initialize timer
+        float timer = 0f;
+        WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
+
+        // Timer loop
+        while (timer < ultCooldown) {
+            yield return waitFrame;
+
+            // Update cooldown
+            if (vial == primaryVial) {
+                mainPlayerUI.updateUltCooldown(ultCooldown - timer, ultCooldown);
+            }
+
+            // Update timer
+            timer += Time.fixedDeltaTime;
+        }
+
+        // Update cooldown
+        if (vial == primaryVial) {
+            mainPlayerUI.updateUltCooldown(0f, ultCooldown);
+        }
+
+        // Remove coroutine from dictionary
+        vialUltCooldownManager.Remove(vial);
     }
 }

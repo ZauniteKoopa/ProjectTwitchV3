@@ -53,6 +53,12 @@ public class PlayerUI : ITwitchPlayerUI
     [SerializeField]
     private ResourceBar craftTimerBar;
 
+    [Header("Vial Ultimates")]
+    [SerializeField]
+    private ResourceBar vialUltimateCooldown;
+    [SerializeField]
+    private Image vialUltimateIcon;
+
     [Header("Error Messaging")]
     [SerializeField]
     private TemporaryErrorMessage errorMessage = null;
@@ -107,15 +113,19 @@ public class PlayerUI : ITwitchPlayerUI
     // Private helper method to error check ability UI
     private void errorCheckAbilityUI() {
         if (contaminateIcon == null || contaminateIcon.GetComponent<Image>() == null) {
-            Debug.Log("Contaminate icon not set up correctly or not connected, make sure an image is attached to icon: " + transform, transform);
+            Debug.LogError("Contaminate icon not set up correctly or not connected, make sure an image is attached to icon: " + transform, transform);
         }
 
         if (caskIcon == null || caskIcon.GetComponent<Image>() == null && caskAmmoCostDisplay == null) {
-            Debug.Log("Cask icon not set up correctly or not connected, make sure an image is attached to icon: " + transform, transform);
+            Debug.LogError("Cask icon not set up correctly or not connected, make sure an image is attached to icon: " + transform, transform);
         }
 
         if (camofladgeIcon == null || camofladgeIcon.GetComponent<Image>() == null) {
-            Debug.Log("Camofladge icon not set up correctly or not connected, make sure an image is attached to icon: " + transform, transform);
+            Debug.LogError("Camofladge icon not set up correctly or not connected, make sure an image is attached to icon: " + transform, transform);
+        }
+
+        if (vialUltimateIcon == null || vialUltimateCooldown == null) {
+            Debug.LogError("Vial Ult Icon and Vial Ult Cooldown bar not set up correctly");
         }
     }
 
@@ -144,6 +154,7 @@ public class PlayerUI : ITwitchPlayerUI
         }
         
         caskImage.color = primaryVial != null ? primaryVial.getColor() : disabledColor;
+        updateUltDisplay(primaryVial);
     }
 
     
@@ -275,6 +286,29 @@ public class PlayerUI : ITwitchPlayerUI
         if (isVisible) {
             craftTimerBar.setStatus(timeLeft, maxTime);
         }
+    }
+
+
+    // Main function to display Ult cooldown timer
+    //  Pre: timeLeft <= maxTime && 0 < maxTime;
+    //  Post: updates ult resource bar
+    public override void updateUltCooldown(float timeLeft, float maxTime) {
+        Debug.Assert(timeLeft <= maxTime && maxTime > 0f);
+
+        vialUltimateIcon.color = (timeLeft <= 0f) ? Color.yellow : Color.blue;
+        vialUltimateCooldown.setStatus(timeLeft, maxTime);
+    }
+
+
+    // Main function to change ult display to reflect current vial
+    //  Pre: Vial can be anything (null or non-null)
+    //  Post: updates ult display accordingly
+    public override void updateUltDisplay(IVial vial) {
+        // Check if vial has ultimate
+        bool hasVialUlt = (vial != null && vial.hasUltimate());
+
+        // If so change icon to reflect current ultimate. Else, make it disappear
+        vialUltimateIcon.gameObject.SetActive(hasVialUlt);
     }
 
 

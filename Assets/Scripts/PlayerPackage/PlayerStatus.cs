@@ -54,7 +54,6 @@ public class PlayerStatus : ITwitchStatus
     private bool canCask = true;
     private bool canCamo = true;
     private bool canContaminate = true;
-    private bool canUlt = true;
     private Coroutine runningCaskSequence = null;
     private Coroutine runningContaminateSequence = null;
     private Coroutine runningCamoSequence = null;
@@ -520,23 +519,7 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: none
     //  Post: return if ult execution is successful, returns false otherwise
     public override bool willExecuteUltimate() {
-        IVial currentPrimaryVial = inventory.getPrimaryVial();
-
-        // Check if vial even has an ultimate
-        if (currentPrimaryVial != null && currentPrimaryVial.hasUltimate()) {
-            // Check if vial's ultimate can be used in this current time
-            if (canUlt && currentPrimaryVial.executeUltimate(this)) {
-                inventory.consumePrimaryVial(currentPrimaryVial.getUltimateCost());
-                return true;
-            } else {
-                Debug.Log("Cannot use ability");
-            }
-
-        } else {
-            Debug.Log("No ultimate found with current vial");
-        }
-
-        return false;
+        return inventory.willExecutePrimaryUltimate(this);
     }
 
 

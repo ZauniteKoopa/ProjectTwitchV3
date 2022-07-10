@@ -17,6 +17,7 @@ public class TopDownShooterAttackController : IAttackModule
     [SerializeField]
     private Transform secondaryCask = null;
     private ITwitchStatus twitchPlayerStatus;
+    private ITwitchInventory twitchInventory;
 
     // Stats for attacking (move to Player Status)
     [Header("Primary Attack Stats")]
@@ -79,9 +80,10 @@ public class TopDownShooterAttackController : IAttackModule
 
         // get twitch status
         twitchPlayerStatus = playerCharacter.GetComponent<ITwitchStatus>();
+        twitchInventory = playerCharacter.GetComponent<ITwitchInventory>();
         
-        if (twitchPlayerStatus == null) {
-            Debug.LogError("Player's status script component not connected to attack package for " + playerCharacter, playerCharacter);
+        if (twitchPlayerStatus == null || twitchInventory == null) {
+            Debug.LogError("Player's status or Inventory script component not connected to attack package for " + playerCharacter, playerCharacter);
         }
 
         // Connect to contaminate zone kill event to stealth reset
