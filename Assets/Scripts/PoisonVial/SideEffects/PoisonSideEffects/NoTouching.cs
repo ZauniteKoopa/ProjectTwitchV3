@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class NoTouching : VirtualSideEffect
 {
-    private static float timePerPoisonTick = 1.5f;
+    private float timePerPoisonTick = 1.5f;
 
 
     // Default constructor
-    public NoTouching() : base (
+    public NoTouching(string description, Specialization s, float tickTime) : base (
         "No Touching",
-        "When enemies are near me, get a poison stack every " + timePerPoisonTick + " seconds",
-        Specialization.POISON
-    ) {}
+        description,
+        s
+    ) {
+        timePerPoisonTick = tickTime;
+    }
 
 
     // Main function to check if this is a player aura side effect (Player)

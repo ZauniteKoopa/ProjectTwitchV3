@@ -500,6 +500,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9172822394672781445, guid: 81679342f50716c83ad127c802d45987, type: 3}
+      propertyPath: possibleLootDrops.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9172822394672781445, guid: 81679342f50716c83ad127c802d45987, type: 3}
+      propertyPath: possibleLootDrops.Array.data[1]
+      value: 
+      objectReference: {fileID: 6651500605187683580, guid: 3e4d0a60be81b5690aa119ec6cb3adb6, type: 3}
     - target: {fileID: 9172822394672781498, guid: 81679342f50716c83ad127c802d45987, type: 3}
       propertyPath: m_RootOrder
       value: 2

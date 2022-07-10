@@ -5,17 +5,22 @@ using UnityEngine.Assertions;
 
 public class TwitchJuice : VirtualSideEffect
 {
-    private static float healthPercentHealed = 0.25f;
-    private static float healTime = 6f;
-    private static float ultCooldown = 12f;
-    private static int ultCost = 5;
+    private float healthPercentHealed = 0.25f;
+    private float healTime = 6f;
+    private float ultCooldown = 12f;
+    private int ultCost = 5;
 
     // Default constructor
-    public TwitchJuice() : base (
+    public TwitchJuice(string description, Specialization s, float healPercent, float time, float cooldown, int cost) : base (
         "Twitch's Juice",
-        "Gain an Ultimate: When pressing R, drink the vial: heals " + (healthPercentHealed * 100f) + "% health gradually over " + healTime + " seconds. Cost " + ultCost + "ammo",
-        Specialization.POISON
-    ) {}
+        description,
+        s
+    ) {
+        healthPercentHealed = healPercent;
+        healTime = time;
+        ultCooldown = cooldown;
+        ultCost = cost;
+    }
 
 
     // Main function to check if this is an ultimate

@@ -226,7 +226,7 @@ public class TwitchInventory : ITwitchInventory
         }
 
         // Update Ultimate icon
-        if (!vialUltCooldownManager.ContainsKey(primaryVial)) {
+        if (primaryVial != null && !vialUltCooldownManager.ContainsKey(primaryVial)) {
             mainPlayerUI.updateUltCooldown(0f, 1f);
         }
 

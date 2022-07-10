@@ -59,10 +59,8 @@ public class PoisonVialDatabase : ScriptableObject
             Debug.LogError("Database has not been set up yet. Accessing this function must come AFTER awake. Did you forget to put an initial loader in your level?");
         }
 
-        return new TwitchJuice();
-
-        // List<VirtualSideEffect> specializedList = sideEffects[specialization];
-        // return specializedList[UnityEngine.Random.Range(0, specializedList.Count)];
+        List<VirtualSideEffect> specializedList = sideEffects[specialization];
+        return specializedList[UnityEngine.Random.Range(0, specializedList.Count)];
     }
 
 
@@ -94,6 +92,10 @@ public class PoisonVialDatabase : ScriptableObject
                 return new RadioactiveExpunge(rawDescription, spec, float.Parse(tsvRow[4]));
             case "Induced Paralysis":
                 return new InducedParalysis(rawDescription, spec, float.Parse(tsvRow[4]));
+            case "No Touching":
+                return new NoTouching(rawDescription, spec, float.Parse(tsvRow[4]));
+            case "Twitch's Juice":
+                return new TwitchJuice(rawDescription, spec, float.Parse(tsvRow[4]), float.Parse(tsvRow[6]), float.Parse(tsvRow[8]), int.Parse(tsvRow[10]));
             default:
                 Debug.LogWarning("Warning: In row " + rowNumber + " name given was not classified. Is this a typo: " + rawName);
                 return null;
