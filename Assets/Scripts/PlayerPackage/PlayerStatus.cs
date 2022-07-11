@@ -22,6 +22,8 @@ public class PlayerStatus : ITwitchStatus
     // Health and Invincibility
     [SerializeField]
     private float maxHealth = 60f;
+    [SerializeField]
+    private float armor = 1.5f;
     private float curHealth;
     private bool isInvincible = false;
     [SerializeField]
@@ -145,11 +147,6 @@ public class PlayerStatus : ITwitchStatus
     public override float getMovementSpeed() {
         float currentSpeed = baseMovementSpeed * movementSpeedFactor;
 
-        // Checks if camofladged
-        if (inCamofladge) {
-            currentSpeed *= camoMovementSpeedBuff;
-        }
-
         Debug.Assert(currentSpeed >= 0.0f);
         return currentSpeed;
     }
@@ -160,6 +157,9 @@ public class PlayerStatus : ITwitchStatus
     //  Post: speed is affected accordingly
     public override void affectSpeed(float speedFactor) {
         movementSpeedFactor *= speedFactor;
+
+        // Set movement affects regarding speed
+        audioManager.setStepRateFactor(movementSpeedFactor);
     }
 
     // Main function to get attack rate effect factor
@@ -181,7 +181,9 @@ public class PlayerStatus : ITwitchStatus
     // Main method to damage player unit
     //  Pre: damage is a number greater than 0
     //  Post: damage is inflicted on player unit and return is damage is successful
-    public override bool damage(float dmg) {
+    public override bool damage(float dmg, bool isTrue) {
+        dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, armor);
+
         lock (healthLock) {
             if (!isInvincible && curHealth > 0f) {
                 // Decrement health
@@ -320,6 +322,7 @@ public class PlayerStatus : ITwitchStatus
     public override bool consumePrimaryVialCask() {
         if (!canCask) {
             mainPlayerUI.displayAbilityCooldownError();
+            audioManager.playErrorSound();
             return false;
         }
 
@@ -332,6 +335,7 @@ public class PlayerStatus : ITwitchStatus
 
             runningCaskSequence = StartCoroutine(caskCooldownSequence());
         } else {
+            audioManager.playErrorSound();
             mainPlayerUI.displayVialAmmoError();
         }
 
@@ -364,6 +368,7 @@ public class PlayerStatus : ITwitchStatus
     //  Post: return if you are allowed. If successful, must wait for cooldown to stop to do it again
     public override bool willContaminate(bool withinContaminateRange) {
         if (!withinContaminateRange) {
+            audioManager.playErrorSound();
             mainPlayerUI.displayContaminateRangeError();
             return false;
         }
@@ -373,6 +378,7 @@ public class PlayerStatus : ITwitchStatus
             return true;
         }
 
+        audioManager.playErrorSound();
         mainPlayerUI.displayAbilityCooldownError();
         return false;
     }
@@ -410,6 +416,7 @@ public class PlayerStatus : ITwitchStatus
             return true;
         }
 
+        audioManager.playErrorSound();
         mainPlayerUI.displayAbilityCooldownError();
         return false;
     }
@@ -467,6 +474,7 @@ public class PlayerStatus : ITwitchStatus
         invisSensor.makeVisible(true);
         mainPlayerUI.displayInvisibilityTimer(camoDuration, camoDuration, true);
         characterRenderer.material.color = stealthColor;
+        affectSpeed(camoMovementSpeedBuff);
 
         // Camofladge timer
         float timer = 0f;
@@ -480,6 +488,7 @@ public class PlayerStatus : ITwitchStatus
 
         // camo expires
         inCamofladge = false;
+        affectSpeed( 1f / camoMovementSpeedBuff);
         invisSensor.makeVisible(false);
         mainPlayerUI.displayInvisibilityTimer(0, camoDuration, false);
     }
@@ -564,6 +573,14 @@ public class PlayerStatus : ITwitchStatus
             // Update timer
             timer += Time.fixedDeltaTime;
         }
+    }
+
+
+    // Function to set movement to true 
+    //  Pre: bool representing whether the player is moving or not
+    //  Post: enact effects that happen while you're moving or deactivate effects when you aren't
+    public override void setMoving(bool isMoving) {
+        audioManager.setFootstepsActive(isMoving);
     }
 
 

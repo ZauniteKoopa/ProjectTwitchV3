@@ -30,7 +30,7 @@ public class EnemyAura : AbstractDamageZone
         Debug.Assert(tgt != null && dmg >= 0.0f);
 
         if (dmg > 0.01f) {
-            tgt.damage(dmg);
+            tgt.damage(dmg, false);
         } else {
             tgt.weakPoisonDamage(dmg, caskPoison, 1);
         }

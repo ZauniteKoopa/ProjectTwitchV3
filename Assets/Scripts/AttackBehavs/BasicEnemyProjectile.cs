@@ -16,7 +16,7 @@ public class BasicEnemyProjectile : AbstractStraightProjectile
 
     // Main method to do damage to this target
     protected override void damageTarget(ITwitchUnitStatus target) {
-        target.damage(damage);
+        target.damage(damage, false);
     }
 
     

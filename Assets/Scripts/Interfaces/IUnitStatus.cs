@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Assertions;
 
 public class UnitDelegate : UnityEvent<IUnitStatus> {};
 
@@ -30,9 +31,9 @@ public abstract class IUnitStatus : MonoBehaviour
 
 
     // Main method to inflict basic damage on unit
-    //  Pre: damage is a number greater than 0
+    //  Pre: damage is a number greater than 0, isTrue indicates if its true damage. true damage is not affected by armor
     //  Post: unit gets inflicted with damage 
-    public abstract bool damage(float dmg);
+    public abstract bool damage(float dmg, bool isTrue);
 
 
     // Main function to check if the unit is still alive
@@ -52,6 +53,12 @@ public abstract class IUnitStatus : MonoBehaviour
     //  Pre: speedFactor > 0.0f. If less than 1, slow. Else, fast
     //  Post: speed is affected accordingly
     public abstract void affectSpeed(float speedFactor);
+
+
+    // Function to set movement to true 
+    //  Pre: bool representing whether the player is moving or not
+    //  Post: enact effects that happen while you're moving or deactivate effects when you aren't
+    public abstract void setMoving(bool isMoving);
 
 
     // Main function to check if a unit canMove or not
@@ -75,5 +82,23 @@ public abstract class IUnitStatus : MonoBehaviour
         lock (stunLock) {
             stunners += (willStun) ? 1 : -1;
         }
+    }
+
+
+    // Static function to help with damage calculations
+    private static float STATIC_DEFENSE_FACTOR = 3f;
+
+    // Main function to calculate damage
+    //  Pre: attack >= 0f and defense > 0f
+    public static float calculateDamage(float attack, float defense) {
+        Debug.Assert(attack >= 0f && defense > 0f);
+
+        // If attack is so small (approaching 0), just return attack
+        if (attack < 0.00001f) {
+            return attack;
+        }
+
+        float damageReduction = STATIC_DEFENSE_FACTOR / (STATIC_DEFENSE_FACTOR + defense);
+        return attack * damageReduction;
     }
 }

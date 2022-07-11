@@ -18,7 +18,7 @@ public class EnemyBodyHitbox : MonoBehaviour
         // get appropriate IUnitStatus from this collider
         IUnitStatus tgt = collider.GetComponent<IUnitStatus>();
 
-        if (tgt != null && tgt.damage(bodyDamage)) {
+        if (tgt != null && tgt.damage(bodyDamage, false)) {
             damageTargetEvent.Invoke();
         }
     }

@@ -138,7 +138,13 @@ public class TopDownMovementController3D : MonoBehaviour
     // Event handler for 4 axis movement
     public void onInputVectorChange(InputAction.CallbackContext value) {
         // Set flag for whether player is pressing button
+        bool prevIsMoving = isMoving;
         isMoving = !value.canceled;
+
+        // If you transitioned from two movements state, set moving
+        if (isMoving != prevIsMoving) {
+            unitStatus.setMoving(isMoving);
+        }
 
         // Set inputVector value
         Vector2 eventVector = value.ReadValue<Vector2>();
