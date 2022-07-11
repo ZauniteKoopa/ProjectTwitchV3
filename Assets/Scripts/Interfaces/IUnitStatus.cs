@@ -54,6 +54,12 @@ public abstract class IUnitStatus : MonoBehaviour
     public abstract void affectSpeed(float speedFactor);
 
 
+    // Function to set movement to true 
+    //  Pre: bool representing whether the player is moving or not
+    //  Post: enact effects that happen while you're moving or deactivate effects when you aren't
+    public abstract void setMoving(bool isMoving);
+
+
     // Main function to check if a unit canMove or not
     //  Pre: none
     //  Post: returns whether a unit can move or not

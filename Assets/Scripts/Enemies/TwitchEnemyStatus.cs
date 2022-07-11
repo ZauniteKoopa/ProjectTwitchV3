@@ -457,9 +457,14 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         }
     }
 
-
     // Main event handler for when spawn in finished
     private void onSpawnInEffectFinished() {
         base.spawnIn();
     }
+
+
+    // Function to set movement to true 
+    //  Pre: bool representing whether the player is moving or not
+    //  Post: enact effects that happen while you're moving or deactivate effects when you aren't
+    public override void setMoving(bool isMoving) {}
 }

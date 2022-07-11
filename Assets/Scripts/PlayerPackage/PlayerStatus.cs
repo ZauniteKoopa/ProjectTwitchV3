@@ -145,11 +145,6 @@ public class PlayerStatus : ITwitchStatus
     public override float getMovementSpeed() {
         float currentSpeed = baseMovementSpeed * movementSpeedFactor;
 
-        // Checks if camofladged
-        if (inCamofladge) {
-            currentSpeed *= camoMovementSpeedBuff;
-        }
-
         Debug.Assert(currentSpeed >= 0.0f);
         return currentSpeed;
     }
@@ -160,6 +155,9 @@ public class PlayerStatus : ITwitchStatus
     //  Post: speed is affected accordingly
     public override void affectSpeed(float speedFactor) {
         movementSpeedFactor *= speedFactor;
+
+        // Set movement affects regarding speed
+        audioManager.setStepRateFactor(movementSpeedFactor);
     }
 
     // Main function to get attack rate effect factor
@@ -467,6 +465,7 @@ public class PlayerStatus : ITwitchStatus
         invisSensor.makeVisible(true);
         mainPlayerUI.displayInvisibilityTimer(camoDuration, camoDuration, true);
         characterRenderer.material.color = stealthColor;
+        affectSpeed(camoMovementSpeedBuff);
 
         // Camofladge timer
         float timer = 0f;
@@ -480,6 +479,7 @@ public class PlayerStatus : ITwitchStatus
 
         // camo expires
         inCamofladge = false;
+        affectSpeed( 1f / camoMovementSpeedBuff);
         invisSensor.makeVisible(false);
         mainPlayerUI.displayInvisibilityTimer(0, camoDuration, false);
     }
@@ -564,6 +564,14 @@ public class PlayerStatus : ITwitchStatus
             // Update timer
             timer += Time.fixedDeltaTime;
         }
+    }
+
+
+    // Function to set movement to true 
+    //  Pre: bool representing whether the player is moving or not
+    //  Post: enact effects that happen while you're moving or deactivate effects when you aren't
+    public override void setMoving(bool isMoving) {
+        audioManager.setFootstepsActive(isMoving);
     }
 
 
