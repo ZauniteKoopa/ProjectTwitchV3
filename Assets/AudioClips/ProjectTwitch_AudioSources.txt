@@ -14,17 +14,22 @@ Enemy Explode (SFX_Enemy_CrushBotDeath):  https://pixabay.com/sound-effects/hit-
 laser fire (SFX_Enemy_StealthLaserProjectile):
 https://freesound.org/people/Valenspire/sounds/337110/
 
-item pickup (SFX_Player_IngredientPickup):
+Crafting Success (SFX_Inventory_VialCraftFinish):
 https://freesound.org/people/kafokafo/sounds/128349/
+(Could also be for starting new game/continuing/accepting?)
+
 
 Laser Charge (SFX_Enemy_LaserCharge):
 https://pixabay.com/sound-effects/sci-fi-charge-up-37395/
 
 Gears Shifting (SFX_Enemy_GearShift):
-https://pixabay.com/sound-effects/sci-fi-charge-up-37395/
+https://freesound.org/people/ChemiCatz/sounds/267910/
 
 Crusher Collision (SFX_Enemy_MetalCollision):
 https://pixabay.com/sound-effects/anvil-hit-2-14845/
+
+Jar Close (SFX_Inventory_Exit): 
+https://freesound.org/people/EminYILDIRIM/sounds/539170/
 
 Enemy Machine Reboot (SFX_Enemy_CrushBot_Startup):
 https://pixabay.com/sound-effects/fx-organ-hammond-m111-startup-running-and-shutdown-25572/
@@ -33,3 +38,19 @@ Spreading Sand Sound (SFX_Enemy_MutatedWhump_SporeProjectile):
 https://freesound.org/people/The_Sean_/sounds/340307/
 
 Mutated Whump Death (SFX_Enemy_MutatedWhump_Death): https://freesound.org/people/tonsil5/sounds/555425/
+
+Glass Setting Down (SFX_Inventory_IngredientPlaceDown):
+https://freesound.org/people/speedygonzo/sounds/235716/
+
+Deep Table Hit (SFX_General_ModeratePound):
+https://freesound.org/people/zadehmusic/sounds/132119/
+
+Dramatic Heavy Footstep (SFX_General_DramaticFootstep): https://freesound.org/people/kyles/sounds/454222/
+
+Glass Pickup (SFX_Inventory_IngredientPickUp): https://freesound.org/people/yadronoff/sounds/320382/
+
+Hover over Slections (SFX_MainMenu_HoverOption): https://freesound.org/people/xinaesthete/sounds/26953/
+
+Menu Backing Out (SFX_MainMenu_DenyOption): https://freesound.org/people/xinaesthete/sounds/26954/
+
+Inventory Open with Glass Rustling (SFX_Inventory_Open): https://freesound.org/people/Tewkesound/sounds/140146/
