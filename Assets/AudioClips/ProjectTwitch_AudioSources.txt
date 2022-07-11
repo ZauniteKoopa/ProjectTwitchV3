@@ -26,5 +26,10 @@ https://pixabay.com/sound-effects/sci-fi-charge-up-37395/
 Crusher Collision (SFX_Enemy_MetalCollision):
 https://pixabay.com/sound-effects/anvil-hit-2-14845/
 
-Enemy Reboot (SFX_Enemy_Startup):
+Enemy Machine Reboot (SFX_Enemy_CrushBot_Startup):
 https://pixabay.com/sound-effects/fx-organ-hammond-m111-startup-running-and-shutdown-25572/
+
+Spreading Sand Sound (SFX_Enemy_MutatedWhump_SporeProjectile):
+https://freesound.org/people/The_Sean_/sounds/340307/
+
+Mutated Whump Death (SFX_Enemy_MutatedWhump_Death): https://freesound.org/people/tonsil5/sounds/555425/
