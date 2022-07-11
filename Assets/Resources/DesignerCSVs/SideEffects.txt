@@ -1,4 +1,4 @@
-Total Number	5									
+Total Number	7									
 										
 Name	Description	Type	Other Variables							
 Spray and Pray	40% chance to do critical damage with bolts and cask throws! Critical strikes deal 2x more damage than usual	Potency	Crit Chance	40	Crit Multiplier	2				

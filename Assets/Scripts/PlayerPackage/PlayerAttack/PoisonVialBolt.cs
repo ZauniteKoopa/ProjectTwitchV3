@@ -31,7 +31,7 @@ public class PoisonVialBolt : AbstractStraightProjectile
         if (poison != null) {
             target.poisonDamage(poison.getBoltDamage(), poison, 1);
         } else {
-            target.damage(weakBoltDamage);
+            target.damage(weakBoltDamage, false);
         }
     }
 

@@ -21,6 +21,8 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     // Attack stat
     [SerializeField]
     private float baseAttack = 5.0f;
+    [SerializeField]
+    private float baseArmor = 1f;
 
     // Poison management damage
     private IVial currentPoison = null;
@@ -174,7 +176,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 onLastTick = poisonTimer >= MAX_POISON_TICK_TIME;
             }
 
-            damage(poisonTickDamage);
+            damage(poisonTickDamage, true);
 
             // Apply aura effects if poison side effect matches "CONTAGION"
             if (auraTimer >= AURA_TICK_TIME) {
@@ -226,7 +228,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     // Main method to inflict basic damage on unit
     //  Pre: damage is a number greater than 0
     //  Post: unit gets inflicted with damage and returns if damage was successful
-    public override bool damage(float dmg) {
+    public override bool damage(float dmg, bool isTrue) {
+        dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, baseArmor);
+
         // Apply damage. Use a lock to make sure changes to health are synchronized
         lock(healthLock) {
 
@@ -292,7 +296,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         }
 
         // Do damage
-        damage(initDmg);
+        damage(initDmg, false);
     }
 
 
@@ -337,7 +341,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         }
 
         // Do damage
-        damage(initDmg);
+        damage(initDmg, false);
     }
 
 
@@ -356,7 +360,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
         // Apply damage
         if (tempVial != null) {
-            damage(tempVial.getContaminateDamage(tempStacks));
+            damage(tempVial.getContaminateDamage(tempStacks), false);
 
             // Apply aura damage if possible
             if (enemyAura != null) {

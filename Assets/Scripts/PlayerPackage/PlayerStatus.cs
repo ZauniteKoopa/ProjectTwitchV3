@@ -22,6 +22,8 @@ public class PlayerStatus : ITwitchStatus
     // Health and Invincibility
     [SerializeField]
     private float maxHealth = 60f;
+    [SerializeField]
+    private float armor = 1.5f;
     private float curHealth;
     private bool isInvincible = false;
     [SerializeField]
@@ -179,7 +181,9 @@ public class PlayerStatus : ITwitchStatus
     // Main method to damage player unit
     //  Pre: damage is a number greater than 0
     //  Post: damage is inflicted on player unit and return is damage is successful
-    public override bool damage(float dmg) {
+    public override bool damage(float dmg, bool isTrue) {
+        dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, armor);
+
         lock (healthLock) {
             if (!isInvincible && curHealth > 0f) {
                 // Decrement health
