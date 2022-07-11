@@ -318,6 +318,7 @@ public class PlayerStatus : ITwitchStatus
     public override bool consumePrimaryVialCask() {
         if (!canCask) {
             mainPlayerUI.displayAbilityCooldownError();
+            audioManager.playErrorSound();
             return false;
         }
 
@@ -330,6 +331,7 @@ public class PlayerStatus : ITwitchStatus
 
             runningCaskSequence = StartCoroutine(caskCooldownSequence());
         } else {
+            audioManager.playErrorSound();
             mainPlayerUI.displayVialAmmoError();
         }
 
@@ -362,6 +364,7 @@ public class PlayerStatus : ITwitchStatus
     //  Post: return if you are allowed. If successful, must wait for cooldown to stop to do it again
     public override bool willContaminate(bool withinContaminateRange) {
         if (!withinContaminateRange) {
+            audioManager.playErrorSound();
             mainPlayerUI.displayContaminateRangeError();
             return false;
         }
@@ -371,6 +374,7 @@ public class PlayerStatus : ITwitchStatus
             return true;
         }
 
+        audioManager.playErrorSound();
         mainPlayerUI.displayAbilityCooldownError();
         return false;
     }
@@ -408,6 +412,7 @@ public class PlayerStatus : ITwitchStatus
             return true;
         }
 
+        audioManager.playErrorSound();
         mainPlayerUI.displayAbilityCooldownError();
         return false;
     }

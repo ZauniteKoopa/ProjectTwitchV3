@@ -22,6 +22,8 @@ public class TwitchPlayerAudio : MonoBehaviour
     AudioClip[] hurtSounds = null;
     [SerializeField]
     AudioClip[] deathSounds = null;
+    [SerializeField]
+    AudioClip[] errorSounds = null;
 
     [Header("Footsteps")]
     [SerializeField]
@@ -85,6 +87,12 @@ public class TwitchPlayerAudio : MonoBehaviour
     // Public method to play death sounds
     public void playDeathSound() {
         playRandomClip(deathSounds);
+    }
+
+
+    // Public method to player error sounds
+    public void playErrorSound() {
+        playRandomClip(errorSounds);
     }
 
     // Main function to set step rate

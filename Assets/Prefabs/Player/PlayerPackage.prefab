@@ -10388,7 +10388,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -10499,6 +10499,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b6a573dd9ee30ee85a187237cad9690e, type: 3}
   deathSounds:
   - {fileID: 8300000, guid: 201a006af1425e96da6f092f80313415, type: 3}
+  errorSounds:
+  - {fileID: 8300000, guid: 3416fd90186ec8af98912c43f7391de9, type: 3}
   footstepsManager: {fileID: 1087849593}
   defaultTimePerStep: 0.35
 --- !u!114 &1209925082
