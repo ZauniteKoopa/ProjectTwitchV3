@@ -14,4 +14,7 @@ public abstract class IEnemyBehavior : MonoBehaviour
 
     // Main function to handle reset
     public abstract void reset();
+
+    // Main function to handle death event of this unit
+    public abstract void onDeath(IUnitStatus corpse);
 }

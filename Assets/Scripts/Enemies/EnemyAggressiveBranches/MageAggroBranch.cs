@@ -34,6 +34,9 @@ public class MageAggroBranch : IEnemyAggroBranch
     [SerializeField]
     private float projectileSpeed = 14f;
 
+    // Audio
+    private EnemyAudioManager enemyAudio;
+
 
     // Main function to do additional initialization for branch
     //  Pre: none
@@ -41,6 +44,11 @@ public class MageAggroBranch : IEnemyAggroBranch
     protected override void initialize() {
         if (maxRangedDistance < minRangedDistance || minRangedDistance < 0.0f) {
             Debug.LogError("Bad configuration for minRangedDistance and maxRangedDistance for MageAggroBranch", transform);
+        }
+
+        enemyAudio = GetComponent<EnemyAudioManager>();
+        if (enemyAudio == null) {
+            Debug.LogError("No enemy audio manager componenet connected to this unit: " + transform, transform);
         }
     }
 
@@ -60,15 +68,19 @@ public class MageAggroBranch : IEnemyAggroBranch
             curNavRangedDistance = Random.Range(minRangedDistance, maxRangedDistance);
             chasing = !isInRange();
             Vector3 sidestepDest = transform.position + sideStepRadius * (new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f))).normalized;
+            enemyAudio.setFootstepsActive(true);
 
             while (!reachedStopCondition()) {
                 Vector3 currentDestination = (chasing) ? tgt.position : sidestepDest;
                 yield return StartCoroutine(goToPosition(currentDestination, pathExpirationInterval));
             }
 
+            enemyAudio.setFootstepsActive(false);
+
             // Face player to attack
             transform.forward = (tgt.position - transform.position).normalized;
             yield return new WaitForSeconds(projectileAttackAnticipation);
+            enemyAudio.playAttackSound();
             fireProjectile();
             yield return new WaitForSeconds(projectileAttackStop);
 
@@ -77,7 +89,9 @@ public class MageAggroBranch : IEnemyAggroBranch
 
 
     // Main function to reset the branch when the overall tree gets overriden / switch branches
-    public override void reset() {}
+    public override void reset() {
+        enemyAudio.setFootstepsActive(false);
+    }
 
 
     // Main function to check for stop conditions when going to position

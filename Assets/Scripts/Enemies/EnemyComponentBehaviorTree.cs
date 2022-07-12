@@ -38,6 +38,7 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
         }
 
         unitStatus.enemyResetEvent.AddListener(reset);
+        unitStatus.unitDeathEvent.AddListener(onDeath);
         StartCoroutine(behaviorTreeSequence());
     }
 
@@ -93,5 +94,13 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
             StopAllCoroutines();
             StartCoroutine(behaviorTreeSequence());
         }
+    }
+
+
+    // Main function to handle death
+    public override void onDeath(IUnitStatus status) {
+        aggressiveBranch.reset();
+        passiveBranch.reset();
+        StopAllCoroutines();
     }
 }
