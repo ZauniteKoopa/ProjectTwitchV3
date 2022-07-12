@@ -77,7 +77,6 @@ public class FootstepsManager : MonoBehaviour
             // Wait for time step before playing footsteps
             Debug.Assert(timePerStep > 0f);
             yield return new WaitForSeconds(timePerStep);
-            Debug.Log(timePerStep);
 
             // Choose an audio clip and play it
             Debug.Assert(footstepSounds.Length > 0);
