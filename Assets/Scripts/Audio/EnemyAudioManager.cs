@@ -5,13 +5,15 @@ using UnityEngine;
 public class EnemyAudioManager : MonoBehaviour
 {
     // Audio components
-    private AudioSource speaker = null;
+    protected AudioSource speaker = null;
 
     [Header("Footsteps")]
     [SerializeField]
     private FootstepsManager footstepsManager;
     [SerializeField]
     private float defaultTimePerStep = 0.25f;
+    [SerializeField]
+    private bool isStationary = false;
 
     [Header("Generic Sounds")]
     [SerializeField]
@@ -28,7 +30,9 @@ public class EnemyAudioManager : MonoBehaviour
         }
 
         if (footstepsManager == null) {
-            Debug.LogWarning("No footsteps manager connected to enemy. Enemy will not make footsteps", transform);
+            if (!isStationary) {
+                Debug.LogWarning("No footsteps manager connected to enemy. Enemy will not make footsteps. Either attach footsteps object as a child or mark enemy as stationary", transform);
+            }
         } else {
             footstepsManager.setTimeStep(defaultTimePerStep);
         }
@@ -38,6 +42,7 @@ public class EnemyAudioManager : MonoBehaviour
     // Private helper function to play audio clip from an array of clips
     protected void playRandomClip(AudioClip[] clips) {
         speaker.Stop();
+        speaker.loop = false;
         int clipIndex = Random.Range(0, clips.Length);
         speaker.clip = clips[clipIndex];
         speaker.Play();

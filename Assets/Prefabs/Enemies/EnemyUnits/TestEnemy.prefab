@@ -982,6 +982,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   footstepsManager: {fileID: 0}
   defaultTimePerStep: 0.25
+  isStationary: 1
   deathSounds:
   - {fileID: 8300000, guid: 3c925b5b3e8c1fd4887460421dc9e601, type: 3}
   attackSounds: []

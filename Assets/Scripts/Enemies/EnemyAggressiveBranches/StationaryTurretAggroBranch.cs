@@ -29,15 +29,22 @@ public class StationaryTurretAggroBranch : IEnemyAggroBranch
     private LineRenderer laserRender;
     private int curLaserBlinks = 0;
 
+    private TurretAudioManager enemyAudio;
+
 
     // Main function to do additional initialization for branch
     //  Pre: none
     //  Post: sets branch up
     protected override void initialize() {
         laserRender = GetComponent<LineRenderer>();
+        enemyAudio = GetComponent<TurretAudioManager>();
 
         if (laserRender == null) {
             Debug.LogError("Line Renderer not attached to turret. Cannot render laser", transform);
+        }
+
+        if (enemyAudio == null) {
+            Debug.LogError("Turret audio manager not attached to turret enemy", transform);
         }
 
         setLaserColor(Color.clear);
@@ -55,10 +62,14 @@ public class StationaryTurretAggroBranch : IEnemyAggroBranch
 
         // Main attacking loop
         while (true) {
+            enemyAudio.setCharging(true);
             yield return chargeLaser(tgt);
+            enemyAudio.setCharging(false);
 
             setLaserColor(Color.clear);
+            enemyAudio.playAttackSound();
             fireLaser(tgt);
+
             yield return new WaitForSeconds(laserRechargeDuration);
 
         }
@@ -125,6 +136,7 @@ public class StationaryTurretAggroBranch : IEnemyAggroBranch
     public override void reset() { 
         setLaserColor(Color.clear);
         laserRender.enabled = false;
+        enemyAudio.setCharging(false);
     }
 
 

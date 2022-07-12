@@ -394,6 +394,8 @@ GameObject:
   - component: {fileID: 3408818156048896855}
   - component: {fileID: 3408818156048896854}
   - component: {fileID: 3408818156048896808}
+  - component: {fileID: 785878616}
+  - component: {fileID: 785878617}
   m_Layer: 10
   m_Name: StationaryTurret
   m_TagString: Untagged
@@ -504,6 +506,7 @@ MonoBehaviour:
   maxHealth: 40
   baseMovementSpeed: 5.5
   baseAttack: 5
+  baseArmor: 1
   enemyAura: {fileID: 3442120662125258693}
   maxLootDrops: 1
   minLootDrops: 1
@@ -516,8 +519,8 @@ MonoBehaviour:
   enemyResetEvent:
     m_PersistentCalls:
       m_Calls: []
-  spawnInTime: 1.25
   spawnInEffect: {fileID: 9146273507578002357}
+  spawnInTime: 1.25
 --- !u!54 &3408818156048896860
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -701,6 +704,122 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!82 &785878616
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3408818156048896853}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &785878617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3408818156048896853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af50ecef9e1860fcab02fb65b8c42c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepsManager: {fileID: 0}
+  defaultTimePerStep: 0.35
+  isStationary: 1
+  deathSounds:
+  - {fileID: 8300000, guid: 3c925b5b3e8c1fd4887460421dc9e601, type: 3}
+  attackSounds:
+  - {fileID: 8300000, guid: 7d677a82b282d2a4fb24018766044027, type: 3}
+  chargeLaserClip: {fileID: 8300000, guid: d66b8cfd190f41645a72fd757fadde42, type: 3}
 --- !u!1 &3408818156182294348
 GameObject:
   m_ObjectHideFlags: 0
