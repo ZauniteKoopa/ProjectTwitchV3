@@ -25,6 +25,9 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
     [SerializeField]
     private float recoilKnockbackDuration = 0.5f;
 
+    // Audio
+    private CrushBotAudioManager enemyAudio;
+
 
     // Main function to do additional initialization for branch
     //  Pre: none
@@ -33,6 +36,15 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
         // Error check
         if (bodyHitbox == null) {
             Debug.LogError("No body hitbox connected to crushbot!: " + transform, transform);
+        }
+
+        enemyAudio = GetComponent<CrushBotAudioManager>();
+        if (enemyAudio == null) {
+            Debug.LogError("No Crush Bot audio manager found with this crushbot", transform);
+        }
+
+        if (recoilStunDuration < 1f) {
+            Debug.LogError("Recoil stun duration for crush bot should be more than 1 second for sound effects", transform);
         }
 
         // Hitbox
@@ -55,11 +67,16 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
 
             // While player not hit, keep chasing player
             while (!hitPlayer) {
+                enemyAudio.setFootstepsActive(true);
+
                 Vector3 currentDestination = tgt.position;
                 yield return StartCoroutine(goToPosition(currentDestination, pathExpirationInterval));
+
+                enemyAudio.setFootstepsActive(false);
             }
 
             // Once player has been hit, recoil
+            enemyAudio.playAttackSound();
             Vector3 flattenPos = new Vector3(transform.position.x, tgt.position.y, transform.position.z);
             Vector3 recoilDir = (flattenPos - tgt.position).normalized;
             Vector3 recoilStart = transform.position;
@@ -76,7 +93,9 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
             }
 
             // Enemy is stunned for fixed duration before moving to enemy again
-            yield return new WaitForSeconds(recoilStunDuration);
+            yield return new WaitForSeconds(recoilStunDuration - 1f);
+            enemyAudio.playReactivateSound();
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -84,6 +103,7 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
     // Main function to reset the branch when the overall tree gets overriden / switch branches
     public override void reset() {
         StopAllCoroutines();
+        enemyAudio.setFootstepsActive(false);
     }
 
 

@@ -66,6 +66,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     [SerializeField]
     private float spawnInTime = 1.25f;
 
+    // Audio
+    private EnemyAudioManager enemyAudio;
+
 
     // On awake, set up variables and error check
     private void Awake() {
@@ -94,6 +97,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             Debug.LogWarning("No spawn in effect detected for current enemy. When spawning in within a room, the enemy will just appear instantly with no anticipation", transform);
         } else {
             spawnInEffect.effectFinishedEvent.AddListener(onSpawnInEffectFinished);
+        }
+
+        enemyAudio = GetComponent<EnemyAudioManager>();
+        if (enemyAudio == null) {
+            Debug.LogError("No audio manager connected to enemy status: " + transform, transform);
         }
 
         // Set variables
@@ -125,6 +133,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  Post: speed is affected accordingly
     public override void affectSpeed(float speedFactor) {
         movementSpeedFactor *= speedFactor;
+
+        // Affect footsteps
+        float currentModifier = movementSpeedFactor;
+        currentModifier *= (currentPoison == null) ? 1f : currentPoison.getStackSlowness(numPoisonStacks);
+        enemyAudio.setStepRateFactor(currentModifier);
     }
 
 
@@ -244,7 +257,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
                 // Check death condition
                 if (curHealth <= 0.0f) {
-                    death();
+                    StartCoroutine(death());
                 }
             }
         }
@@ -293,6 +306,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             if (poisonDotRoutine == null) {
                 poisonDotRoutine = StartCoroutine(poisonDotLoop());
             }
+
+            // Edit footsteps audio
+            float currentModifier = currentPoison.getStackSlowness(numPoisonStacks) * movementSpeedFactor;
+            enemyAudio.setStepRateFactor(currentModifier);
         }
 
         // Do damage
@@ -338,6 +355,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             if (poisonDotRoutine == null) {
                 poisonDotRoutine = StartCoroutine(poisonDotLoop());
             }
+
+            // Edit footsteps audio
+            float currentModifier = currentPoison.getStackSlowness(numPoisonStacks) * movementSpeedFactor;
+            enemyAudio.setStepRateFactor(currentModifier);
         }
 
         // Do damage
@@ -372,11 +393,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
     // Private helper function to do death sequence
     //  Pre: possibleLoot is not empty
-    private void death() {
+    private IEnumerator death() {
         Debug.Assert(possibleLoot.Length != 0);
 
+        // Invoke death event
         unitDeathEvent.Invoke(this);
-        gameObject.SetActive(false);
         
         // Only drop loot if this unit drops loot
         if (possibleLoot.Length > 0) {
@@ -388,6 +409,16 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 Object.Instantiate(currentLoot, lootPosition, Quaternion.identity);
             }
         }
+
+        // Disable game related states except audio
+        GetComponent<MeshRenderer>().enabled = false;
+        GetComponent<Collider>().enabled = false;
+        enemyAudio.setFootstepsActive(false);
+        enemyAudio.playDeathSound();
+
+        yield return new WaitForSeconds(1f);
+
+        gameObject.SetActive(false);
 
     }
 

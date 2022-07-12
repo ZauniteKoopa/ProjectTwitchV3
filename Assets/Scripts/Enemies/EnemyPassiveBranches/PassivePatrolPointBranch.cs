@@ -22,6 +22,9 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
     [SerializeField]
     private float passiveMovementSpeedReduction = 0.75f;
 
+    // Audio
+    private EnemyAudioManager enemyAudio;
+
 
     // On awake, set patrolPointLocations immediately and get NavMeshAgent
     private void Awake() {
@@ -33,6 +36,7 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
         // Initialize variables
         navMeshAgent = GetComponent<NavMeshAgent>();
         enemyStats = GetComponent<ITwitchUnitStatus>();
+        enemyAudio = GetComponent<EnemyAudioManager>();
         patrolPointLocations = new List<Vector3>();
         float yPos = transform.position.y;
 
@@ -42,6 +46,10 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
 
         if (enemyStats == null){
             Debug.LogError("No ITwitchUnitStatus connected to this unit: " + transform, transform);
+        }
+
+        if (enemyAudio == null) {
+            Debug.LogError("No EnemyAudioManager connected to this unit: " + transform, transform);
         }
 
         // record each patrol point location
@@ -88,6 +96,7 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
     protected IEnumerator goToPosition(Vector3 dest) {
         bool pathFound = navMeshAgent.SetDestination(dest);
         navMeshAgent.isStopped = false;
+        enemyAudio.setFootstepsActive(true);
 
         // If path found, go to path
         if (pathFound) {
@@ -110,6 +119,7 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
             }
         }
 
+        enemyAudio.setFootstepsActive(false);
         navMeshAgent.isStopped = true;
     }
 
@@ -119,6 +129,7 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
         StopAllCoroutines();
         wasReset = true;
         navMeshAgent.isStopped = true;
+        enemyAudio.setFootstepsActive(false);
     }
 
 

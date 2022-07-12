@@ -64,7 +64,6 @@ public class FootstepsManager : MonoBehaviour
     //  Post: timeStep is set
     public void setTimeStep(float timeStep) {
         Debug.Assert(timeStep > 0f);
-
         timePerStep = timeStep;
     }
 
