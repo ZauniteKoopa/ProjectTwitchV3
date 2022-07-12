@@ -70,6 +70,7 @@ public class EnemyAudioManager : MonoBehaviour
         if (footstepsManager != null) {
 
             // If you go faster, time per step decreases. If you go slower, time per step increases
+            Debug.Log(speedFactor);
             footstepsManager.setTimeStep(defaultTimePerStep / speedFactor);
         }
     }

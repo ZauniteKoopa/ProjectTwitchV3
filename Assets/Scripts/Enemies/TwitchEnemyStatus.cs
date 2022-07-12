@@ -104,6 +104,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             Debug.LogError("No audio manager connected to enemy status: " + transform, transform);
         }
 
+        // Affect footsteps
+        float currentModifier = movementSpeedFactor;
+        currentModifier *= (currentPoison == null) ? 1f : currentPoison.getStackSlowness(numPoisonStacks);
+        enemyAudio.setStepRateFactor(currentModifier);
+
         // Set variables
         unitDeathEvent = new UnitDelegate();
         spawnPoint = transform.position;
@@ -137,7 +142,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         // Affect footsteps
         float currentModifier = movementSpeedFactor;
         currentModifier *= (currentPoison == null) ? 1f : currentPoison.getStackSlowness(numPoisonStacks);
-        enemyAudio.setStepRateFactor(currentModifier);
+
+        if (enemyAudio != null) {
+            enemyAudio.setStepRateFactor(currentModifier);
+        }
     }
 
 

@@ -62,6 +62,8 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
 
     // Main function to run the branch
     public override IEnumerator execute() {
+        // Change speed to reflect passive ness
+        enemyStats.affectSpeed(passiveMovementSpeedReduction);
 
         // If this is the first time running branch or branch was reset, find nearest patrol point to start
         if (wasReset) {
@@ -110,7 +112,7 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
 
             // Wait for unit to approach destination
             float currentDistance = Vector3.Distance(dest, transform.position);
-            navMeshAgent.speed = enemyStats.getMovementSpeed() * passiveMovementSpeedReduction;
+            navMeshAgent.speed = enemyStats.getMovementSpeed();
             
             while (currentDistance > nearDistance) {
                 yield return waitFrame;
@@ -130,6 +132,9 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
         wasReset = true;
         navMeshAgent.isStopped = true;
         enemyAudio.setFootstepsActive(false);
+
+        // Reset passive movement speed reduction
+        enemyStats.affectSpeed(1f / passiveMovementSpeedReduction);
     }
 
 
