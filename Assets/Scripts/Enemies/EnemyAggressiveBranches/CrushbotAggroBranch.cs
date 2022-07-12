@@ -66,14 +66,12 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
             hitPlayer = false;
 
             // While player not hit, keep chasing player
+            enemyAudio.setFootstepsActive(true);
             while (!hitPlayer) {
-                enemyAudio.setFootstepsActive(true);
-
                 Vector3 currentDestination = tgt.position;
                 yield return StartCoroutine(goToPosition(currentDestination, pathExpirationInterval));
-
-                enemyAudio.setFootstepsActive(false);
             }
+            enemyAudio.setFootstepsActive(false);
 
             // Once player has been hit, recoil
             enemyAudio.playAttackSound();
