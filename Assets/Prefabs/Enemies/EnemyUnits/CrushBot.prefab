@@ -836,7 +836,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -934,6 +934,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   footstepsManager: {fileID: 378203134}
   defaultTimePerStep: 0.35
+  isStationary: 0
   deathSounds:
   - {fileID: 8300000, guid: 3c925b5b3e8c1fd4887460421dc9e601, type: 3}
   attackSounds:
