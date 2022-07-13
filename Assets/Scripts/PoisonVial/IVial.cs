@@ -151,4 +151,10 @@ public interface IVial
     //  Pre: player != null
     //  Post: executes the ultimate listed in side effects, returns true if successful
     bool executeUltimate(ITwitchStatus player);
+
+
+    // Main function to check if you have a side effect
+    //  Pre: none
+    //  Post: checks if you have a side effect
+    bool hasSideEffect();
 }

@@ -22,10 +22,17 @@ public class TwitchInventory : ITwitchInventory
     public UnityEvent playerCraftEvent;
 
 
+    [Header("Audio Elements")]
+    [SerializeField]
+    private TwitchPlayerAudio playerAudio;
+
     // Player Aura Elements
     [SerializeField]
     private EnemyAura playerAura;
     private Coroutine currentAuraSequence = null;
+
+    // Variables to keep track of previous craft
+    private bool gainedSideEffect = false;
 
 
 
@@ -96,6 +103,7 @@ public class TwitchInventory : ITwitchInventory
             ingredientInventory[ing]++;
         }
 
+        playerAudio.playPickUpSound();
         return true;
     }
 
@@ -244,8 +252,11 @@ public class TwitchInventory : ITwitchInventory
             if (primaryVial == null) {
                 primaryVial = new PoisonVial(ing);
                 success = true;
+                gainedSideEffect = false;
             } else {
+                bool hadSideEffect = primaryVial.hasSideEffect();
                 success = primaryVial.upgrade(ing);
+                gainedSideEffect = hadSideEffect != primaryVial.hasSideEffect();
             }
         }
 
@@ -277,8 +288,11 @@ public class TwitchInventory : ITwitchInventory
             if (primaryVial == null) {
                 primaryVial = new PoisonVial(ing1, ing2);
                 success = true;
+                gainedSideEffect = primaryVial.hasSideEffect();
             } else {
+                bool hadSideEffect = primaryVial.hasSideEffect();
                 success = primaryVial.upgrade(ing1, ing2);
+                gainedSideEffect = hadSideEffect != primaryVial.hasSideEffect();
             }
         }
 
@@ -308,6 +322,8 @@ public class TwitchInventory : ITwitchInventory
             primaryVial = new PoisonVial(ing1, ing2);
         }
 
+        gainedSideEffect = primaryVial.hasSideEffect();
+
         // If successful and UnityEvent != null, trigger event
         if (playerCraftEvent != null) {
             playerCraftEvent.Invoke();
@@ -331,8 +347,11 @@ public class TwitchInventory : ITwitchInventory
             if (secondaryVial == null) {
                 secondaryVial = new PoisonVial(ing);
                 success = true;
+                gainedSideEffect = false;
             } else {
+                bool hadSideEffect = secondaryVial.hasSideEffect();
                 success = secondaryVial.upgrade(ing);
+                gainedSideEffect = hadSideEffect != secondaryVial.hasSideEffect();
             }
         }
 
@@ -363,8 +382,11 @@ public class TwitchInventory : ITwitchInventory
             if (secondaryVial == null) {
                 secondaryVial = new PoisonVial(ing1, ing2);
                 success = true;
+                gainedSideEffect = secondaryVial.hasSideEffect();
             } else {
+                bool hadSideEffect = secondaryVial.hasSideEffect();
                 success = secondaryVial.upgrade(ing1, ing2);
+                gainedSideEffect = hadSideEffect != secondaryVial.hasSideEffect();
             }
 
             mainPlayerUI.displaySecondaryVial(secondaryVial);
@@ -394,6 +416,8 @@ public class TwitchInventory : ITwitchInventory
         } else {
             secondaryVial = new PoisonVial(ing1, ing2);
         }
+
+        gainedSideEffect = primaryVial.hasSideEffect();
 
         // If successful and UnityEvent != null, trigger event
         if (playerCraftEvent != null) {
@@ -486,12 +510,20 @@ public class TwitchInventory : ITwitchInventory
         float timer = 0.0f;
         WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
         mainPlayerUI.displayCraftingTimer(0.0f, craftTime, true);
+        playerAudio.setVialMixing(true);
 
         while (timer <= craftTime) {
             yield return waitFrame;
 
             timer += Time.deltaTime;
             mainPlayerUI.displayCraftingTimer(timer, craftTime, true);
+        }
+
+        // Player audio
+        playerAudio.setVialMixing(false);
+        playerAudio.playBasicUpgradeSound();
+        if (gainedSideEffect) {
+            playerAudio.playSideEffectUpgradeSound();
         }
 
         // Update all possible UI

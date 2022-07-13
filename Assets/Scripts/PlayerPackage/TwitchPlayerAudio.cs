@@ -6,24 +6,35 @@ using UnityEngine.Assertions;
 public class TwitchPlayerAudio : MonoBehaviour
 {
     // Audio components
-    private AudioSource speaker = null;
+    private AudioSource baseSpeaker = null;
+    [SerializeField]
+    private AudioSource voiceSpeaker = null;
 
     // Audio Clips to be used
     [Header("Audio clips")]
     [SerializeField]
-    AudioClip[] fireBoltSounds = null;
+    private AudioClip[] fireBoltSounds = null;
     [SerializeField]
-    AudioClip[] contaminateSounds = null;
+    private AudioClip[] contaminateSounds = null;
     [SerializeField]
-    AudioClip[] stealthCastSounds = null;
+    private AudioClip[] stealthCastSounds = null;
     [SerializeField]
-    AudioClip[] caskThrowSounds = null;
+    private AudioClip[] caskThrowSounds = null;
     [SerializeField]
-    AudioClip[] hurtSounds = null;
+    private AudioClip[] hurtSounds = null;
     [SerializeField]
-    AudioClip[] deathSounds = null;
+    private AudioClip[] deathSounds = null;
     [SerializeField]
-    AudioClip[] errorSounds = null;
+    private AudioClip[] errorSounds = null;
+    [SerializeField]
+    private AudioClip[] pickupSounds = null;
+    [SerializeField]
+    private AudioClip[] basicUpgradeSounds = null;
+    [SerializeField]
+    private AudioClip[] sideEffectUpgradeSounds = null;
+    [SerializeField]
+    private AudioClip vialMixingSound = null;
+
 
     [Header("Footsteps")]
     [SerializeField]
@@ -34,10 +45,14 @@ public class TwitchPlayerAudio : MonoBehaviour
 
     // On awake, get access to audio source
     private void Awake() {
-        speaker = GetComponent<AudioSource>();
+        baseSpeaker = GetComponent<AudioSource>();
 
-        if (speaker == null) {
+        if (baseSpeaker == null) {
             Debug.LogError("Audio Source not connected to " + transform + " for AudioManager to make use of");
+        }
+
+        if (voiceSpeaker == null) {
+            Debug.LogError("Voice Speaker not connected to player");
         }
 
         if (footstepsManager == null) {
@@ -49,7 +64,9 @@ public class TwitchPlayerAudio : MonoBehaviour
 
 
     // Private helper function to play audio clip from an array of clips
-    private void playRandomClip(AudioClip[] clips) {
+    private void playRandomClip(AudioClip[] clips, AudioSource speaker) {
+        speaker.Stop();
+        speaker.loop = false;
         int clipIndex = Random.Range(0, clips.Length);
         speaker.clip = clips[clipIndex];
         speaker.Play();
@@ -58,41 +75,72 @@ public class TwitchPlayerAudio : MonoBehaviour
 
     // Public method used to play firing bolt sound
     public void playBoltSound() {
-        playRandomClip(fireBoltSounds);
+        playRandomClip(fireBoltSounds, baseSpeaker);
     }
 
 
     // Public method to play contaminate sound
     public void playContaminateSound() {
-        playRandomClip(contaminateSounds);
+        playRandomClip(contaminateSounds, baseSpeaker);
     }
 
 
     // Public method to play stealth cast sound
     public void playStealthCastSound() {
-        playRandomClip(stealthCastSounds);
+        playRandomClip(stealthCastSounds, baseSpeaker);
     }
 
 
     // Public method to play cask throw sounds
     public void playCaskCastSound() {
-        playRandomClip(caskThrowSounds);
+        playRandomClip(caskThrowSounds, baseSpeaker);
     }
 
     // Public method to play hurt sounds
     public void playHurtSound() {
-        playRandomClip(hurtSounds);
+        playRandomClip(hurtSounds, voiceSpeaker);
     }
 
     // Public method to play death sounds
     public void playDeathSound() {
-        playRandomClip(deathSounds);
+        playRandomClip(deathSounds, voiceSpeaker);
     }
 
 
     // Public method to player error sounds
     public void playErrorSound() {
-        playRandomClip(errorSounds);
+        playRandomClip(errorSounds, baseSpeaker);
+    }
+
+
+    // Main function to play pickup sounds
+    public void playPickUpSound() {
+        playRandomClip(pickupSounds, baseSpeaker);
+    }
+
+
+    // Main function for making upgrade sounds
+    public void playBasicUpgradeSound() {
+        playRandomClip(basicUpgradeSounds, baseSpeaker);
+    }
+
+
+    // Main function to play side effect upgrade sound
+    public void playSideEffectUpgradeSound() {
+        playRandomClip(sideEffectUpgradeSounds, voiceSpeaker);
+    }
+
+
+    // Main function to play vial mixing sound
+    //  Pre: isActive represents whether to set vial mixing on or off
+    public void setVialMixing(bool isActive) {
+        baseSpeaker.Stop();
+        baseSpeaker.loop = isActive;
+
+        if (isActive) {
+            baseSpeaker.clip = vialMixingSound;
+            baseSpeaker.Play();
+        }
     }
 
     // Main function to set step rate

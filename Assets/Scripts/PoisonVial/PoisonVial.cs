@@ -658,4 +658,12 @@ public class PoisonVial : IVial
                 return false;
         }
     }
+
+
+    // Main function to check if you have a side effect
+    //  Pre: none
+    //  Post: checks if you have a side effect
+    public bool hasSideEffect() {
+        return sideEffect.getSpecialization() != Specialization.NONE;
+    }
 }
