@@ -34,6 +34,11 @@ public class CraftInventory : MonoBehaviour
     [SerializeField]
     private IngredientDisplay ingredientInfo;
 
+    // Audio
+    [Header("Audio")]
+    [SerializeField]
+    private TwitchInventoryUIAudio inventoryAudio;
+
     // Inventory to display
     [Header("Backend Inventory")]
     [SerializeField]
@@ -54,6 +59,15 @@ public class CraftInventory : MonoBehaviour
         // Connect to Unity Events for vial inventory icon
         primaryVialIcon.iconSelectedEvent.AddListener(onPrimaryVialSelect);
         secondaryVialIcon.iconSelectedEvent.AddListener(onSecondaryVialSelect);
+
+        // Error checking
+        if (twitchInventory == null) {
+            Debug.LogError("No inventory for UI to display", transform);
+        }
+
+        if (inventoryAudio == null) {
+            Debug.LogError("No audio to connect to for inventory UI", transform);
+        }
     }
 
 
@@ -80,16 +94,24 @@ public class CraftInventory : MonoBehaviour
         secondaryVialIcon.setHighlight(false);
         selectedVialInfo.DisplayVial(twitchInventory.getPrimaryVial());
         primaryVialSelected = true;
+
+        // Play sound
+        inventoryAudio.playOpenSound();
     }
 
 
     // Private instance function to close Inventory UI
     //  Pre: closes inventory UI and resumes game
     //  Post: finishes UI
-    private void closeInventory() {
+    private void closeInventory(bool playSound) {
         inInventory = false;
         Time.timeScale = prevTimeScale;
         gameObject.SetActive(false);
+
+        // Play sound
+        if (playSound) {
+            inventoryAudio.playClosedSound();
+        }
     }
 
 
@@ -110,7 +132,7 @@ public class CraftInventory : MonoBehaviour
 
         // If you are in inventory, close inventory
         } else {
-            closeInventory();
+            closeInventory(true);
         }
     }
 
@@ -124,6 +146,8 @@ public class CraftInventory : MonoBehaviour
         } else {
             ingredientInfo.uiClear();
         }
+
+        inventoryAudio.playGrabSound();
     }
 
 
@@ -140,6 +164,8 @@ public class CraftInventory : MonoBehaviour
             primaryVialIcon.setHighlight(true);
             secondaryVialIcon.setHighlight(false);
         }
+
+        inventoryAudio.playGrabSound();
     }
 
 
@@ -156,6 +182,8 @@ public class CraftInventory : MonoBehaviour
             primaryVialIcon.setHighlight(false);
             secondaryVialIcon.setHighlight(true);
         }
+
+        inventoryAudio.playGrabSound();
     }
 
 
@@ -173,6 +201,8 @@ public class CraftInventory : MonoBehaviour
 
         ingredientInfo.uiClear();
         selectedVialInfo.DisplayVial(null);
+
+        inventoryAudio.playDropSound();
     }
 
 
@@ -198,6 +228,7 @@ public class CraftInventory : MonoBehaviour
         } else {
             craftErrorMessage.gameObject.SetActive(true);
             craftErrorMessage.text = "Will reach max stat cap: cannot upgrade stat";
+            inventoryAudio.playCraftErrorSound();
             return;
         }
     }
@@ -259,7 +290,7 @@ public class CraftInventory : MonoBehaviour
         craftVialSlot.Reset();
 
         updateInfo();
-        closeInventory();
+        closeInventory(false);
     }
 
 

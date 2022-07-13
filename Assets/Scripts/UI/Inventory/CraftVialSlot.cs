@@ -33,7 +33,7 @@ public class CraftVialSlot : MonoBehaviour, IDropHandler, IPointerDownHandler
     {
         if (pv != null)
         {
-            //audioFX.Play(0);
+            audioFX.Play(0);
             vial = pv;
             vialSlot.sprite = ui.GetSprite();
             vialSlot.color = pv.getColor();
