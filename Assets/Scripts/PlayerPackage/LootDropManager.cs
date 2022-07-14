@@ -29,6 +29,9 @@ public class LootDropManager : MonoBehaviour
 
     // Public UnityEvent for when TargetedLoot changes
     public LootDelegate targetedLootChangeEvent;
+    public UnityEvent firstLootEvent;
+    private bool firstLootFound = false;
+
 
 
     // On awake initialize HashSet
@@ -169,6 +172,12 @@ public class LootDropManager : MonoBehaviour
         if (testLoot != null) {
             lock (lootLock) {
                 nearbyLoot.Add(testLoot);
+
+                // If this is the first loot found, trigger event
+                if (!firstLootFound) {
+                    firstLootEvent.Invoke();
+                    firstLootFound = true;
+                }
             }
 
             // If no looping check running, activate looping check and set this testLoot as targeted (it's the first one)

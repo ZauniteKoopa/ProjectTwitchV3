@@ -13,6 +13,7 @@ public class OnboardPopup : MonoBehaviour
     private GameObject infoPopup;
     [SerializeField]
     private float popupDuration = 5f;
+    private bool activated = false;
 
 
     // On awake, set infoPopup to inactive
@@ -54,7 +55,10 @@ public class OnboardPopup : MonoBehaviour
 
     // Main function to trigger popup, can react based on events
     public void onPopupTrigger() {
-        StartCoroutine(popupSequence());
+        if (!activated) {
+            activated = true;
+            StartCoroutine(popupSequence());
+        }
     }
 
 
