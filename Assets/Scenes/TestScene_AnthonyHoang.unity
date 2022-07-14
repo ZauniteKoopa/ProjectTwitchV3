@@ -1699,6 +1699,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PopupTriggerBox
       objectReference: {fileID: 0}
+    - target: {fileID: 3962279238593304704, guid: 9908beb2a11d59de1822cbf20d96a90b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9908beb2a11d59de1822cbf20d96a90b, type: 3}
 --- !u!1001 &666051069268553058
