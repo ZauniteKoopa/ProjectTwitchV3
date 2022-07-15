@@ -711,6 +711,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360218b3a8a8b2f478f2739cf3c4b98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitDeathEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2455479536801160777}
+        m_TargetAssemblyTypeName: EnemyBodyHitbox, Assembly-CSharp
+        m_MethodName: deactivate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   unitPoisonedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -732,7 +747,19 @@ MonoBehaviour:
   poisonStackDisplay: {fileID: 4047440397340440073}
   enemyResetEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2455479536801160778}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   spawnInEffect: {fileID: 175305666985486786}
   spawnInTime: 1.25
 --- !u!54 &2455479537994466317
@@ -1318,7 +1345,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7185080075644052825
 Transform:
   m_ObjectHideFlags: 0
@@ -1348,7 +1375,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6319360323601574806}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1569,6 +1596,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79b9fab25517d10fcbda228451b92157, type: 3}
+--- !u!4 &3686048061197532159 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3031346523968163793, guid: 79b9fab25517d10fcbda228451b92157, type: 3}
+  m_PrefabInstance: {fileID: 1816912955704276014}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4047440397340440073 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2386236190643978791, guid: 79b9fab25517d10fcbda228451b92157, type: 3}
@@ -1580,8 +1612,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9968be4b0972f57e4ade95545c1ee65b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &3686048061197532159 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3031346523968163793, guid: 79b9fab25517d10fcbda228451b92157, type: 3}
-  m_PrefabInstance: {fileID: 1816912955704276014}
-  m_PrefabAsset: {fileID: 0}

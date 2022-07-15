@@ -28,4 +28,9 @@ public class EnemyBodyHitbox : MonoBehaviour
     public void init(float damage) {
         bodyDamage = damage;
     }
+
+    // Main function to handle when deactivated
+    public void deactivate() {
+        gameObject.SetActive(false);
+    }
 }

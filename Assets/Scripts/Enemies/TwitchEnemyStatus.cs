@@ -110,7 +110,6 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         enemyAudio.setStepRateFactor(currentModifier);
 
         // Set variables
-        unitDeathEvent = new UnitDelegate();
         spawnPoint = transform.position;
         curHealth = maxHealth;
         if (healthBar != null) {
@@ -437,6 +436,8 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     public override void reset() {
         transform.position = spawnPoint;
         gameObject.SetActive(true);
+        GetComponent<MeshRenderer>().enabled = true;
+        GetComponent<Collider>().enabled = true;
 
         // Reset poison variables
         lock (poisonLock) {
@@ -452,6 +453,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             numPoisonStacks = 0;
             currentPoison = null;
             poisonTimer = 0f;
+            movementSpeedFactor = 1f;
 
             if (poisonStackDisplay != null) {
                 poisonStackDisplay.displayNumber(numPoisonStacks);
@@ -493,6 +495,8 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  Pre: none
     //  Post: spawns the enemy in IFF not spawned in game yet
     public override void spawnIn() {
+        transform.position = spawnPoint;
+        
         if (spawnInEffect != null) {
             spawnInEffect.activateEffect(transform.position, transform.position, spawnInTime);
         } else {

@@ -121,7 +121,6 @@ public class PlayerStatus : ITwitchStatus
         curHealth = maxHealth;
         normalColor = characterRenderer.material.color;
         inventory.addCraftListener(onPlayerCraft);
-        unitDeathEvent = new UnitDelegate();
         initDefaultUI();
     }
 

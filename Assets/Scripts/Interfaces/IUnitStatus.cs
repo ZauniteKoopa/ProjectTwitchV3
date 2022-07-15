@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Assertions;
 
+[System.Serializable]
 public class UnitDelegate : UnityEvent<IUnitStatus> {};
 
 public abstract class IUnitStatus : MonoBehaviour
@@ -14,7 +15,6 @@ public abstract class IUnitStatus : MonoBehaviour
 
 
     // Main death event
-    //public UnityEvent unitDeathEvent;
     public UnitDelegate unitDeathEvent;
     
 

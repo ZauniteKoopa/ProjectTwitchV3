@@ -11190,6 +11190,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b580e24360ce46395737b0a7af14a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitDeathEvent:
+    m_PersistentCalls:
+      m_Calls: []
   unitPoisonedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -11205,7 +11208,7 @@ MonoBehaviour:
   characterRenderer: {fileID: 666051070171789298}
   deathColor: {r: 0, g: 0, b: 0, a: 1}
   baseMovementSpeed: 12
-  maxHealth: 40
+  maxHealth: 30
   armor: 1.5
   invincibilityFrameDuration: 1.5
   checkpoint: {fileID: 0}
