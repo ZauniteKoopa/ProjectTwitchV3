@@ -329,6 +329,7 @@ public class PoisonVial : IVial
 
         float stackSlowness = (stickiness > 0) ? BASE_SLOWNESS + (SLOWNESS_GROWTH * stickiness) : 1.0f;
         stackSlowness = sideEffect.modifyStackSpeedFactor(stackSlowness);
+        float lerpValue = 0.5f + (0.5f * (numStacks / 6f));
         stackSlowness = Mathf.Lerp(1.0f, stackSlowness, numStacks / 6f);
 
         Debug.Assert(stackSlowness > 0.0f && stackSlowness <= 1.0f);
