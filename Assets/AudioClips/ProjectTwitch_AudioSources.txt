@@ -54,3 +54,14 @@ Hover over Slections (SFX_MainMenu_HoverOption): https://freesound.org/people/xi
 Menu Backing Out (SFX_MainMenu_DenyOption): https://freesound.org/people/xinaesthete/sounds/26954/
 
 Inventory Open with Glass Rustling (SFX_Inventory_Open): https://freesound.org/people/Tewkesound/sounds/140146/
+
+Scuffling Step on Wood (SFX_General_WoodenScuffle): https://freesound.org/people/Project_Trident/sounds/128101/
+
+Light Step on wood (SFX_General_LightWoodStep): https://freesound.org/people/Project_Trident/sounds/128101/
+
+Twitch Step, boot scuffly but light (SFX_Twitch_Footsteps): https://freesound.org/people/wibwob/sounds/277717/
+
+Quiet Step (SFX_General_LightStep):
+https://freesound.org/people/wibwob/sounds/277717/
+
+
