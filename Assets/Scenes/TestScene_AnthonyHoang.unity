@@ -1196,6 +1196,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CrushBot
       objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: baseArmor
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2050020950324005087, guid: b0619f83556423369b6f53615030aab2, type: 3}
       propertyPath: m_RootOrder
       value: 1
