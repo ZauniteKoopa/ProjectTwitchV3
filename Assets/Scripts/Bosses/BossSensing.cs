@@ -33,6 +33,8 @@ public class BossSensing : MonoBehaviour
         if (body == null) {
             Debug.LogError("Enemy sensor not connected to a collider to check with. Ensure that a collider is connected to the part with the brain", brain.transform);
         }
+
+        nearbyTarget = FindObjectOfType<ITwitchStatus>();
     }
 
 
@@ -73,15 +75,5 @@ public class BossSensing : MonoBehaviour
         playerSpotted = false;
         forgetRoutine = null;
         brain.onLostPlayer();
-    }
-
-
-    // Event handler function for when player has entered the sense box
-    private void OnTriggerEnter(Collider collider) {
-        ITwitchStatus testPlayer = collider.GetComponent<ITwitchStatus>();
-
-        if (testPlayer != null) {
-            nearbyTarget = testPlayer;
-        }
     }
 }
