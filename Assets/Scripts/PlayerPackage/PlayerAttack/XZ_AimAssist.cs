@@ -111,7 +111,8 @@ public class XZ_AimAssist : IAimAssist
             radiusVector = radiusVector.normalized;
 
             // Get distance vector from playerPosition to radius point = (enemyPosition + (radius * radiusVector))
-            Vector3 radiusPoint = enemyPosition + (enemyAimAssistRadius * radiusVector);
+            float radius = enemy.transform.lossyScale.x + enemyAimAssistRadius;
+            Vector3 radiusPoint = enemyPosition + (radius * radiusVector);
             Vector3 radiusDistanceVector = radiusPoint - playerPosition;
 
             // Compare the angles between (distanceVector and aimDirection) AND (distanceVector and radusDistanceVector). If aimDirction has a smaller angle (Cosine is bigger), add to the list

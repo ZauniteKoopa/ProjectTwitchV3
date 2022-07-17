@@ -6582,7 +6582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1400362c0c322b9529b28cb7daa03e9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAimAssistRadius: 2
+  enemyAimAssistRadius: 1
   aimMask:
     serializedVersion: 2
     m_Bits: 8
