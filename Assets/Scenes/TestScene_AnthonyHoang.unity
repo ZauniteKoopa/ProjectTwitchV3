@@ -2569,6 +2569,8 @@ MonoBehaviour:
   - {fileID: 8328922755592592645, guid: 740c7a2ed8a1fcf1b99c4da6c026ea3d, type: 3}
   - {fileID: 2958984616688009020, guid: 433a457c7004df31b8bb277100d7da9b, type: 3}
   - {fileID: 6651500605187683580, guid: 3e4d0a60be81b5690aa119ec6cb3adb6, type: 3}
+  minLootDistance: 4
+  maxLootDistance: 6
   healthBar: {fileID: 475614055268295540}
   poisonStackDisplay: {fileID: 1435225339883944755}
   enemyResetEvent:
