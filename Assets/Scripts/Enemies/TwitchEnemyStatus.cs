@@ -49,6 +49,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     private int minLootDrops = 2;
     [SerializeField]
     private Loot[] possibleLoot;
+    [SerializeField]
+    private float minLootDistance = 0.25f;
+    [SerializeField]
+    private float maxLootDistance = 2.5f;
 
     // UI variables
     [Header("UI Variables")]
@@ -437,7 +441,8 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             for (int l = 0; l < numLoot; l++) {
                 Vector3 lootPosition = transform.position;
                 Transform currentLoot = possibleLoot[Random.Range(0, possibleLoot.Length)].transform;
-                Object.Instantiate(currentLoot, lootPosition, Quaternion.identity);
+                Transform curLootInstance = Object.Instantiate(currentLoot, lootPosition, Quaternion.identity);
+                curLootInstance.GetComponent<Loot>().setSpawnRadius(minLootDistance, maxLootDistance);
             }
         }
     }
