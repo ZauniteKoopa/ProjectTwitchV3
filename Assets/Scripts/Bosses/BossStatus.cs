@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[System.Serializable]
+public class BossPhaseDelegate : UnityEvent<int> {}
+
 public class BossStatus : TwitchEnemyStatus
 {
     // Array to handle the number of phases
@@ -16,7 +19,7 @@ public class BossStatus : TwitchEnemyStatus
     // Main flag for phase transitioning
     [SerializeField]
     private float phaseTransitionTime = 1.5f;
-    public UnityEvent transitionPhaseStartEvent;
+    public BossPhaseDelegate transitionPhaseStartEvent;
     public UnityEvent transitionPhaseEndEvent;
     private Coroutine transitionSequence;
 
@@ -76,7 +79,7 @@ public class BossStatus : TwitchEnemyStatus
     //  Pre: boss has moved on to the next phase
     //  Post: Boss becomes invulnerable to all damage and enemy behavior stops temporarily
     private IEnumerator transitionPhaseSequence() {
-        transitionPhaseStartEvent.Invoke();
+        transitionPhaseStartEvent.Invoke(curPhase);
         phaseTransitioning = true;
         meshRender.material.color = Color.blue;
         dropLoot();
