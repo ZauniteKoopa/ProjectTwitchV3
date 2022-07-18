@@ -91,7 +91,7 @@ public abstract class IUnitStatus : MonoBehaviour
     // Main function to calculate damage
     //  Pre: attack >= 0f and defense > 0f
     public static float calculateDamage(float attack, float defense) {
-        Debug.Assert(attack >= 0f && defense > 0f);
+        Debug.Assert(attack >= 0f && defense >= 0f);
 
         // If attack is so small (approaching 0), just return attack
         if (attack < 0.00001f) {
