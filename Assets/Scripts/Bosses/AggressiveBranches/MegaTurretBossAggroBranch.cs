@@ -10,7 +10,10 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     private BasicEnemyProjectile baseProjectile;
     [SerializeField]
     private EnemyAreaOfEffect[] lasers;
-
+    [SerializeField]
+    private LobbedEnemy crushBotMinion;
+    [SerializeField]
+    private Transform[] arenaPatrolPoints;
 
     [Header("General Variables")]
     [SerializeField]
@@ -19,6 +22,7 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     private float aimRadius = 3f;
     [SerializeField]
     private float projDamage = 5f;
+
     [SerializeField]
     private float laserDamage = 8f;
     [SerializeField]
@@ -26,6 +30,10 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     [SerializeField]
     private Color laserFiredColor = Color.red;
 
+    [SerializeField]
+    private float minMinionSpawnRadius = 6f;
+    [SerializeField]
+    private float maxMinionSpawnRadius = 10f;
 
     [Header("Phase 1")]
     [SerializeField]
@@ -36,12 +44,21 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     private float laterProjectileInterval = 0.35f;
     [SerializeField]
     private float initialLaserCharge = 0.9f;
+    [SerializeField]
+    private int initialMaxCrushBots = 1;
 
     [Header("Phase 3")]
     [SerializeField]
     private float triShotAngle = 35f;
     [SerializeField]
     private float lateLaserCharge = 0.75f;
+    [SerializeField]
+    private int lateMaxCrushBots = 2;
+
+
+    private int curNumCrushBots = 0;
+    private readonly object crushBotLock = new object();
+
 
     // Main function to do additional initialization for branch
     //  Pre: none
@@ -58,7 +75,8 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     //  Pre: tgt is the player, cannot equal null
     //  Post: executes aggressive branch
     public override IEnumerator execute(Transform tgt, int phaseNumber) {
-        yield return fireLaser(tgt, phaseNumber);
+        yield return 0;
+        spawnCrushBotMinion(phaseNumber);
     }
 
 
@@ -154,6 +172,33 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     }
 
 
+    // Main function to spawn crush bot minion
+    //  Pre: phaseNumber >= 0
+    //  Post: spawns a random crushbot on the map
+    private void spawnCrushBotMinion(int phaseNumber) {
+        int curMaxBots = (phaseNumber >= 2) ? lateMaxCrushBots : initialMaxCrushBots;
+
+        lock (crushBotLock) {
+            if (curNumCrushBots < curMaxBots) {
+                LobbedEnemy currentMinion = Object.Instantiate(crushBotMinion, transform.position, Quaternion.identity);
+                currentMinion.setSpawnRadius(minMinionSpawnRadius, maxMinionSpawnRadius);
+                currentMinion.listenDeathEvent(onCrushBotDeath);
+                currentMinion.setEnemyPatrolPoint(arenaPatrolPoints);
+
+                curNumCrushBots++;
+            }
+        }
+    }
+
+
+    // Main event handler function for when crushbot dies
+    private void onCrushBotDeath(IUnitStatus corpse) {
+        lock (crushBotLock) {
+            curNumCrushBots--;
+        }
+    }
+
+
     // Main function to get aim direction given a target
     //  Pre: tgt != null
     //  Post: gets a direction that aims at THAT general area (not always direct)
@@ -170,7 +215,5 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
         // Return that random direction from transform.position to target position
         return (targetPosition - transform.position).normalized;
     }
-
-
     
 }
