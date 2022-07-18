@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 592279045057036182}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -8.99, y: -3.24, z: -20.26}
-  m_LocalScale: {x: 4, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 3962279238483883327}
   m_Father: {fileID: 0}
@@ -225,7 +225,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4522992118585426022, guid: f7c777559a8abee2dbeacb2058f5ab0b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522992118585426023, guid: f7c777559a8abee2dbeacb2058f5ab0b, type: 3}
+      propertyPath: m_Color.b
+      value: 0.09903879
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522992118585426023, guid: f7c777559a8abee2dbeacb2058f5ab0b, type: 3}
+      propertyPath: m_Color.g
+      value: 0.49056602
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522992118585426023, guid: f7c777559a8abee2dbeacb2058f5ab0b, type: 3}
+      propertyPath: m_Color.r
+      value: 0.11650156
       objectReference: {fileID: 0}
     - target: {fileID: 4522992119353885941, guid: f7c777559a8abee2dbeacb2058f5ab0b, type: 3}
       propertyPath: m_text

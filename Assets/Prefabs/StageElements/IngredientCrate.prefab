@@ -125,6 +125,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cafba284eff5009a0a8bd23ce94ec1d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   possibleLootDrops:
   - {fileID: 2958984616688009020, guid: 433a457c7004df31b8bb277100d7da9b, type: 3}
   - {fileID: 6651500605187683580, guid: 3e4d0a60be81b5690aa119ec6cb3adb6, type: 3}
@@ -139,5 +142,6 @@ MonoBehaviour:
   - {fileID: 7022750467499017584, guid: 7862f02e41a89e06e831d5a95fb6e088, type: 3}
   - {fileID: 440725830103984159, guid: 08343bdce02726b049c2a6d5bc61c11b, type: 3}
   - {fileID: 2043418166772776471, guid: 58c7919f4eafed2f898ccfa29c36f3d0, type: 3}
+  - {fileID: 8446025507433597091, guid: d3fec0edf4e1216369a83098b67b7b96, type: 3}
   - {fileID: 8446025507433597091, guid: d3fec0edf4e1216369a83098b67b7b96, type: 3}
   numLootDrops: 2
