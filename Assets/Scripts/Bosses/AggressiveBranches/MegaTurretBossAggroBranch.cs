@@ -8,6 +8,8 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     [Header("Reference Prefabs")]
     [SerializeField]
     private BasicEnemyProjectile baseProjectile;
+    [SerializeField]
+    private EnemyAreaOfEffect[] lasers;
 
 
     [Header("General Variables")]
@@ -17,6 +19,12 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     private float aimRadius = 3f;
     [SerializeField]
     private float projDamage = 5f;
+    [SerializeField]
+    private float laserDamage = 8f;
+    [SerializeField]
+    private Color laserAnticipationColor = Color.yellow;
+    [SerializeField]
+    private Color laserFiredColor = Color.red;
 
 
     [Header("Phase 1")]
@@ -26,16 +34,23 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     [Header("Phase 2")]
     [SerializeField]
     private float laterProjectileInterval = 0.35f;
+    [SerializeField]
+    private float initialLaserCharge = 0.9f;
 
     [Header("Phase 3")]
     [SerializeField]
     private float triShotAngle = 35f;
+    [SerializeField]
+    private float lateLaserCharge = 0.75f;
 
     // Main function to do additional initialization for branch
     //  Pre: none
     //  Post: sets branch up
     protected override void initialize() {
-
+        // Set up the lasers
+        foreach (EnemyAreaOfEffect laser in lasers) {
+            laser.changeColor(Color.clear);
+        }
     }
 
 
@@ -43,18 +58,22 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     //  Pre: tgt is the player, cannot equal null
     //  Post: executes aggressive branch
     public override IEnumerator execute(Transform tgt, int phaseNumber) {
-        yield return shootBasicProjectile(tgt, phaseNumber);
+        yield return fireLaser(tgt, phaseNumber);
     }
 
 
     // Main function to reset the branch when the overall tree gets overriden / switch branches
     public override void reset() {
-
+        // Clear out all lasers
+        foreach (EnemyAreaOfEffect laser in lasers) {
+            laser.changeColor(Color.clear);
+        }
     }
 
 
     // Main IEnumerator sequence to shoot projectile
     //  Pre: phaseNumber >= 0 && tgt != null
+    //  Post: waits a bit and then shoots a projectile
     private IEnumerator shootBasicProjectile(Transform tgt, int phaseNumber) {
         Debug.Assert(tgt != null && phaseNumber >= 0);
 
@@ -86,7 +105,52 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
                 currentProjectile.setUpMovement(curAngledDir, projectileSpeed);
             }
         }
+    }
 
+
+    // Main IEnumerator to sequence to shoot laser
+    //  Pre: main function to aim and charge a laser
+    //  Post: Rotates to plays direction, waits to charge a laser and then attacks
+    private IEnumerator fireLaser(Transform tgt, int phaseNumber) {
+        Debug.Assert(tgt != null && phaseNumber >= 0);
+
+        // Aim at direction
+        Vector3 aimDirection = getAimDirection(tgt);
+        transform.forward = aimDirection;
+        changeLaserColors(laserAnticipationColor, phaseNumber);
+        float curAnticipation = (phaseNumber < 2) ? initialLaserCharge : lateLaserCharge;
+
+        yield return new WaitForSeconds(curAnticipation);
+
+        // Fire: change to fired color and do damage
+        changeLaserColors(laserFiredColor, phaseNumber);
+        
+        if (phaseNumber < 2) {
+            lasers[0].damageAllTargets(laserDamage);
+        } else {
+            foreach (EnemyAreaOfEffect laser in lasers) {
+                laser.damageAllTargets(laserDamage);
+            }
+        }
+
+        // Clear everything up after a delay
+        yield return new WaitForSeconds(0.15f);
+        changeLaserColors(Color.clear, phaseNumber);
+    }
+
+
+    // Main function to set laser colors
+    //  Pre: phaseNumber >= 0
+    //  Post: changes laser color accoridng to phase
+    private void changeLaserColors(Color color, int phaseNumber) {
+        // If only on phase 1, just do the direct one. Else, use the tri shot version
+        if (phaseNumber < 2) {
+            lasers[0].changeColor(color);
+        } else {
+            foreach (EnemyAreaOfEffect laser in lasers) {
+                laser.changeColor(color);
+            }
+        }
     }
 
 
@@ -106,4 +170,7 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
         // Return that random direction from transform.position to target position
         return (targetPosition - transform.position).normalized;
     }
+
+
+    
 }
