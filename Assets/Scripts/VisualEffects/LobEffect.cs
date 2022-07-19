@@ -6,7 +6,7 @@ public class LobEffect : IFixedEffect
 {
     // Private instance variables
     private bool activated = false;
-    private const float LOB_HEIGHT = 2f;
+    private const float LOB_HEIGHT = 3.5f;
 
 
     // Public function to activate effect, can only be activated once

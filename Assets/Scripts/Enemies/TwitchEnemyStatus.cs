@@ -9,9 +9,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     // Instance variables concerning health
     [Header("Base stats")]
     [SerializeField]
-    private float maxHealth = 10;
-    private float curHealth;
-    private readonly object healthLock = new object();
+    protected float maxHealth = 10;
+    protected float curHealth;
+    protected readonly object healthLock = new object();
 
     // Movement speed variables
     [SerializeField]
@@ -49,6 +49,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     private int minLootDrops = 2;
     [SerializeField]
     private Loot[] possibleLoot;
+    [SerializeField]
+    private float minLootDistance = 0.25f;
+    [SerializeField]
+    private float maxLootDistance = 2.5f;
 
     // UI variables
     [Header("UI Variables")]
@@ -115,7 +119,15 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         if (healthBar != null) {
             healthBar.setStatus(curHealth, maxHealth);
         }
+
+        // Initialize other variables in child classes
+        initialize();
     }
+
+
+    // Main function to do additional initialization for child classes
+    protected virtual void initialize() {}
+
 
     // Main method to get current movement speed considering all speed status effects on unit
     //  Pre: none
@@ -407,15 +419,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         unitDeathEvent.Invoke(this);
         
         // Only drop loot if this unit drops loot
-        if (possibleLoot.Length > 0) {
-            int numLoot = Random.Range(minLootDrops, maxLootDrops + 1);
-
-            for (int l = 0; l < numLoot; l++) {
-                Vector3 lootPosition = transform.position;
-                Transform currentLoot = possibleLoot[Random.Range(0, possibleLoot.Length)].transform;
-                Object.Instantiate(currentLoot, lootPosition, Quaternion.identity);
-            }
-        }
+        dropLoot();
 
         // Disable game related states except audio
         GetComponent<MeshRenderer>().enabled = false;
@@ -426,7 +430,21 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         yield return new WaitForSeconds(1f);
 
         gameObject.SetActive(false);
+    }
 
+    
+    // Main protected helpr function to drop loot IFF unit has loot to drop
+    protected void dropLoot() {
+        if (possibleLoot.Length > 0) {
+            int numLoot = Random.Range(minLootDrops, maxLootDrops + 1);
+
+            for (int l = 0; l < numLoot; l++) {
+                Vector3 lootPosition = transform.position;
+                Transform currentLoot = possibleLoot[Random.Range(0, possibleLoot.Length)].transform;
+                Transform curLootInstance = Object.Instantiate(currentLoot, lootPosition, Quaternion.identity);
+                curLootInstance.GetComponent<Loot>().setSpawnRadius(minLootDistance, maxLootDistance);
+            }
+        }
     }
 
     // Main function to reset unit, especially when player dies

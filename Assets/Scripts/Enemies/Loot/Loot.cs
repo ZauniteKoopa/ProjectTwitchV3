@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class Loot : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class Loot : MonoBehaviour
     private float minLootDistance = 0.25f;
     [SerializeField]
     private float lootThrowWallOffset = 0.5f;
+    private float lootGroundOffset = 0.25f;
 
     // Reference variables
     private MeshRenderer meshRender;
@@ -41,6 +43,9 @@ public class Loot : MonoBehaviour
 
     // Loot drop sequence
     private IEnumerator lootDropSequence() {
+        // Wait a frame just in case of radius changes
+        yield return new WaitForFixedUpdate();
+
         // Get random ray properties for raycast
         Vector3 rayDir = new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f));
         rayDir = rayDir.normalized;
@@ -53,6 +58,12 @@ public class Loot : MonoBehaviour
 
         if (hit) {
             finalDestination = hitInfo.point - (lootThrowWallOffset * rayDir);
+        }
+
+        // Get ground height
+        bool groundHit = Physics.Raycast(finalDestination, Vector3.down, out hitInfo, Mathf.Infinity, lootLayerMask);
+        if (groundHit) {
+            finalDestination.y = (hitInfo.point.y + lootGroundOffset);
         }
 
         // Launch visual effect and wait for it to end
@@ -83,5 +94,15 @@ public class Loot : MonoBehaviour
     // Main function to get ingredient associated with this loot
     public virtual Ingredient getIngredient() {
         return null;
+    }
+
+    // Main function to set distances
+    //  Pre: maxSpawnRadius >= minSpawnRadius >= 0
+    //  Post: spawn radiuses are set
+    public virtual void setSpawnRadius(float minSpawnRadius, float maxSpawnRadius) {
+        Debug.Assert(minSpawnRadius >= 0f && maxSpawnRadius >= minSpawnRadius);
+
+        minLootDistance = minSpawnRadius;
+        maxLootDistance = maxSpawnRadius;
     }
 }

@@ -29,7 +29,7 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
     // On awake, set patrolPointLocations immediately and get NavMeshAgent
     private void Awake() {
         // Error check
-        if (patrolPoints.Length <= 0) {
+        if (patrolPoints.Length < 0) {
             Debug.LogError("No patrol points connected to patrol point branch");
         }
 
@@ -153,5 +153,13 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
         }
 
         return closestIndex;
+    }
+
+
+    // Main function to set passive patrol point branch, must be set before enemy is awake
+    public void setPatrolPoints(Transform[] newPatrolPoints) {
+        Debug.Assert(newPatrolPoints.Length > 0);
+
+        patrolPoints = newPatrolPoints;
     }
 }
