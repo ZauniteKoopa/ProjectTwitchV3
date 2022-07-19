@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+
+
 public class MegaTurretBossAggroBranch : IBossAggroBranch
 {
     [Header("Reference Prefabs")]
@@ -29,11 +31,23 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     private Color laserAnticipationColor = Color.yellow;
     [SerializeField]
     private Color laserFiredColor = Color.red;
+    [SerializeField]
+    private float laserCooldown = 5f;
+    private bool canUseLaser = true;
 
     [SerializeField]
     private float minMinionSpawnRadius = 6f;
     [SerializeField]
     private float maxMinionSpawnRadius = 10f;
+
+    // Move probabilities that go in the following order: [basic projectile, laser, spawn enemy]
+    [Header("Move Percent Chances")]
+    [SerializeField]
+    private float[] phase1MoveProbabilities;
+    [SerializeField]
+    private float[] phase2MoveProbabilities;
+    [SerializeField]
+    private float[] phase3MoveProbabilities;
 
     [Header("Phase 1")]
     [SerializeField]
@@ -60,6 +74,14 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     private readonly object crushBotLock = new object();
 
 
+    // Enums concerning moves
+    private enum MegaTurretMove {
+        BASIC_ATTACK = 0,
+        LASER = 1,
+        SPAWN_MINION = 2
+    };
+
+
     // Main function to do additional initialization for branch
     //  Pre: none
     //  Post: sets branch up
@@ -68,6 +90,29 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
         foreach (EnemyAreaOfEffect laser in lasers) {
             laser.changeColor(Color.clear);
         }
+
+        errorCheckMoveProbabilities(phase1MoveProbabilities);
+        errorCheckMoveProbabilities(phase2MoveProbabilities);
+        errorCheckMoveProbabilities(phase3MoveProbabilities);
+    }
+
+
+    // Main function to error check probabilities
+    private void errorCheckMoveProbabilities(float[] moveProbability) {
+        // Make sure 3 moves are found in the move probabilities
+        if (moveProbability.Length != 3) {
+            Debug.LogError("Move probabilities do not match number of moves seen on this enemy. Moves should be in this format: [Basic ranged attack, laser, spawn crushbot]");
+        }
+
+        // Make sure total adds up to 1.0
+        float curTotal = 0f;
+        for (int i = 0; i < moveProbability.Length; i++) {
+            curTotal += moveProbability[i];
+        }
+
+        if (curTotal < 0.99 || curTotal > 1.01) {
+            Debug.LogError("The 3 move probabilities do not add up to 1.0. Moves should be in this format: [Basic ranged attack, laser, spawn crushbot]");
+        }
     }
 
 
@@ -75,8 +120,70 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     //  Pre: tgt is the player, cannot equal null
     //  Post: executes aggressive branch
     public override IEnumerator execute(Transform tgt, int phaseNumber) {
-        yield return 0;
-        spawnCrushBotMinion(phaseNumber);
+        // Get attacking move for this current execution
+        MegaTurretMove curAttack = chooseAttackingMove(phaseNumber);
+
+        // Main tree based off of decision
+        switch (curAttack) {
+            // Basic attack
+            case MegaTurretMove.BASIC_ATTACK:
+                yield return shootBasicProjectile(tgt, phaseNumber);
+                break;
+            
+            // Laser
+            case MegaTurretMove.LASER:
+                yield return fireLaser(tgt, phaseNumber);
+                break;
+
+            // Minion spawning
+            case MegaTurretMove.SPAWN_MINION:
+                yield return 0;
+                spawnCrushBotMinion(phaseNumber);
+                break;
+
+            default:
+                Debug.LogError("Current move not considered???: " + curAttack);
+                break;
+        }
+    }
+
+
+    // Main decision tree to choose attacking move to do on player
+    //  Pre: 0 >= phaseNumber > 3
+    //  Post: returns a move that the AI chooses based on phase number and RNG
+    private MegaTurretMove chooseAttackingMove(int phaseNumber) {
+        Debug.Assert(phaseNumber >= 0 && phaseNumber < 3);
+
+        // Get the correct move probabilities diven the phase number
+        float[] curMoveProbs = (phaseNumber == 0) ? phase1MoveProbabilities : phase2MoveProbabilities;
+        if (phaseNumber == 2) {
+            curMoveProbs = phase3MoveProbabilities;
+        }
+
+        Debug.Assert(curMoveProbs != null && curMoveProbs.Length > 0);
+
+        // Record the total as the max dice value
+        float maxDiceValue = 0f;
+        foreach (float moveProb in curMoveProbs) {
+            maxDiceValue += moveProb;
+        }
+
+        // Roll the dice
+        float diceRoll = Random.Range(0f, maxDiceValue);
+        int currentMove = 0;
+        float curMoveThreshold = curMoveProbs[currentMove];
+
+        // If diceRoll <= currentMoveThreshold, that move was picked
+        while (diceRoll > curMoveThreshold && currentMove < curMoveProbs.Length) {
+            // In case which currentMove was not picked, check the next move
+            currentMove++;
+            curMoveThreshold += curMoveProbs[currentMove];
+        }
+
+        Debug.Assert(currentMove >= 0 && currentMove < curMoveProbs.Length);
+
+        // Return the mega turret move version of the int
+        return (MegaTurretMove)currentMove;
     }
 
 
@@ -132,28 +239,41 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     private IEnumerator fireLaser(Transform tgt, int phaseNumber) {
         Debug.Assert(tgt != null && phaseNumber >= 0);
 
-        // Aim at direction
-        Vector3 aimDirection = getAimDirection(tgt);
-        transform.forward = aimDirection;
-        changeLaserColors(laserAnticipationColor, phaseNumber);
-        float curAnticipation = (phaseNumber < 2) ? initialLaserCharge : lateLaserCharge;
+        if (canUseLaser) {
+            // Aim at direction
+            Vector3 aimDirection = getAimDirection(tgt);
+            transform.forward = aimDirection;
+            changeLaserColors(laserAnticipationColor, phaseNumber);
+            float curAnticipation = (phaseNumber < 2) ? initialLaserCharge : lateLaserCharge;
 
-        yield return new WaitForSeconds(curAnticipation);
+            yield return new WaitForSeconds(curAnticipation);
 
-        // Fire: change to fired color and do damage
-        changeLaserColors(laserFiredColor, phaseNumber);
-        
-        if (phaseNumber < 2) {
-            lasers[0].damageAllTargets(laserDamage);
-        } else {
-            foreach (EnemyAreaOfEffect laser in lasers) {
-                laser.damageAllTargets(laserDamage);
+            // Fire: change to fired color and do damage
+            changeLaserColors(laserFiredColor, phaseNumber);
+            
+            if (phaseNumber < 2) {
+                lasers[0].damageAllTargets(laserDamage);
+            } else {
+                foreach (EnemyAreaOfEffect laser in lasers) {
+                    laser.damageAllTargets(laserDamage);
+                }
             }
-        }
 
-        // Clear everything up after a delay
-        yield return new WaitForSeconds(0.15f);
-        changeLaserColors(Color.clear, phaseNumber);
+            // Clear everything up after a delay
+            yield return new WaitForSeconds(0.15f);
+            changeLaserColors(Color.clear, phaseNumber);
+
+            // Start cooldown
+            StartCoroutine(laserCooldownSequence());
+        }
+    }
+
+
+    // Main sequence to handle laser cooldown
+    private IEnumerator laserCooldownSequence() {
+        canUseLaser = false;
+        yield return new WaitForSeconds(laserCooldown);
+        canUseLaser = true;
     }
 
 
