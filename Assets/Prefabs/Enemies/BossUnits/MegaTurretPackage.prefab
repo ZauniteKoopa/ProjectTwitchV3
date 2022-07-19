@@ -2674,7 +2674,7 @@ MonoBehaviour:
   unitCurePoisonEvent:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 40
+  maxHealth: 180
   baseMovementSpeed: 4
   baseAttack: 5
   baseArmor: 1
@@ -2695,9 +2695,9 @@ MonoBehaviour:
   spawnInEffect: {fileID: 3300450328022978300}
   spawnInTime: 1.25
   phaseHealthPercents:
-  - 0.3
-  - 0.3
-  - 0.4
+  - 0.28
+  - 0.28
+  - 0.44
   phaseTransitionTime: 4
   transitionPhaseStartEvent:
     m_PersistentCalls:
