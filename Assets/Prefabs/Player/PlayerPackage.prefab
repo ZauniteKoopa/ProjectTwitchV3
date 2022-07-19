@@ -11199,6 +11199,9 @@ MonoBehaviour:
   unitCurePoisonEvent:
     m_PersistentCalls:
       m_Calls: []
+  unitDespawnEvent:
+    m_PersistentCalls:
+      m_Calls: []
   contaminateUsedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -12120,7 +12123,7 @@ Transform:
   m_GameObject: {fileID: 666051070473934565}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 18, y: 6, z: 18}
+  m_LocalScale: {x: 22, y: 6, z: 22}
   m_Children:
   - {fileID: 884248277}
   m_Father: {fileID: 666051070171789296}

@@ -2942,7 +2942,7 @@ MonoBehaviour:
   - {fileID: 57540868328157994}
   - {fileID: 57540867604285846}
   - {fileID: 57540867572529628}
-  projectileSpeed: 20
+  projectileSpeed: 17
   aimRadius: 6
   projDamage: 5
   laserDamage: 8
@@ -2964,13 +2964,13 @@ MonoBehaviour:
   - 0.4
   - 0.3
   - 0.3
-  initialProjectileInterval: 0.5
-  laterProjectileInterval: 0.4
+  initialProjectileInterval: 0.65
+  laterProjectileInterval: 0.5
   initialLaserCharge: 1.2
   initialMaxCrushBots: 2
   triShotAngle: 35
   lateLaserCharge: 1
-  lateMaxCrushBots: 4
+  lateMaxCrushBots: 3
 --- !u!114 &456505596693541391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2995,15 +2995,15 @@ MonoBehaviour:
   - {fileID: 57540866933592558}
   - {fileID: 57540867223868129}
   - {fileID: 57540867300687285}
-  projectileSpeed: 20
+  projectileSpeed: 17
   aimRadius: 6
   projDamage: 5
   laserDamage: 8
   laserAnticipationColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   laserFiredColor: {r: 1, g: 0, b: 0, a: 1}
   laserCooldown: 5
-  initialProjectileInterval: 0.5
-  laterProjectileInterval: 0.4
+  initialProjectileInterval: 0.65
+  laterProjectileInterval: 0.5
   initialLaserCharge: 1.2
   laserProbChance: 0.5
   lateLaserCharge: 1
