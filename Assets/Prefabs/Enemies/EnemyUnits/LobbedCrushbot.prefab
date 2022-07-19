@@ -647,7 +647,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   maxHealth: 20
-  baseMovementSpeed: 4.5
+  baseMovementSpeed: 6.5
   baseAttack: 5
   baseArmor: 1
   enemyAura: {fileID: 4483637715091112997}
