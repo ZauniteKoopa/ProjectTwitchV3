@@ -9,4 +9,10 @@ public abstract class IBossScoutingBranch : MonoBehaviour
 
     // Main function to reset the branch when the overall tree gets overriden / switch branches
     public abstract void reset();
+
+    // Main event handler for when enemy has been despawn because of player death and you must clean up all side effects
+    //  By default, just reset
+    public virtual void hardReset() {
+        reset();
+    }
 }

@@ -8,6 +8,7 @@ public abstract class ITwitchUnitStatus : IUnitStatus
     // Main events for when enemy starts getting poisoned
     public UnityEvent unitPoisonedEvent;
     public UnityEvent unitCurePoisonEvent;
+    public UnityEvent unitDespawnEvent;
 
     // Main method to do poison damage (specific to twitch damage)
     //  initDmg: initial, immediate damage applied to enemy, > 0
@@ -50,6 +51,7 @@ public abstract class ITwitchUnitStatus : IUnitStatus
     //  Pre: none
     //  Post: spawns the enemy in IFF not spawned in game yet
     public virtual void despawn() {
+        unitDespawnEvent.Invoke();
         gameObject.SetActive(false);
     }
 

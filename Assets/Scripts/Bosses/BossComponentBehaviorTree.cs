@@ -41,6 +41,7 @@ public class BossComponentBehaviorTree : IEnemyBehavior
         }
 
         unitStatus.enemyResetEvent.AddListener(reset);
+        unitStatus.unitDespawnEvent.AddListener(onDespawn);
         unitStatus.unitDeathEvent.AddListener(onDeath);
         unitStatus.transitionPhaseStartEvent.AddListener(onPhaseTransitionStart);
         unitStatus.transitionPhaseEndEvent.AddListener(onPhaseTransitionEnd);
@@ -95,17 +96,22 @@ public class BossComponentBehaviorTree : IEnemyBehavior
 
     // Main function to handle reset
     public override void reset() {
-        lock (treeLock) {
-            playerTgt = null;
+        curPhase = 0;
 
+        lock (treeLock) {
             aggressiveBranch.reset();
             scoutingBranch.reset();
 
             StopAllCoroutines();
             StartCoroutine(behaviorTreeSequence());
         }
+    }
 
-        curPhase = 0;
+
+    // Main function to handle when enemy unit despawns
+    public void onDespawn() {
+        aggressiveBranch.hardReset();
+        scoutingBranch.hardReset();
     }
 
 

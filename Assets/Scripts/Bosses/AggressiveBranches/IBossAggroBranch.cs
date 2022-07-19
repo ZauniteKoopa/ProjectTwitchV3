@@ -45,6 +45,13 @@ public abstract class IBossAggroBranch : MonoBehaviour
     public abstract void reset();
 
 
+    // Main event handler for when enemy has been hard reset and you must clean up any side effects
+    //  By default, just reset
+    public virtual void hardReset() {
+        reset();
+    }
+
+
     // Main function to check for stop conditions when going to position
     //  Pre: none
     //  Post: returns whether a stop condition has been met

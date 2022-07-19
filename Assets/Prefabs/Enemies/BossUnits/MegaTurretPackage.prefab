@@ -124,7 +124,7 @@ Transform:
   m_GameObject: {fileID: 57540866725581387}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.01999998, z: 5.5150003}
-  m_LocalScale: {x: 2, y: 1, z: 10}
+  m_LocalScale: {x: 1.75, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 57540867661204096}
   m_RootOrder: 0
@@ -456,7 +456,7 @@ Transform:
   m_GameObject: {fileID: 57540867180249019}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.01999998, z: 5.5150003}
-  m_LocalScale: {x: 2, y: 1, z: 10}
+  m_LocalScale: {x: 1.75, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 57540866846569578}
   m_RootOrder: 0
@@ -1014,7 +1014,7 @@ Transform:
   m_GameObject: {fileID: 57540867570839421}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.01999998, z: 5.5150003}
-  m_LocalScale: {x: 2, y: 1, z: 10}
+  m_LocalScale: {x: 1.75, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 57540867525680252}
   m_RootOrder: 0
@@ -1720,7 +1720,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 57540868358053495}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 33.04, y: -2.18, z: 1.31}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
@@ -2674,6 +2674,9 @@ MonoBehaviour:
   unitCurePoisonEvent:
     m_PersistentCalls:
       m_Calls: []
+  unitDespawnEvent:
+    m_PersistentCalls:
+      m_Calls: []
   maxHealth: 180
   baseMovementSpeed: 4
   baseAttack: 5
@@ -2948,6 +2951,7 @@ MonoBehaviour:
   laserCooldown: 5
   minMinionSpawnRadius: 8
   maxMinionSpawnRadius: 12
+  minionSpawnCooldown: 3
   phase1MoveProbabilities:
   - 1
   - 0

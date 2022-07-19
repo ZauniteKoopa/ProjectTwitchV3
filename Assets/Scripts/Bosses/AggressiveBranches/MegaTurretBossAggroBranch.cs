@@ -36,9 +36,12 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     private bool canUseLaser = true;
 
     [SerializeField]
-    private float minMinionSpawnRadius = 6f;
+    private float minMinionSpawnRadius = 8f;
     [SerializeField]
     private float maxMinionSpawnRadius = 10f;
+    [SerializeField]
+    private float minionSpawnCooldown = 3.0f;
+    private bool canSpawnMinion = true;
 
     // Move probabilities that go in the following order: [basic projectile, laser, spawn enemy]
     [Header("Move Percent Chances")]
@@ -69,9 +72,9 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     [SerializeField]
     private int lateMaxCrushBots = 2;
 
-
-    private int curNumCrushBots = 0;
+    // Crushbot handling
     private readonly object crushBotLock = new object();
+    private HashSet<IUnitStatus> activeCrushBots = new HashSet<IUnitStatus>();
 
 
     // Enums concerning moves
@@ -196,6 +199,21 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     }
 
 
+    // Main event handler for when enemy has been despawn
+    public override void hardReset() {
+        // Do base reset
+        reset();
+
+        lock (crushBotLock) {
+            foreach (IUnitStatus crushBot in activeCrushBots) {
+                crushBot.gameObject.SetActive(false);
+            }
+
+            activeCrushBots.Clear();
+        }
+    }
+
+
     // Main IEnumerator sequence to shoot projectile
     //  Pre: phaseNumber >= 0 && tgt != null
     //  Post: waits a bit and then shoots a projectile
@@ -299,13 +317,18 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
         int curMaxBots = (phaseNumber >= 2) ? lateMaxCrushBots : initialMaxCrushBots;
 
         lock (crushBotLock) {
-            if (curNumCrushBots < curMaxBots) {
+            if (activeCrushBots.Count < curMaxBots && canSpawnMinion) {
+                // Set lobbing properties and enemy behavior
                 LobbedEnemy currentMinion = Object.Instantiate(crushBotMinion, transform.position, Quaternion.identity);
                 currentMinion.setSpawnRadius(minMinionSpawnRadius, maxMinionSpawnRadius);
-                currentMinion.listenDeathEvent(onCrushBotDeath);
                 currentMinion.setEnemyPatrolPoint(arenaPatrolPoints);
 
-                curNumCrushBots++;
+                // Set up status
+                IUnitStatus minionStatus = currentMinion.getAttachedEnemy();
+                minionStatus.unitDeathEvent.AddListener(onCrushBotDeath);
+                activeCrushBots.Add(minionStatus);
+
+                StartCoroutine(minionSpawnCooldownSequence());
             }
         }
     }
@@ -314,8 +337,18 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     // Main event handler function for when crushbot dies
     private void onCrushBotDeath(IUnitStatus corpse) {
         lock (crushBotLock) {
-            curNumCrushBots--;
+            if (activeCrushBots.Contains(corpse)) {
+                activeCrushBots.Remove(corpse);
+            }
         }
+    }
+
+
+    // Minion spawn cooldown sequence
+    private IEnumerator minionSpawnCooldownSequence() {
+        canSpawnMinion = false;
+        yield return new WaitForSeconds(minionSpawnCooldown);
+        canSpawnMinion = true;
     }
 
 

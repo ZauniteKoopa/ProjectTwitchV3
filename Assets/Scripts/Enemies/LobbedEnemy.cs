@@ -102,11 +102,8 @@ public class LobbedEnemy : MonoBehaviour
     }
 
 
-    // Main function to listen in on death
-    //  Pre: listener != null
-    public void listenDeathEvent(UnityAction<IUnitStatus> listener) {
-        Debug.Assert(listener != null);
-
-        enemyUnit.GetComponent<IUnitStatus>().unitDeathEvent.AddListener(listener);
+    // Main function to access the lobbedEnemy's enemy
+    public IUnitStatus getAttachedEnemy() {
+        return enemyUnit.GetComponent<IUnitStatus>();
     }
 }
