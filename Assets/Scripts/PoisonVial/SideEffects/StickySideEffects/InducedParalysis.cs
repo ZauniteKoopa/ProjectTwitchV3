@@ -2,19 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu]
 public class InducedParalysis : VirtualSideEffect
 {
-    private float paralysisSlowMultiplier = 3.5f;
-
-
-    // Main constructor
-    public InducedParalysis(string description, Specialization s, float slowMultiplier) : base(
-        "Induced Paralysis",
-        description,
-        s
-    ) {
-        paralysisSlowMultiplier = slowMultiplier;
-    }
+    [SerializeField]
+    private float paralysisSlowMultiplier = 4f;
 
 
     // Main function to get the slow rate multiplier: can be overriden
@@ -25,5 +17,11 @@ public class InducedParalysis : VirtualSideEffect
         slowReduction *= paralysisSlowMultiplier;
 
         return 1.0f - slowReduction;
+    }
+
+
+    // Main override function for getting the description
+    public override string getDescription() {
+        return "Poison will passively slow down enemies more (" + paralysisSlowMultiplier + "x the norm)";
     }
 }

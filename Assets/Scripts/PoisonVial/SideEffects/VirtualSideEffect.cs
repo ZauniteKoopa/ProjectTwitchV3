@@ -26,39 +26,25 @@ public enum UltimateType {
 };
 
 // Class that gives a basic side effect that has no effect on stats
-public class VirtualSideEffect
+[CreateAssetMenu]
+public class VirtualSideEffect : ScriptableObject
 {
     // Private instance variables concerning SideEffect information
-    private string name;
-    private string description;
+    [SerializeField]
+    private string effectName = "?????";
+    [SerializeField]
     private Specialization specialization;
-
-
-    // Default Constructor: just returns a side effect with no name
-    public VirtualSideEffect() {
-        name = "?????";
-        description = "Doesn't seem ripe yet... But what is it missing!?";
-        specialization = Specialization.NONE;
-    }
-
-
-    // Class constructor when name and description changes
-    public VirtualSideEffect(string n, string d, Specialization s) {
-        name = n;
-        description = d;
-        specialization = s;
-    }
 
 
     // Main function to get the name of this SideEffect
     public string getName() {
-        return name;
+        return effectName;
     }
 
 
     // Main function to get the description of this side effect
-    public string getDescription() {
-        return description;
+    public virtual string getDescription() {
+        return "Doesn't seem ripe yet... But what is it missing!?";
     }
 
 

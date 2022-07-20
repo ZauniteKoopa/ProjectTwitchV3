@@ -2,19 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu]
 public class NoTouching : VirtualSideEffect
 {
+    [SerializeField]
     private float timePerPoisonTick = 1.5f;
-
-
-    // Default constructor
-    public NoTouching(string description, Specialization s, float tickTime) : base (
-        "No Touching",
-        description,
-        s
-    ) {
-        timePerPoisonTick = tickTime;
-    }
 
 
     // Main function to check if this is a player aura side effect (Player)
@@ -37,5 +29,11 @@ public class NoTouching : VirtualSideEffect
         if (auraType == AuraType.NO_TOUCHING) {
             aura.damageAllTargets(0f);
         }
+    }
+
+
+    // Main override function for getting the description
+    public override string getDescription() {
+        return "The scent of the poison becomes so viral that when enemies are in proximity to Twitch, they get 1 stack per " + timePerPoisonTick + " seconds";
     }
 }

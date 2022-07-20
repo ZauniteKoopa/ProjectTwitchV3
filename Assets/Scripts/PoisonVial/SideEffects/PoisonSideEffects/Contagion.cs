@@ -2,18 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu]
 public class Contagion : VirtualSideEffect
 {
-    private float auraSpreadTime;
-
-    // Default constructor
-    public Contagion(string description, Specialization s, float tickTime) : base (
-        "Contagion",
-        description,
-        s
-    ) {
-        auraSpreadTime = tickTime;
-    }
+    [SerializeField]
+    private float auraSpreadTime = 2f;
 
 
     // Main function to execute enemy aura with consideration of aura type
@@ -31,5 +24,11 @@ public class Contagion : VirtualSideEffect
     //  Pre; none
     public override bool isAuraSideEffect() {
         return true;
+    }
+
+
+    // Main override function for getting the description
+    public override string getDescription() {
+        return "Upon inflcting an enemy with 4 or more poison stacks, enemies will emit a poison fog, infecting those around them with one poison stack every " + auraSpreadTime + " seconds";
     }
 }

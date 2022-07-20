@@ -3,24 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+[CreateAssetMenu]
 public class TwitchJuice : VirtualSideEffect
 {
+    [SerializeField]
     private float healthPercentHealed = 0.25f;
+    [SerializeField]
     private float healTime = 6f;
-    private float ultCooldown = 12f;
+    [SerializeField]
+    private float ultCooldown = 15f;
+    [SerializeField]
     private int ultCost = 5;
-
-    // Default constructor
-    public TwitchJuice(string description, Specialization s, float healPercent, float time, float cooldown, int cost) : base (
-        "Twitch's Juice",
-        description,
-        s
-    ) {
-        healthPercentHealed = healPercent;
-        healTime = time;
-        ultCooldown = cooldown;
-        ultCost = cost;
-    }
 
 
     // Main function to check if this is an ultimate
@@ -58,5 +51,12 @@ public class TwitchJuice : VirtualSideEffect
         float healPerFrame = healingAmount / numTicks;
 
         player.applyHealthRegenEffect(healPerFrame, healTime);
+    }
+
+
+    // Main override function for getting the description
+    public override string getDescription() {
+        float displayHealthPercent = healthPercentHealed * 100f;
+        return "Gain a new ultimate ability to drink the poison to heal " + displayHealthPercent + " health gradually in the span of " + healTime + " seconds. Costs " + ultCost + " ammo";
     }
 }

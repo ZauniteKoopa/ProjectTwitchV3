@@ -12,4 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd951a6b1be902303b430515b7438f40, type: 3}
   m_Name: PoisonVialDatabase
   m_EditorClassIdentifier: 
-  sideEffectTSV: {fileID: 4900000, guid: e455ee9adcac997c089757c9bd8c9125, type: 3}
+  baseSideEffects:
+  - {fileID: 11400000, guid: 413bf2e1ea00c209eac9fa6681a337b3, type: 2}
+  potencySideEffects:
+  - {fileID: 11400000, guid: b008d3093cbbdea9b9bafe6b5dfb7e66, type: 2}
+  poisonSideEffects:
+  - {fileID: 11400000, guid: eeb8b99e596448c4ebcf2998665d52d5, type: 2}
+  - {fileID: 11400000, guid: 187c30daa7ef7c5318511d1212f097ed, type: 2}
+  - {fileID: 11400000, guid: 5a9385072f03cabd98280336eb42be5d, type: 2}
+  - {fileID: 11400000, guid: 6c980b99ee633a23891e163677964a32, type: 2}
+  reactiveSideEffects:
+  - {fileID: 11400000, guid: 73d106d4b137ff0d1bf407896d489733, type: 2}
+  stickinessSideEffects:
+  - {fileID: 11400000, guid: b3f751e0758e6faacbea580df0a8e4be, type: 2}

@@ -2,19 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu]
 public class RadioactiveExpunge : VirtualSideEffect
 {
-    private float expungeAuraDamage;
-
-
-    // Default constructor
-    public RadioactiveExpunge(string description, Specialization s, float auraDamage) : base (
-        "Radioactive Expunge",
-        description,
-        s
-    ) {
-        expungeAuraDamage = auraDamage;
-    }
+    [SerializeField]
+    private float expungeAuraDamage = 0.5f;
 
 
     // Main function to execute enemy aura with consideration of aura type
@@ -33,5 +25,11 @@ public class RadioactiveExpunge : VirtualSideEffect
     //  Pre; none
     public override bool isAuraSideEffect() {
         return true;
+    }
+
+    // Main override function for getting the description
+    public override string getDescription() {
+        float displayExplodeDamage = expungeAuraDamage * 100f;
+        return "Upon contaminating an enemy with 4 or more poison stacks, the enemy will explode, dealing " + displayExplodeDamage + "% the contaminate damage to enemies around them";
     }
 }
