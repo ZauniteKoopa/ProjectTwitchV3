@@ -79,6 +79,12 @@ public class VirtualSideEffect : ScriptableObject
     public virtual void executeAuraDamage(EnemyAura aura, AuraType auraType, int numStacks, IVial vial) {}
 
 
+    // Main function to execute enemy aura with consideration of aura type. returns true if successful. False if it isn't
+    //  Pre: aura != null, vial != null, 0 <= numStacks <= 6, curVialTimer >= 0f (usually its related to a timer)
+    //  Post: returns true if you're successful with aura damage, returns false if you aren't successful
+    public virtual bool executeAuraDamageTimed(EnemyAura aura, AuraType auraType, int numStacks, IVial vial, float curVialTimer) {return false;}
+
+
     // Main function to check if this is an aura side effect (Enemy)
     //  Pre; none
     public virtual bool isAuraSideEffect() {

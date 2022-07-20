@@ -582,6 +582,16 @@ public class PoisonVial : IVial
     }
 
 
+    // Main function to apply Enemy Aura effects
+    //  Pre: aura != null, auraType is an enum within VirtualSideEffect that specifies what type of effect you're looking for, 6 >= numStacks >= 0
+    //  Post: If auraType matches side effect, apply the appropriate effects. Returns true if successful, returns false if 
+    public bool applyEnemyAuraEffectsTimed(EnemyAura aura, AuraType auraType, int numStacks, float auraTimer) {
+        Debug.Assert(aura != null && numStacks >= 0 && numStacks <= 6 && auraTimer >= 0f);
+
+        return isEnemyAuraPresent(numStacks) && sideEffect.executeAuraDamageTimed(aura, auraType, numStacks, this, auraTimer);
+    }
+
+
     // If enemy aura can be present. return true;
     //  Pre: 0 <= numStacks <= 6
     //  Post: returns whether the enemy aura can be present

@@ -6,17 +6,21 @@ using UnityEngine;
 public class Contagion : VirtualSideEffect
 {
     [SerializeField]
-    private float auraSpreadTime = 2f;
+    private int auraSpreadTime = 2;
 
 
-    // Main function to execute enemy aura with consideration of aura type
-    //  Pre: aura != null, vial != null, 0 <= numStacks <= 6
-    public override void executeAuraDamage(EnemyAura aura, AuraType auraType, int numStacks, IVial vial) {
-        Debug.Assert(aura != null && vial != null && 0 <= numStacks && numStacks <= 6);
+    // Main function to execute enemy aura with consideration of aura type. returns true if successful. False if it isn't
+    //  Pre: aura != null, vial != null, 0 <= numStacks <= 6, curVialTimer >= 0f (usually its related to a timer)
+    //  Post: returns true if you're successful with aura damage, returns false if you aren't successful
+    public override bool executeAuraDamageTimed(EnemyAura aura, AuraType auraType, int numStacks, IVial vial, float curVialTimer) {
+        Debug.Assert(aura != null && vial != null && 0 <= numStacks && numStacks <= 6 && curVialTimer >= 0f);
 
-        if (auraType == AuraType.CONTAGION) {
+        if (auraType == AuraType.CONTAGION && curVialTimer >= (float)auraSpreadTime) {
             aura.damageAllTargets(0f);
+            return true;
         }
+
+        return false;
     }
 
 
@@ -29,6 +33,6 @@ public class Contagion : VirtualSideEffect
 
     // Main override function for getting the description
     public override string getDescription() {
-        return "Upon inflcting an enemy with 4 or more poison stacks, enemies will emit a poison fog, infecting those around them with one poison stack every " + auraSpreadTime + " seconds";
+        return "Upon inflcting an enemy with 4 or more poison stacks, enemies will emit a poison fog, infecting those around them with one poison stack every " + auraSpreadTime + " ticks";
     }
 }

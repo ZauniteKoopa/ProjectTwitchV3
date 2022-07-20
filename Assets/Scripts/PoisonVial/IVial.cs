@@ -111,6 +111,12 @@ public interface IVial
     void applyEnemyAuraEffects(EnemyAura aura, AuraType auraType, int numStacks);
 
 
+    // Main function to apply Enemy Aura effects
+    //  Pre: aura != null, auraType is an enum within VirtualSideEffect that specifies what type of effect you're looking for, 6 >= numStacks >= 0
+    //  Post: If auraType matches side effect, apply the appropriate effects. Returns true if successful, returns false if 
+    bool applyEnemyAuraEffectsTimed(EnemyAura aura, AuraType auraType, int numStacks, float auraTimer);
+
+
     // If enemy aura can be present. return true;
     //  Pre: 0 <= numStacks <= 6
     //  Post: returns whether the enemy aura can be present

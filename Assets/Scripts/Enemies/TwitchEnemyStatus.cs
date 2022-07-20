@@ -32,7 +32,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     // Poison timer (MODULARIZE CONTAGION SOMEWHERE ELSE)
     private const int MAX_STACKS = 6;
     private const float MAX_POISON_TICK_TIME = 6.0f;
-    private const float AURA_TICK_TIME = 2.0f;
+    // private const float AURA_TICK_TIME = 2.0f;
     private float poisonTimer = 0.0f;
     private Coroutine poisonDotRoutine = null;
 
@@ -200,10 +200,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 currentStacks = numPoisonStacks;
 
                 poisonTimer += currentTickDuration;
-
-                if (currentPoison.isEnemyAuraPresent(numPoisonStacks)) {
-                    auraTimer += currentTickDuration;
-                }
+                auraTimer = currentPoison.isEnemyAuraPresent(numPoisonStacks) ? auraTimer + currentTickDuration : 0f;
 
                 onLastTick = poisonTimer >= MAX_POISON_TICK_TIME;
             }
@@ -211,12 +208,8 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             damage(poisonTickDamage, true);
 
             // Apply aura effects if poison side effect matches "CONTAGION"
-            if (auraTimer >= AURA_TICK_TIME) {
+            if (enemyAura != null && currentPoison.applyEnemyAuraEffectsTimed(enemyAura, AuraType.CONTAGION, currentStacks, auraTimer)) {
                 auraTimer = 0f;
-
-                if (enemyAura != null && currentPoison.isEnemyAuraPresent(numPoisonStacks)) {
-                    tempVial.applyEnemyAuraEffects(enemyAura, AuraType.CONTAGION, currentStacks);
-                }
             }
 
             // Wait for the next tick
