@@ -497,7 +497,7 @@ PrefabInstance:
       objectReference: {fileID: 3725593201332320858, guid: 997b24409ed5ab4fe992c642aa92f24e, type: 3}
     - target: {fileID: 9172822394672781445, guid: 81679342f50716c83ad127c802d45987, type: 3}
       propertyPath: destroyedEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9172822394672781445, guid: 81679342f50716c83ad127c802d45987, type: 3}
       propertyPath: destroyedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
