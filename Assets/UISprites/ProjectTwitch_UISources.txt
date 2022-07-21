@@ -1,1 +1,9 @@
 Graphic_Left_clicked_mouse: https://commons.wikimedia.org/wiki/File:Left_clicked_mouse.svg
+
+Graphic_WASDKeys:
+https://upload.wikimedia.org/wikipedia/commons/0/05/Cursor_keys--WASD.svg
+
+Graphic_Menu, edited with GIMP:
+https://www.flickr.com/photos/howzey/3578149185
+
+Graphic_WoodenMenuBoard: https://pixabay.com/illustrations/board-wood-wall-wooden-wall-grain-218533/
