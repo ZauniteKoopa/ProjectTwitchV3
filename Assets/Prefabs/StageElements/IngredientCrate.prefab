@@ -129,19 +129,23 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   possibleLootDrops:
+  - {fileID: 8328922755592592645, guid: 740c7a2ed8a1fcf1b99c4da6c026ea3d, type: 3}
+  - {fileID: 8328922755592592645, guid: 56b1e1183a762cf469028be5cc3cd2ff, type: 3}
+  - {fileID: 8328922755592592645, guid: 1305dc39018c31f4e8422c48432f3748, type: 3}
   - {fileID: 2958984616688009020, guid: 433a457c7004df31b8bb277100d7da9b, type: 3}
   - {fileID: 6651500605187683580, guid: 3e4d0a60be81b5690aa119ec6cb3adb6, type: 3}
-  - {fileID: 8328922755592592645, guid: 740c7a2ed8a1fcf1b99c4da6c026ea3d, type: 3}
+  - {fileID: 6651500605187683580, guid: d7a6e8a8965e0af4ebb7afe35981c1f9, type: 3}
   - {fileID: 4306806704451777998, guid: 3ecdd71b2b726ad3cbcd199e7459c09a, type: 3}
   - {fileID: 6978406117162031912, guid: c9e9748bb1e5cc33ca7507621efe643a, type: 3}
   - {fileID: 3725593201332320858, guid: 997b24409ed5ab4fe992c642aa92f24e, type: 3}
+  - {fileID: 8446025507433597091, guid: 0c9f16fa3372e0a4a8c856edc0e6692d, type: 3}
+  - {fileID: 2043418166772776471, guid: 58c7919f4eafed2f898ccfa29c36f3d0, type: 3}
+  - {fileID: 8446025507433597091, guid: d3fec0edf4e1216369a83098b67b7b96, type: 3}
   - {fileID: 4312016002452469198, guid: 9e621d24baca354868d3d9235383bfa2, type: 3}
   - {fileID: 5635797964601886344, guid: ab21019c64959b063bec6ab25fdff217, type: 3}
   - {fileID: 7810475123160934855, guid: 347eb103f947c2e78b705951741ddf7b, type: 3}
   - {fileID: 4881772454283574943, guid: 3f7d6b5ae65283f1996916c5c863f4e1, type: 3}
   - {fileID: 7022750467499017584, guid: 7862f02e41a89e06e831d5a95fb6e088, type: 3}
   - {fileID: 440725830103984159, guid: 08343bdce02726b049c2a6d5bc61c11b, type: 3}
-  - {fileID: 2043418166772776471, guid: 58c7919f4eafed2f898ccfa29c36f3d0, type: 3}
-  - {fileID: 8446025507433597091, guid: d3fec0edf4e1216369a83098b67b7b96, type: 3}
-  - {fileID: 8446025507433597091, guid: d3fec0edf4e1216369a83098b67b7b96, type: 3}
+  - {fileID: 440725830103984159, guid: fb317a0697b0e1b4488eed58329ea31e, type: 3}
   numLootDrops: 2
