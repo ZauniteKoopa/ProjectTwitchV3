@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectName: Boiling Blast
   specialization: 0
-  boltMultiplier: 1.25
+  boltMultiplier: 1.5
   shotgunBlast: {fileID: 3465459865213708534, guid: 40eacd763e0f3a170aa7e29b1b6d17af, type: 3}
