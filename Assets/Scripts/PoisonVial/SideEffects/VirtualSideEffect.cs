@@ -54,8 +54,17 @@ public class VirtualSideEffect : ScriptableObject
     }
 
 
+    // Main function to get the overriden basic bolt attack associated with this side effect if it has any
+    //  Pre: none
+    //  Post: returns a pointer to the prefab's ITwitchBasicAttack
+    public virtual ITwitchBasicAttack getBasicBoltOverride() {
+        return null;
+    }
+
+
     // Main function to access the bolt damage multiplier of this side effect: can be overriden
-    public virtual float boltDamageMultiplier() {
+    //  Pre: the number of units that the bolt went through before hitting this current unit
+    public virtual float boltDamageMultiplier(int numUnitsPassed) {
         return 1.0f;
     }
 

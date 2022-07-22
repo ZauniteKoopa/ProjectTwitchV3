@@ -15,9 +15,14 @@ public interface IVial
     int getAmmoLeft();
 
 
+    // Main function to get the basic attack prefab used to clone
+    //  Post: returns a pointer to the basic attack prefab's ITwitchBasicAttack
+    ITwitchBasicAttack getBoltType();
+
+
     // Function to get access to how much immediate damage a bolt / bullet does
     //  Post: returns how much damage a bullet does based on current stats > 0
-    float getBoltDamage();
+    float getBoltDamage(int numUnitsPassed);
 
     
     // Function to get access to poison damage based on the number of stacks a unit has

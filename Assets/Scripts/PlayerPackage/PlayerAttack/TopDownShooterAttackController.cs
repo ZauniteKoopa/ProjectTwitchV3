@@ -13,8 +13,6 @@ public class TopDownShooterAttackController : IAttackModule
     [SerializeField]
     private Transform playerCharacter = null;
     [SerializeField]
-    private Transform primaryBullet = null;
-    [SerializeField]
     private Transform secondaryCask = null;
     private ITwitchStatus twitchPlayerStatus;
     private ITwitchInventory twitchInventory;
@@ -70,8 +68,6 @@ public class TopDownShooterAttackController : IAttackModule
             Debug.LogError("Camera not connected to attack package for " + transform, transform);
         } else if (playerCharacter == null) {
             Debug.LogError("Player character not connected to attack package for " + transform, transform);
-        } else if (primaryBullet == null) {
-            Debug.LogError("Primary Bullet prefab not connected to attack package for " + transform, transform);
         } else if (secondaryCask == null) {
             Debug.LogError("Secondary weapon not connected to attack package for " + transform, transform);
         } else if (uiModule == null) {
@@ -109,16 +105,14 @@ public class TopDownShooterAttackController : IAttackModule
         while (firingPrimaryAttack) {
 
             if (!uiModule.inMenu() && twitchPlayerStatus.canMove()) {
-                // Create projectile. If poison vial is null, just do weak arrow
-                Transform currentProjectile = Object.Instantiate(primaryBullet, playerCharacter.position, Quaternion.identity);
-                PoisonVialBolt projBehav = currentProjectile.GetComponent<PoisonVialBolt>();
+                // Get aim direction
                 Vector3 currentProjectileDir = getWorldAimLocation() - playerCharacter.position;
                 if (aimAssist != null) {
                     currentProjectileDir = aimAssist.adjustAim(currentProjectileDir, playerCharacter.position);
                 }
 
-                projBehav.setVialDamage(twitchPlayerStatus.getPrimaryVial());
-                projBehav.setUpMovement(currentProjectileDir, primaryBulletSpeed);
+                // Launch the projectile
+                PoisonVial.launchBasicAttack(currentProjectileDir, primaryBulletSpeed, playerCharacter.position, twitchPlayerStatus.getPrimaryVial());
 
                 // Reduce cost if possible (cost will always either be 1 or 0, no if statement needed)
                 twitchPlayerStatus.consumePrimaryVialBullet();

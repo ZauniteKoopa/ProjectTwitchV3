@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class PoisonVialBolt : AbstractStraightProjectile
+public class PoisonVialBolt : AbstractStraightProjectile, ITwitchBasicAttack
 {
     // Private instance variables
-    private IVial poison;
+    protected IVial poison;
     [SerializeField]
     private float weakBoltDamage = 1.75f;
 
@@ -29,7 +29,7 @@ public class PoisonVialBolt : AbstractStraightProjectile
         Debug.Assert(target != null);
 
         if (poison != null) {
-            target.poisonDamage(poison.getBoltDamage(), poison, 1);
+            target.poisonDamage(poison.getBoltDamage(0), poison, 1);
         } else {
             target.damage(weakBoltDamage, false);
         }
@@ -39,5 +39,13 @@ public class PoisonVialBolt : AbstractStraightProjectile
     // Main function to handle what happens to projectile body when hitting an enemy (to be abstracted)
     protected override void onTargetHit() {
         Object.Destroy(gameObject);
+    }
+
+
+    // Main function to get access to the transform of this component
+    //  Pre: none
+    //  Post: returns the transform associated with this object
+    public Transform getTransform() {
+        return transform;
     }
 }

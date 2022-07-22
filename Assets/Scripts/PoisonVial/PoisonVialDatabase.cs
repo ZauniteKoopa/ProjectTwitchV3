@@ -11,6 +11,7 @@ public class PoisonVialDatabase : ScriptableObject
     private static bool isSetUp = false;
 
     // Dictionary mapping specialization to List of Side effects
+    [Header("Side Effects")]
     [SerializeField]
     private List<VirtualSideEffect> baseSideEffects;
     [SerializeField]
@@ -21,6 +22,11 @@ public class PoisonVialDatabase : ScriptableObject
     private List<VirtualSideEffect> reactiveSideEffects;
     [SerializeField]
     private List<VirtualSideEffect> stickinessSideEffects;
+
+
+    [Header("Default Prefabs for Vial")]
+    [SerializeField]
+    private Transform defaultBasicAttack;
     
     private static Dictionary<Specialization, List<VirtualSideEffect>> sideEffects;
 
@@ -51,6 +57,11 @@ public class PoisonVialDatabase : ScriptableObject
                 Debug.LogError("There should be at least 1 stickiness side effect within the database");
             }
 
+            ITwitchBasicAttack basicAttack = defaultBasicAttack.GetComponent<ITwitchBasicAttack>();
+            if (basicAttack == null) {
+                Debug.LogError("No ITwitchBasicAttack Component connected to this prefab");
+            }
+
             // Set up the dictionary
             sideEffects = new Dictionary<Specialization, List<VirtualSideEffect>>();
             sideEffects.Add(Specialization.NONE, baseSideEffects);
@@ -58,6 +69,10 @@ public class PoisonVialDatabase : ScriptableObject
             sideEffects.Add(Specialization.POISON, poisonSideEffects);
             sideEffects.Add(Specialization.REACTIVITY, reactiveSideEffects);
             sideEffects.Add(Specialization.STICKINESS, stickinessSideEffects);
+
+            // Set up PoisonVial class
+            PoisonVial.parseBaseVialCSV();
+            PoisonVial.setDefaultPrefabs(basicAttack);
         }
     }
 

@@ -23,6 +23,5 @@ public class InitialLoader : MonoBehaviour
 
         ingredientDatabase.parseCSV();
         vialDatabase.initialize();
-        PoisonVial.parseBaseVialCSV();
     }
 }

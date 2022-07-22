@@ -62,6 +62,9 @@ public class PoisonVial : IVial
     private const int SIDE_EFFECT_UPGRADE_THRESHOLD = 3;
     private const int AURA_THRESHOLD = 4;
 
+    // Default Prefabs to reference
+    private static ITwitchBasicAttack defaultBasicAttack;
+
 
     // Main raw constructor for a poison vial
     //  Pre: initialAmmo > 0 and 0 <= all stats <= 5
@@ -231,6 +234,16 @@ public class PoisonVial : IVial
     }
 
 
+    // Main function to set default prefabs for PoisonVial
+    //  Pre: none of the prefabs listed should be null
+    //  Post: Now attached to current prefabs
+    public static void setDefaultPrefabs(ITwitchBasicAttack basicAttack) {
+        Debug.Assert(basicAttack != null);
+
+        defaultBasicAttack = basicAttack;
+    }
+
+
     // Main function to use vial with given ammo cost
     //  Pre: ammoCost > 0
     //  Post: returns true if successful and decrements ammo accordingly, returns false if not enough ammo.
@@ -260,11 +273,36 @@ public class PoisonVial : IVial
     }
 
 
+    // Main function used to launch basic attack using this vial, considering side effect
+    //  Pre: projDir is the direction of the basic attack, projSpeed is the speed of the attack, spawnPosition is the position in the world this is spawning
+    //  Post: returns the instantiated basic attack in the world
+    public static ITwitchBasicAttack launchBasicAttack(Vector3 projDir, float projSpeed, Vector3 spawnPosition, IVial vial) {
+        ITwitchBasicAttack currentBasicAttack = (vial == null) ? defaultBasicAttack : vial.getBoltType();
+        Transform basicAttackInstance = Object.Instantiate(currentBasicAttack.getTransform(), spawnPosition, Quaternion.identity);
+        ITwitchBasicAttack attackComponent = basicAttackInstance.GetComponent<ITwitchBasicAttack>();
+
+        attackComponent.setVialDamage(vial);
+        attackComponent.setUpMovement(projDir, projSpeed);
+
+        return attackComponent;
+    }
+
+
+    // Main function to get the basic attack prefab used to clone
+    //  Post: returns a pointer to the basic attack prefab's ITwitchBasicAttack
+    public ITwitchBasicAttack getBoltType() {
+        return (sideEffect.getBasicBoltOverride() == null) ? defaultBasicAttack : sideEffect.getBasicBoltOverride();
+    }
+
+
     // Function to get access to how much immediate damage a bolt / bullet does
+    //  Pre: numUnitsPassed is the number of units 
     //  Post: returns how much damage a bullet does based on current stats > 0
-    public float getBoltDamage() {
+    public float getBoltDamage(int numUnitsPassed) {
+        Debug.Assert(numUnitsPassed >= 0);
+
         float boltDamage = BASE_DAMAGE + (DMG_GROWTH * potency);
-        boltDamage *= sideEffect.boltDamageMultiplier();
+        boltDamage *= sideEffect.boltDamageMultiplier(numUnitsPassed);
 
         Debug.Assert(boltDamage >= 0.0f);
         return boltDamage;
@@ -341,7 +379,7 @@ public class PoisonVial : IVial
     //  Pre: none
     //  Post: return value >= 0
     public float getInitCaskDamage() {
-        return 2f * getBoltDamage();
+        return 2f * getBoltDamage(0);
     }
 
 
