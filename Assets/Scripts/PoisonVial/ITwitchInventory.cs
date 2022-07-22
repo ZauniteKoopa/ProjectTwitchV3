@@ -23,6 +23,12 @@ public abstract class ITwitchInventory : MonoBehaviour
     public abstract IVial getPrimaryVial();
 
 
+    // Main function to utilize player aura 
+    //  Pre: auraType is one of the aura types listed in the enum (VirtualSideEffect.cs)
+    //  Post: Uses player aura for specific aura type
+    public abstract void utilizePlayerAura(AuraType auraType);
+
+
     // Main function to swap vials
     //  Pre: none 
     //  Post: primary vial will become secondary vial and vice versa

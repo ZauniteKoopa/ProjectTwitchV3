@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PoisonVialDatabase
   m_EditorClassIdentifier: 
   baseSideEffects:
-  - {fileID: 11400000, guid: 45f4121a0ab0a6e4e8608754569be209, type: 2}
+  - {fileID: 11400000, guid: cbddcb992bc0532f3a2a124819b85179, type: 2}
   potencySideEffects:
   - {fileID: 11400000, guid: b008d3093cbbdea9b9bafe6b5dfb7e66, type: 2}
   - {fileID: 11400000, guid: aa6c54bcc7b0a7cfb9037f4cf4d485c8, type: 2}

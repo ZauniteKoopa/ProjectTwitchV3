@@ -87,6 +87,23 @@ public class TwitchInventory : ITwitchInventory
     }
 
 
+    // Main function to utilize player aura 
+    //  Pre: auraType is one of the aura types listed in the enum (VirtualSideEffect.cs)
+    //  Post: Uses player aura for specific aura type
+    public override void utilizePlayerAura(AuraType auraType) {
+        
+        // See if player aura is active, if so, do aura effects
+        bool playerAuraActive;
+        lock (vialLock) {
+            playerAuraActive = (primaryVial != null && primaryVial.isPlayerAuraPresent());
+
+            if (playerAuraActive) {
+                primaryVial.applyEnemyAuraEffects(playerAura, auraType, 0);
+            }
+        }
+    }
+
+
     // Main function to add an Ingredient to the current inventory
     //  Pre: ing != null 
     //  Post: Returns whether or not successful. If so, ingredient will be added in the inventory

@@ -34,10 +34,15 @@ public class PoisonMeleeAttack : MonoBehaviour
     // On TriggerEnter
     private void OnTriggerEnter(Collider collider) {
         ITwitchUnitStatus colliderHurtbox = collider.GetComponent<ITwitchUnitStatus>();
+        IHittable stageElementHurtbox = collider.GetComponent<IHittable>();
 
         if (colliderHurtbox != null && !hit.Contains(colliderHurtbox)) {
             hit.Add(colliderHurtbox);
             colliderHurtbox.poisonDamage(poison.getBoltDamage(0), poison, 1);
+        }
+
+        if (stageElementHurtbox != null) {
+            stageElementHurtbox.hit();
         }
     }
 }

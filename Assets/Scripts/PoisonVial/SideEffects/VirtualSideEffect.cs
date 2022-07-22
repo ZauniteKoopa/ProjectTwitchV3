@@ -15,7 +15,8 @@ public enum Specialization {
 public enum AuraType {
     RADIOACTIVE_EXPUNGE,
     CONTAGION,
-    NO_TOUCHING
+    NO_TOUCHING,
+    SURPRISE
 };
 
 

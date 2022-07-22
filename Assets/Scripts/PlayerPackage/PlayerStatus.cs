@@ -442,6 +442,9 @@ public class PlayerStatus : ITwitchStatus
             numCamoBuffs++;
         }
 
+        // Do surprise effects
+        inventory.utilizePlayerAura(AuraType.SURPRISE);
+
         Invoke("resetCamofladgeBuff", camoAttackSpeedBuffDuration);
 
         // Timer to do cooldown IF canCamo is false. If it's true, you killed someone during camo sequence
