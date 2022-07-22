@@ -74,8 +74,9 @@ public abstract class AbstractDamageZone : MonoBehaviour
         foreach (ITwitchUnitStatus target in damagedTargets) {
             damageTarget(target, dmg);
 
-            // Check if target is alive afterwards
-            if (!target.isAlive()) {
+            // Check if target is alive or boss is transitioning afterwards
+            BossStatus testBoss = target as BossStatus;
+            if (!target.isAlive() || (testBoss != null && testBoss.isPhaseTransitioning())) {
                 numTargetsKilled++;
             }
         }

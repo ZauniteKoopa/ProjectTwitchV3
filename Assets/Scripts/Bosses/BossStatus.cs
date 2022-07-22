@@ -99,6 +99,13 @@ public class BossStatus : TwitchEnemyStatus
     }
 
 
+    // Main function to check if the unit is transitioning to a new phase
+    //  Pre: none
+    public bool isPhaseTransitioning() {
+        return phaseTransitioning;
+    }
+
+
     // Main function to reset unit, especially when player dies
     //  Pre: none
     //  Post: If enemy, reset to passive state, not sensing any enemies
