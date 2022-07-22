@@ -27,6 +27,10 @@ public class BossStatus : TwitchEnemyStatus
     private MeshRenderer meshRender;
     private Color originalColor;
 
+    // UI
+    [SerializeField]
+    private ResourceBar phaseThresholdBar;
+
 
     // Main function to handle initialization
     protected override void initialize() {
@@ -48,6 +52,7 @@ public class BossStatus : TwitchEnemyStatus
         curPhase = 0;
         curPhaseThreshold = maxHealth - (maxHealth * phaseHealthPercents[curPhase]);
         totalHealthPercentPassed = phaseHealthPercents[curPhase];
+        phaseThresholdBar.setStatus(curPhaseThreshold, maxHealth);
 
         meshRender = GetComponent<MeshRenderer>();
         originalColor = meshRender.material.color;
@@ -66,6 +71,7 @@ public class BossStatus : TwitchEnemyStatus
                 curPhase++;
                 totalHealthPercentPassed += phaseHealthPercents[curPhase];
                 curPhaseThreshold = maxHealth - (maxHealth * totalHealthPercentPassed);
+                phaseThresholdBar.setStatus(curPhaseThreshold, maxHealth);
 
                 transitionSequence = StartCoroutine(transitionPhaseSequence());
             }
@@ -93,6 +99,13 @@ public class BossStatus : TwitchEnemyStatus
     }
 
 
+    // Main function to check if the unit is transitioning to a new phase
+    //  Pre: none
+    public bool isPhaseTransitioning() {
+        return phaseTransitioning;
+    }
+
+
     // Main function to reset unit, especially when player dies
     //  Pre: none
     //  Post: If enemy, reset to passive state, not sensing any enemies
@@ -112,6 +125,7 @@ public class BossStatus : TwitchEnemyStatus
         curPhase = 0;
         totalHealthPercentPassed = phaseHealthPercents[curPhase];
         curPhaseThreshold = maxHealth - (maxHealth * totalHealthPercentPassed);
+        phaseThresholdBar.setStatus(curPhaseThreshold, maxHealth);
 
     }
 }
