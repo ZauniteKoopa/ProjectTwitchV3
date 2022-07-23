@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571343, b: 0.30692208, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -486,15 +486,15 @@ PrefabInstance:
     - target: {fileID: 9172822394672781445, guid: 81679342f50716c83ad127c802d45987, type: 3}
       propertyPath: possibleLootDrops.Array.data[0]
       value: 
-      objectReference: {fileID: 6978406117162031912, guid: c9e9748bb1e5cc33ca7507621efe643a, type: 3}
+      objectReference: {fileID: 2958984616688009020, guid: 433a457c7004df31b8bb277100d7da9b, type: 3}
     - target: {fileID: 9172822394672781445, guid: 81679342f50716c83ad127c802d45987, type: 3}
       propertyPath: possibleLootDrops.Array.data[1]
       value: 
-      objectReference: {fileID: 4306806704451777998, guid: 3ecdd71b2b726ad3cbcd199e7459c09a, type: 3}
+      objectReference: {fileID: 6651500605187683580, guid: 3e4d0a60be81b5690aa119ec6cb3adb6, type: 3}
     - target: {fileID: 9172822394672781445, guid: 81679342f50716c83ad127c802d45987, type: 3}
       propertyPath: possibleLootDrops.Array.data[2]
       value: 
-      objectReference: {fileID: 3725593201332320858, guid: 997b24409ed5ab4fe992c642aa92f24e, type: 3}
+      objectReference: {fileID: 6651500605187683580, guid: d7a6e8a8965e0af4ebb7afe35981c1f9, type: 3}
     - target: {fileID: 9172822394672781445, guid: 81679342f50716c83ad127c802d45987, type: 3}
       propertyPath: destroyedEvent.m_PersistentCalls.m_Calls.Array.size
       value: 0
@@ -2153,6 +2153,38 @@ PrefabInstance:
     - target: {fileID: 57540868358053495, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: m_Name
       value: MegaTurretPackage
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: aimRadius
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: lateLaserCharge
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: projectileSpeed
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: initialLaserCharge
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: laterProjectileInterval
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: initialProjectileInterval
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541389, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: baseArmor
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541389, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: maxHealth
+      value: 200
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
