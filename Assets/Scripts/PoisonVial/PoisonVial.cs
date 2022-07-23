@@ -683,32 +683,6 @@ public class PoisonVial : IVial
     }
 
 
-    // Main function to execute ultimate
-    //  Pre: player != null
-    //  Post: executes the ultimate listed in side effects, returns true if successful
-    public bool executeUltimate(ITwitchStatus player) {
-        Debug.Assert(player != null);
-
-        // Check if you even have enough ammo
-        if (getUltimateCost() > getAmmoLeft()){
-            return false;
-        }
-        
-        switch (sideEffect.getUltType()) {
-            case UltimateType.NONE:
-                return false;
-
-            case UltimateType.STEROID:
-                sideEffect.applySteroid(player);
-                return true;
-
-            default:
-                Debug.LogError("Invalid ult type");
-                return false;
-        }
-    }
-
-
     // Main function to execute lobbing ultimate
     //  Pre: player != null and dest is the location that the ultimate dmage zone will take place
     //  Post: executes lobbing ultimate if it's possible
@@ -733,6 +707,10 @@ public class PoisonVial : IVial
 
             case UltimateType.LOB:
                 sideEffect.throwLobbingUltimate(player.transform.position, dest, statNum);
+                return true;
+
+            case UltimateType.STEROID:
+                sideEffect.applySteroid(player);
                 return true;
 
             default:

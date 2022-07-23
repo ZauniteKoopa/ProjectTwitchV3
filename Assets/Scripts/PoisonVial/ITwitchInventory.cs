@@ -114,7 +114,7 @@ public abstract class ITwitchInventory : MonoBehaviour
 
 
     // Main function to check if you can do your ultimate
-    //  Pre: none
+    //  Pre: player is the one casting ultimate and dest is the final location of ultimate
     //  Post: return if ult execution is successful, returns false otherwise
-    public abstract bool willExecutePrimaryUltimate(ITwitchStatus player);
+    public abstract bool willExecutePrimaryUltimate(ITwitchStatus player, Vector3 dest);
 }

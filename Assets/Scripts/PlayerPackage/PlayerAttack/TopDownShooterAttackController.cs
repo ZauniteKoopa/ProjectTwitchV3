@@ -210,7 +210,8 @@ public class TopDownShooterAttackController : IAttackModule
     // Event handler for ultimate press
     public void onUltPress(InputAction.CallbackContext value) {
         if (value.started && twitchPlayerStatus.canMove() && !uiModule.inMenu()) {
-            twitchPlayerStatus.willExecuteUltimate();
+            Vector3 ultDest = getCaskDestination();
+            twitchPlayerStatus.willExecuteUltimate(ultDest);
         }
     }
 

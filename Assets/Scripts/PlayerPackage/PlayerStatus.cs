@@ -529,8 +529,8 @@ public class PlayerStatus : ITwitchStatus
     // Main function to check if you can do your ultimate
     //  Pre: none
     //  Post: return if ult execution is successful, returns false otherwise
-    public override bool willExecuteUltimate() {
-        return inventory.willExecutePrimaryUltimate(this);
+    public override bool willExecuteUltimate(Vector3 dest) {
+        return inventory.willExecutePrimaryUltimate(this, dest);
     }
 
 

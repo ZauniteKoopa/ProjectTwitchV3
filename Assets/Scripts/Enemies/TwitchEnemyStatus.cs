@@ -140,7 +140,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             trueMovementSpeed *= currentPoison.getStackSlowness(numPoisonStacks);
         }
 
-        return trueMovementSpeed;
+        return (canMove()) ? trueMovementSpeed : 0f;
     }
 
 

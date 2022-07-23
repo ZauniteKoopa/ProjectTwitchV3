@@ -555,7 +555,7 @@ public class TwitchInventory : ITwitchInventory
     // Main function to check if you can do your ultimate
     //  Pre: none
     //  Post: return if ult execution is successful, returns false otherwise
-    public override bool willExecutePrimaryUltimate(ITwitchStatus player) {
+    public override bool willExecutePrimaryUltimate(ITwitchStatus player, Vector3 dest) {
         // Get reference to current primary vial
         IVial currentPrimaryVial;
         lock (vialLock) {
@@ -565,7 +565,7 @@ public class TwitchInventory : ITwitchInventory
         // Check if vial even has an ultimate
         if (currentPrimaryVial != null && currentPrimaryVial.hasUltimate()) {
             // Check if cooldown is NOT running (NOT found in cooldown manager) AND that you could even execute this ultimate
-            if (!vialUltCooldownManager.ContainsKey(currentPrimaryVial) && currentPrimaryVial.executeUltimate(player)) {
+            if (!vialUltCooldownManager.ContainsKey(currentPrimaryVial) && currentPrimaryVial.executeUltimate(player, dest)) {
                 // Update costs
                 consumePrimaryVial(currentPrimaryVial.getUltimateCost());
 

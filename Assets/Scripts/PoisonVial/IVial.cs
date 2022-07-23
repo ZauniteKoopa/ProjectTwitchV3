@@ -161,7 +161,7 @@ public interface IVial
     // Main function to execute ultimate
     //  Pre: player != null
     //  Post: executes the ultimate listed in side effects, returns true if successful
-    bool executeUltimate(ITwitchStatus player);
+    bool executeUltimate(ITwitchStatus player, Vector3 dest);
 
 
     // Main function to check if you have a side effect

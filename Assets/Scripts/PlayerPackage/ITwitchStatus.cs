@@ -45,9 +45,9 @@ public abstract class ITwitchStatus : ITwitchUnitStatus
 
 
     // Main function to check if you can do your ultimate
-    //  Pre: none
+    //  Pre: dest is the final destination of ultimate
     //  Post: return if ult execution is successful, returns false otherwise
-    public abstract bool willExecuteUltimate();
+    public abstract bool willExecuteUltimate(Vector3 dest);
 
 
     // Main function to get attack rate effect factor

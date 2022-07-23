@@ -8,6 +8,8 @@ public class ElasticDomeShield : IBattleUltimate
     // UI
     [SerializeField]
     private ResourceBar shieldDurationDisplay;
+    [SerializeField]
+    private GameObject projectileShield;
 
     // Ult properties
     private float elasticDomeDuration;
@@ -62,9 +64,12 @@ public class ElasticDomeShield : IBattleUltimate
         GetComponent<Collider>().enabled = false;
         GetComponent<MeshRenderer>().enabled = false;
         shieldDurationDisplay.gameObject.SetActive(false);
+        projectileShield.gameObject.SetActive(false);
 
         // Wait for however long it takes for stun durations to go down
         yield return new WaitForSeconds(elasticStunDuration + 0.15f);
+
+        Object.Destroy(gameObject);
     }
 
 
@@ -86,6 +91,7 @@ public class ElasticDomeShield : IBattleUltimate
     // If an enemy enters, stun the enemy
     private void OnTriggerEnter(Collider collider) {
         ITwitchUnitStatus testEnemy = collider.GetComponent<ITwitchUnitStatus>();
+        Debug.Log("stun");
 
         // Check if it's actually an enemy
         if (testEnemy != null) {
