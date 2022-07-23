@@ -23,7 +23,8 @@ public enum AuraType {
 // Enum for ultimate types
 public enum UltimateType {
     NONE,
-    STEROID
+    STEROID,
+    LOB
 };
 
 // Class that gives a basic side effect that has no effect on stats
@@ -140,4 +141,10 @@ public class VirtualSideEffect : ScriptableObject
     //  Pre: playerStatus != null
     //  Post: Applies status effect on player
     public virtual void applySteroid(ITwitchStatus player) {}
+
+
+    // Main function to throw ult lobs
+    //  Pre: startPosition is the start position of the lob, end position is the end position of the lob, statNum is the important stat value
+    //  Post: launches lobbing ultimate
+    public virtual void throwLobbingUltimate(Vector3 startPos, Vector3 endPos, int statNum) {}
 }

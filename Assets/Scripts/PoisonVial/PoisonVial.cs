@@ -709,6 +709,39 @@ public class PoisonVial : IVial
     }
 
 
+    // Main function to execute lobbing ultimate
+    //  Pre: player != null and dest is the location that the ultimate dmage zone will take place
+    //  Post: executes lobbing ultimate if it's possible
+    public bool executeUltimate(ITwitchStatus player, Vector3 dest) {
+        Debug.Assert(player != null);
+
+        // Check if you even have enough ammo
+        if (getUltimateCost() > getAmmoLeft()){
+            return false;
+        }
+
+        // Get the stat specialization
+        int statNum = (sideEffect.getSpecialization() == Specialization.POTENCY) ? potency : 0;
+        statNum = (sideEffect.getSpecialization() == Specialization.POISON) ? poison : statNum;
+        statNum = (sideEffect.getSpecialization() == Specialization.REACTIVITY) ? reactivity : statNum;
+        statNum = (sideEffect.getSpecialization() == Specialization.STICKINESS) ? stickiness : statNum;
+        
+        // Side effect for ultimate
+        switch (sideEffect.getUltType()) {
+            case UltimateType.NONE:
+                return false;
+
+            case UltimateType.LOB:
+                sideEffect.throwLobbingUltimate(player.transform.position, dest, statNum);
+                return true;
+
+            default:
+                Debug.LogError("Invalid ult type");
+                return false;
+        }
+    }
+
+
     // Main function to check if you have a side effect
     //  Pre: none
     //  Post: checks if you have a side effect
