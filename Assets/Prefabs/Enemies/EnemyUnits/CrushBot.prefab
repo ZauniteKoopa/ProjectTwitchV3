@@ -735,9 +735,9 @@ MonoBehaviour:
   unitDespawnEvent:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 40
+  maxHealth: 35
   baseMovementSpeed: 4.5
-  baseAttack: 5
+  baseAttack: 10
   baseArmor: 1
   enemyAura: {fileID: 2087827159142612035}
   maxLootDrops: 1
@@ -869,8 +869,8 @@ MonoBehaviour:
   - {fileID: 2050020949279639779}
   - {fileID: 2050020950228161219}
   nearDistance: 0.5
-  stopDuration: 1
-  firstConfusedDuration: 2
+  stopDuration: 0.7
+  firstConfusedDuration: 1.5
   passiveMovementSpeedReduction: 0.75
 --- !u!82 &571164681
 AudioSource:
