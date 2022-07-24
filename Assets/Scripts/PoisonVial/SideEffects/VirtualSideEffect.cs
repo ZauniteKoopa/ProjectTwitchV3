@@ -14,15 +14,17 @@ public enum Specialization {
 // Enum that considers Aura Requirements
 public enum AuraType {
     RADIOACTIVE_EXPUNGE,
-    CONTAGION,
-    NO_TOUCHING
+    ENEMY_TIMED,
+    NO_TOUCHING,
+    SURPRISE
 };
 
 
 // Enum for ultimate types
 public enum UltimateType {
     NONE,
-    STEROID
+    STEROID,
+    LOB
 };
 
 // Class that gives a basic side effect that has no effect on stats
@@ -54,14 +56,29 @@ public class VirtualSideEffect : ScriptableObject
     }
 
 
+    // Main function to get the overriden basic bolt attack associated with this side effect if it has any
+    //  Pre: none
+    //  Post: returns a pointer to the prefab's ITwitchBasicAttack
+    public virtual ITwitchBasicAttack getBasicBoltOverride() {
+        return null;
+    }
+
+
     // Main function to access the bolt damage multiplier of this side effect: can be overriden
-    public virtual float boltDamageMultiplier() {
+    //  Pre: the number of units that the bolt went through before hitting this current unit
+    public virtual float boltDamageMultiplier(int numUnitsPassed) {
         return 1.0f;
     }
 
 
     // Main function to get the decay rate multiplier of this side effect: can be overriden
     public virtual float decayRateMultiplier() {
+        return 1.0f;
+    }
+
+
+    // Main function to get the contaminate multiplier 
+    public virtual float contaminateMultiplier() {
         return 1.0f;
     }
 
@@ -130,4 +147,25 @@ public class VirtualSideEffect : ScriptableObject
     //  Pre: playerStatus != null
     //  Post: Applies status effect on player
     public virtual void applySteroid(ITwitchStatus player) {}
+
+
+    // Main function to throw ult lobs
+    //  Pre: startPosition is the start position of the lob, end position is the end position of the lob, statNum is the important stat value
+    //  Post: launches lobbing ultimate
+    public virtual void throwLobbingUltimate(Vector3 startPos, Vector3 endPos, int statNum) {}
+
+
+    // Main boolean to check if you can execute enemies automatically with this vial
+    //  Pre: isBoss indicates whether this is a boss or not, 0.0f <= healthPercentRemaining <= 1.0, 0 <= numStacks <= 6
+    //  Post: returns a boolean whether or not this enemy can get immediately executed
+    public virtual bool canExecute(bool isBoss, float healthPercentRemaining, int numStacks) { return false;}
+
+
+    // Main function to check if you made enemy volatile (the auto contaminate status effect on enemies)
+    //  Pre: none
+    //  Post: returns whether or not this side effect makes you volatile. If it does, this also returns the duration it takes for the auto contaminate to occur
+    public virtual bool makesTargetVolatile(out float autoContaminateDuration) {
+        autoContaminateDuration = 3.0f;
+        return false;
+    }
 }

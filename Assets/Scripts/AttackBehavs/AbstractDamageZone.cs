@@ -88,6 +88,41 @@ public abstract class AbstractDamageZone : MonoBehaviour
     }
 
 
+    // Main function to apply timed slow effect to all units within the zone
+    //  Pre: speedReduction > 0.0 and duration > 0.0
+    //  Post: enemies in the zone on this frame will be slowed by speedFactor for duration seconds
+    public void applyTimedSlowEffect(float speedFactor, float duration) {
+        // Get the list of slowed units
+        List<ITwitchUnitStatus> slowedUnits = new List<ITwitchUnitStatus>();
+        foreach(ITwitchUnitStatus unit in inRangeTargets) {
+            if (unit != null) {
+                slowedUnits.Add(unit);
+            }
+        }
+
+        // Start sequence
+        StartCoroutine(timedSlowEffectSequence(slowedUnits, speedFactor, duration));
+    }
+
+
+    // Main function to slow effect sequence
+    private IEnumerator timedSlowEffectSequence(List<ITwitchUnitStatus> slowedUnits, float speedFactor, float duration) {
+        foreach (ITwitchUnitStatus unit in slowedUnits) {
+            if (unit != null) {
+                unit.affectSpeed(speedFactor);
+            }
+        }
+
+        yield return new WaitForSeconds(duration);
+
+        foreach (ITwitchUnitStatus unit in slowedUnits) {
+            if (unit != null) {
+                unit.affectSpeed(1f / speedFactor);
+            }
+        }
+    }
+
+
     // Main event handler function for when enemy dies
     private void onTargetDeath(IUnitStatus status) {
         ITwitchUnitStatus twitchUnitStatus = status as ITwitchUnitStatus;

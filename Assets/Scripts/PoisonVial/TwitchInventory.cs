@@ -87,6 +87,23 @@ public class TwitchInventory : ITwitchInventory
     }
 
 
+    // Main function to utilize player aura 
+    //  Pre: auraType is one of the aura types listed in the enum (VirtualSideEffect.cs)
+    //  Post: Uses player aura for specific aura type
+    public override void utilizePlayerAura(AuraType auraType) {
+        
+        // See if player aura is active, if so, do aura effects
+        bool playerAuraActive;
+        lock (vialLock) {
+            playerAuraActive = (primaryVial != null && primaryVial.isPlayerAuraPresent());
+
+            if (playerAuraActive) {
+                primaryVial.applyEnemyAuraEffects(playerAura, auraType, 0);
+            }
+        }
+    }
+
+
     // Main function to add an Ingredient to the current inventory
     //  Pre: ing != null 
     //  Post: Returns whether or not successful. If so, ingredient will be added in the inventory
@@ -250,7 +267,7 @@ public class TwitchInventory : ITwitchInventory
 
         lock (vialLock) {
             if (primaryVial == null) {
-                primaryVial = new PoisonVial(ing);
+                primaryVial = new PoisonVial(ing, this);
                 success = true;
                 gainedSideEffect = false;
             } else {
@@ -286,7 +303,7 @@ public class TwitchInventory : ITwitchInventory
 
         lock (vialLock) {
             if (primaryVial == null) {
-                primaryVial = new PoisonVial(ing1, ing2);
+                primaryVial = new PoisonVial(ing1, ing2, this);
                 success = true;
                 gainedSideEffect = primaryVial.hasSideEffect();
             } else {
@@ -317,9 +334,9 @@ public class TwitchInventory : ITwitchInventory
         // If only 1 ingredient is non null, use the single constructor
         if (ing1 == null || ing2 == null) {
             Ingredient currentIng = (ing1 != null) ? ing1 : ing2;
-            primaryVial = new PoisonVial(currentIng);
+            primaryVial = new PoisonVial(currentIng, this);
         } else {
-            primaryVial = new PoisonVial(ing1, ing2);
+            primaryVial = new PoisonVial(ing1, ing2, this);
         }
 
         gainedSideEffect = primaryVial.hasSideEffect();
@@ -345,7 +362,7 @@ public class TwitchInventory : ITwitchInventory
 
         lock (vialLock) {
             if (secondaryVial == null) {
-                secondaryVial = new PoisonVial(ing);
+                secondaryVial = new PoisonVial(ing, this);
                 success = true;
                 gainedSideEffect = false;
             } else {
@@ -380,7 +397,7 @@ public class TwitchInventory : ITwitchInventory
 
         lock (vialLock) {
             if (secondaryVial == null) {
-                secondaryVial = new PoisonVial(ing1, ing2);
+                secondaryVial = new PoisonVial(ing1, ing2, this);
                 success = true;
                 gainedSideEffect = secondaryVial.hasSideEffect();
             } else {
@@ -412,9 +429,9 @@ public class TwitchInventory : ITwitchInventory
         // If only 1 ingredient is non null, use the single constructor
         if (ing1 == null || ing2 == null) {
             Ingredient currentIng = (ing1 != null) ? ing1 : ing2;
-            secondaryVial = new PoisonVial(currentIng);
+            secondaryVial = new PoisonVial(currentIng, this);
         } else {
-            secondaryVial = new PoisonVial(ing1, ing2);
+            secondaryVial = new PoisonVial(ing1, ing2, this);
         }
 
         gainedSideEffect = primaryVial.hasSideEffect();
@@ -538,7 +555,7 @@ public class TwitchInventory : ITwitchInventory
     // Main function to check if you can do your ultimate
     //  Pre: none
     //  Post: return if ult execution is successful, returns false otherwise
-    public override bool willExecutePrimaryUltimate(ITwitchStatus player) {
+    public override bool willExecutePrimaryUltimate(ITwitchStatus player, Vector3 dest) {
         // Get reference to current primary vial
         IVial currentPrimaryVial;
         lock (vialLock) {
@@ -548,7 +565,7 @@ public class TwitchInventory : ITwitchInventory
         // Check if vial even has an ultimate
         if (currentPrimaryVial != null && currentPrimaryVial.hasUltimate()) {
             // Check if cooldown is NOT running (NOT found in cooldown manager) AND that you could even execute this ultimate
-            if (!vialUltCooldownManager.ContainsKey(currentPrimaryVial) && currentPrimaryVial.executeUltimate(player)) {
+            if (!vialUltCooldownManager.ContainsKey(currentPrimaryVial) && currentPrimaryVial.executeUltimate(player, dest)) {
                 // Update costs
                 consumePrimaryVial(currentPrimaryVial.getUltimateCost());
 

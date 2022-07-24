@@ -121,6 +121,7 @@ public class PlayerStatus : ITwitchStatus
         curHealth = maxHealth;
         normalColor = characterRenderer.material.color;
         inventory.addCraftListener(onPlayerCraft);
+        inventory.vialExecutionEvent.AddListener(onStealthReset);
         initDefaultUI();
     }
 
@@ -442,6 +443,9 @@ public class PlayerStatus : ITwitchStatus
             numCamoBuffs++;
         }
 
+        // Do surprise effects
+        inventory.utilizePlayerAura(AuraType.SURPRISE);
+
         Invoke("resetCamofladgeBuff", camoAttackSpeedBuffDuration);
 
         // Timer to do cooldown IF canCamo is false. If it's true, you killed someone during camo sequence
@@ -526,8 +530,8 @@ public class PlayerStatus : ITwitchStatus
     // Main function to check if you can do your ultimate
     //  Pre: none
     //  Post: return if ult execution is successful, returns false otherwise
-    public override bool willExecuteUltimate() {
-        return inventory.willExecutePrimaryUltimate(this);
+    public override bool willExecuteUltimate(Vector3 dest) {
+        return inventory.willExecutePrimaryUltimate(this, dest);
     }
 
 
@@ -539,7 +543,9 @@ public class PlayerStatus : ITwitchStatus
     // Sequence for handling crafting
     private IEnumerator craftSequence() {
         stun(true);
+
         yield return inventory.craftSequence(craftingTime);
+
         stun(false);
     }
 

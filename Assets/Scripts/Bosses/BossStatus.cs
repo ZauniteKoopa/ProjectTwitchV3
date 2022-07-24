@@ -59,6 +59,20 @@ public class BossStatus : TwitchEnemyStatus
     }
 
 
+    // Main protected function to check execution
+    //  Pre: none, poisonLock has been obtained
+    //  Post: if you meet infected vial's conditions, kill this unit immediately
+    protected override void checkAutoExecution(IVial pv, int pStacks) {
+        Debug.Assert(pStacks >= 0 && pStacks <= 6);
+
+        if (pv != null) {
+            if (pv.canAutoExecute(true, curHealth / maxHealth, pStacks)) {
+                damage(curHealth, true);
+            }
+        }
+    }
+
+
     // Main damage function to override
     //  Pre: damage is a number greater than 0
     //  Post: unit gets inflicted with damage and returns if damage was successful

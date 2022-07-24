@@ -5,6 +5,17 @@ using UnityEngine.Events;
 
 public abstract class ITwitchInventory : MonoBehaviour
 {
+
+    // Main event for when a vial from this inventory executed someone
+    public UnityEvent vialExecutionEvent = new UnityEvent();
+
+    // Main function to handle the event one of the vials have executed a target
+    //  Pre: vial was executed by a poison due to a side effect
+    //  Post: stealth reset and propogate to PlsyerPackage
+    public void onVialExecution() {
+        vialExecutionEvent.Invoke();
+    }
+
     // Main function to add an Ingredient to the current inventory
     //  Pre: ing != null 
     //  Post: Returns whether or not successful. If so, ingredient will be added in the inventory
@@ -21,6 +32,12 @@ public abstract class ITwitchInventory : MonoBehaviour
     //  Pre: none
     //  Post: Access a primary vial that CAN be null (means that you had an empty vial)
     public abstract IVial getPrimaryVial();
+
+
+    // Main function to utilize player aura 
+    //  Pre: auraType is one of the aura types listed in the enum (VirtualSideEffect.cs)
+    //  Post: Uses player aura for specific aura type
+    public abstract void utilizePlayerAura(AuraType auraType);
 
 
     // Main function to swap vials
@@ -108,7 +125,7 @@ public abstract class ITwitchInventory : MonoBehaviour
 
 
     // Main function to check if you can do your ultimate
-    //  Pre: none
+    //  Pre: player is the one casting ultimate and dest is the final location of ultimate
     //  Post: return if ult execution is successful, returns false otherwise
-    public abstract bool willExecutePrimaryUltimate(ITwitchStatus player);
+    public abstract bool willExecutePrimaryUltimate(ITwitchStatus player, Vector3 dest);
 }

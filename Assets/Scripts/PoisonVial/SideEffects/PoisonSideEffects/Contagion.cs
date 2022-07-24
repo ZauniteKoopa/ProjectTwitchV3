@@ -15,7 +15,7 @@ public class Contagion : VirtualSideEffect
     public override bool executeAuraDamageTimed(EnemyAura aura, AuraType auraType, int numStacks, IVial vial, float curVialTimer) {
         Debug.Assert(aura != null && vial != null && 0 <= numStacks && numStacks <= 6 && curVialTimer >= 0f);
 
-        if (auraType == AuraType.CONTAGION && curVialTimer >= (float)auraSpreadTime) {
+        if (auraType == AuraType.ENEMY_TIMED && curVialTimer >= (float)auraSpreadTime) {
             aura.damageAllTargets(0f);
             return true;
         }

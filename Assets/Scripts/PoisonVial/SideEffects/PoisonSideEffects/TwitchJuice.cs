@@ -57,6 +57,6 @@ public class TwitchJuice : VirtualSideEffect
     // Main override function for getting the description
     public override string getDescription() {
         float displayHealthPercent = healthPercentHealed * 100f;
-        return "Gain a new ultimate ability to drink the poison to heal " + displayHealthPercent + " health gradually in the span of " + healTime + " seconds. Costs " + ultCost + " ammo";
+        return "Gain a new ultimate ability to drink the poison to heal " + displayHealthPercent + "% of max health gradually in the span of " + healTime + " seconds. Costs " + ultCost + " ammo";
     }
 }

@@ -15,9 +15,14 @@ public interface IVial
     int getAmmoLeft();
 
 
+    // Main function to get the basic attack prefab used to clone
+    //  Post: returns a pointer to the basic attack prefab's ITwitchBasicAttack
+    ITwitchBasicAttack getBoltType();
+
+
     // Function to get access to how much immediate damage a bolt / bullet does
     //  Post: returns how much damage a bullet does based on current stats > 0
-    float getBoltDamage();
+    float getBoltDamage(int numUnitsPassed);
 
     
     // Function to get access to poison damage based on the number of stacks a unit has
@@ -156,11 +161,24 @@ public interface IVial
     // Main function to execute ultimate
     //  Pre: player != null
     //  Post: executes the ultimate listed in side effects, returns true if successful
-    bool executeUltimate(ITwitchStatus player);
+    bool executeUltimate(ITwitchStatus player, Vector3 dest);
+
+
+    // Main function to check if you can auto execute the enemy based on health
+    //  Pre: isBoss indicates whether this is a boss or not, 0.0f <= healthPercentRemaining <= 1.0, 0 <= numStacks <= 6
+    //  Post: returns a boolean whether or not this enemy can get immediately executed
+    bool canAutoExecute(bool isBoss, float healthPercentRemaining, int numStacks);
 
 
     // Main function to check if you have a side effect
     //  Pre: none
     //  Post: checks if you have a side effect
     bool hasSideEffect();
+
+
+    // Main function to check if this makes you volatile
+    //  Pre: none
+    //  Post: returns whether it makes you volatile. If so, also returns a float that represents the duration of the volatility
+    bool makesTargetVolatile(out float volatileDuration);
+
 }

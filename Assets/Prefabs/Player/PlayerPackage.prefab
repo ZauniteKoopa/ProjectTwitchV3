@@ -2971,8 +2971,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 10
-  m_fontSizeBase: 10
+  m_fontSize: 9
+  m_fontSizeBase: 9
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -11246,6 +11246,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded802a305c85cbdcbe715426b5b7338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vialExecutionEvent:
+    m_PersistentCalls:
+      m_Calls: []
   mainPlayerUI: {fileID: 666051070539244718}
   playerCraftEvent:
     m_PersistentCalls:
@@ -12387,7 +12390,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 666051070279409774}
   playerCharacter: {fileID: 666051070171789296}
-  primaryBullet: {fileID: 7053607081528903385, guid: b336ce3f20ea722edac9589d3d0cc306, type: 3}
   secondaryCask: {fileID: 6518441157454951942, guid: 4e7de23ec2160a0f19bde635ad78c3c0, type: 3}
   primaryAttackRate: 0.5
   primaryBulletSpeed: 60

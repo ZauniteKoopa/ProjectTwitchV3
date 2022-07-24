@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 439d073ccae7dd7c599739f61ade9fcb, type: 3}
+  m_Name: Rat-ta-tat-tat
+  m_EditorClassIdentifier: 
+  effectName: Rat-ta-tat-tat
+  specialization: 0
+  damageReductionPerHit: 0.1
+  minDamageReduction: 0.5
+  piercingShot: {fileID: 4162204746529134715, guid: 365183e041e07e300ac0011bc5691dba, type: 3}
