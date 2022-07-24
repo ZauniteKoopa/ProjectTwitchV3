@@ -205,6 +205,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 onLastTick = poisonTimer >= MAX_POISON_TICK_TIME;
             }
 
+            checkAutoExecution(tempVial, currentStacks);
             damage(poisonTickDamage, true);
 
             // Apply aura effects if poison side effect matches "CONTAGION"
@@ -238,7 +239,6 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 enemyAura.setActive(false);
             }
         }
-
     }
 
 
@@ -247,6 +247,20 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  Post: returns true is unit is still alive
     public override bool isAlive() {
         return curHealth > 0f;
+    }
+
+
+    // Main protected function to check execution
+    //  Pre: pv can be null and pStacks >= 0
+    //  Post: if you meet infected vial's conditions, kill this unit immediately
+    protected virtual void checkAutoExecution(IVial pv, int pStacks) {
+        Debug.Assert(pStacks >= 0 && pStacks <= 6);
+
+        if (pv != null) {
+            if (pv.canAutoExecute(false, curHealth / maxHealth, pStacks)) {
+                damage(curHealth, true);
+            }
+        }
     }
 
 

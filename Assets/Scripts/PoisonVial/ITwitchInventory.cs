@@ -5,6 +5,17 @@ using UnityEngine.Events;
 
 public abstract class ITwitchInventory : MonoBehaviour
 {
+
+    // Main event for when a vial from this inventory executed someone
+    public UnityEvent vialExecutionEvent = new UnityEvent();
+
+    // Main function to handle the event one of the vials have executed a target
+    //  Pre: vial was executed by a poison due to a side effect
+    //  Post: stealth reset and propogate to PlsyerPackage
+    public void onVialExecution() {
+        vialExecutionEvent.Invoke();
+    }
+
     // Main function to add an Ingredient to the current inventory
     //  Pre: ing != null 
     //  Post: Returns whether or not successful. If so, ingredient will be added in the inventory

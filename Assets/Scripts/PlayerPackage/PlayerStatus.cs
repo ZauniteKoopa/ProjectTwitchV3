@@ -121,6 +121,7 @@ public class PlayerStatus : ITwitchStatus
         curHealth = maxHealth;
         normalColor = characterRenderer.material.color;
         inventory.addCraftListener(onPlayerCraft);
+        inventory.vialExecutionEvent.AddListener(onStealthReset);
         initDefaultUI();
     }
 
@@ -542,7 +543,9 @@ public class PlayerStatus : ITwitchStatus
     // Sequence for handling crafting
     private IEnumerator craftSequence() {
         stun(true);
+
         yield return inventory.craftSequence(craftingTime);
+
         stun(false);
     }
 

@@ -164,6 +164,12 @@ public interface IVial
     bool executeUltimate(ITwitchStatus player, Vector3 dest);
 
 
+    // Main function to check if you can auto execute the enemy based on health
+    //  Pre: isBoss indicates whether this is a boss or not, 0.0f <= healthPercentRemaining <= 1.0, 0 <= numStacks <= 6
+    //  Post: returns a boolean whether or not this enemy can get immediately executed
+    bool canAutoExecute(bool isBoss, float healthPercentRemaining, int numStacks);
+
+
     // Main function to check if you have a side effect
     //  Pre: none
     //  Post: checks if you have a side effect

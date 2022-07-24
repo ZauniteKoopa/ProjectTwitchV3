@@ -147,4 +147,10 @@ public class VirtualSideEffect : ScriptableObject
     //  Pre: startPosition is the start position of the lob, end position is the end position of the lob, statNum is the important stat value
     //  Post: launches lobbing ultimate
     public virtual void throwLobbingUltimate(Vector3 startPos, Vector3 endPos, int statNum) {}
+
+
+    // Main boolean to check if you can execute with this vial
+    //  Pre: isBoss indicates whether this is a boss or not, 0.0f <= healthPercentRemaining <= 1.0, 0 <= numStacks <= 6
+    //  Post: returns a boolean whether or not this enemy can get immediately executed
+    public virtual bool canExecute(bool isBoss, float healthPercentRemaining, int numStacks) { return false;}
 }

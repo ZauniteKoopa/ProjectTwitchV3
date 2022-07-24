@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 
 // Vial class
 public class PoisonVial : IVial
@@ -62,6 +63,9 @@ public class PoisonVial : IVial
     private const int SIDE_EFFECT_UPGRADE_THRESHOLD = 3;
     private const int AURA_THRESHOLD = 4;
 
+    // Unity Events to use (about side effects)
+    public UnityEvent enemyExecutedEvent = new UnityEvent();
+
     // Default Prefabs to reference
     private static ITwitchBasicAttack defaultBasicAttack;
 
@@ -92,7 +96,7 @@ public class PoisonVial : IVial
 
 
     // Main constructor to craft a poison vial from only 1 ingredient
-    public PoisonVial(Ingredient ing) {
+    public PoisonVial(Ingredient ing, ITwitchInventory executionListener) {
         if (!csvParsed) {
             Debug.LogError("Poison Vial base stats not set up, did you forget a loader?");
         }
@@ -106,11 +110,13 @@ public class PoisonVial : IVial
         sideEffect = PoisonVialDatabase.getRandomSideEffect(Specialization.NONE);
         upgrade(ing);
         ammo = ONE_ING_AMMO;
+
+        enemyExecutedEvent.AddListener(executionListener.onVialExecution);
     }
 
 
     // Main constructor to craft a poison vial from only 1 ingredient
-    public PoisonVial(Ingredient ing1, Ingredient ing2) {
+    public PoisonVial(Ingredient ing1, Ingredient ing2, ITwitchInventory executionListener) {
         if (!csvParsed) {
             Debug.LogError("Poison Vial base stats not set up, did you forget a loader?");
         }
@@ -124,6 +130,8 @@ public class PoisonVial : IVial
         sideEffect = PoisonVialDatabase.getRandomSideEffect(Specialization.NONE);
         upgrade(ing1, ing2);
         ammo = TWO_ING_AMMO;
+
+        enemyExecutedEvent.AddListener(executionListener.onVialExecution);
     }
 
 
@@ -717,6 +725,19 @@ public class PoisonVial : IVial
                 Debug.LogError("Invalid ult type");
                 return false;
         }
+    }
+
+
+    // Main function to check if you can auto execute the enemy based on health
+    //  Pre: isBoss indicates whether this is a boss or not, 0.0f <= healthPercentRemaining <= 1.0, 0 <= numStacks <= 6
+    //  Post: returns a boolean whether or not this enemy can get immediately executed
+    public bool canAutoExecute(bool isBoss, float healthPercentRemaining, int numStacks) {
+        bool executed = sideEffect.canExecute(isBoss, healthPercentRemaining, numStacks);
+        if (executed) {
+            enemyExecutedEvent.Invoke();
+        }
+
+        return executed;
     }
 
 
