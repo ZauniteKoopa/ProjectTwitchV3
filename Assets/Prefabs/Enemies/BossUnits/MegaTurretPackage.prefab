@@ -2678,10 +2678,10 @@ MonoBehaviour:
   unitDespawnEvent:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 180
+  maxHealth: 200
   baseMovementSpeed: 4
   baseAttack: 5
-  baseArmor: 1
+  baseArmor: 6
   enemyAura: {fileID: 4871929595059325418}
   maxLootDrops: 2
   minLootDrops: 2
@@ -2944,8 +2944,8 @@ MonoBehaviour:
   - {fileID: 57540868328157994}
   - {fileID: 57540867604285846}
   - {fileID: 57540867572529628}
-  projectileSpeed: 17
-  aimRadius: 6
+  projectileSpeed: 25
+  aimRadius: 8
   projDamage: 5
   laserDamage: 8
   laserAnticipationColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
@@ -2966,12 +2966,12 @@ MonoBehaviour:
   - 0.4
   - 0.3
   - 0.3
-  initialProjectileInterval: 0.65
-  laterProjectileInterval: 0.5
-  initialLaserCharge: 1.2
+  initialProjectileInterval: 0.55
+  laterProjectileInterval: 0.4
+  initialLaserCharge: 1.1
   initialMaxCrushBots: 2
   triShotAngle: 35
-  lateLaserCharge: 1
+  lateLaserCharge: 0.85
   lateMaxCrushBots: 3
 --- !u!114 &456505596693541391
 MonoBehaviour:
@@ -2997,18 +2997,18 @@ MonoBehaviour:
   - {fileID: 57540866933592558}
   - {fileID: 57540867223868129}
   - {fileID: 57540867300687285}
-  projectileSpeed: 17
-  aimRadius: 6
+  projectileSpeed: 25
+  aimRadius: 8
   projDamage: 5
   laserDamage: 8
   laserAnticipationColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   laserFiredColor: {r: 1, g: 0, b: 0, a: 1}
   laserCooldown: 5
-  initialProjectileInterval: 0.65
-  laterProjectileInterval: 0.5
-  initialLaserCharge: 1.2
+  initialProjectileInterval: 0.55
+  laterProjectileInterval: 0.4
+  initialLaserCharge: 1.1
   laserProbChance: 0.5
-  lateLaserCharge: 1
+  lateLaserCharge: 0.85
 --- !u!1 &1379962729396112910
 GameObject:
   m_ObjectHideFlags: 0
