@@ -730,7 +730,7 @@ public class PoisonVial : IVial
 
     // Main function to check if you can auto execute the enemy based on health
     //  Pre: isBoss indicates whether this is a boss or not, 0.0f <= healthPercentRemaining <= 1.0, 0 <= numStacks <= 6
-    //  Post: returns a boolean whether or not this enemy can get immediately executed
+    //  Post: returns a boolean whether or not this enemy can get immediately executed. If true, execution event will trigger and reset stealth
     public bool canAutoExecute(bool isBoss, float healthPercentRemaining, int numStacks) {
         bool executed = sideEffect.canExecute(isBoss, healthPercentRemaining, numStacks);
         if (executed) {
@@ -738,6 +738,14 @@ public class PoisonVial : IVial
         }
 
         return executed;
+    }
+
+
+    // Main function to check if this makes you volatile
+    //  Pre: none
+    //  Post: returns whether it makes you volatile. If so, also returns a float that represents the duration of the volatility
+    public bool makesTargetVolatile(out float volatileDuration) {
+        return sideEffect.makesTargetVolatile(out volatileDuration);
     }
 
 

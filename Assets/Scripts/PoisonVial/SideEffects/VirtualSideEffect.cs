@@ -77,6 +77,12 @@ public class VirtualSideEffect : ScriptableObject
     }
 
 
+    // Main function to get the contaminate multiplier 
+    public virtual float contaminateMultiplier() {
+        return 1.0f;
+    }
+
+
     // Main function to get the slow rate multiplier: can be overriden
     //  Pre: speedFactor > 0.0f;
     //  Post: speedFactor will be greater than 0.0f
@@ -149,8 +155,17 @@ public class VirtualSideEffect : ScriptableObject
     public virtual void throwLobbingUltimate(Vector3 startPos, Vector3 endPos, int statNum) {}
 
 
-    // Main boolean to check if you can execute with this vial
+    // Main boolean to check if you can execute enemies automatically with this vial
     //  Pre: isBoss indicates whether this is a boss or not, 0.0f <= healthPercentRemaining <= 1.0, 0 <= numStacks <= 6
     //  Post: returns a boolean whether or not this enemy can get immediately executed
     public virtual bool canExecute(bool isBoss, float healthPercentRemaining, int numStacks) { return false;}
+
+
+    // Main function to check if you made enemy volatile (the auto contaminate status effect on enemies)
+    //  Pre: none
+    //  Post: returns whether or not this side effect makes you volatile. If it does, this also returns the duration it takes for the auto contaminate to occur
+    public virtual bool makesTargetVolatile(out float autoContaminateDuration) {
+        autoContaminateDuration = 3.0f;
+        return false;
+    }
 }

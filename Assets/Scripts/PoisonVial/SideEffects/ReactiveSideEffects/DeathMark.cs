@@ -30,7 +30,7 @@ public class DeathMark : VirtualSideEffect
     public override string getDescription() {
         float normalEnemyPercent = normalEnemyDeathThreshold * 100f;
         float bossEnemyPercent = bossDeathThreshold * 100f;
-        return "When an enemy hits " + stackReq + " stacks, they are marked for DEATH. When an enemy reaches below " + normalEnemyPercent + "% health, they will be executed immediately. For bosses, it's " + bossEnemyPercent + "% health. These executions reset stealth";
+        return "When an enemy hits " + stackReq + " stacks, they are marked for DEATH. When an enemy reaches below " + normalEnemyPercent + "% health, they will be executed immediately. For bosses, " + bossEnemyPercent + "% health. Executions reset stealth";
     }
 
 }

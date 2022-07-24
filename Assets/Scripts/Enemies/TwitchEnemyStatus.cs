@@ -70,6 +70,12 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     [SerializeField]
     private float spawnInTime = 1.25f;
 
+    
+    // Status effects
+    private bool isVolatile = false;
+    private Coroutine volatileSequence = null;
+
+
     // Audio
     private EnemyAudioManager enemyAudio;
 
@@ -264,6 +270,46 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     }
 
 
+    // Main handle volatile side effect
+    //  Pre: deltaTime > 0f
+    //  Post: handle side effect and do damage
+    private IEnumerator volatileSideEffect(float volatileDuration) {
+        // Turn isVolatile to true
+        isVolatile = true;
+
+        // Main timer loop
+        float timer = 0.0f;
+        WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
+        while (timer < volatileDuration) {
+            yield return waitFrame;
+            timer += Time.fixedDeltaTime;
+        }
+
+        // Do contaminate damage
+        int tempStacks;
+        IVial tempVial;
+        lock (poisonLock) {
+            tempVial = currentPoison;
+            tempStacks = numPoisonStacks;
+        }
+
+        if (tempVial != null) {
+            damage(tempVial.getContaminateDamage(tempStacks), false);
+
+            // Apply aura damage if possible
+            if (enemyAura != null) {
+                tempVial.applyEnemyAuraEffects(enemyAura, AuraType.RADIOACTIVE_EXPUNGE, tempStacks);
+            }
+        }
+
+        // Clear out status effects and poison
+        clearPoison();
+        isVolatile = false;
+        volatileSequence = null;
+
+    }
+
+
     // Main method to inflict basic damage on unit
     //  Pre: damage is a number greater than 0
     //  Post: unit gets inflicted with damage and returns if damage was successful
@@ -333,6 +379,14 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 poisonDotRoutine = StartCoroutine(poisonDotLoop());
             }
 
+            // Check if enemy was made volatile
+            if (volatileSequence == null && !isVolatile) {
+                float volatileDuration;
+                if (poison.makesTargetVolatile(out volatileDuration)) {
+                    volatileSequence = StartCoroutine(volatileSideEffect(volatileDuration));
+                }
+            }
+
             // Edit footsteps audio
             float currentModifier = currentPoison.getStackSlowness(numPoisonStacks) * movementSpeedFactor;
             enemyAudio.setStepRateFactor(currentModifier);
@@ -382,6 +436,14 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 poisonDotRoutine = StartCoroutine(poisonDotLoop());
             }
 
+            // Check if enemy was made volatile
+            if (volatileSequence == null && !isVolatile) {
+                float volatileDuration;
+                if (poison.makesTargetVolatile(out volatileDuration)) {
+                    volatileSequence = StartCoroutine(volatileSideEffect(volatileDuration));
+                }
+            }
+
             // Edit footsteps audio
             float currentModifier = currentPoison.getStackSlowness(numPoisonStacks) * movementSpeedFactor;
             enemyAudio.setStepRateFactor(currentModifier);
@@ -396,22 +458,24 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  Pre: none
     //  Post: enemy suffers from severe burst damage
     public override void contaminate() {
-        // Get necessary information to avoid synch errors
-        IVial tempVial = null;
-        int tempStacks = 0;
+        if (!isVolatile) {
+            // Get necessary information to avoid synch errors
+            IVial tempVial = null;
+            int tempStacks = 0;
 
-        lock (poisonLock) {
-            tempVial = currentPoison;
-            tempStacks = numPoisonStacks;
-        }
+            lock (poisonLock) {
+                tempVial = currentPoison;
+                tempStacks = numPoisonStacks;
+            }
 
-        // Apply damage
-        if (tempVial != null) {
-            damage(tempVial.getContaminateDamage(tempStacks), false);
+            // Apply damage
+            if (tempVial != null) {
+                damage(tempVial.getContaminateDamage(tempStacks), false);
 
-            // Apply aura damage if possible
-            if (enemyAura != null) {
-                tempVial.applyEnemyAuraEffects(enemyAura, AuraType.RADIOACTIVE_EXPUNGE, tempStacks);
+                // Apply aura damage if possible
+                if (enemyAura != null) {
+                    tempVial.applyEnemyAuraEffects(enemyAura, AuraType.RADIOACTIVE_EXPUNGE, tempStacks);
+                }
             }
         }
     }
@@ -464,30 +528,15 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         GetComponent<MeshRenderer>().enabled = true;
         GetComponent<Collider>().enabled = true;
 
-        // Reset poison variables
-        lock (poisonLock) {
-            if (poisonDotRoutine != null) {
-                StopCoroutine(poisonDotRoutine);
-            }
+        clearPoison();
+        movementSpeedFactor = 1f;
 
-            // Only invoke event if currentPoison not null before
-            if (currentPoison != null) {
-                unitCurePoisonEvent.Invoke();
-            }
-
-            numPoisonStacks = 0;
-            currentPoison = null;
-            poisonTimer = 0f;
-            movementSpeedFactor = 1f;
-
-            if (poisonStackDisplay != null) {
-                poisonStackDisplay.displayNumber(numPoisonStacks);
-            }
-
-            if (enemyAura != null) {
-                enemyAura.setActive(false);
-            }
+        // Reset volatility
+        if (volatileSequence != null) {
+            StopCoroutine(volatileSequence);
+            volatileSequence = null;
         }
+        isVolatile = false;
 
         // Reset health variables
         lock (healthLock) {
@@ -502,6 +551,35 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     }
 
 
+    // Main private helper function to clear all poison
+    //  Pre:
+    private void clearPoison() {
+        // Reset poison variables
+        lock (poisonLock) {
+            if (poisonDotRoutine != null) {
+                StopCoroutine(poisonDotRoutine);
+            }
+
+            // Only invoke event if currentPoison not null before
+            if (currentPoison != null) {
+                unitCurePoisonEvent.Invoke();
+            }
+
+            numPoisonStacks = 0;
+            currentPoison = null;
+            poisonTimer = 0f;
+
+            if (poisonStackDisplay != null) {
+                poisonStackDisplay.displayNumber(numPoisonStacks);
+            }
+
+            if (enemyAura != null) {
+                enemyAura.setActive(false);
+            }
+        }
+    }
+
+
     // Main function to check if a unit is poisoned
     //  Pre: none
     //  Post: returns whether or not the unit is poisoned
@@ -512,7 +590,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             poisoned = numPoisonStacks > 0;
         }
 
-        return poisoned;
+        return poisoned && !isVolatile;
     }
 
 

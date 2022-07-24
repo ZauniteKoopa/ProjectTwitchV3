@@ -174,4 +174,11 @@ public interface IVial
     //  Pre: none
     //  Post: checks if you have a side effect
     bool hasSideEffect();
+
+
+    // Main function to check if this makes you volatile
+    //  Pre: none
+    //  Post: returns whether it makes you volatile. If so, also returns a float that represents the duration of the volatility
+    bool makesTargetVolatile(out float volatileDuration);
+
 }
