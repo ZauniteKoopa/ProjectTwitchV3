@@ -60,6 +60,6 @@ public class PulsatingCask : VirtualSideEffect
 
     // Main override function for getting the description
     public override string getDescription() {
-        return "Gain a new ultimate ability: throw a pulsating, slimy cask that latches on to anyone hit, slowing them down (scales with stickiness). After " + pullDelay + " seconds, the cask will pull all enemies towards the center. Costs " + ultCost + " ammo";
+        return "Gain new ultimate: throw a pulsating, slimy cask that latches on to anyone hit, slowing them down (scales with stickiness). After " + pullDelay + " seconds, the cask will pull all enemies towards the center";
     }
 }

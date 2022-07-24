@@ -13,7 +13,7 @@ public class ImpendingDoom : VirtualSideEffect
     
     // Main override function for getting the description
     public override string getDescription() {
-        return "Upon touching poison, the enemy becomes VOLATILE. Contamination automatically occurs " + autoContaminateDuration + " seconds after hitting enemy, dealing " + contaminateDamageMultiplier + "x more damage and consuming all stacks";
+        return "Upon touching poison, the enemy becomes VOLATILE. Contamination automatically occurs " + autoContaminateDuration + " seconds after hitting enemy, dealing " + contaminateDamageMultiplier + "x more damage and consuming all stacks. Cannot contaminate volatile units normally";
     }
 
 

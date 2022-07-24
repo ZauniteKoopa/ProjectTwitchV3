@@ -58,6 +58,6 @@ public class ElasticDome : VirtualSideEffect
 
     // Main override function for getting the description
     public override string getDescription() {
-        return "Gain a new ultimate ability: Throw a cask that solidifies into a protective dome that blocks all enemy attacks. All enemies that enter or exit the dome will be stunned for " + elasticStunDuration + " seconds. Dome Duration scales with stickiness. Costs " + ultCost + " ammo";
+        return "New ultimate: Throw a cask that forms an elastic dome that blocks all enemy attacks. All enemies that enter or exit the dome will be stunned for " + elasticStunDuration + " seconds. Dome lifespan scales with stickiness";
     }
 }

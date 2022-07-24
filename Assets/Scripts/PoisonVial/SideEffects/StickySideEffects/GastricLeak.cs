@@ -38,6 +38,6 @@ public class GastricLeak : VirtualSideEffect
     // Main override function for getting the description
     public override string getDescription() {
         float leakSlowPercent = leakSlow * 100f;
-        return "Upon inflcting an enemy with 4 or more poison stacks, enemies will leak out a slowing puddle every " + leakInterval + " seconds that slows down nearby enemies by " + leakSlow + "%. Enemies can only leak 1 puddle at a time";
+        return "Upon inflcting an enemy with 4 or more poison stacks, enemies will leak out a slowing puddle every " + leakInterval + " seconds that slows down enemies by " + leakSlow + "%. Enemies can only leak 1 puddle at a time";
     }
 }
