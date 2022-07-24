@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 103a16d4f84eca7b490d51ef4bd767f4, type: 3}
+  m_Name: Pulsating Cask
+  m_EditorClassIdentifier: 
+  effectName: Pulsating Cask
+  specialization: 3
+  ultCooldown: 15
+  ultCost: 5
+  baseSlow: 0.6
+  slowGrowth: -0.1
+  pullDistance: 3
+  pullDelay: 1
+  pulsatingCaskPrefab: {fileID: 1408666514852005981, guid: 80c4cd12bb23e6ff88f792c37de9bb4c, type: 3}

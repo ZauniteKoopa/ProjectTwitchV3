@@ -91,7 +91,6 @@ public class ElasticDomeShield : IBattleUltimate
     // If an enemy enters, stun the enemy
     private void OnTriggerEnter(Collider collider) {
         ITwitchUnitStatus testEnemy = collider.GetComponent<ITwitchUnitStatus>();
-        Debug.Log("stun");
 
         // Check if it's actually an enemy
         if (testEnemy != null) {

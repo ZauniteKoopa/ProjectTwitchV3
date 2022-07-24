@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu]
 public class PulsatingCask : VirtualSideEffect
 {
     [SerializeField]
@@ -16,6 +17,8 @@ public class PulsatingCask : VirtualSideEffect
     private float pullDistance = 4f;
     [SerializeField]
     private float pullDelay = 1f;
+    [SerializeField]
+    private LobbingUltimate pulsatingCaskPrefab;
 
 
     // Main function to check if this is an ultimate
@@ -38,6 +41,20 @@ public class PulsatingCask : VirtualSideEffect
     //  Post: cost > 0f
     public override int getUltimateCost() {
         return ultCost;
+    }
+
+
+    // Main function to throw ult lobs
+    //  Pre: startPosition is the start position of the lob, end position is the end position of the lob, statNum is the important stat value
+    //  Post: launches lobbing ultimate
+    public override void throwLobbingUltimate(Vector3 startPos, Vector3 endPos, int statNum) {
+        // Calculate values
+        float currentCaskSlow = Mathf.Min(baseSlow, baseSlow + (slowGrowth * (statNum - 3)));
+        float[] ultParameters = new float[] {currentCaskSlow, pullDistance, pullDelay};
+
+        // Instantiate objects
+        LobbingUltimate currentUlt = Object.Instantiate(pulsatingCaskPrefab, startPos, Quaternion.identity);
+        currentUlt.launch(endPos, ultParameters);
     }
 
 

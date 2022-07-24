@@ -14,7 +14,7 @@ public enum Specialization {
 // Enum that considers Aura Requirements
 public enum AuraType {
     RADIOACTIVE_EXPUNGE,
-    CONTAGION,
+    ENEMY_TIMED,
     NO_TOUCHING,
     SURPRISE
 };

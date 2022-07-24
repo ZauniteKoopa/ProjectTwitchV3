@@ -208,7 +208,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             damage(poisonTickDamage, true);
 
             // Apply aura effects if poison side effect matches "CONTAGION"
-            if (enemyAura != null && currentPoison.applyEnemyAuraEffectsTimed(enemyAura, AuraType.CONTAGION, currentStacks, auraTimer)) {
+            if (enemyAura != null && currentPoison.applyEnemyAuraEffectsTimed(enemyAura, AuraType.ENEMY_TIMED, currentStacks, auraTimer)) {
                 auraTimer = 0f;
             }
 
