@@ -9,6 +9,7 @@ public class PulsatingCaskZone : IBattleUltimate
     private float caskSlow;
     private float pullDistance;
     private float pullDelay;
+    private float stunDuration = 1.5f;
     private bool setup = false;
 
     //Enums to represet the stages of the cask
@@ -25,17 +26,18 @@ public class PulsatingCaskZone : IBattleUltimate
 
 
     // Main abstract function to set ult properties
-    //  Pre: ultParameter.Length == 3, [caskSlow, pullDistance, pullDelay]
+    //  Pre: ultParameter.Length == 4, [caskSlow, pullDistance, pullDelay, stunDuration]
     //  Post: ultimate properties have been set up
     public override void setUltimateProperties(float[] ultParameters) {
-        Debug.Assert(ultParameters.Length == 3);
+        Debug.Assert(ultParameters.Length == 4);
         Debug.Assert(ultParameters[0] > 0.0f && ultParameters[0] < 1.0f);
-        Debug.Assert(ultParameters[1] > 0.0f && ultParameters[2] > 0.0f);
+        Debug.Assert(ultParameters[1] > 0.0f && ultParameters[2] > 0.0f && ultParameters[3] > 0.0f);
 
         setup = true;
         caskSlow = ultParameters[0];
         pullDistance = ultParameters[1];
         pullDelay = ultParameters[2];
+        stunDuration = ultParameters[3];
     }
 
 
@@ -54,13 +56,14 @@ public class PulsatingCaskZone : IBattleUltimate
         currentStage = PulsatingCaskStage.ATTACHING;
         yield return new WaitForSeconds(pullDelay);
 
-        // Pull: stun all targets first and calculate their pull vectors
+        // Pull: remove slow debuff, stun all targets first and calculate their pull vectors
         currentStage = PulsatingCaskStage.PULLING;
         Dictionary<ITwitchUnitStatus, Vector3> finalLocations = new Dictionary<ITwitchUnitStatus, Vector3>();
         Dictionary<ITwitchUnitStatus, Vector3> startLocations = new Dictionary<ITwitchUnitStatus, Vector3>();
 
         foreach (ITwitchUnitStatus tgt in attached) {
             if (tgt != null) {
+                tgt.affectSpeed(1.0f / caskSlow); 
                 tgt.stun(true);
                 startLocations.Add(tgt, tgt.transform.position);
                 
@@ -87,16 +90,37 @@ public class PulsatingCaskZone : IBattleUltimate
             }            
         }
 
-        // Unstun and remove slow debuff on any remaining living units
+        currentStage = PulsatingCaskStage.DEAD;
+        yield return new WaitForSeconds(stunDuration);
+
+        // Remove stun
         foreach (ITwitchUnitStatus tgt in attached) {
             if (tgt != null) {
-                tgt.stun(false);
-                tgt.affectSpeed(1.0f / caskSlow); 
+                tgt.stun(false); 
             }
         }
 
-        currentStage = PulsatingCaskStage.DEAD;
         Object.Destroy(gameObject);
+    }
+
+
+    // Main function to completely reset
+    //  Pre: none
+    //  Post: reset all effects so that everythig is back to normal
+    public override void reset() {
+        GetComponent<Collider>().enabled = false;
+
+        // Reverse effects depending on stage in pulsating cask sequence
+        foreach (ITwitchUnitStatus tgt in attached) {
+            if (currentStage == PulsatingCaskStage.ATTACHING) {
+                tgt.affectSpeed(1.0f / caskSlow); 
+            } else {
+                tgt.stun(false);
+            }
+        }
+
+        Object.Destroy(gameObject);
+        
     }
 
 

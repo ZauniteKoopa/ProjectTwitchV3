@@ -296,7 +296,36 @@ public class PlayerStatus : ITwitchStatus
 
         // Reset UI
         initDefaultUI();
+
+        // cleanup
+        StartCoroutine(cleanup());
+
         characterRenderer.material.color = normalColor;
+    }
+
+
+    // Function to cleanup everything
+    private IEnumerator cleanup() {
+        // Find all objects to clean up
+        Loot[] livingLoot = Object.FindObjectsOfType<Loot>();
+        IBattleUltimate[] runningBattleUltimates = Object.FindObjectsOfType<IBattleUltimate>();
+
+        // For each loot, push them to shadow realm for trigger box handling
+        foreach (Loot loot in livingLoot) {
+            loot.transform.position = 1000000000f * Vector3.up;
+        }
+
+        // Reset each lingering ult
+        foreach (IBattleUltimate ult in runningBattleUltimates) {
+            ult.reset();
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        // Destroy the object once you're sure that they won't interfere with important trigger box
+        foreach (Loot loot in livingLoot) {
+            Object.Destroy(loot);
+        }
     }
 
 
@@ -564,7 +593,14 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: none
     //  Post: return if ult execution is successful, returns false otherwise
     public override bool willExecuteUltimate(Vector3 dest) {
-        return inventory.willExecutePrimaryUltimate(this, dest);
+        bool usedUltimate = inventory.willExecutePrimaryUltimate(this, dest);
+
+        // Pop out of stealth
+        if (usedUltimate && inCamofladge) {
+            inCamofladge = false;
+        }
+
+        return usedUltimate;
     }
 
 

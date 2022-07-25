@@ -18,6 +18,8 @@ public class PulsatingCask : VirtualSideEffect
     [SerializeField]
     private float pullDelay = 1f;
     [SerializeField]
+    private float stunDuration = 1.5f;
+    [SerializeField]
     private LobbingUltimate pulsatingCaskPrefab;
 
 
@@ -50,7 +52,7 @@ public class PulsatingCask : VirtualSideEffect
     public override void throwLobbingUltimate(Vector3 startPos, Vector3 endPos, int statNum) {
         // Calculate values
         float currentCaskSlow = Mathf.Min(baseSlow, baseSlow + (slowGrowth * (statNum - 3)));
-        float[] ultParameters = new float[] {currentCaskSlow, pullDistance, pullDelay};
+        float[] ultParameters = new float[] {currentCaskSlow, pullDistance, pullDelay, stunDuration};
 
         // Instantiate objects
         LobbingUltimate currentUlt = Object.Instantiate(pulsatingCaskPrefab, startPos, Quaternion.identity);

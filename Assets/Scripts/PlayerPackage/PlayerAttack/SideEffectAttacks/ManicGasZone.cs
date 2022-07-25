@@ -32,6 +32,14 @@ public class ManicGasZone : IBattleUltimate
         StartCoroutine(ultimateSequence());
     }
 
+    // Main function to completely reset
+    //  Pre: none
+    //  Post: reset all effects so that everythig is back to normal
+    public override void reset() {
+        StopAllCoroutines();
+        StartCoroutine(resetSequence());
+    }
+
 
     // Main sequence for handling pulsating cask
     private IEnumerator ultimateSequence() {
@@ -41,6 +49,14 @@ public class ManicGasZone : IBattleUltimate
         // Banish to the shadow world to remove trigger side effects and then destroy object
         transform.position = new Vector3(0f, 10000000000f, 0f);
         yield return new WaitForSeconds(0.15f);
+        Object.Destroy(gameObject);
+    }
+
+
+    // IEnumerator to reset
+    private IEnumerator resetSequence() {
+        transform.position = Vector3.up * 100000000000f;
+        yield return new WaitForSeconds(0.1f);
         Object.Destroy(gameObject);
     }
 

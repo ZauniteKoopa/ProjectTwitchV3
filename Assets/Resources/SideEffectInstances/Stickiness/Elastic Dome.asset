@@ -17,6 +17,6 @@ MonoBehaviour:
   ultCooldown: 15
   ultCost: 5
   elasticStunDuration: 0.75
-  baseDomeDuration: 2.5
+  baseDomeDuration: 4
   domeDurationGrowth: 1
   elasticDomePrefab: {fileID: 8773129402787797211, guid: aa09e79d4dcedddbd9ac8ee5c090bfcf, type: 3}

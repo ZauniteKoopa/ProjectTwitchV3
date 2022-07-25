@@ -306,6 +306,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             }
         }
 
+        // Reset stealth if low (canAutoExecute also resets stealth)
+        tempVial.canAutoExecute(false, curHealth / maxHealth, tempStacks);
+
         // Clear out status effects and poison
         clearPoison();
         isVolatile = false;

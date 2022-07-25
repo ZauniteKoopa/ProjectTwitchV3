@@ -15,4 +15,10 @@ public abstract class IBattleUltimate : MonoBehaviour
     //  Pre: none
     //  Post: activates ultimate sequence
     public abstract void activateUltimate();
+
+
+    // Main function to completely reset
+    //  Pre: none
+    //  Post: reset all effects so that everythig is back to normal
+    public abstract void reset();
 }
