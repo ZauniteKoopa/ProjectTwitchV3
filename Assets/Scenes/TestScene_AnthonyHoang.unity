@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571343, b: 0.30692208, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -267,12 +267,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1545660054174811739, guid: b49559532a82fb058904213175a2ef05, type: 3}
+      propertyPath: baseArmor
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1545660054174811739, guid: b49559532a82fb058904213175a2ef05, type: 3}
       propertyPath: maxHealth
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1545660054174811741, guid: b49559532a82fb058904213175a2ef05, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 1545660054174811741, guid: b49559532a82fb058904213175a2ef05, type: 3}
       propertyPath: m_LocalPosition.x
@@ -550,6 +554,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1545660054174811739, guid: b49559532a82fb058904213175a2ef05, type: 3}
+      propertyPath: baseArmor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1545660054174811739, guid: b49559532a82fb058904213175a2ef05, type: 3}
       propertyPath: maxHealth
       value: 40
       objectReference: {fileID: 0}
@@ -769,6 +777,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1545660054174811739, guid: b49559532a82fb058904213175a2ef05, type: 3}
+      propertyPath: baseArmor
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1545660054174811739, guid: b49559532a82fb058904213175a2ef05, type: 3}
       propertyPath: maxHealth
       value: 40
       objectReference: {fileID: 0}
@@ -951,6 +963,10 @@ PrefabInstance:
     - target: {fileID: 1545660054174811729, guid: b49559532a82fb058904213175a2ef05, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1545660054174811739, guid: b49559532a82fb058904213175a2ef05, type: 3}
+      propertyPath: baseArmor
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1545660054174811739, guid: b49559532a82fb058904213175a2ef05, type: 3}
       propertyPath: maxHealth
@@ -1362,6 +1378,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1545660054174811739, guid: b49559532a82fb058904213175a2ef05, type: 3}
+      propertyPath: baseArmor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1545660054174811739, guid: b49559532a82fb058904213175a2ef05, type: 3}
       propertyPath: maxHealth
       value: 40
       objectReference: {fileID: 0}
@@ -1539,7 +1559,7 @@ Transform:
   m_LocalScale: {x: 3.0708778, y: 1, z: 5.7403}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.299}
 --- !u!1001 &1717773648
 PrefabInstance:
@@ -2120,6 +2140,10 @@ PrefabInstance:
     - target: {fileID: 1545660054174811729, guid: b49559532a82fb058904213175a2ef05, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1545660054174811739, guid: b49559532a82fb058904213175a2ef05, type: 3}
+      propertyPath: baseArmor
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1545660054174811739, guid: b49559532a82fb058904213175a2ef05, type: 3}
       propertyPath: maxHealth

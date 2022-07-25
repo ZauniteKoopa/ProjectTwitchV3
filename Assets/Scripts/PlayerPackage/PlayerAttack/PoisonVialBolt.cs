@@ -7,13 +7,17 @@ public class PoisonVialBolt : AbstractStraightProjectile, ITwitchBasicAttack
 {
     // Private instance variables
     protected IVial poison;
+    private float damageMultiplier = 1.0f;
     [SerializeField]
     private float weakBoltDamage = 1.75f;
 
 
     // Main method to set poison vial to calculate the damage. If newPoison is null, just use default damage
-    public void setVialDamage(IVial newPoison) {
+    public void setVialDamage(IVial newPoison, float multiplier) {
+        Debug.Assert(multiplier > 0.0f);
+
         poison = newPoison;
+        damageMultiplier = multiplier;
         MeshRenderer meshRender = GetComponent<MeshRenderer>();
         
         if (newPoison == null) {
@@ -29,9 +33,19 @@ public class PoisonVialBolt : AbstractStraightProjectile, ITwitchBasicAttack
         Debug.Assert(target != null);
 
         if (poison != null) {
-            target.poisonDamage(poison.getBoltDamage(0), poison, 1);
+            target.poisonDamage(getDamage(0), poison, 1);
         } else {
-            target.damage(weakBoltDamage, false);
+            target.damage(getDamage(0), false);
+        }
+    }
+
+
+    // Main function to get damage the bolt does (private helper function)
+    protected float getDamage(int numEnemiesPassed) {
+        if (poison == null) {
+            return weakBoltDamage * damageMultiplier;
+        } else {
+            return poison.getBoltDamage(numEnemiesPassed) * damageMultiplier;
         }
     }
 

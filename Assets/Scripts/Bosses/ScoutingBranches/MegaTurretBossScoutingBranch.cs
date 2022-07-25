@@ -112,7 +112,7 @@ public class MegaTurretBossScoutingBranch : IBossScoutingBranch
         Vector3 projectileSrc = transform.position;
         projectileSrc.y = suspectedTgt.y;
         BasicEnemyProjectile currentProjectile = Object.Instantiate(baseProjectile, projectileSrc, Quaternion.identity);
-        currentProjectile.setDamage(projDamage);
+        currentProjectile.setDamage(projDamage * enemyStats.getAttackMultiplier());
         currentProjectile.setUpMovement(aimDirection, projectileSpeed);
     }
 
@@ -136,10 +136,10 @@ public class MegaTurretBossScoutingBranch : IBossScoutingBranch
             changeLaserColors(laserFiredColor, phaseNumber);
             
             if (phaseNumber < 2) {
-                lasers[0].damageAllTargets(laserDamage);
+                lasers[0].damageAllTargets(laserDamage * enemyStats.getAttackMultiplier());
             } else {
                 foreach (EnemyAreaOfEffect laser in lasers) {
-                    laser.damageAllTargets(laserDamage);
+                    laser.damageAllTargets(laserDamage * enemyStats.getAttackMultiplier());
                 }
             }
 

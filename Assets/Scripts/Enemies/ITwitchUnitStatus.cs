@@ -55,6 +55,15 @@ public abstract class ITwitchUnitStatus : IUnitStatus
         gameObject.SetActive(false);
     }
 
+
+    // Main function to make this unit manic if they aren't manic already or get rid of manic if they are
+    //  MANIC: attack increases by 1.5 its original value BUT armor decreases by 0.5 that value
+    //  Pre: 0.0 < manicIntensity < 1.0f;
+    public abstract void makeManic(bool willManic, float manicIntensity);
+
     
+    // Main function to get attackChangeFactor
+    //  Post: returns the attack multiplier for this unit
+    public abstract float getAttackMultiplier();
 
 }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4b0adcca951f4d085376b84cb67dfb, type: 3}
+  m_Name: Manic Gas
+  m_EditorClassIdentifier: 
+  effectName: Manic Gas
+  specialization: 0
+  manicIntensity: 0.5
+  manicGasDuration: 9
+  ultCooldown: 15
+  ultCost: 5
+  manicGasPrefab: {fileID: 5888513121430881451, guid: b95ba65776d345b259751551e50040b0, type: 3}

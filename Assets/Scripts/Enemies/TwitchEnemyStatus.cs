@@ -23,16 +23,17 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     private float baseAttack = 5.0f;
     [SerializeField]
     private float baseArmor = 1f;
+    private float armorMultiplier = 1.0f;
+    private float attackMultiplier = 1.0f;
 
     // Poison management damage
     private IVial currentPoison = null;
     private int numPoisonStacks = 0;
     private readonly object poisonLock = new object();
 
-    // Poison timer (MODULARIZE CONTAGION SOMEWHERE ELSE)
+    // Poison timer
     private const int MAX_STACKS = 6;
     private const float MAX_POISON_TICK_TIME = 6.0f;
-    // private const float AURA_TICK_TIME = 2.0f;
     private float poisonTimer = 0.0f;
     private Coroutine poisonDotRoutine = null;
 
@@ -74,6 +75,8 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     // Status effects
     private bool isVolatile = false;
     private Coroutine volatileSequence = null;
+
+    private bool manic = false;
 
 
     // Audio
@@ -170,7 +173,8 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  Pre: none
     //  Post: Returns a float that represents base attack (> 0)
     public override float getBaseAttack() {
-        return baseAttack;
+        return baseAttack * attackMultiplier
+        ;
     }
 
 
@@ -310,11 +314,31 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     }
 
 
+    // Main function to make this unit manic if they aren't manic already or get rid of manic if they are
+    //  MANIC: attack increases by 1.5 its original value BUT armor decreases by 0.5 that value
+    public override void makeManic(bool willManic, float manicIntensity) {
+        Debug.Assert(manicIntensity > 0.0f && manicIntensity < 1.0f);
+
+        if (manic != willManic) {
+            manic = willManic;
+
+            armorMultiplier = (manic) ? 1.0f - manicIntensity : 1.0f; 
+            attackMultiplier = (manic) ? 1.0f + manicIntensity : 1.0f;
+        }
+    }
+
+    
+    // Main function to get attackChangeFactor
+    public override float getAttackMultiplier() {
+        return attackMultiplier;
+    }
+
+
     // Main method to inflict basic damage on unit
     //  Pre: damage is a number greater than 0
     //  Post: unit gets inflicted with damage and returns if damage was successful
     public override bool damage(float dmg, bool isTrue) {
-        dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, baseArmor);
+        dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, baseArmor * armorMultiplier);
 
         // Apply damage. Use a lock to make sure changes to health are synchronized
         lock(healthLock) {
@@ -530,6 +554,8 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
         clearPoison();
         movementSpeedFactor = 1f;
+        armorMultiplier = 1.0f;
+        attackMultiplier = 1.0f;
 
         // Reset volatility
         if (volatileSequence != null) {
@@ -537,6 +563,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             volatileSequence = null;
         }
         isVolatile = false;
+
+        // reset manic
+        manic = false;
 
         // Reset health variables
         lock (healthLock) {

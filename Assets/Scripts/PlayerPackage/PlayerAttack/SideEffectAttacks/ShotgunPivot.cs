@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class ShotgunPivot : MonoBehaviour, ITwitchBasicAttack
 {
@@ -12,8 +13,9 @@ public class ShotgunPivot : MonoBehaviour, ITwitchBasicAttack
     // Main function to connect basic attack damage to this new poison
     //  Pre: newPoison CAN be null or non-null
     //  Post: poison vial is now connected to this attack to calculate damage. Damage calculations depend on the basic attack instance
-    public void setVialDamage(IVial newPoison) {
-        poisonBlast.setVialDamage(newPoison);
+    public void setVialDamage(IVial newPoison, float damageMultiplier) {
+        Debug.Assert(damageMultiplier > 0.0f);
+        poisonBlast.setVialDamage(newPoison, damageMultiplier);
     }
 
 

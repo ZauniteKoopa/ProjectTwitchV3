@@ -53,6 +53,12 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
     }
 
 
+    // On update, always check the base attack of this unit
+    private void Update() {
+        bodyHitbox.init(enemyStats.getBaseAttack());
+    }
+
+
     // Main function to execute the branch
     //  Pre: tgt is the player, cannot equal null
     //  Post: executes aggressive branch
