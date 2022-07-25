@@ -355,7 +355,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 }
 
                 // Check death condition
-                if (curHealth <= 0.0f) {
+                if (curHealth <= 0.0f && gameObject.activeSelf) {
                     StartCoroutine(death());
                 }
             }

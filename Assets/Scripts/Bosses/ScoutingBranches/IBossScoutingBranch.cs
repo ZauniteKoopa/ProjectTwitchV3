@@ -11,7 +11,7 @@ public abstract class IBossScoutingBranch : MonoBehaviour
 
 
     // Main variables for most aggroBranches
-    private void Awake() {
+    private void Start() {
         // Get reference variables and error check
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         enemyStats = GetComponent<ITwitchUnitStatus>();

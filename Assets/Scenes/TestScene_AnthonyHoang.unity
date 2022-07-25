@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571343, b: 0.30692208, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -238,17 +238,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5590a0807c040d9b69766de18759a6dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &376114031 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9172822394672781445, guid: 81679342f50716c83ad127c802d45987, type: 3}
-  m_PrefabInstance: {fileID: 742160308}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cafba284eff5009a0a8bd23ce94ec1d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &391451932
@@ -536,6 +525,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: IngredientCrate
       objectReference: {fileID: 0}
+    - target: {fileID: 9172822394672781503, guid: 81679342f50716c83ad127c802d45987, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81679342f50716c83ad127c802d45987, type: 3}
 --- !u!1001 &743547430
@@ -664,7 +657,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyRooms:
   - {fileID: 2013169246}
-  ingredientCrate: {fileID: 376114031}
+  ingredientCrate: {fileID: 1749551171}
 --- !u!23 &804063194
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1662,6 +1655,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7c777559a8abee2dbeacb2058f5ab0b, type: 3}
+--- !u!114 &1749551171 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9172822394672781445, guid: 81679342f50716c83ad127c802d45987, type: 3}
+  m_PrefabInstance: {fileID: 1993571791}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cafba284eff5009a0a8bd23ce94ec1d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1843893749
 GameObject:
   m_ObjectHideFlags: 0
@@ -2292,11 +2296,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: laterProjectileInterval
-      value: 0.4
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: initialProjectileInterval
-      value: 0.55
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541389, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: baseArmor
@@ -2305,6 +2309,14 @@ PrefabInstance:
     - target: {fileID: 456505596693541389, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: maxHealth
       value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: laterProjectileInterval
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: initialProjectileInterval
+      value: 0.65
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
@@ -2387,10 +2399,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1209925082, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
-      propertyPath: maxHealth
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 1209925082, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: checkpoint
       value: 
