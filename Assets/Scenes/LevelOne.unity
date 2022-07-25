@@ -1788,6 +1788,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: CrushBot (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: baseArmor
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: maxHealth
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: baseAttack
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: baseMovementSpeed
+      value: 4.25
+      objectReference: {fileID: 0}
     - target: {fileID: 2050020950324005087, guid: b0619f83556423369b6f53615030aab2, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -4094,7 +4110,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -4122,7 +4138,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -192.79202, y: -13.579369, z: -194.18109, w: -14.793381}
+  m_margin: {x: -192.79202, y: 11.96392, z: -194.18109, w: -14.793381}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -8736,6 +8752,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: CrushBot
       objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: baseArmor
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: maxHealth
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: baseAttack
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: baseMovementSpeed
+      value: 4.25
+      objectReference: {fileID: 0}
     - target: {fileID: 2050020950324005087, guid: b0619f83556423369b6f53615030aab2, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -9421,7 +9453,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
       propertyPath: baseArmor
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: maxHealth
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: baseAttack
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: baseMovementSpeed
+      value: 4.25
       objectReference: {fileID: 0}
     - target: {fileID: 2050020950324005081, guid: b0619f83556423369b6f53615030aab2, type: 3}
       propertyPath: possibleLoot.Array.size
@@ -9447,6 +9491,10 @@ PrefabInstance:
       propertyPath: possibleLoot.Array.data[5]
       value: 
       objectReference: {fileID: 5635797964601886344, guid: ab21019c64959b063bec6ab25fdff217, type: 3}
+    - target: {fileID: 2050020950324005083, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: firstConfusedDuration
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2050020950324005087, guid: b0619f83556423369b6f53615030aab2, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -9490,6 +9538,14 @@ PrefabInstance:
     - target: {fileID: 2050020950324005087, guid: b0619f83556423369b6f53615030aab2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005092, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: recoilDistance
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005092, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: surprisedDuration
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0619f83556423369b6f53615030aab2, type: 3}
@@ -13631,7 +13687,7 @@ Transform:
   m_GameObject: {fileID: 1939202985}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -119.3, y: 0, z: 100.99}
-  m_LocalScale: {x: 20, y: 1, z: 20}
+  m_LocalScale: {x: 21, y: 1, z: 20}
   m_Children: []
   m_Father: {fileID: 715144192}
   m_RootOrder: 0
@@ -13790,7 +13846,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -15259,7 +15315,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -15287,7 +15343,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -192.79202, y: -13.579369, z: -194.18109, w: -14.793381}
+  m_margin: {x: -192.79202, y: 10.072192, z: -194.18109, w: -14.793381}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

@@ -11226,7 +11226,7 @@ MonoBehaviour:
   camoMovementSpeedBuff: 1.2
   camoDuration: 12
   camoAttackSpeedBuffDuration: 5
-  camoStartup: 1
+  camoStartup: 0.75
   stealthColor: {r: 0.018689921, g: 0.26415092, b: 0.03194912, a: 0.6}
   buffColor: {r: 0.8091671, g: 0.9607843, b: 0.023529435, a: 1}
   startupColor: {r: 0, g: 0.38679248, b: 0.068257466, a: 1}
@@ -12399,7 +12399,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   caskThrowWallOffset: 1
-  maxCaskThrowDistance: 6
+  maxCaskThrowDistance: 10.4
   caskAnticipationTime: 0.25
   uiModule: {fileID: 8019651722588253373}
   contaminateZone: {fileID: 666051070473934571}

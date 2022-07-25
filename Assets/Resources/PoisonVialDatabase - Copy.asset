@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd951a6b1be902303b430515b7438f40, type: 3}
+  m_Name: PoisonVialDatabase - Copy
+  m_EditorClassIdentifier: 
+  baseSideEffects:
+  - {fileID: 11400000, guid: 413bf2e1ea00c209eac9fa6681a337b3, type: 2}
+  potencySideEffects:
+  - {fileID: 11400000, guid: b008d3093cbbdea9b9bafe6b5dfb7e66, type: 2}
+  - {fileID: 11400000, guid: aa6c54bcc7b0a7cfb9037f4cf4d485c8, type: 2}
+  - {fileID: 11400000, guid: 45f4121a0ab0a6e4e8608754569be209, type: 2}
+  poisonSideEffects:
+  - {fileID: 11400000, guid: eeb8b99e596448c4ebcf2998665d52d5, type: 2}
+  - {fileID: 11400000, guid: 187c30daa7ef7c5318511d1212f097ed, type: 2}
+  - {fileID: 11400000, guid: 5a9385072f03cabd98280336eb42be5d, type: 2}
+  - {fileID: 11400000, guid: 6c980b99ee633a23891e163677964a32, type: 2}
+  reactiveSideEffects:
+  - {fileID: 11400000, guid: 73d106d4b137ff0d1bf407896d489733, type: 2}
+  - {fileID: 11400000, guid: cbddcb992bc0532f3a2a124819b85179, type: 2}
+  - {fileID: 11400000, guid: 913eecc49afb8135485443473952e8df, type: 2}
+  - {fileID: 11400000, guid: a14647cd4f0186d53a19606e7d0b0bbb, type: 2}
+  stickinessSideEffects:
+  - {fileID: 11400000, guid: b3f751e0758e6faacbea580df0a8e4be, type: 2}
+  - {fileID: 11400000, guid: 62d982f67fcc697b19572a55651ce038, type: 2}
+  - {fileID: 11400000, guid: 87080218b822a613586b5486097edd21, type: 2}
+  - {fileID: 11400000, guid: 6cac337fce59221ed9c52a7e24988e72, type: 2}
+  defaultBasicAttack: {fileID: 7053607081528903385, guid: b336ce3f20ea722edac9589d3d0cc306, type: 3}
