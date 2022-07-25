@@ -735,10 +735,10 @@ MonoBehaviour:
   unitDespawnEvent:
     m_PersistentCalls:
       m_Calls: []
-  maxHealth: 40
-  baseMovementSpeed: 5.5
+  maxHealth: 23
+  baseMovementSpeed: 4.75
   baseAttack: 5
-  baseArmor: 1
+  baseArmor: 2
   enemyAura: {fileID: 2493249463432704148}
   maxLootDrops: 1
   minLootDrops: 1
@@ -877,7 +877,7 @@ MonoBehaviour:
   eyeSightMask:
     serializedVersion: 2
     m_Bits: 8
-  projectileSpeed: 13
+  projectileSpeed: 9
 --- !u!82 &1925006791
 AudioSource:
   m_ObjectHideFlags: 0
