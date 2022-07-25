@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectName: Faster Decay
   specialization: 1
-  decayRateReduction: 0.75
+  decayRateReduction: 0.65

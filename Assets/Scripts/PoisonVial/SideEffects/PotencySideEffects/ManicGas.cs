@@ -3,24 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class PulsatingCask : VirtualSideEffect
+public class ManicGas : VirtualSideEffect
 {
+
+    [SerializeField]
+    [Range(0f, 1f)]
+    private float manicIntensity = 0.5f;
+    [SerializeField]
+    private float manicGasDuration = 9f;
     [SerializeField]
     private float ultCooldown = 15f;
     [SerializeField]
     private int ultCost = 5;
     [SerializeField]
-    private float baseSlow = 0.6f;
-    [SerializeField]
-    private float slowGrowth = -0.1f;
-    [SerializeField]
-    private float pullDistance = 4f;
-    [SerializeField]
-    private float pullDelay = 1f;
-    [SerializeField]
-    private float stunDuration = 1.5f;
-    [SerializeField]
-    private LobbingUltimate pulsatingCaskPrefab;
+    private LobbingUltimate manicGasPrefab;
 
 
     // Main function to check if this is an ultimate
@@ -51,17 +47,18 @@ public class PulsatingCask : VirtualSideEffect
     //  Post: launches lobbing ultimate
     public override void throwLobbingUltimate(Vector3 startPos, Vector3 endPos, int statNum) {
         // Calculate values
-        float currentCaskSlow = Mathf.Min(baseSlow, baseSlow + (slowGrowth * (statNum - 3)));
-        float[] ultParameters = new float[] {currentCaskSlow, pullDistance, pullDelay, stunDuration};
+        float[] ultParameters = new float[] {manicIntensity, manicGasDuration};
 
         // Instantiate objects
-        LobbingUltimate currentUlt = Object.Instantiate(pulsatingCaskPrefab, startPos, Quaternion.identity);
+        LobbingUltimate currentUlt = Object.Instantiate(manicGasPrefab, startPos, Quaternion.identity);
         currentUlt.launch(endPos, ultParameters);
     }
 
 
     // Main override function for getting the description
     public override string getDescription() {
-        return "Gain new ultimate: throw a pulsating, slimy cask that latches on to anyone hit, slowing them down (scales with stickiness). After " + pullDelay + " seconds, the cask will pull all enemies towards the center";
+        float attackBuff = (1.0f + manicIntensity) * 100f;
+        float armorDebuff = (1.0f - manicIntensity) * 100f;
+        return "Gain new ultimate: throw a cask that releases gas over an area for " + manicGasDuration + " seconds that induces MANIC on ALL units within the zone. Manic units will armor reduced to " + armorDebuff + "%, but attack buffed by " + attackBuff + "%";
     }
 }

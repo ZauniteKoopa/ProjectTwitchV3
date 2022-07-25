@@ -5,9 +5,9 @@ using UnityEngine;
 public interface ITwitchBasicAttack
 {
     // Main function to connect basic attack damage to this new poison
-    //  Pre: newPoison CAN be null or non-null
+    //  Pre: newPoison CAN be null or non-null, 0.0f < damageMultiplier
     //  Post: poison vial is now connected to this attack to calculate damage. Damage calculations depend on the basic attack instance
-    void setVialDamage(IVial newPoison);
+    void setVialDamage(IVial newPoison, float damageMultiplier);
 
 
     // Main function to fire the basic attack towards a certain direction

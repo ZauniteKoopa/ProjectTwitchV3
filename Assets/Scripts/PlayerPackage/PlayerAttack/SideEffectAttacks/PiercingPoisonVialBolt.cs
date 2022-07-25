@@ -13,7 +13,7 @@ public class PiercingPoisonVialBolt : PoisonVialBolt
         Debug.Assert(target != null);
 
         if (poison != null) {
-            target.poisonDamage(poison.getBoltDamage(numEnemiesHit), poison, 1);
+            target.poisonDamage(getDamage(numEnemiesHit), poison, 1);
         } else {
             base.damageTarget(target);
         }

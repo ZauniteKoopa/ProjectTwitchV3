@@ -88,6 +88,19 @@ public class ElasticDomeShield : IBattleUltimate
     }
 
 
+    // Main function to completely reset
+    //  Pre: none
+    //  Post: reset all effects so that everythig is back to normal
+    public override void reset() {
+        foreach(ITwitchUnitStatus stunnedTgt in stunned) {
+            stunnedTgt.stun(false);
+        }
+
+        StopAllCoroutines();
+        Object.Destroy(gameObject);
+    }
+
+
     // If an enemy enters, stun the enemy
     private void OnTriggerEnter(Collider collider) {
         ITwitchUnitStatus testEnemy = collider.GetComponent<ITwitchUnitStatus>();

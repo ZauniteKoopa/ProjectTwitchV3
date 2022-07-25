@@ -18,12 +18,18 @@ public class PlayerStatus : ITwitchStatus
     private float baseMovementSpeed = 8.0f;
     private float movementSpeedFactor = 1.0f;
     private float baseAttackSpeedFactor = 1.0f;
+    private float attackMultiplier = 1.0f;
+
+    // Manic side effect
+    private bool manic = false;
 
     // Health and Invincibility
     [SerializeField]
     private float maxHealth = 60f;
     [SerializeField]
     private float armor = 1.5f;
+    private float armorMultiplier = 1.0f;
+
     private float curHealth;
     private bool isInvincible = false;
     [SerializeField]
@@ -152,6 +158,28 @@ public class PlayerStatus : ITwitchStatus
     }
 
 
+    // Main function to make this unit manic if they aren't manic already or get rid of manic if they are
+    //  MANIC: attack increases by 1.5 its original value BUT armor decreases by 0.5 that value
+    //  Pre: 0.0 < manicIntensity < 1.0f;
+    public override void makeManic(bool willManic, float manicIntensity) {
+         Debug.Assert(manicIntensity > 0.0f && manicIntensity < 1.0f);
+
+        if (manic != willManic) {
+            manic = willManic;
+
+            armorMultiplier = (manic) ? 1.0f - manicIntensity : 1.0f; 
+            attackMultiplier = (manic) ? 1.0f + manicIntensity : 1.0f;
+        }
+    }
+
+    
+    // Main function to get attackChangeFactor
+    //  Post: returns the attack multiplier for this unit
+    public override float getAttackMultiplier() {
+        return attackMultiplier;
+    }
+
+
     // Main function to slow down or speed up by a specifed speed factor
     //  Pre: speedFactor > 0.0f. If less than 1, slow. Else, fast
     //  Post: speed is affected accordingly
@@ -182,7 +210,7 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: damage is a number greater than 0
     //  Post: damage is inflicted on player unit and return is damage is successful
     public override bool damage(float dmg, bool isTrue) {
-        dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, armor);
+        dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, armor * armorMultiplier);
 
         lock (healthLock) {
             if (!isInvincible && curHealth > 0f) {
@@ -261,9 +289,43 @@ public class PlayerStatus : ITwitchStatus
             baseAttackSpeedFactor = 1.0f;
         }
 
+        // reset manic
+        manic = false;
+        armorMultiplier = 1.0f;
+        attackMultiplier = 1.0f;
+
         // Reset UI
         initDefaultUI();
+
+        // cleanup
+        StartCoroutine(cleanup());
+
         characterRenderer.material.color = normalColor;
+    }
+
+
+    // Function to cleanup everything
+    private IEnumerator cleanup() {
+        // Find all objects to clean up
+        Loot[] livingLoot = Object.FindObjectsOfType<Loot>();
+        IBattleUltimate[] runningBattleUltimates = Object.FindObjectsOfType<IBattleUltimate>();
+
+        // For each loot, push them to shadow realm for trigger box handling
+        foreach (Loot loot in livingLoot) {
+            loot.transform.position = 1000000000f * Vector3.up;
+        }
+
+        // Reset each lingering ult
+        foreach (IBattleUltimate ult in runningBattleUltimates) {
+            ult.reset();
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        // Destroy the object once you're sure that they won't interfere with important trigger box
+        foreach (Loot loot in livingLoot) {
+            Object.Destroy(loot);
+        }
     }
 
 
@@ -531,7 +593,14 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: none
     //  Post: return if ult execution is successful, returns false otherwise
     public override bool willExecuteUltimate(Vector3 dest) {
-        return inventory.willExecutePrimaryUltimate(this, dest);
+        bool usedUltimate = inventory.willExecutePrimaryUltimate(this, dest);
+
+        // Pop out of stealth
+        if (usedUltimate && inCamofladge) {
+            inCamofladge = false;
+        }
+
+        return usedUltimate;
     }
 
 

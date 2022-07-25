@@ -112,7 +112,7 @@ public class TopDownShooterAttackController : IAttackModule
                 }
 
                 // Launch the projectile
-                PoisonVial.launchBasicAttack(currentProjectileDir, primaryBulletSpeed, playerCharacter.position, twitchPlayerStatus.getPrimaryVial());
+                PoisonVial.launchBasicAttack(currentProjectileDir, primaryBulletSpeed, playerCharacter.position, twitchPlayerStatus.getPrimaryVial(), twitchPlayerStatus.getAttackMultiplier());
 
                 // Reduce cost if possible (cost will always either be 1 or 0, no if statement needed)
                 twitchPlayerStatus.consumePrimaryVialBullet();

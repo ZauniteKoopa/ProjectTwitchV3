@@ -9,14 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9d9ef09961af68428e3c052279ecfc0, type: 3}
-  m_Name: Elastic Dome
+  m_Script: {fileID: 11500000, guid: fa4b0adcca951f4d085376b84cb67dfb, type: 3}
+  m_Name: Manic Gas
   m_EditorClassIdentifier: 
-  effectName: Elastic Dome
-  specialization: 3
+  effectName: Manic Gas
+  specialization: 0
+  manicIntensity: 0.5
+  manicGasDuration: 9
   ultCooldown: 15
   ultCost: 5
-  elasticStunDuration: 0.75
-  baseDomeDuration: 4
-  domeDurationGrowth: 1
-  elasticDomePrefab: {fileID: 8773129402787797211, guid: aa09e79d4dcedddbd9ac8ee5c090bfcf, type: 3}
+  manicGasPrefab: {fileID: 5888513121430881451, guid: b95ba65776d345b259751551e50040b0, type: 3}
