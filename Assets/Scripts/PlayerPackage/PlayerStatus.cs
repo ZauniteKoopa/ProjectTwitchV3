@@ -298,8 +298,8 @@ public class PlayerStatus : ITwitchStatus
         initDefaultUI();
 
         // cleanup
+        PlayerCameraController.instantReset();
         StartCoroutine(cleanup());
-
         characterRenderer.material.color = normalColor;
     }
 

@@ -12,6 +12,9 @@ public class SingleWaveEnemyRoom : IEnemyGroup
     private IHittable[] hittableStageElements;
     [SerializeField]
     private bool spawnIn = false;
+    [SerializeField]
+    private Camera roomCamera;
+
     private int numEnemiesLeft;
     private Collider roomTrigger = null;
     public UnityEvent allEnemiesDeadEvent;
@@ -36,9 +39,19 @@ public class SingleWaveEnemyRoom : IEnemyGroup
             }
         }
 
+        // Set up trigger room
         roomTrigger = GetComponent<Collider>();
         if (roomTrigger == null) {
             Debug.LogError("No trigger box collider found for triggering the room", transform);
+        }
+
+        // Deactivate cameras for now since they're mainly there for the designers
+        if (roomCamera != null && roomCamera.transform.parent != transform) {
+            Debug.LogError("Room camera SHOULD be connect to the enemy room transform as a parent or not exist at all if you don't want camera transitions", transform);
+        }
+
+        if (roomCamera != null) {
+            roomCamera.gameObject.SetActive(false);
         }
 
         // Trigger reset event so that everything is appropriate by first frame
@@ -81,6 +94,7 @@ public class SingleWaveEnemyRoom : IEnemyGroup
 
             if (numEnemiesLeft <= 0) {
                 allEnemiesDeadEvent.Invoke();
+                PlayerCameraController.reset();
             }
         }
     }
@@ -94,10 +108,16 @@ public class SingleWaveEnemyRoom : IEnemyGroup
             roomTrigger.enabled = false;
             triggerRoomEvent.Invoke();
 
+            // Spawn in enemies
             if (spawnIn) {
                 foreach(ITwitchUnitStatus enemy in enemies) {
                     enemy.spawnIn();
                 }
+            }
+
+            // Move camera
+            if (roomCamera != null) {
+                PlayerCameraController.moveCamera(transform, roomCamera.transform.localPosition);
             }
         }
     }
