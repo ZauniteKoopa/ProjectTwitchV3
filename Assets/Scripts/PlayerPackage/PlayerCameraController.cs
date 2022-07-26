@@ -13,6 +13,7 @@ public class PlayerCameraController : MonoBehaviour
     // Static variables concerning original transition spot
     private static Transform playerPackage;
     private static Vector3 originalLocalPos;
+    private static Quaternion originalLocalRot;
 
 
     // On awake, set this to the PlayerCameraController
@@ -26,6 +27,7 @@ public class PlayerCameraController : MonoBehaviour
         // set to main player camera
         playerPackage = transform.parent;
         originalLocalPos = transform.localPosition;
+        originalLocalRot = transform.localRotation;
         mainPlayerCamera = this;
     }
 
@@ -33,14 +35,14 @@ public class PlayerCameraController : MonoBehaviour
     // Static function to do camera coroutine sequence
     //  Pre: parent is the transform you want the camera to parent to, localPosition is the local position of the camera relative to the parent, mainPlayerCamera != null
     //  Post: Moves the camera to specific position
-    public static void moveCamera(Transform parent, Vector3 localPosition) {
+    public static void moveCamera(Transform parent, Vector3 localPosition, Quaternion localRotation) {
         Debug.Assert(mainPlayerCamera != null);
 
         if (cameraTransitionCoroutine != null) {
             mainPlayerCamera.StopCoroutine(cameraTransitionCoroutine);
         }
 
-        cameraTransitionCoroutine = mainPlayerCamera.StartCoroutine(mainPlayerCamera.moveCameraSequence(parent, localPosition));
+        cameraTransitionCoroutine = mainPlayerCamera.StartCoroutine(mainPlayerCamera.moveCameraSequence(parent, localPosition, localRotation));
     }
 
 
@@ -49,7 +51,7 @@ public class PlayerCameraController : MonoBehaviour
     //  Post: moves the camera back to the default position on top of the player
     public static void reset() {
         Debug.Assert(mainPlayerCamera != null);
-        moveCamera(playerPackage, originalLocalPos);
+        moveCamera(playerPackage, originalLocalPos, originalLocalRot);
     }
 
 
@@ -66,13 +68,14 @@ public class PlayerCameraController : MonoBehaviour
         
         mainPlayerCamera.transform.parent = playerPackage;
         mainPlayerCamera.transform.localPosition = originalLocalPos;
+        mainPlayerCamera.transform.localRotation = originalLocalRot;
     }
 
 
     // Main IE numerator to moving the camera
     //  Pre: parent is the transform you want the camera to parent to, localPosition is the local position of the camera relative to the parent, mainPlayerCamera != null
     //  Post: moves the camera
-    private IEnumerator moveCameraSequence(Transform parent, Vector3 localPosition) {
+    private IEnumerator moveCameraSequence(Transform parent, Vector3 localPosition, Quaternion localRotation) {
         // Set the parent of the camera
         transform.parent = parent;
 
@@ -81,6 +84,10 @@ public class PlayerCameraController : MonoBehaviour
         Vector3 globalFinish = (parent == null) ? localPosition : parent.TransformPoint(localPosition);
         float dist = Vector3.Distance(globalStart, globalFinish);
         float time = dist / TRANSITION_SPEED;
+
+        // Get rotation starts
+        Quaternion rotStart = transform.localRotation;
+        Quaternion rotFinish = localRotation;
 
         // Transition timer
         float timer = 0f;
@@ -91,6 +98,7 @@ public class PlayerCameraController : MonoBehaviour
 
             timer += Time.deltaTime;
             transform.position = Vector3.Lerp(globalStart, globalFinish, timer / time);
+            transform.localRotation = Quaternion.Lerp(rotStart, rotFinish, timer / time);
         }
 
         // Finish off transition

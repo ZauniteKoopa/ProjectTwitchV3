@@ -117,7 +117,7 @@ public class SingleWaveEnemyRoom : IEnemyGroup
 
             // Move camera
             if (roomCamera != null) {
-                PlayerCameraController.moveCamera(transform, roomCamera.transform.localPosition);
+                PlayerCameraController.moveCamera(transform, roomCamera.transform.localPosition, roomCamera.transform.localRotation);
             }
         }
     }
