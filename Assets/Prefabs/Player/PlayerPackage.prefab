@@ -11211,7 +11211,7 @@ MonoBehaviour:
   characterRenderer: {fileID: 666051070171789298}
   deathColor: {r: 0, g: 0, b: 0, a: 1}
   baseMovementSpeed: 12
-  maxHealth: 5
+  maxHealth: 30
   armor: 1.5
   invincibilityFrameDuration: 1.5
   checkpoint: {fileID: 0}
