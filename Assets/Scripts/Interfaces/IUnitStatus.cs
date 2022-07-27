@@ -13,6 +13,9 @@ public abstract class IUnitStatus : MonoBehaviour
     private int stunners = 0;
     private readonly object stunLock = new object();
 
+    [SerializeField]
+    protected StatusEffectDisplay statusDisplay;
+
 
     // Main death event
     public UnitDelegate unitDeathEvent;
@@ -81,6 +84,10 @@ public abstract class IUnitStatus : MonoBehaviour
     public void stun(bool willStun) {
         lock (stunLock) {
             stunners += (willStun) ? 1 : -1;
+
+            if (statusDisplay != null) {
+                statusDisplay.displayStun(stunners > 0);
+            }
         }
     }
 

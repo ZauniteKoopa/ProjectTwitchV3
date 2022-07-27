@@ -144,6 +144,10 @@ public class PlayerStatus : ITwitchStatus
 
         mainPlayerUI.displayInvisibilityTimer(camoDuration, camoDuration, false);
         invisSensor.makeVisible(false);
+
+        if (statusDisplay != null) {
+            statusDisplay.clear();
+        }
     }
 
 
@@ -162,7 +166,11 @@ public class PlayerStatus : ITwitchStatus
     //  MANIC: attack increases by 1.5 its original value BUT armor decreases by 0.5 that value
     //  Pre: 0.0 < manicIntensity < 1.0f;
     public override void makeManic(bool willManic, float manicIntensity) {
-         Debug.Assert(manicIntensity > 0.0f && manicIntensity < 1.0f);
+        Debug.Assert(manicIntensity > 0.0f && manicIntensity < 1.0f);
+
+        if (statusDisplay != null) {
+            statusDisplay.displayManic(willManic);
+        }
 
         if (manic != willManic) {
             manic = willManic;
@@ -188,6 +196,10 @@ public class PlayerStatus : ITwitchStatus
 
         // Set movement affects regarding speed
         audioManager.setStepRateFactor(movementSpeedFactor);
+
+        if (statusDisplay != null) {
+            statusDisplay.displaySpeedStatus(movementSpeedFactor);
+        }
     }
 
     // Main function to get attack rate effect factor
@@ -541,6 +553,10 @@ public class PlayerStatus : ITwitchStatus
         characterRenderer.material.color = stealthColor;
         affectSpeed(camoMovementSpeedBuff);
 
+        if (statusDisplay != null) {
+            statusDisplay.displayStealth(true);
+        }
+
         // Camofladge timer
         float timer = 0f;
         WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
@@ -556,6 +572,10 @@ public class PlayerStatus : ITwitchStatus
         affectSpeed( 1f / camoMovementSpeedBuff);
         invisSensor.makeVisible(false);
         mainPlayerUI.displayInvisibilityTimer(0, camoDuration, false);
+
+        if (statusDisplay != null) {
+            statusDisplay.displayStealth(false);
+        }
     }
 
 
@@ -634,6 +654,10 @@ public class PlayerStatus : ITwitchStatus
         float timer = 0.0f;
         WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
 
+        if (statusDisplay != null) {
+            statusDisplay.displayHealing(true);
+        }
+
         // Main loop
         while (timer < duration) {
             yield return waitFrame;
@@ -646,6 +670,10 @@ public class PlayerStatus : ITwitchStatus
 
             // Update timer
             timer += Time.fixedDeltaTime;
+        }
+
+        if (statusDisplay != null) {
+            statusDisplay.displayHealing(false);
         }
     }
 
