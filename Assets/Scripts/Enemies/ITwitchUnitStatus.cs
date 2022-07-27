@@ -53,6 +53,10 @@ public abstract class ITwitchUnitStatus : IUnitStatus
     public virtual void despawn() {
         unitDespawnEvent.Invoke();
         gameObject.SetActive(false);
+
+        if (statusDisplay != null) {
+            statusDisplay.clear();
+        }
     }
 
 

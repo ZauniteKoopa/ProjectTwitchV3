@@ -92,6 +92,23 @@ public class StatusEffectDisplay : MonoBehaviour
     }
 
 
+    // Main function to display volatile
+    //  Pre: bool to represent whether to turn this on or off
+    //  Post: displays volatile if enemy is volatile
+    public void displayVolatile(bool willVolatile) {
+        if (volatileIcon != null) {
+            bool prevVolatile = volatileIcon.gameObject.activeInHierarchy;
+
+            // Only change sort order if manic status changed to reduce cost
+            if (prevVolatile != willVolatile) {
+                changeSortOrder(volatileIcon, willVolatile);
+            }
+
+            volatileIcon.gameObject.SetActive(willVolatile);
+        }
+    }
+
+
     // Main function to display manic
     //  Pre: bool to represent whether to turn this on or off
     //  Post: displays manic if enemy is manic
