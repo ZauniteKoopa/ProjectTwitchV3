@@ -42,6 +42,7 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     [SerializeField]
     private float minionSpawnCooldown = 3.0f;
     private bool canSpawnMinion = true;
+    private Coroutine runningSpawnCooldown = null;
 
     // Move probabilities that go in the following order: [basic projectile, laser, spawn enemy]
     [Header("Move Percent Chances")]
@@ -211,6 +212,8 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
 
             activeCrushBots.Clear();
         }
+
+        canSpawnMinion = true;
     }
 
 
@@ -328,7 +331,11 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
                 minionStatus.unitDeathEvent.AddListener(onCrushBotDeath);
                 activeCrushBots.Add(minionStatus);
 
-                StartCoroutine(minionSpawnCooldownSequence());
+                if (activeCrushBots.Count < curMaxBots) {
+                    runningSpawnCooldown = StartCoroutine(minionSpawnCooldownSequence());
+                } else {
+                    canSpawnMinion = false;
+                }
             }
         }
     }
@@ -339,6 +346,10 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
         lock (crushBotLock) {
             if (activeCrushBots.Contains(corpse)) {
                 activeCrushBots.Remove(corpse);
+
+                if (runningSpawnCooldown == null) {
+                    runningSpawnCooldown = StartCoroutine(minionSpawnCooldownSequence());
+                }
             }
         }
     }
@@ -349,6 +360,8 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
         canSpawnMinion = false;
         yield return new WaitForSeconds(minionSpawnCooldown);
         canSpawnMinion = true;
+
+        runningSpawnCooldown = null;
     }
 
 
