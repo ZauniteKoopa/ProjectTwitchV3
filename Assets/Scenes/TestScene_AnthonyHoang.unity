@@ -359,6 +359,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360218b3a8a8b2f478f2739cf3c4b98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &326283517 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 57540866725581397, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+  m_PrefabInstance: {fileID: 57540868137346244}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c276da41c4931e603808ad1d6a9ba179, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &340838381 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4533738188545276577, guid: b49559532a82fb058904213175a2ef05, type: 3}
@@ -1375,6 +1386,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1160096149 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 57540867180248901, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+  m_PrefabInstance: {fileID: 57540868137346244}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c276da41c4931e603808ad1d6a9ba179, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1278272817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2584,6 +2606,14 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: projDamage
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: laserDamage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: triShotAngle
       value: 45
       objectReference: {fileID: 0}
@@ -2601,7 +2631,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: lasers.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: initialLaserCharge
@@ -2615,6 +2645,14 @@ PrefabInstance:
       propertyPath: minionSpawnCooldown
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: lasers.Array.data[1]
+      value: 
+      objectReference: {fileID: 326283517}
+    - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: lasers.Array.data[2]
+      value: 
+      objectReference: {fileID: 1160096149}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: laterProjectileInterval
       value: 0.65
@@ -2654,6 +2692,14 @@ PrefabInstance:
     - target: {fileID: 456505596693541389, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: phaseHealthPercents.Array.data[2]
       value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: projDamage
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: laserDamage
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: lateLaserCharge
