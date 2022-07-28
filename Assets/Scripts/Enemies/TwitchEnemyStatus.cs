@@ -163,6 +163,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         float currentModifier = movementSpeedFactor;
         currentModifier *= (currentPoison == null) ? 1f : currentPoison.getStackSlowness(numPoisonStacks);
 
+        // display UI
+        if (statusDisplay != null) {
+            statusDisplay.displaySpeedStatus(currentModifier);
+        }
+
         if (enemyAudio != null) {
             enemyAudio.setStepRateFactor(currentModifier);
         }
@@ -280,6 +285,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     private IEnumerator volatileSideEffect(float volatileDuration) {
         // Turn isVolatile to true
         isVolatile = true;
+        if (statusDisplay != null) {
+            statusDisplay.displayVolatile(true);
+        }
 
         // Main timer loop
         float timer = 0.0f;
@@ -313,6 +321,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         clearPoison();
         isVolatile = false;
         volatileSequence = null;
+        if (statusDisplay != null) {
+            statusDisplay.displayVolatile(false);
+        }
 
     }
 
@@ -321,6 +332,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  MANIC: attack increases by 1.5 its original value BUT armor decreases by 0.5 that value
     public override void makeManic(bool willManic, float manicIntensity) {
         Debug.Assert(manicIntensity > 0.0f && manicIntensity < 1.0f);
+
+        if (statusDisplay != null) {
+            statusDisplay.displayManic(willManic);
+        }
 
         if (manic != willManic) {
             manic = willManic;
@@ -355,7 +370,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 }
 
                 // Check death condition
-                if (curHealth <= 0.0f) {
+                if (curHealth <= 0.0f && gameObject.activeSelf) {
                     StartCoroutine(death());
                 }
             }
@@ -416,6 +431,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
             // Edit footsteps audio
             float currentModifier = currentPoison.getStackSlowness(numPoisonStacks) * movementSpeedFactor;
+            if (statusDisplay != null) {
+                statusDisplay.displaySpeedStatus(currentModifier);
+            }
             enemyAudio.setStepRateFactor(currentModifier);
         }
 
@@ -473,6 +491,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
             // Edit footsteps audio
             float currentModifier = currentPoison.getStackSlowness(numPoisonStacks) * movementSpeedFactor;
+            if (statusDisplay != null) {
+                statusDisplay.displaySpeedStatus(currentModifier);
+            }
             enemyAudio.setStepRateFactor(currentModifier);
         }
 
@@ -524,6 +545,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         GetComponent<Collider>().enabled = false;
         enemyAudio.setFootstepsActive(false);
         enemyAudio.playDeathSound();
+
+        if (statusDisplay != null) {
+            statusDisplay.clear();
+        }
 
         yield return new WaitForSeconds(1f);
 

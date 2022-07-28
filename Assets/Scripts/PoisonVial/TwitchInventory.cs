@@ -52,8 +52,11 @@ public class TwitchInventory : ITwitchInventory
             Debug.LogError("Inventory not connected to main player UI");
         }
 
+        // If no player aura, say warning. else, connect that to vial eecution event
         if (playerAura == null) {
             Debug.LogWarning("No PlayerAura connected to inventory. Player Aura side effects may not be active");
+        } else {
+            playerAura.targetKilledEvent.AddListener(onVialExecution);
         }
     }
 

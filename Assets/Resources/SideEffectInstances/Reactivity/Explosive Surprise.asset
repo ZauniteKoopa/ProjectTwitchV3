@@ -17,4 +17,4 @@ MonoBehaviour:
   baseExplosionDamage: 10
   explosiveDamageGrowth: 5
   speedReduction: 0.6
-  slowDuration: 1.5
+  slowDuration: 3

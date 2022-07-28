@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectName: Induced Paralysis
   specialization: 3
-  paralysisSlowMultiplier: 4
+  paralysisSlowMultiplier: 2
