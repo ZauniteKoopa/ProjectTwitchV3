@@ -162,7 +162,6 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         // Affect footsteps
         float currentModifier = movementSpeedFactor;
         currentModifier *= (currentPoison == null) ? 1f : currentPoison.getStackSlowness(numPoisonStacks);
-        Debug.Log(currentModifier);
 
         // display UI
         if (statusDisplay != null) {
