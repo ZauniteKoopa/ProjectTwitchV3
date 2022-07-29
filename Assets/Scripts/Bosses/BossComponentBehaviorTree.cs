@@ -15,6 +15,8 @@ public class BossComponentBehaviorTree : IEnemyBehavior
     private IBossAggroBranch aggressiveBranch;
     [SerializeField]
     private IBossScoutingBranch scoutingBranch;
+    [SerializeField]
+    private float branchTransitionTime = 0.5f;
     private NavMeshAgent navMeshAgent;
     private int curPhase = 0;
 
@@ -51,8 +53,10 @@ public class BossComponentBehaviorTree : IEnemyBehavior
     
     // The main behavior tree sequence
     private IEnumerator behaviorTreeSequence() {
-        while (true) {
+        // if this got overriden, wait for 1.5 seconds to indicate branch trnasition
+        yield return new WaitForSeconds(branchTransitionTime);
 
+        while (true) {
             // Test to see if unit is aggressive (they are aggressive IFF a playerTgt is found)
             if (playerTgt == null) {
                 yield return StartCoroutine(scoutingBranch.execute(lastSuspectedLocation, curPhase));

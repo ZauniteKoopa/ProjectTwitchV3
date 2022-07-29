@@ -2693,6 +2693,10 @@ PrefabInstance:
       propertyPath: phaseHealthPercents.Array.data[2]
       value: 0.4
       objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541390, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: branchTransitionTime
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: projDamage
       value: 3
