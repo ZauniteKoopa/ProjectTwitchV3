@@ -640,10 +640,17 @@ public class PlayerStatus : ITwitchStatus
 
 
     // Function for when you want to apply health regen status effect
-    //  Pre: healthPerFrame >= 0.0f and duration >= 0.0f
-    //  Post: applies health regen effect that lasts for duration seconds, healing healthPerFrame every frame
-    public override void applyHealthRegenEffect(float healthPerFrame, float duration) {
-        StartCoroutine(healthRegenEffectSequence(healthPerFrame, duration));
+    //  Pre: 0f <= healthPercentHealed <= 1.0f and duration >= 0.0f
+    //  Post: applies health regen effect that lasts for duration seconds, healing healthPercent of max health over that duration
+    public override void applyHealthRegenEffect(float healthPercentHealed, float duration) {
+        Debug.Assert(healthPercentHealed >= 0.0f && healthPercentHealed <= 1.0f);
+        Debug.Assert(duration >= 0.0f);
+
+        float healingAmount = maxHealth * healthPercentHealed;
+        float numTicks = duration / Time.fixedDeltaTime;
+        float healPerFrame = healingAmount / numTicks;
+
+        StartCoroutine(healthRegenEffectSequence(healPerFrame, duration));
     }
 
 

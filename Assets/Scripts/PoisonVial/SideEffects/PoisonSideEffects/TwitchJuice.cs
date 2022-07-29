@@ -45,12 +45,7 @@ public class TwitchJuice : VirtualSideEffect
     public override void applySteroid(ITwitchStatus player) {
         Debug.Assert(player != null);
 
-        // Calculate health gain per frame
-        float healingAmount = player.getMaxHealth() * healthPercentHealed;
-        float numTicks = healTime / Time.fixedDeltaTime;
-        float healPerFrame = healingAmount / numTicks;
-
-        player.applyHealthRegenEffect(healPerFrame, healTime);
+        player.applyHealthRegenEffect(healthPercentHealed, healTime);
     }
 
 
