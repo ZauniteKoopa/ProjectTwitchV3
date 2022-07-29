@@ -437,7 +437,7 @@ public class TwitchInventory : ITwitchInventory
             secondaryVial = new PoisonVial(ing1, ing2, this);
         }
 
-        gainedSideEffect = primaryVial.hasSideEffect();
+        gainedSideEffect = secondaryVial.hasSideEffect();
 
         // If successful and UnityEvent != null, trigger event
         if (playerCraftEvent != null) {
