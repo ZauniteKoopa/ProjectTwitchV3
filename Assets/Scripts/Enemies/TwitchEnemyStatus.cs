@@ -253,6 +253,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             if (enemyAura != null) {
                 enemyAura.setActive(false);
             }
+
+            // display UI
+            if (statusDisplay != null) {
+                statusDisplay.displaySpeedStatus(movementSpeedFactor);
+            }
         }
     }
 
@@ -632,6 +637,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
             if (enemyAura != null) {
                 enemyAura.setActive(false);
+            }
+
+            // display UI
+            if (statusDisplay != null) {
+                statusDisplay.displaySpeedStatus(movementSpeedFactor);
             }
         }
     }

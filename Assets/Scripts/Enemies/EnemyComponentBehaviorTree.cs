@@ -16,6 +16,7 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
     [SerializeField]
     private IEnemyPassiveBranch passiveBranch;
     private NavMeshAgent navMeshAgent;
+    private TwitchEnemyStatus unitStatus;
 
     
     // On start, start the behavior tree sequence
@@ -31,7 +32,7 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
 
         // Execute behav tree for the first time
         navMeshAgent = GetComponent<NavMeshAgent>();
-        TwitchEnemyStatus unitStatus = GetComponent<TwitchEnemyStatus>();
+        unitStatus = GetComponent<TwitchEnemyStatus>();
 
         if (unitStatus == null || navMeshAgent == null) {
             Debug.LogError("No unit status and nav mesh agent found for this enemy", transform);
@@ -39,6 +40,8 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
 
         unitStatus.enemyResetEvent.AddListener(reset);
         unitStatus.unitDeathEvent.AddListener(onDeath);
+        unitStatus.stunnedStartEvent.AddListener(onStunStart);
+        unitStatus.stunnedEndEvent.AddListener(onStunEnd);
         StartCoroutine(behaviorTreeSequence());
     }
 
@@ -60,12 +63,15 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
     // Main event handler function for when an enemy sensed a player
     //  Pre: player != null, enemy saw player
     public override void onSensedPlayer(Transform player) {
-        lock (treeLock) {
-            playerTgt = player;
-            passiveBranch.reset();
+        playerTgt = player;
 
-            StopAllCoroutines();
-            StartCoroutine(behaviorTreeSequence());
+        if (unitStatus.canMove()) {
+            lock (treeLock) {
+                passiveBranch.reset();
+
+                StopAllCoroutines();
+                StartCoroutine(behaviorTreeSequence());
+            }
         }
     }
 
@@ -73,23 +79,48 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
     // Main event handler function for when an enemy lost sight of a player
     //  Pre: enemy lost sight of player and gave up chasing
     public override void onLostPlayer() {
-        lock (treeLock) {
-            playerTgt = null;
-            aggressiveBranch.reset();
+        playerTgt = null;
 
+        if (unitStatus.canMove()) {
+            lock (treeLock) {
+                aggressiveBranch.reset();
+
+                StopAllCoroutines();
+                StartCoroutine(behaviorTreeSequence());
+            }
+        }
+    }
+
+
+    // Main function for event handlers for stun start
+    public void onStunStart() {
+        lock (treeLock) {
             StopAllCoroutines();
+
+            if (playerTgt == null) {
+                passiveBranch.reset();
+            } else {
+                aggressiveBranch.reset();
+            }
+        }
+    }
+
+
+    // Main function for handling when this enemy stun ended
+    public void onStunEnd() {
+        lock (treeLock) {
             StartCoroutine(behaviorTreeSequence());
         }
     }
 
 
-    // Main function to handle reset
+    // Main function to handle enemy reset
     public override void reset() {
         lock (treeLock) {
             playerTgt = null;
 
-            aggressiveBranch.reset();
-            passiveBranch.reset();
+            aggressiveBranch.hardReset();
+            passiveBranch.hardReset();
 
             StopAllCoroutines();
             StartCoroutine(behaviorTreeSequence());

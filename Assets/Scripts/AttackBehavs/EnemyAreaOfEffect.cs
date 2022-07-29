@@ -36,6 +36,10 @@ public class EnemyAreaOfEffect : AbstractDamageZone
 
     // Main function to change color
     public void changeColor(Color color) {
+        if (meshRender == null) {
+            meshRender = GetComponent<MeshRenderer>();
+        }
+
         if (color == Color.clear) {
             meshRender.enabled = false;
         } else {

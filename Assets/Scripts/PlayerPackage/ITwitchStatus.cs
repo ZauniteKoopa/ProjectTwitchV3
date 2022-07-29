@@ -75,8 +75,8 @@ public abstract class ITwitchStatus : ITwitchUnitStatus
 
 
     // Function for when you want to apply health regen status effect
-    //  Pre: healthPerFrame >= 0.0f and duration >= 0.0f
-    //  Post: applies health regen effect that lasts for duration seconds, healing healthPerFrame every frame
+    //  Pre: 0f <= healthPercentHealed <= 1.0f and duration >= 0.0f
+    //  Post: applies health regen effect that lasts for duration seconds, healing healthPercent of max health over that duration
     public abstract void applyHealthRegenEffect(float healthPerFrame, float duration);
 
 

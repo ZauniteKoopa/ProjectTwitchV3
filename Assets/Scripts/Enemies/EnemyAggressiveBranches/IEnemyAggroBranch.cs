@@ -53,6 +53,14 @@ public abstract class IEnemyAggroBranch : MonoBehaviour
     }
 
 
+    // Main function to do a hard reset: a reset in hich the enemy respawns from scratch
+    //  Pre: enemy respawns from scratch
+    //  Post: resets as if nothing happened to this branch (by default, just reset)
+    public virtual void hardReset() {
+        reset();
+    }
+
+
     // Main function to get unit to go to a specific location
     //  Pre: dest is the position on the nav mesh that the unit is trying to go to, pathExpiration is the time it takes for path to be stale (> 0f)
     //  Post: unit will move to the position gradually, getting out of sequence once reached position. Ends when path expires or hit player

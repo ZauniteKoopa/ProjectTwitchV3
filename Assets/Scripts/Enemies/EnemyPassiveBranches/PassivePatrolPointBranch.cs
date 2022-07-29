@@ -11,6 +11,7 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
     private List<Vector3> patrolPointLocations;
     private NavMeshAgent navMeshAgent;
     private bool wasReset = true;
+
     [SerializeField]
     private Transform[] patrolPoints;
     [SerializeField]
@@ -66,11 +67,10 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
         if (wasReset) {
             wasReset = false;
             patrolPointIndex = getNearestPatrolPoint();
-            
-            // Change speed to reflect passive ness
-            enemyStats.affectSpeed(passiveMovementSpeedReduction);
 
+            enemyStats.affectSpeed(passiveMovementSpeedReduction);
             navMeshAgent.isStopped = true;
+
             yield return new WaitForSeconds(firstConfusedDuration);
 
         } else {
@@ -135,6 +135,17 @@ public class PassivePatrolPointBranch : IEnemyPassiveBranch
 
         // Reset passive movement speed reduction
         enemyStats.affectSpeed(1f / passiveMovementSpeedReduction);
+    }
+
+
+    // Main function to do a hard reset: a reset in hich the enemy respawns from scratch
+    //  Pre: enemy respawns from scratch
+    //  Post: resets as if nothing happened to this branch (by default, just reset)
+    public override void hardReset() {
+        StopAllCoroutines();
+        wasReset = true;
+        navMeshAgent.isStopped = true;
+        enemyAudio.setFootstepsActive(false);
     }
 
 

@@ -63,6 +63,7 @@ public class MegaTurretBossScoutingBranch : IBossScoutingBranch
 
     // Main function to run the branch
     public override IEnumerator execute(Vector3 lastSuspectedPlayerPos, int phaseNumber) {
+
         // Phase 0: Just basic fire at last supected location
         if (phaseNumber == 0) {
             yield return shootBasicProjectile(lastSuspectedPlayerPos, phaseNumber);

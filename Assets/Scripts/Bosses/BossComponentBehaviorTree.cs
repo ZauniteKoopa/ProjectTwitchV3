@@ -15,10 +15,14 @@ public class BossComponentBehaviorTree : IEnemyBehavior
     private IBossAggroBranch aggressiveBranch;
     [SerializeField]
     private IBossScoutingBranch scoutingBranch;
+    [SerializeField]
+    private float branchTransitionTime = 0.5f;
     private NavMeshAgent navMeshAgent;
     private int curPhase = 0;
 
     private bool transitioning;
+    private bool switchedBranches = false;
+    private BossStatus unitStatus;
 
 
     // On start, start the behavior tree sequence
@@ -34,7 +38,7 @@ public class BossComponentBehaviorTree : IEnemyBehavior
 
         // Execute behav tree for the first time
         navMeshAgent = GetComponent<NavMeshAgent>();
-        BossStatus unitStatus = GetComponent<BossStatus>();
+        unitStatus = GetComponent<BossStatus>();
 
         if (unitStatus == null || navMeshAgent == null) {
             Debug.LogError("No unit status and nav mesh agent found for this enemy", transform);
@@ -45,14 +49,22 @@ public class BossComponentBehaviorTree : IEnemyBehavior
         unitStatus.unitDeathEvent.AddListener(onDeath);
         unitStatus.transitionPhaseStartEvent.AddListener(onPhaseTransitionStart);
         unitStatus.transitionPhaseEndEvent.AddListener(onPhaseTransitionEnd);
+        unitStatus.stunnedStartEvent.AddListener(onStunStart);
+        unitStatus.stunnedEndEvent.AddListener(onStunEnd);
+
         StartCoroutine(behaviorTreeSequence());
     }
 
     
     // The main behavior tree sequence
     private IEnumerator behaviorTreeSequence() {
-        while (true) {
+        // if you swapped branches naturally, wait for 1.5 seconds to indicate branch trnasition
+        if (switchedBranches) {
+            switchedBranches = false;
+            yield return new WaitForSeconds(branchTransitionTime);
+        }
 
+        while (true) {
             // Test to see if unit is aggressive (they are aggressive IFF a playerTgt is found)
             if (playerTgt == null) {
                 yield return StartCoroutine(scoutingBranch.execute(lastSuspectedLocation, curPhase));
@@ -69,8 +81,9 @@ public class BossComponentBehaviorTree : IEnemyBehavior
         lock (treeLock) {
             playerTgt = player;
             scoutingBranch.reset();
+            switchedBranches = true;
 
-            if (!transitioning) {
+            if (!transitioning && unitStatus.canMove()) {
                 StopAllCoroutines();
                 StartCoroutine(behaviorTreeSequence());
             }
@@ -85,8 +98,9 @@ public class BossComponentBehaviorTree : IEnemyBehavior
             lastSuspectedLocation = playerTgt.transform.position;
             playerTgt = null;
             aggressiveBranch.reset();
+            switchedBranches = true;
 
-            if (!transitioning) {
+            if (!transitioning && unitStatus.canMove()) {
                 StopAllCoroutines();
                 StartCoroutine(behaviorTreeSequence());
             }
@@ -112,6 +126,26 @@ public class BossComponentBehaviorTree : IEnemyBehavior
     public void onDespawn() {
         aggressiveBranch.hardReset();
         scoutingBranch.hardReset();
+    }
+
+
+    // Main function for when unit just got stunned
+    //  JUst reset both branches
+    public void onStunStart() {
+        lock (treeLock) {
+            StopAllCoroutines();
+            aggressiveBranch.reset();
+            scoutingBranch.reset();
+        }
+    }
+
+
+    // Main function for when unit stun has ended
+    //  Just start the coroutine once again
+    public void onStunEnd() {
+        lock (treeLock) {
+            StartCoroutine(behaviorTreeSequence());
+        }
     }
 
 
