@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1455316811087517137}
   - component: {fileID: 1455316811087517150}
   - component: {fileID: 1455316811087517139}
+  - component: {fileID: 7221870487995362015}
   m_Layer: 3
   m_Name: Door (1)
   m_TagString: Untagged
@@ -112,6 +113,18 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &7221870487995362015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455316811087517148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5c4ae946ddcbd6be8eb9163b6fbecbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5819144814510702156
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,10 +257,10 @@ MonoBehaviour:
   activateEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1455316811087517148}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 7221870487995362015}
+        m_TargetAssemblyTypeName: Door, Assembly-CSharp
+        m_MethodName: open
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -259,10 +272,10 @@ MonoBehaviour:
   deactivateEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1455316811087517148}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 7221870487995362015}
+        m_TargetAssemblyTypeName: Door, Assembly-CSharp
+        m_MethodName: close
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
