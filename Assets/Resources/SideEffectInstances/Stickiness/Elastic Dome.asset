@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectName: Elastic Dome
   specialization: 3
+  icon: {fileID: 21300000, guid: 876b75493f5e1470fb8cbbdd77b99387, type: 3}
   ultCooldown: 15
   ultCost: 5
   elasticStunDuration: 0.75

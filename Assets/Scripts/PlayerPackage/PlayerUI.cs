@@ -58,6 +58,8 @@ public class PlayerUI : ITwitchPlayerUI
     private ResourceBar vialUltimateCooldown;
     [SerializeField]
     private Image vialUltimateIcon;
+    [SerializeField]
+    private INumberDisplay ultAmmoCostDisplay;
 
     [Header("Error Messaging")]
     [SerializeField]
@@ -295,7 +297,7 @@ public class PlayerUI : ITwitchPlayerUI
     public override void updateUltCooldown(float timeLeft, float maxTime) {
         Debug.Assert(timeLeft <= maxTime && maxTime > 0f);
 
-        vialUltimateIcon.color = (timeLeft <= 0f) ? Color.yellow : Color.blue;
+        vialUltimateIcon.color = (timeLeft <= 0f) ? Color.white : Color.blue;
         vialUltimateCooldown.setStatus(timeLeft, maxTime);
     }
 
@@ -309,6 +311,10 @@ public class PlayerUI : ITwitchPlayerUI
 
         // If so change icon to reflect current ultimate. Else, make it disappear
         vialUltimateIcon.gameObject.SetActive(hasVialUlt);
+        if (hasVialUlt) {
+            vialUltimateIcon.sprite = vial.getSideEffectIcon();
+            ultAmmoCostDisplay.displayNumber(vial.getUltimateCost());
+        }
     }
 
 

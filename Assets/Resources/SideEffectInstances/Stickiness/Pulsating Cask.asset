@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectName: Pulsating Cask
   specialization: 3
+  icon: {fileID: 21300000, guid: 52c3f0f156c3aa6d188d232fdec3ea4d, type: 3}
   ultCooldown: 15
   ultCost: 5
   baseSlow: 0.6
   slowGrowth: -0.1
   pullDistance: 3
   pullDelay: 1
+  stunDuration: 1.5
   pulsatingCaskPrefab: {fileID: 1408666514852005981, guid: 80c4cd12bb23e6ff88f792c37de9bb4c, type: 3}

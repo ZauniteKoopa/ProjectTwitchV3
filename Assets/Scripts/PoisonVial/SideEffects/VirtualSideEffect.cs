@@ -36,6 +36,8 @@ public class VirtualSideEffect : ScriptableObject
     private string effectName = "?????";
     [SerializeField]
     private Specialization specialization;
+    [SerializeField]
+    private Sprite icon;
 
 
     // Main function to get the name of this SideEffect
@@ -53,6 +55,12 @@ public class VirtualSideEffect : ScriptableObject
     // Main function to get the specialization of this side effect
     public Specialization getSpecialization() {
         return specialization;
+    }
+
+
+    // Main function to get access to this side effect's icon
+    public Sprite getIcon() {
+        return icon;
     }
 
 

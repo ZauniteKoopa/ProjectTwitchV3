@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectName: Manic Gas
   specialization: 0
+  icon: {fileID: 21300000, guid: e7604f15ecf129953badf6a5a60193ee, type: 3}
   manicIntensity: 0.5
   manicGasDuration: 9
   ultCooldown: 15

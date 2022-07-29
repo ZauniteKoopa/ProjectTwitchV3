@@ -620,6 +620,14 @@ public class PoisonVial : IVial
     }
 
 
+    // Main function to get the side effect's icon
+    //  Pre: none
+    //  Post: returns the icon associated with the side effect
+    public Sprite getSideEffectIcon() {
+        return sideEffect.getIcon();
+    }
+
+
     // Main function to apply Enemy Aura effects
     //  Pre: aura != null, auraType is an enum within VirtualSideEffect that specifies what type of effect you're looking for, 6 >= numStacks >= 0
     //  Post: If auraType matches side effect, apply the appropriate effects
