@@ -107,6 +107,7 @@ public class CrushbotAggroBranch : IEnemyAggroBranch
     // Main function to reset the branch when the overall tree gets overriden / switch branches
     public override void reset() {
         StopAllCoroutines();
+        navMeshAgent.isStopped = true;
         enemyAudio.setFootstepsActive(false);
     }
 

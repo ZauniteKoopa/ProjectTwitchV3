@@ -12,10 +12,11 @@ public abstract class IUnitStatus : MonoBehaviour
     // Main function to handle the movement
     private int stunners = 0;
     private readonly object stunLock = new object();
+    public UnityEvent stunnedStartEvent;
+    public UnityEvent stunnedEndEvent;
 
     [SerializeField]
     protected StatusEffectDisplay statusDisplay;
-
 
     // Main death event
     public UnitDelegate unitDeathEvent;
@@ -83,10 +84,22 @@ public abstract class IUnitStatus : MonoBehaviour
     //  Post: if the unit is not stunned and true, stun. If unit is stunned and false, unstun UNLESS another stun is active
     public void stun(bool willStun) {
         lock (stunLock) {
+            // Invoke event if stunning has started
+            if (stunners == 0) {
+                stunnedStartEvent.Invoke();
+            }
+
+            // Change number fo stunners
             stunners += (willStun) ? 1 : -1;
 
+            // Display it
             if (statusDisplay != null) {
                 statusDisplay.displayStun(stunners > 0);
+            }
+
+            // Invoke event if stunning has ended
+            if (stunners == 0) {
+                stunnedEndEvent.Invoke();
             }
         }
     }
