@@ -232,6 +232,13 @@ public class TwitchInventory : ITwitchInventory
             mainPlayerUI.displayPrimaryVial(primaryVial);
         }
 
+        // Clear ultimates
+        foreach (KeyValuePair<IVial, Coroutine> entry in vialUltCooldownManager) {
+            StopCoroutine(entry.Value);
+        }
+        vialUltCooldownManager.Clear();
+
+        // On primary vial change
         onPrimaryVialChange();
     }
 

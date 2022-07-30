@@ -20,8 +20,10 @@ public class PlayerStatus : ITwitchStatus
     private float baseAttackSpeedFactor = 1.0f;
     private float attackMultiplier = 1.0f;
 
-    // Manic side effect
+    // Side effects
     private bool manic = false;
+    private PriorityQueue<TimedStatusEffect> activeHealingRegens = new PriorityQueue<TimedStatusEffect>();
+    private readonly object statusEffectQueueLock = new object();
 
     // Health and Invincibility
     [SerializeField]
@@ -299,12 +301,23 @@ public class PlayerStatus : ITwitchStatus
             canCamo = true;
             inCamofladge = false;
             baseAttackSpeedFactor = 1.0f;
+            movementSpeedFactor = 1.0f;
         }
 
         // reset manic
         manic = false;
         armorMultiplier = 1.0f;
         attackMultiplier = 1.0f;
+
+        // reset healing by stopping all healing coroutines
+        lock (statusEffectQueueLock) {
+            while (!activeHealingRegens.IsEmpty()) {
+                TimedStatusEffect curEffect = activeHealingRegens.Dequeue();
+                StopCoroutine(curEffect.statusEffectSequence);
+            }
+        }
+
+        clearStun();
 
         // Reset UI
         initDefaultUI();
@@ -316,7 +329,7 @@ public class PlayerStatus : ITwitchStatus
     }
 
 
-    // Function to cleanup everything
+    // Function to cleanup everything in the world
     private IEnumerator cleanup() {
         // Find all objects to clean up
         Loot[] livingLoot = Object.FindObjectsOfType<Loot>();
@@ -650,7 +663,11 @@ public class PlayerStatus : ITwitchStatus
         float numTicks = duration / Time.fixedDeltaTime;
         float healPerFrame = healingAmount / numTicks;
 
-        StartCoroutine(healthRegenEffectSequence(healPerFrame, duration));
+        Coroutine curHealthRegen = StartCoroutine(healthRegenEffectSequence(healPerFrame, duration));
+        TimedStatusEffect curEffect = new TimedStatusEffect(duration, curHealthRegen);
+        lock (statusEffectQueueLock) {
+            activeHealingRegens.Enqueue(curEffect);
+        }
     }
 
 
@@ -681,6 +698,11 @@ public class PlayerStatus : ITwitchStatus
 
         if (statusDisplay != null) {
             statusDisplay.displayHealing(false);
+        }
+
+        // pop out from healthRegenEffect sequence
+        lock (statusEffectQueueLock) {
+            activeHealingRegens.Dequeue();
         }
     }
 
