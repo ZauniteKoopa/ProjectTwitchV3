@@ -23,6 +23,17 @@ public class BasicEnemySlowZone : AbstractDamageZone
         yield return new WaitForSeconds(slowDuration);
 
         // Banish to the shadow world (Please change me)
+        yield return destroyZoneSequence();
+    }
+
+
+    // Main function to destroy slow zone
+    public void destroyZone() {
+        StartCoroutine(destroyZoneSequence());
+    }
+
+    // Main coroutine for destroying zone
+    private IEnumerator destroyZoneSequence() {
         transform.position = new Vector3(0f, 10000000000000000f, 0f);
         yield return new WaitForSeconds(0.1f);
         Object.Destroy(gameObject);

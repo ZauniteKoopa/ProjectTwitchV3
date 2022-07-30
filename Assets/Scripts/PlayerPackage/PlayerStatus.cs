@@ -334,6 +334,8 @@ public class PlayerStatus : ITwitchStatus
         // Find all objects to clean up
         Loot[] livingLoot = Object.FindObjectsOfType<Loot>();
         IBattleUltimate[] runningBattleUltimates = Object.FindObjectsOfType<IBattleUltimate>();
+        AbstractStraightProjectile[] activeProjectiles = Object.FindObjectsOfType<AbstractStraightProjectile>();
+        BasicEnemySlowZone[] activeSlowZones = Object.FindObjectsOfType<BasicEnemySlowZone>();
 
         // For each loot, push them to shadow realm for trigger box handling
         foreach (Loot loot in livingLoot) {
@@ -343,6 +345,16 @@ public class PlayerStatus : ITwitchStatus
         // Reset each lingering ult
         foreach (IBattleUltimate ult in runningBattleUltimates) {
             ult.reset();
+        }
+
+        // For each active projectile, dsestroy the projectile
+        foreach (AbstractStraightProjectile proj in activeProjectiles) {
+            Object.Destroy(proj.gameObject);
+        }
+
+        // Destroy each slow zone
+        foreach (BasicEnemySlowZone slowZone in activeSlowZones) {
+            slowZone.destroyZone();
         }
 
         yield return new WaitForSeconds(0.1f);
