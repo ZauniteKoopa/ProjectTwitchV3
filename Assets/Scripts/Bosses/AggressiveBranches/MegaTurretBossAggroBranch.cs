@@ -218,7 +218,7 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
         // If an enemy was in the process of being lobbed during this, destroy the lobbed enemy
         foreach (LobbedEnemy lob in lobbedEnemies) {
             if (lob != null) {
-                Object.Destroy(lob);
+                lob.interrupt();
             }
         }
 

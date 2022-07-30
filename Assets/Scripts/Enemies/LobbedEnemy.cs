@@ -91,6 +91,13 @@ public class LobbedEnemy : MonoBehaviour
     }
 
 
+    // Main function to interrupt lobbing
+    public void interrupt() {
+        Object.Destroy(indicator.gameObject);
+        Object.Destroy(gameObject);
+    }
+
+
     // Main function to set distances
     //  Pre: maxSpawnRadius >= minSpawnRadius >= 0
     //  Post: spawn radiuses are set

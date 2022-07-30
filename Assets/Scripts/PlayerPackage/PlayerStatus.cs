@@ -266,6 +266,7 @@ public class PlayerStatus : ITwitchStatus
         mainPlayerUI.executeFadeOut(Color.black, deathFadeDuration);
         yield return new WaitForSeconds(deathFadeDuration);
 
+        resetEvent.Invoke();
         reset();
     }
 
@@ -290,6 +291,7 @@ public class PlayerStatus : ITwitchStatus
         if (runningContaminateSequence != null) {
             StopCoroutine(runningContaminateSequence);
             runningContaminateSequence = null;
+            contaminateReadyEvent.Invoke();
             canContaminate = true;
         }
 

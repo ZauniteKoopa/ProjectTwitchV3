@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571343, b: 0.30692208, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2607,11 +2607,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: projDamage
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: laserDamage
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: triShotAngle
@@ -2623,7 +2623,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: projectileSpeed
-      value: 25
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: lateMaxCrushBots
@@ -2655,11 +2655,11 @@ PrefabInstance:
       objectReference: {fileID: 1160096149}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: laterProjectileInterval
-      value: 0.65
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: initialProjectileInterval
-      value: 0.75
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541389, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: baseArmor
@@ -2667,7 +2667,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541389, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: maxHealth
-      value: 180
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541389, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: possibleLoot.Array.size
@@ -2699,15 +2699,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: projDamage
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: laserDamage
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: lateLaserCharge
       value: 0.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: projectileSpeed
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: initialLaserCharge
@@ -2715,11 +2719,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: laterProjectileInterval
-      value: 0.65
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: initialProjectileInterval
-      value: 0.75
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
@@ -2804,7 +2808,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1209925082, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: maxHealth
-      value: 5
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1209925082, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: checkpoint
