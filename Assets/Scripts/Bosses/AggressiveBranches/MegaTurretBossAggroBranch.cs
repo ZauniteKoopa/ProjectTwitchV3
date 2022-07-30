@@ -76,6 +76,7 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     // Crushbot handling
     private readonly object crushBotLock = new object();
     private HashSet<IUnitStatus> activeCrushBots = new HashSet<IUnitStatus>();
+    private List<LobbedEnemy> lobbedEnemies = new List<LobbedEnemy>();
 
 
     // Enums concerning moves
@@ -205,6 +206,7 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
         // Do base reset
         reset();
 
+        // Destroy all active crushbots
         lock (crushBotLock) {
             foreach (IUnitStatus crushBot in activeCrushBots) {
                 crushBot.gameObject.SetActive(false);
@@ -213,7 +215,19 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
             activeCrushBots.Clear();
         }
 
+        // If an enemy was in the process of being lobbed during this, destroy the lobbed enemy
+        foreach (LobbedEnemy lob in lobbedEnemies) {
+            if (lob != null) {
+                Object.Destroy(lob);
+            }
+        }
+
+        lobbedEnemies.Clear();
+
+        // reset cooldowns
         canSpawnMinion = true;
+        canUseLaser = true;
+        StopAllCoroutines();
     }
 
 
@@ -325,6 +339,7 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
                 LobbedEnemy currentMinion = Object.Instantiate(crushBotMinion, transform.position, Quaternion.identity);
                 currentMinion.setSpawnRadius(minMinionSpawnRadius, maxMinionSpawnRadius);
                 currentMinion.setEnemyPatrolPoint(arenaPatrolPoints);
+                lobbedEnemies.Add(currentMinion);
 
                 // Set up status
                 IUnitStatus minionStatus = currentMinion.getAttachedEnemy();

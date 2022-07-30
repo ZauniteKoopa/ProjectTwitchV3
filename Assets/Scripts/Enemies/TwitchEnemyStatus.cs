@@ -586,6 +586,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         GetComponent<Collider>().enabled = true;
 
         clearPoison();
+        clearStun();
         movementSpeedFactor = 1f;
         armorMultiplier = 1.0f;
         attackMultiplier = 1.0f;

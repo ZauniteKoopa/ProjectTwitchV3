@@ -130,8 +130,10 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
 
     // Main function to handle death
     public override void onDeath(IUnitStatus status) {
-        aggressiveBranch.reset();
-        passiveBranch.reset();
-        StopAllCoroutines();
+        lock (treeLock) {
+            aggressiveBranch.hardReset();
+            passiveBranch.hardReset();
+            StopAllCoroutines();
+        }
     }
 }
