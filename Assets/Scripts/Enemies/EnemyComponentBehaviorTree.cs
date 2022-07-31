@@ -125,6 +125,8 @@ public class EnemyComponentBehaviorTree : IEnemyBehavior
             StopAllCoroutines();
             StartCoroutine(behaviorTreeSequence());
         }
+
+        behaviorResetEvent.Invoke();
     }
 
 
