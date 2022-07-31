@@ -362,7 +362,7 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
             if (activeCrushBots.Contains(corpse)) {
                 activeCrushBots.Remove(corpse);
 
-                if (runningSpawnCooldown == null) {
+                if (runningSpawnCooldown == null && enemyStats.isAlive()) {
                     runningSpawnCooldown = StartCoroutine(minionSpawnCooldownSequence());
                 }
             }

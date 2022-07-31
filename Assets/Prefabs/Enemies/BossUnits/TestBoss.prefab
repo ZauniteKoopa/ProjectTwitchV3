@@ -643,6 +643,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9563171a07bc2667293a595b0e330b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stunnedStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  stunnedEndEvent:
+    m_PersistentCalls:
+      m_Calls: []
   statusDisplay: {fileID: 1935698350538177505}
   unitDeathEvent:
     m_PersistentCalls:
@@ -760,7 +766,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
@@ -859,6 +865,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aggressiveBranch: {fileID: 7156200389806921686}
   scoutingBranch: {fileID: 7156200389806921681}
+  branchTransitionTime: 0.5
 --- !u!114 &7156200389806921686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1922,6 +1929,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44f6b5f6683d5b832ab783ea375335b3, type: 3}
+--- !u!224 &4219365406255302120 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5606378268873477914, guid: 44f6b5f6683d5b832ab783ea375335b3, type: 3}
+  m_PrefabInstance: {fileID: 8593968905008384754}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1935698350538177505 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7899052386136895763, guid: 44f6b5f6683d5b832ab783ea375335b3, type: 3}
@@ -1933,8 +1945,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c47b5f9bc2140a088ec8f9cb1d55f8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &4219365406255302120 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5606378268873477914, guid: 44f6b5f6683d5b832ab783ea375335b3, type: 3}
-  m_PrefabInstance: {fileID: 8593968905008384754}
-  m_PrefabAsset: {fileID: 0}

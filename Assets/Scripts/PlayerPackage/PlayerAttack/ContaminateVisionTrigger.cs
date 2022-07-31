@@ -50,6 +50,9 @@ public class ContaminateVisionTrigger : MonoBehaviour
             if (testEnemy.isPoisoned()) {
                 lock (enemyLock) {
                     numEnemiesPoisoned--;
+                    if (numEnemiesPoisoned < 0) {
+                        numEnemiesPoisoned = 0;
+                    }
 
                     if (numEnemiesPoisoned == 0) {
                         enemyPoisonGoneEvent.Invoke();
@@ -72,6 +75,9 @@ public class ContaminateVisionTrigger : MonoBehaviour
             ITwitchUnitStatus enemyStatus = status as ITwitchUnitStatus;
             if (enemyStatus.isPoisoned()) {
                 numEnemiesPoisoned--;
+                if (numEnemiesPoisoned < 0) {
+                    numEnemiesPoisoned = 0;
+                }
             }
 
             if (numEnemiesPoisoned == 0) {
@@ -111,6 +117,9 @@ public class ContaminateVisionTrigger : MonoBehaviour
     private void onTargetCurePoison() {
         lock (enemyLock) {
             numEnemiesPoisoned--;
+            if (numEnemiesPoisoned < 0) {
+                numEnemiesPoisoned = 0;
+            }
 
             if (numEnemiesPoisoned == 0) {
                 enemyPoisonGoneEvent.Invoke();

@@ -621,6 +621,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         lock (poisonLock) {
             if (poisonDotRoutine != null) {
                 StopCoroutine(poisonDotRoutine);
+                poisonDotRoutine = null;
             }
 
             // Only invoke event if currentPoison not null before
