@@ -128,6 +128,16 @@ public class XZ_AimAssist : IAimAssist
         return proximityCullResults;
     }
 
+
+    // Main function to reset aim assist
+    //  Pre: none
+    //  Post: aim assist is perfectly reset
+    public override void reset() {
+        lock (enemyLock) {
+            nearbyEnemies.Clear();
+        }
+    }
+
     
     // On trigger enter: when enemy is in range
     private void OnTriggerEnter(Collider collider) {

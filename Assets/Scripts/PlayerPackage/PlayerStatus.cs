@@ -20,8 +20,10 @@ public class PlayerStatus : ITwitchStatus
     private float baseAttackSpeedFactor = 1.0f;
     private float attackMultiplier = 1.0f;
 
-    // Manic side effect
+    // Side effects
     private bool manic = false;
+    private PriorityQueue<TimedStatusEffect> activeHealingRegens = new PriorityQueue<TimedStatusEffect>();
+    private readonly object statusEffectQueueLock = new object();
 
     // Health and Invincibility
     [SerializeField]
@@ -142,7 +144,6 @@ public class PlayerStatus : ITwitchStatus
         mainPlayerUI.displayContaminateCooldown(-1.0f, 1.0f);
         mainPlayerUI.displayCaskAmmoCost(caskCost);
 
-        mainPlayerUI.displayInvisibilityTimer(camoDuration, camoDuration, false);
         invisSensor.makeVisible(false);
 
         if (statusDisplay != null) {
@@ -264,6 +265,7 @@ public class PlayerStatus : ITwitchStatus
         mainPlayerUI.executeFadeOut(Color.black, deathFadeDuration);
         yield return new WaitForSeconds(deathFadeDuration);
 
+        resetEvent.Invoke();
         reset();
     }
 
@@ -288,6 +290,7 @@ public class PlayerStatus : ITwitchStatus
         if (runningContaminateSequence != null) {
             StopCoroutine(runningContaminateSequence);
             runningContaminateSequence = null;
+            contaminateReadyEvent.Invoke();
             canContaminate = true;
         }
 
@@ -299,12 +302,23 @@ public class PlayerStatus : ITwitchStatus
             canCamo = true;
             inCamofladge = false;
             baseAttackSpeedFactor = 1.0f;
+            movementSpeedFactor = 1.0f;
         }
 
         // reset manic
         manic = false;
         armorMultiplier = 1.0f;
         attackMultiplier = 1.0f;
+
+        // reset healing by stopping all healing coroutines
+        lock (statusEffectQueueLock) {
+            while (!activeHealingRegens.IsEmpty()) {
+                TimedStatusEffect curEffect = activeHealingRegens.Dequeue();
+                StopCoroutine(curEffect.statusEffectSequence);
+            }
+        }
+
+        clearStun();
 
         // Reset UI
         initDefaultUI();
@@ -316,11 +330,13 @@ public class PlayerStatus : ITwitchStatus
     }
 
 
-    // Function to cleanup everything
+    // Function to cleanup everything in the world
     private IEnumerator cleanup() {
         // Find all objects to clean up
         Loot[] livingLoot = Object.FindObjectsOfType<Loot>();
         IBattleUltimate[] runningBattleUltimates = Object.FindObjectsOfType<IBattleUltimate>();
+        AbstractStraightProjectile[] activeProjectiles = Object.FindObjectsOfType<AbstractStraightProjectile>();
+        BasicEnemySlowZone[] activeSlowZones = Object.FindObjectsOfType<BasicEnemySlowZone>();
 
         // For each loot, push them to shadow realm for trigger box handling
         foreach (Loot loot in livingLoot) {
@@ -330,6 +346,16 @@ public class PlayerStatus : ITwitchStatus
         // Reset each lingering ult
         foreach (IBattleUltimate ult in runningBattleUltimates) {
             ult.reset();
+        }
+
+        // For each active projectile, dsestroy the projectile
+        foreach (AbstractStraightProjectile proj in activeProjectiles) {
+            Object.Destroy(proj.gameObject);
+        }
+
+        // Destroy each slow zone
+        foreach (BasicEnemySlowZone slowZone in activeSlowZones) {
+            slowZone.destroyZone();
         }
 
         yield return new WaitForSeconds(0.1f);
@@ -549,12 +575,11 @@ public class PlayerStatus : ITwitchStatus
         // Start camofladge
         inCamofladge = true;
         invisSensor.makeVisible(true);
-        mainPlayerUI.displayInvisibilityTimer(camoDuration, camoDuration, true);
         characterRenderer.material.color = stealthColor;
         affectSpeed(camoMovementSpeedBuff);
 
         if (statusDisplay != null) {
-            statusDisplay.displayStealth(true);
+            statusDisplay.displayStealth(true, camoDuration, camoDuration);
         }
 
         // Camofladge timer
@@ -564,17 +589,19 @@ public class PlayerStatus : ITwitchStatus
         while (timer < camoDuration && inCamofladge) {
             yield return waitFrame;
             timer += Time.fixedDeltaTime;
-            mainPlayerUI.displayInvisibilityTimer(camoDuration - timer, camoDuration, true);
+
+            if (statusDisplay != null) {
+                statusDisplay.displayStealth(true, camoDuration - timer, camoDuration);
+            }
         }
 
         // camo expires
         inCamofladge = false;
         affectSpeed( 1f / camoMovementSpeedBuff);
         invisSensor.makeVisible(false);
-        mainPlayerUI.displayInvisibilityTimer(0, camoDuration, false);
 
         if (statusDisplay != null) {
-            statusDisplay.displayStealth(false);
+            statusDisplay.displayStealth(false, 0f, camoDuration);
         }
     }
 
@@ -650,7 +677,11 @@ public class PlayerStatus : ITwitchStatus
         float numTicks = duration / Time.fixedDeltaTime;
         float healPerFrame = healingAmount / numTicks;
 
-        StartCoroutine(healthRegenEffectSequence(healPerFrame, duration));
+        Coroutine curHealthRegen = StartCoroutine(healthRegenEffectSequence(healPerFrame, duration));
+        TimedStatusEffect curEffect = new TimedStatusEffect(duration, curHealthRegen);
+        lock (statusEffectQueueLock) {
+            activeHealingRegens.Enqueue(curEffect);
+        }
     }
 
 
@@ -681,6 +712,11 @@ public class PlayerStatus : ITwitchStatus
 
         if (statusDisplay != null) {
             statusDisplay.displayHealing(false);
+        }
+
+        // pop out from healthRegenEffect sequence
+        lock (statusEffectQueueLock) {
+            activeHealingRegens.Dequeue();
         }
     }
 

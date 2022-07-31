@@ -92,6 +92,9 @@ public class TopDownShooterAttackController : IAttackModule
         if (aimAssist == null) {
             Debug.LogWarning("Aim assist not connected to attack controller of player. Player might need help aiming. It's a raw direction vector.", transform);
         }
+
+        // Listen to reset events on player
+        twitchPlayerStatus.resetEvent.AddListener(aimAssist.reset);
     }
 
 

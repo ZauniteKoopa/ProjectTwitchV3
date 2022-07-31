@@ -711,6 +711,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360218b3a8a8b2f478f2739cf3c4b98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stunnedStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  stunnedEndEvent:
+    m_PersistentCalls:
+      m_Calls: []
   statusDisplay: {fileID: 7281989864836158956}
   unitDeathEvent:
     m_PersistentCalls:
@@ -890,7 +896,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
   Loop: 0

@@ -31,10 +31,17 @@ public class EnemyVisionSensor : MonoBehaviour
             Debug.LogError("Enemy Sensor is not connected to a behavior tree or AI behavior handler", transform);
         }
 
+        brain.behaviorResetEvent.AddListener(onEnemyBehavReset);
         body = brain.GetComponent<Collider>();
         if (body == null) {
             Debug.LogError("Enemy sensor not connected to a collider to check with. Ensure that a collider is connected to the part with the brain", brain.transform);
         }
+    }
+
+
+    // Main event handler function for when brain has been reset
+    private void onEnemyBehavReset() {
+        playerSpotted = false;
     }
 
 

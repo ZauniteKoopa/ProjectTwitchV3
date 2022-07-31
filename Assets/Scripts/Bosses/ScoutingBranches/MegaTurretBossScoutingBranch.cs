@@ -95,6 +95,14 @@ public class MegaTurretBossScoutingBranch : IBossScoutingBranch
     }
 
 
+    // Main event handler for when enemy has been despawn because of player death and you must clean up all side effects
+    public override void hardReset() {
+        reset();
+        StopAllCoroutines();
+        canUseLaser = true;
+    }
+
+
     // Main IEnumerator sequence to shoot projectile
     //  Pre: phaseNumber >= 0 && tgt != null
     //  Post: waits a bit and then shoots a projectile

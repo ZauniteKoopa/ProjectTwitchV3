@@ -79,6 +79,16 @@ public abstract class IUnitStatus : MonoBehaviour
     }
 
 
+    // Main function to clear up all stunners
+    //  Pre: none
+    //  Post: clears out all stunners so that the stunner count is 0
+    protected void clearStun() {
+        lock(stunLock) {
+            stunners = 0;
+        }
+    }
+
+
     // Main function to enable or disable movement. Can handle multiple requests
     //  Pre: a boolean that represents enabling (true) or disabling (false) movement
     //  Post: if the unit is not stunned and true, stun. If unit is stunned and false, unstun UNLESS another stun is active
@@ -89,8 +99,9 @@ public abstract class IUnitStatus : MonoBehaviour
                 stunnedStartEvent.Invoke();
             }
 
-            // Change number fo stunners
+            // Change number fo stunners (it cannot be negative to account for reset functionality)
             stunners += (willStun) ? 1 : -1;
+            stunners = (stunners < 0) ? 0 : stunners;
 
             // Display it
             if (statusDisplay != null) {

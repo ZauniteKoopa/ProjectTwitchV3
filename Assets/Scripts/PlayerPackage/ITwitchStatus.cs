@@ -7,6 +7,7 @@ public abstract class ITwitchStatus : ITwitchUnitStatus
 {
     public UnityEvent contaminateUsedEvent;
     public UnityEvent contaminateReadyEvent;
+    public UnityEvent resetEvent;
 
     // Main method to get access to primary poison vial
     //  Pre: none

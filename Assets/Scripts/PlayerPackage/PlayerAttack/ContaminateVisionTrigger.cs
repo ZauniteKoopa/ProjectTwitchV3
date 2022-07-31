@@ -34,6 +34,7 @@ public class ContaminateVisionTrigger : MonoBehaviour
 
             // Connect to all relevant events
             testEnemy.unitDeathEvent.AddListener(onTargetDeath);
+            testEnemy.unitDespawnEvent.AddListener(onTargetDespawn);
             testEnemy.unitPoisonedEvent.AddListener(onTargetPoisoned);
             testEnemy.unitCurePoisonEvent.AddListener(onTargetCurePoison);
         }
@@ -49,6 +50,9 @@ public class ContaminateVisionTrigger : MonoBehaviour
             if (testEnemy.isPoisoned()) {
                 lock (enemyLock) {
                     numEnemiesPoisoned--;
+                    if (numEnemiesPoisoned < 0) {
+                        numEnemiesPoisoned = 0;
+                    }
 
                     if (numEnemiesPoisoned == 0) {
                         enemyPoisonGoneEvent.Invoke();
@@ -56,8 +60,9 @@ public class ContaminateVisionTrigger : MonoBehaviour
                 }
             }
 
-            // Connect to all relevant events
+            // disConnect to all relevant events
             testEnemy.unitDeathEvent.RemoveListener(onTargetDeath);
+            testEnemy.unitDespawnEvent.RemoveListener(onTargetDespawn);
             testEnemy.unitPoisonedEvent.RemoveListener(onTargetPoisoned);
             testEnemy.unitCurePoisonEvent.RemoveListener(onTargetCurePoison);
         }
@@ -67,13 +72,33 @@ public class ContaminateVisionTrigger : MonoBehaviour
     // Main event handler function for when enemy dies
     private void onTargetDeath(IUnitStatus status) {
         lock (enemyLock) {
-            numEnemiesPoisoned--;
+            ITwitchUnitStatus enemyStatus = status as ITwitchUnitStatus;
+            if (enemyStatus.isPoisoned()) {
+                numEnemiesPoisoned--;
+                if (numEnemiesPoisoned < 0) {
+                    numEnemiesPoisoned = 0;
+                }
+            }
 
             if (numEnemiesPoisoned == 0) {
                 enemyPoisonGoneEvent.Invoke();
             }
+
+            enemyStatus.unitDeathEvent.RemoveListener(onTargetDeath);
+            enemyStatus.unitDespawnEvent.RemoveListener(onTargetDespawn);
+            enemyStatus.unitPoisonedEvent.RemoveListener(onTargetPoisoned);
+            enemyStatus.unitCurePoisonEvent.RemoveListener(onTargetCurePoison);
         }
     }
+
+
+    // Main event handler for when enemy despawns
+    //  Very bad, duct tape solution because an enemy only despawns when you die
+    private void onTargetDespawn() {
+        numEnemiesPoisoned = 0;
+        enemyPoisonGoneEvent.Invoke();
+    }
+
 
 
     // Main event handler function when a nearby unit starts getting poisoned
@@ -92,6 +117,9 @@ public class ContaminateVisionTrigger : MonoBehaviour
     private void onTargetCurePoison() {
         lock (enemyLock) {
             numEnemiesPoisoned--;
+            if (numEnemiesPoisoned < 0) {
+                numEnemiesPoisoned = 0;
+            }
 
             if (numEnemiesPoisoned == 0) {
                 enemyPoisonGoneEvent.Invoke();

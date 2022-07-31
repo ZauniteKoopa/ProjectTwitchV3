@@ -45,10 +45,6 @@ public class PlayerUI : ITwitchPlayerUI
     private float solidFadeDuration = 0.5f;
     private Coroutine currentFadeSequence;
 
-    [Header("Camo Sequence")]
-    [SerializeField]
-    private ResourceBar camoTimerBar;
-
     [Header("Crafting Sequence")]
     [SerializeField]
     private ResourceBar craftTimerBar;
@@ -188,7 +184,6 @@ public class PlayerUI : ITwitchPlayerUI
         Debug.Assert(curCooldown <= maxCooldown & maxCooldown > 0.0f);
 
         caskIcon.setStatus(curCooldown, maxCooldown);
-        //caskImage.color = (curCooldown > 0.0f) ? disabledColor : readyColor;
     }
 
 
@@ -258,21 +253,6 @@ public class PlayerUI : ITwitchPlayerUI
         fadeOutScreen.gameObject.SetActive(false);
 
         currentFadeSequence = null;
-    }
-
-
-    // Main function to display invisibility timer
-    //  Pre: timeLeft <= maxTime  && 0 < maxTime && isVisible just references whether or not this timer should be visible
-    //  Post: If isVisible is true, updates timer with current progress. Else, just disable timer
-    public override void displayInvisibilityTimer(float timeLeft, float maxTime, bool isVisible) {
-        Debug.Assert(maxTime > 0f);
-
-        timeLeft = Mathf.Min(timeLeft, maxTime);
-        camoTimerBar.gameObject.SetActive(isVisible);
-
-        if (isVisible) {
-            camoTimerBar.setStatus(timeLeft, maxTime);
-        }
     }
 
 
