@@ -2337,6 +2337,7 @@ MonoBehaviour:
   - {fileID: 475614055655118537}
   hittableStageElements: []
   spawnIn: 1
+  roomCamera: {fileID: 0}
   allEnemiesDeadEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -2496,24 +2497,28 @@ PrefabInstance:
       value: MegaTurretPackage
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
-      propertyPath: aimRadius
-      value: 7
+      propertyPath: projDamage
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
-      propertyPath: projectileSpeed
-      value: 18
+      propertyPath: laserDamage
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541389, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: maxHealth
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541389, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: possibleLoot.Array.data[11]
+      value: 
+      objectReference: {fileID: 6651500605187683580, guid: 3e4d0a60be81b5690aa119ec6cb3adb6, type: 3}
     - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
-      propertyPath: aimRadius
-      value: 7
+      propertyPath: projDamage
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
-      propertyPath: projectileSpeed
-      value: 20
+      propertyPath: laserDamage
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
@@ -2618,7 +2623,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 666051070539244715, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10
+      value: 36.2
       objectReference: {fileID: 0}
     - target: {fileID: 666051070539244715, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2626,7 +2631,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 666051070539244715, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -21
+      value: -23.7
       objectReference: {fileID: 0}
     - target: {fileID: 666051070539244715, guid: 9bec0dd9a79dca2c5996d547afbb865f, type: 3}
       propertyPath: m_LocalRotation.w

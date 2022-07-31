@@ -2667,6 +2667,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9563171a07bc2667293a595b0e330b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stunnedStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  stunnedEndEvent:
+    m_PersistentCalls:
+      m_Calls: []
   statusDisplay: {fileID: 1632821468866799014}
   unitDeathEvent:
     m_PersistentCalls:
@@ -2690,7 +2696,15 @@ MonoBehaviour:
   possibleLoot:
   - {fileID: 8328922755592592645, guid: 740c7a2ed8a1fcf1b99c4da6c026ea3d, type: 3}
   - {fileID: 2958984616688009020, guid: 433a457c7004df31b8bb277100d7da9b, type: 3}
-  - {fileID: 6651500605187683580, guid: 3e4d0a60be81b5690aa119ec6cb3adb6, type: 3}
+  - {fileID: 4306806704451777998, guid: 3ecdd71b2b726ad3cbcd199e7459c09a, type: 3}
+  - {fileID: 6978406117162031912, guid: c9e9748bb1e5cc33ca7507621efe643a, type: 3}
+  - {fileID: 3725593201332320858, guid: 997b24409ed5ab4fe992c642aa92f24e, type: 3}
+  - {fileID: 4312016002452469198, guid: 9e621d24baca354868d3d9235383bfa2, type: 3}
+  - {fileID: 440725830103984159, guid: fb317a0697b0e1b4488eed58329ea31e, type: 3}
+  - {fileID: 7810475123160934855, guid: 347eb103f947c2e78b705951741ddf7b, type: 3}
+  - {fileID: 7022750467499017584, guid: 7862f02e41a89e06e831d5a95fb6e088, type: 3}
+  - {fileID: 8446025507433597091, guid: 0c9f16fa3372e0a4a8c856edc0e6692d, type: 3}
+  - {fileID: 8446025507433597091, guid: d3fec0edf4e1216369a83098b67b7b96, type: 3}
   minLootDistance: 4
   maxLootDistance: 6
   healthBar: {fileID: 456505596059305904}
@@ -2883,6 +2897,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aggressiveBranch: {fileID: 456505596693541384}
   scoutingBranch: {fileID: 456505596693541391}
+  branchTransitionTime: 0.5
 --- !u!195 &456505596693541385
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2946,7 +2961,7 @@ MonoBehaviour:
   - {fileID: 57540868328157994}
   - {fileID: 57540867604285846}
   - {fileID: 57540867572529628}
-  projectileSpeed: 25
+  projectileSpeed: 21
   aimRadius: 8
   projDamage: 5
   laserDamage: 8
@@ -2968,13 +2983,13 @@ MonoBehaviour:
   - 0.4
   - 0.3
   - 0.3
-  initialProjectileInterval: 0.55
-  laterProjectileInterval: 0.4
-  initialLaserCharge: 1.1
+  initialProjectileInterval: 0.75
+  laterProjectileInterval: 0.65
+  initialLaserCharge: 1.15
   initialMaxCrushBots: 2
-  triShotAngle: 35
-  lateLaserCharge: 0.85
-  lateMaxCrushBots: 3
+  triShotAngle: 45
+  lateLaserCharge: 1.05
+  lateMaxCrushBots: 2
 --- !u!114 &456505596693541391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2999,18 +3014,18 @@ MonoBehaviour:
   - {fileID: 57540866933592558}
   - {fileID: 57540867223868129}
   - {fileID: 57540867300687285}
-  projectileSpeed: 25
+  projectileSpeed: 21
   aimRadius: 8
   projDamage: 5
   laserDamage: 8
   laserAnticipationColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   laserFiredColor: {r: 1, g: 0, b: 0, a: 1}
   laserCooldown: 5
-  initialProjectileInterval: 0.55
-  laterProjectileInterval: 0.4
-  initialLaserCharge: 1.1
+  initialProjectileInterval: 0.75
+  laterProjectileInterval: 0.65
+  initialLaserCharge: 1.15
   laserProbChance: 0.5
-  lateLaserCharge: 0.85
+  lateLaserCharge: 1.05
 --- !u!1 &1379962729396112910
 GameObject:
   m_ObjectHideFlags: 0
@@ -3856,11 +3871,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44f6b5f6683d5b832ab783ea375335b3, type: 3}
---- !u!224 &3961544132172159919 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5606378268873477914, guid: 44f6b5f6683d5b832ab783ea375335b3, type: 3}
-  m_PrefabInstance: {fileID: 8878811698967598261}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1632821468866799014 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7899052386136895763, guid: 44f6b5f6683d5b832ab783ea375335b3, type: 3}
@@ -3872,3 +3882,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c47b5f9bc2140a088ec8f9cb1d55f8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &3961544132172159919 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5606378268873477914, guid: 44f6b5f6683d5b832ab783ea375335b3, type: 3}
+  m_PrefabInstance: {fileID: 8878811698967598261}
+  m_PrefabAsset: {fileID: 0}
