@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resourceBar: {fileID: 7276023}
-  resourceText: {fileID: 0}
+  resourceText: {fileID: 2171735810014623304}
   fractionFormat: 0
   deactivateTextOnZero: 1
 --- !u!1 &19598482

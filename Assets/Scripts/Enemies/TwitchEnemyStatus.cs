@@ -422,12 +422,12 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             }
 
             // Run poison sequence if none are running at this point
-            if (poisonDotRoutine == null) {
+            if (poisonDotRoutine == null && gameObject.activeInHierarchy) {
                 poisonDotRoutine = StartCoroutine(poisonDotLoop());
             }
 
             // Check if enemy was made volatile
-            if (volatileSequence == null && !isVolatile) {
+            if (volatileSequence == null && !isVolatile && gameObject.activeInHierarchy) {
                 float volatileDuration;
                 if (poison.makesTargetVolatile(out volatileDuration)) {
                     volatileSequence = StartCoroutine(volatileSideEffect(volatileDuration));
@@ -482,12 +482,12 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             }
 
             // Update poisonDoT Sequence if updated
-            if (poisonDotRoutine == null) {
+            if (poisonDotRoutine == null && gameObject.activeInHierarchy) {
                 poisonDotRoutine = StartCoroutine(poisonDotLoop());
             }
 
             // Check if enemy was made volatile
-            if (volatileSequence == null && !isVolatile) {
+            if (volatileSequence == null && !isVolatile && gameObject.activeInHierarchy) {
                 float volatileDuration;
                 if (poison.makesTargetVolatile(out volatileDuration)) {
                     volatileSequence = StartCoroutine(volatileSideEffect(volatileDuration));
