@@ -49,10 +49,10 @@ public class ResourceBar : MonoBehaviour
             float rawCurResources = curResources;
             curResources = (Mathf.Round(curResources * 10f) / 10f);
             if (curResources == 0f && rawCurResources > 0f) {
-                curResources = 0.1f;
+                curResources = 1f;
             }
 
-            string curResourcesText = curResources.ToString("0.0");
+            string curResourcesText = curResources.ToString("0");
             resourceText.text = (fractionFormat) ? curResourcesText + "/" + maxResources : "" + curResourcesText;
         }
     }
