@@ -184,7 +184,6 @@ public class PlayerUI : ITwitchPlayerUI
         Debug.Assert(curCooldown <= maxCooldown & maxCooldown > 0.0f);
 
         caskIcon.setStatus(curCooldown, maxCooldown);
-        //caskImage.color = (curCooldown > 0.0f) ? disabledColor : readyColor;
     }
 
 

@@ -12,6 +12,10 @@ public class ResourceBar : MonoBehaviour
     private Image resourceBar;
     [SerializeField]
     private TMP_Text resourceText;
+    [SerializeField]
+    private bool fractionFormat = true;
+    [SerializeField]
+    private bool deactivateTextOnZero = false;
 
 
     // On awake, error check
@@ -38,8 +42,18 @@ public class ResourceBar : MonoBehaviour
 
         // Set resource text, rounding curResource to the nearest 100th
         if (resourceText != null) {
-            curResources = (Mathf.Round(curResources * 100f) / 100f);
-            resourceText.text = curResources + "/" + maxResources;
+            // Check if you should deactivate on zero
+            resourceText.gameObject.SetActive(curResources > 0.0f || !deactivateTextOnZero);
+
+            // Print string
+            float rawCurResources = curResources;
+            curResources = (Mathf.Round(curResources * 10f) / 10f);
+            if (curResources == 0f && rawCurResources > 0f) {
+                curResources = 0.1f;
+            }
+
+            string curResourcesText = curResources.ToString("0.0");
+            resourceText.text = (fractionFormat) ? curResourcesText + "/" + maxResources : "" + curResourcesText;
         }
     }
 
