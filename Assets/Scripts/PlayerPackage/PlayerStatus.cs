@@ -144,7 +144,6 @@ public class PlayerStatus : ITwitchStatus
         mainPlayerUI.displayContaminateCooldown(-1.0f, 1.0f);
         mainPlayerUI.displayCaskAmmoCost(caskCost);
 
-        mainPlayerUI.displayInvisibilityTimer(camoDuration, camoDuration, false);
         invisSensor.makeVisible(false);
 
         if (statusDisplay != null) {
@@ -576,12 +575,11 @@ public class PlayerStatus : ITwitchStatus
         // Start camofladge
         inCamofladge = true;
         invisSensor.makeVisible(true);
-        mainPlayerUI.displayInvisibilityTimer(camoDuration, camoDuration, true);
         characterRenderer.material.color = stealthColor;
         affectSpeed(camoMovementSpeedBuff);
 
         if (statusDisplay != null) {
-            statusDisplay.displayStealth(true);
+            statusDisplay.displayStealth(true, camoDuration, camoDuration);
         }
 
         // Camofladge timer
@@ -591,17 +589,19 @@ public class PlayerStatus : ITwitchStatus
         while (timer < camoDuration && inCamofladge) {
             yield return waitFrame;
             timer += Time.fixedDeltaTime;
-            mainPlayerUI.displayInvisibilityTimer(camoDuration - timer, camoDuration, true);
+
+            if (statusDisplay != null) {
+                statusDisplay.displayStealth(true, camoDuration - timer, camoDuration);
+            }
         }
 
         // camo expires
         inCamofladge = false;
         affectSpeed( 1f / camoMovementSpeedBuff);
         invisSensor.makeVisible(false);
-        mainPlayerUI.displayInvisibilityTimer(0, camoDuration, false);
 
         if (statusDisplay != null) {
-            statusDisplay.displayStealth(false);
+            statusDisplay.displayStealth(false, 0f, camoDuration);
         }
     }
 

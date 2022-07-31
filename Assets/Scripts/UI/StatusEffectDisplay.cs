@@ -28,6 +28,8 @@ public class StatusEffectDisplay : MonoBehaviour
     // Stuff for the invisibility icon
     [SerializeField]
     private Image invisibilityIcon;
+    [SerializeField]
+    private ResourceBar invisibilityBar;
 
     // Stuff for healing icon
     [SerializeField]
@@ -129,7 +131,7 @@ public class StatusEffectDisplay : MonoBehaviour
     // Main function to display stealth
     //  Pre: bool to represent whether to turn this on or off
     //  Post: displays stealth if enemy is invisible
-    public void displayStealth(bool invisible) {
+    public void displayStealth(bool invisible, float curInvisTimer, float invisDuration) {
         if (invisibilityIcon != null) {
             bool prevInvisible = invisibilityIcon.gameObject.activeInHierarchy;
 
@@ -139,6 +141,7 @@ public class StatusEffectDisplay : MonoBehaviour
             }
 
             invisibilityIcon.gameObject.SetActive(invisible);
+            invisibilityBar.setStatus(curInvisTimer, invisDuration);
         }
     }
 
