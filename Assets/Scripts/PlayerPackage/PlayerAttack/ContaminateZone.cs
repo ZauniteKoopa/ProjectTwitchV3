@@ -8,6 +8,10 @@ public class ContaminateZone : AbstractDamageZone
     private MeshRenderer meshRender;
     [SerializeField]
     private ContaminateVisionTrigger visionTrigger;
+    [SerializeField]
+    private IFixedEffect visualEffectPrefab;
+    [SerializeField]
+    private float vfxDuration = 0.15f;
     private bool poisonedEnemiesNearby = false;
     private bool contaminateReady = true;
 
@@ -34,12 +38,22 @@ public class ContaminateZone : AbstractDamageZone
 
     // Protected method to override that does damage effect to inRangeTarget
     protected override void damageTarget(ITwitchUnitStatus tgt, float dmg) {
+        StartCoroutine(damageSequence(tgt));
+    }
+
+
+    // Main damage coroutine
+    private IEnumerator damageSequence(ITwitchUnitStatus tgt) {
+        yield return new WaitForSeconds(vfxDuration);
         tgt.contaminate();
     }
 
 
     // Protected method to apply visual effect to targets
-    protected override void applyVisualEffects() {}
+    protected override void applyVisualEffects(ITwitchUnitStatus tgt) {
+        IFixedEffect currentLob = Object.Instantiate(visualEffectPrefab, transform.position, Quaternion.identity);
+        currentLob.activateEffect(transform.position, tgt.transform.position, vfxDuration);
+    }
 
 
     // Protected method to check if you can use damage zone

@@ -38,7 +38,7 @@ public class EnemyAura : AbstractDamageZone
 
 
     // Protected method to apply visual effect to targets
-    protected override void applyVisualEffects() {}
+    protected override void applyVisualEffects(ITwitchUnitStatus tgt) {}
 
 
     // Protected method to check if you can use damage zone

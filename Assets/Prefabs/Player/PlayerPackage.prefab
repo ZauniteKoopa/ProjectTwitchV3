@@ -12637,6 +12637,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   visionTrigger: {fileID: 884248278}
+  visualEffectPrefab: {fileID: 5963056340024201529, guid: 950ea83a632d160c0a9517b365d72b72, type: 3}
+  vfxDuration: 0.2
 --- !u!1 &666051070525693056
 GameObject:
   m_ObjectHideFlags: 0

@@ -73,6 +73,7 @@ public abstract class AbstractDamageZone : MonoBehaviour
         // Go through the copy to damage targets
         foreach (ITwitchUnitStatus target in damagedTargets) {
             damageTarget(target, dmg);
+            applyVisualEffects(target);
 
             // Check if target is alive or boss is transitioning afterwards
             BossStatus testBoss = target as BossStatus;
@@ -152,7 +153,7 @@ public abstract class AbstractDamageZone : MonoBehaviour
 
 
     // Protected method to apply visual effect to targets
-    protected abstract void applyVisualEffects();
+    protected abstract void applyVisualEffects(ITwitchUnitStatus tgt);
 
 
     // Protected method to check if you can use damage zone
