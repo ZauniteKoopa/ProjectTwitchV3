@@ -429,7 +429,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2050020950227722362}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -711,6 +711,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360218b3a8a8b2f478f2739cf3c4b98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stunnedStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  stunnedEndEvent:
+    m_PersistentCalls:
+      m_Calls: []
   statusDisplay: {fileID: 4232996796764442519}
   unitDeathEvent:
     m_PersistentCalls:
@@ -812,6 +818,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f874ce0961e6675ace6511506b2818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  behaviorResetEvent:
+    m_PersistentCalls:
+      m_Calls: []
   aggressiveBranch: {fileID: 2050020950324005092}
   passiveBranch: {fileID: 2050020950324005083}
 --- !u!114 &2050020950324005092
@@ -1196,6 +1205,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceBar: {fileID: 2050020950848094565}
   resourceText: {fileID: 0}
+  fractionFormat: 1
+  deactivateTextOnZero: 0
 --- !u!1 &2050020950799623040
 GameObject:
   m_ObjectHideFlags: 0
