@@ -790,7 +790,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPoints: []
-  nearDistance: 1
+  nearDistance: 1.1
   stopDuration: 0.1
   firstConfusedDuration: 2
   passiveMovementSpeedReduction: 1

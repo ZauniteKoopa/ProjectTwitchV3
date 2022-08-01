@@ -46,6 +46,7 @@ public class ContaminateZone : AbstractDamageZone
     private IEnumerator damageSequence(ITwitchUnitStatus tgt) {
         yield return new WaitForSeconds(vfxDuration);
         tgt.contaminate();
+        checkDeath(tgt);
     }
 
 

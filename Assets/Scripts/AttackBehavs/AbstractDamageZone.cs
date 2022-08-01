@@ -80,11 +80,19 @@ public abstract class AbstractDamageZone : MonoBehaviour
             if (!target.isAlive() || (testBoss != null && testBoss.isPhaseTransitioning())) {
                 numTargetsKilled++;
             }
-            
         }
 
         // Trigger event if at least 1 enemy is killed
         if (numTargetsKilled > 0) {
+            targetKilledEvent.Invoke();
+        }
+    }
+
+
+    // Main function to check if target was killed afterwards, mostly used if it's a DELAYED function due to the VFX
+    protected void checkDeath(ITwitchUnitStatus target) {
+        BossStatus testBoss = target as BossStatus;
+        if (!target.isAlive() || (testBoss != null && testBoss.isPhaseTransitioning())) {
             targetKilledEvent.Invoke();
         }
     }
