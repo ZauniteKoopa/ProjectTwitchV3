@@ -51,8 +51,10 @@ public class ContaminateZone : AbstractDamageZone
 
     // Protected method to apply visual effect to targets
     protected override void applyVisualEffects(ITwitchUnitStatus tgt) {
-        IFixedEffect currentLob = Object.Instantiate(visualEffectPrefab, transform.position, Quaternion.identity);
-        currentLob.activateEffect(transform.position, tgt.transform.position, vfxDuration);
+        if (tgt.isPoisoned()) {
+            IFixedEffect currentLob = Object.Instantiate(visualEffectPrefab, transform.position, Quaternion.identity);
+            currentLob.activateEffect(transform.position, tgt.transform.position, vfxDuration);
+        }
     }
 
 

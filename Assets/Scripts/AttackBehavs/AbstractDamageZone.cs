@@ -80,6 +80,7 @@ public abstract class AbstractDamageZone : MonoBehaviour
             if (!target.isAlive() || (testBoss != null && testBoss.isPhaseTransitioning())) {
                 numTargetsKilled++;
             }
+            
         }
 
         // Trigger event if at least 1 enemy is killed
