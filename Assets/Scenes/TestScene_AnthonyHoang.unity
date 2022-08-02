@@ -3675,6 +3675,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3528424645888226794, guid: 05f0296cd2438417b81d82d26d4b4451, type: 3}
+      propertyPath: vialDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: f1a933730eb03824bb96e9a68598902a, type: 2}
     - target: {fileID: 3528424645888226795, guid: 05f0296cd2438417b81d82d26d4b4451, type: 3}
       propertyPath: m_Name
       value: Loader

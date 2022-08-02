@@ -56,7 +56,6 @@ public class ContaminateZone : AbstractDamageZone
         bool postTransition = checkDeath(tgt);
         bool targetKilled = (testBoss == null) ? postTransition : (postTransition && postTransition != prevTransition);
         if (targetKilled) {
-            Debug.Log("evoke event");
             targetKilledEvent.Invoke();
         }
     }

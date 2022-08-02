@@ -401,15 +401,19 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 unitPoisonedEvent.Invoke();
             }
 
-            // Edit poison variables
-            currentPoison = poison;
+            // Edit poison variables: if unit was already volatile with another poison, poison cannot be overriden
+            if (!isVolatile) {
+                currentPoison = poison;
+            } else {
+                Debug.Log("hitting volatile unit");
+            }
             poisonTimer = 0f;
             numPoisonStacks = Mathf.Min(numPoisonStacks + numStacks, MAX_STACKS);
 
             // Display poison
             if (poisonStackDisplay != null) {
                 poisonStackDisplay.displayNumber(numPoisonStacks);
-                poisonStackDisplay.displayColor(poison.getColor());
+                poisonStackDisplay.displayColor(currentPoison.getColor());
             }
 
             // Enable enemy aura if aura is allowed to be present
