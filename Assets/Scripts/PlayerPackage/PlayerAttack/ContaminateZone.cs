@@ -45,8 +45,20 @@ public class ContaminateZone : AbstractDamageZone
     // Main damage coroutine
     private IEnumerator damageSequence(ITwitchUnitStatus tgt) {
         yield return new WaitForSeconds(vfxDuration);
+
+        // Get prev transition
+        BossStatus testBoss = tgt as BossStatus;
+        bool prevTransition = (testBoss != null) && testBoss.isPhaseTransitioning();
+
         tgt.contaminate();
-        checkDeath(tgt);
+
+        // Get post transition
+        bool postTransition = checkDeath(tgt);
+        bool targetKilled = (testBoss == null) ? postTransition : (postTransition && postTransition != prevTransition);
+        if (targetKilled) {
+            Debug.Log("evoke event");
+            targetKilledEvent.Invoke();
+        }
     }
 
 

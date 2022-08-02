@@ -1382,6 +1382,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee9145307b4ba5037bde57cbd3594152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &950811191 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 456505596693541389, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+  m_PrefabInstance: {fileID: 57540868137346244}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9563171a07bc2667293a595b0e330b5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &965152486 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4533738188545276577, guid: b49559532a82fb058904213175a2ef05, type: 3}
@@ -1881,17 +1892,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0619f83556423369b6f53615030aab2, type: 3}
---- !u!114 &1334316942 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 456505596693541389, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
-  m_PrefabInstance: {fileID: 57540868137346244}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9563171a07bc2667293a595b0e330b5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1405396350
 GameObject:
   m_ObjectHideFlags: 0
@@ -3026,7 +3026,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemies:
-  - {fileID: 1334316942}
+  - {fileID: 950811191}
   hittableStageElements: []
   spawnIn: 1
   roomCamera: {fileID: 4447532}
