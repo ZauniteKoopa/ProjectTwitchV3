@@ -219,10 +219,10 @@ public class PlayerStatus : ITwitchStatus
     }
 
 
-    // Main method to damage player unit
-    //  Pre: damage is a number greater than 0
-    //  Post: damage is inflicted on player unit and return is damage is successful
-    public override bool damage(float dmg, bool isTrue) {
+    // Main method to inflict basic damage on unit
+    //  Pre: damage is a number greater than 0, isTrue indicates if its true damage. true damage is not affected by armor and canCrit: can the damage given crit
+    //  Post: unit gets inflicted with damage 
+    public override bool damage(float dmg, bool isTrue, bool canCrit = false) {
         dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, armor * armorMultiplier);
 
         lock (healthLock) {
@@ -738,16 +738,18 @@ public class PlayerStatus : ITwitchStatus
     //  initDmg: initial, immediate damage applied to enemy, > 0
     //  poison: PoisonVial that will be inflicted to this enemy.
     //  numStacks: number of stacks applied to enemy when doing immediate damage
+    //  canCrit: can the damage given crit
     //  Post: damage AND poison will be applied to enemy
-    public override void poisonDamage(float initDmg, IVial poison, int numStacks) {}
+    public override void poisonDamage(float initDmg, IVial poison, int numStacks, bool canCrit = false) {}
 
 
     // Main method to do poison damage (specific to twitch damage)
     //  initDmg: initial, immediate damage applied to enemy, > 0
     //  poison: PoisonVial that will be inflicted to this enemy IFF unit isn't already inflicted with poison
     //  numStacks: number of stacks applied to enemy when doing immediate damage
-    //  Post: damage AND poison will be applied to enemy
-    public override void weakPoisonDamage(float initDmg, IVial poison, int numStacks) {}
+    //  canCrit: can the damage given crit
+    //  Post: damage AND poison will be applied to enemy IFF enemy had no poison initially
+    public override void weakPoisonDamage(float initDmg, IVial poison, int numStacks, bool canCrit = false) {}
 
 
     // Main function to contaminate the unit with the poison they already have

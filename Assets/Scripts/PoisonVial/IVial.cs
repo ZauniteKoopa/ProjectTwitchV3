@@ -187,4 +187,10 @@ public interface IVial
     //  Post: returns whether it makes you volatile. If so, also returns a float that represents the duration of the volatility
     bool makesTargetVolatile(out float volatileDuration);
 
+
+    // Main function to enhance the damage given how infected a unit is
+    //  Pre: damage >= 0.0 && 0 <= numPoisonStacks <= 6
+    //  Post: returns the enhanced damage
+    float enhanceDamage(float damage, int numPoisonStacks);
+
 }

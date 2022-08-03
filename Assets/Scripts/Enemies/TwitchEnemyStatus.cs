@@ -359,9 +359,17 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
 
     // Main method to inflict basic damage on unit
-    //  Pre: damage is a number greater than 0
-    //  Post: unit gets inflicted with damage and returns if damage was successful
-    public override bool damage(float dmg, bool isTrue) {
+    //  Pre: damage is a number greater than 0, isTrue indicates if its true damage. true damage is not affected by armor and canCrit: can the damage given crit
+    //  Post: unit gets inflicted with damage 
+    public override bool damage(float dmg, bool isTrue, bool canCrit = false) {
+        // Enhance using poison if it can be crit
+        lock (poisonLock) {
+            if (canCrit && currentPoison != null) {
+                dmg = currentPoison.enhanceDamage(dmg, numPoisonStacks);
+            }
+        }
+
+        // calculate actual damage
         dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, baseArmor * armorMultiplier);
 
         // Apply damage. Use a lock to make sure changes to health are synchronized
@@ -387,13 +395,17 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
 
 
     // Main method to do poison damage (specific to twitch damage)
-    //  initDmg: initial, immediate damage applied to enemy, >= 0
-    //  poison: PoisonVial that will be inflicted to this enemy. Must not be null
-    //  numStacks: number of stacks applied to enemy when doing immediate damage >= 0
+    //  initDmg: initial, immediate damage applied to enemy, > 0
+    //  poison: PoisonVial that will be inflicted to this enemy.
+    //  numStacks: number of stacks applied to enemy when doing immediate damage
+    //  canCrit: can the damage given crit
     //  Post: damage AND poison will be applied to enemy
-    public override void poisonDamage(float initDmg, IVial poison, int numStacks) {
+    public override void poisonDamage(float initDmg, IVial poison, int numStacks, bool canCrit = false) {
         Debug.Assert(initDmg >= 0.0f && numStacks >= 0);
         Debug.Assert(poison != null);
+
+        // Do damage
+        damage(initDmg, false, canCrit);
 
         // Change poison and start poison DoT loop if it hadn't started already
         lock(poisonLock) {
@@ -444,9 +456,6 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             }
             enemyAudio.setStepRateFactor(currentModifier);
         }
-
-        // Do damage
-        damage(initDmg, false);
     }
 
 
@@ -454,8 +463,11 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  initDmg: initial, immediate damage applied to enemy, > 0
     //  poison: PoisonVial that will be inflicted to this enemy IFF unit isn't already inflicted with poison
     //  numStacks: number of stacks applied to enemy when doing immediate damage
-    //  Post: damage AND poison will be applied to enemy
-    public override void weakPoisonDamage(float initDmg, IVial poison, int numStacks) {
+    //  canCrit: can the damage given crit
+    //  Post: damage AND poison will be applied to enemy IFF enemy had no poison initially
+    public override void weakPoisonDamage(float initDmg, IVial poison, int numStacks, bool canCrit = false) {
+        // Do damage
+        damage(initDmg, false, canCrit);
 
         // Edit poison variables
         lock(poisonLock) {
@@ -504,9 +516,6 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             }
             enemyAudio.setStepRateFactor(currentModifier);
         }
-
-        // Do damage
-        damage(initDmg, false);
     }
 
 

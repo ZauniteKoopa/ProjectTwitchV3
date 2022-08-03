@@ -638,6 +638,17 @@ public class PoisonVial : IVial
     }
 
 
+    // Main function to enhance the damage given how infected a unit is
+    //  Pre: damage >= 0.0 && 0 <= numPoisonStacks <= 6
+    //  Post: returns the enhanced damage
+    public float enhanceDamage(float damage, int numPoisonStacks) {
+        Debug.Assert(damage >= 0.0f);
+        Debug.Assert(numPoisonStacks >= 0 && numPoisonStacks <= 6);
+
+        return sideEffect.enhanceDamage(damage, numPoisonStacks);
+    }
+
+
     // Main function to apply Enemy Aura effects
     //  Pre: aura != null, auraType is an enum within VirtualSideEffect that specifies what type of effect you're looking for, 6 >= numStacks >= 0
     //  Post: If auraType matches side effect, apply the appropriate effects. Returns true if successful, returns false if 

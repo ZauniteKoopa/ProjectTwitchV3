@@ -176,4 +176,12 @@ public class VirtualSideEffect : ScriptableObject
         autoContaminateDuration = 3.0f;
         return false;
     }
+
+
+    // Main function to modify damage based on the number of poison stacks an enemy has
+    //  Pre: damage > 0 && 0 <= numPoisonStacks <= 6
+    //  Post: returns a float that modifies damage if you got crit
+    public virtual float enhanceDamage(float damage, int numPoisonStacks) {
+        return damage;
+    }
 }

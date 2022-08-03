@@ -76,8 +76,8 @@ public class BossStatus : TwitchEnemyStatus
     // Main damage function to override
     //  Pre: damage is a number greater than 0
     //  Post: unit gets inflicted with damage and returns if damage was successful
-    public override bool damage(float dmg, bool isTrue) {
-        bool didDamage = (!phaseTransitioning) ? base.damage(dmg, isTrue) : false;
+    public override bool damage(float dmg, bool isTrue, bool canCrit = false) {
+        bool didDamage = (!phaseTransitioning) ? base.damage(dmg, isTrue, canCrit) : false;
 
         // Check if you're transitioning to another phase
         lock (healthLock) {

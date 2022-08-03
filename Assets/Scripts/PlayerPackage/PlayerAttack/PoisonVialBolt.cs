@@ -33,9 +33,9 @@ public class PoisonVialBolt : AbstractStraightProjectile, ITwitchBasicAttack
         Debug.Assert(target != null);
 
         if (poison != null) {
-            target.poisonDamage(getDamage(0), poison, 1);
+            target.poisonDamage(getDamage(0), poison, 1, true);
         } else {
-            target.damage(getDamage(0), false);
+            target.damage(getDamage(0), false, true);
         }
     }
 

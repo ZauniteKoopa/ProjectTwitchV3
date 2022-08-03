@@ -14,16 +14,18 @@ public abstract class ITwitchUnitStatus : IUnitStatus
     //  initDmg: initial, immediate damage applied to enemy, > 0
     //  poison: PoisonVial that will be inflicted to this enemy.
     //  numStacks: number of stacks applied to enemy when doing immediate damage
+    //  canCrit: can the damage given crit
     //  Post: damage AND poison will be applied to enemy
-    public abstract void poisonDamage(float initDmg, IVial poison, int numStacks);
+    public abstract void poisonDamage(float initDmg, IVial poison, int numStacks, bool canCrit = false);
 
 
     // Main method to do poison damage (specific to twitch damage)
     //  initDmg: initial, immediate damage applied to enemy, > 0
     //  poison: PoisonVial that will be inflicted to this enemy IFF unit isn't already inflicted with poison
     //  numStacks: number of stacks applied to enemy when doing immediate damage
-    //  Post: damage AND poison will be applied to enemy
-    public abstract void weakPoisonDamage(float initDmg, IVial poison, int numStacks);
+    //  canCrit: can the damage given crit
+    //  Post: damage AND poison will be applied to enemy IFF enemy had no poison initially
+    public abstract void weakPoisonDamage(float initDmg, IVial poison, int numStacks, bool canCrit = false);
 
 
     // Main function to contaminate the unit with the poison they already have
