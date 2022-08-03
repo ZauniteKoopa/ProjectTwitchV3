@@ -555,6 +555,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceBar: {fileID: 517444219212811392}
   resourceText: {fileID: 0}
+  fractionFormat: 1
+  deactivateTextOnZero: 0
 --- !u!1 &517444219169648229
 GameObject:
   m_ObjectHideFlags: 0
@@ -942,6 +944,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360218b3a8a8b2f478f2739cf3c4b98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stunnedStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  stunnedEndEvent:
+    m_PersistentCalls:
+      m_Calls: []
   statusDisplay: {fileID: 983735315198066456}
   unitDeathEvent:
     m_PersistentCalls:
@@ -1043,6 +1051,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f874ce0961e6675ace6511506b2818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  behaviorResetEvent:
+    m_PersistentCalls:
+      m_Calls: []
   aggressiveBranch: {fileID: 517444219762197813}
   passiveBranch: {fileID: 517444219762197769}
 --- !u!195 &517444219762197821
@@ -1791,7 +1802,7 @@ Transform:
   m_GameObject: {fileID: 5233559652307195404}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 7, y: 7, z: 7}
+  m_LocalScale: {x: 7.5, y: 7.5, z: 7.5}
   m_Children: []
   m_Father: {fileID: 517444219762197818}
   m_RootOrder: 5

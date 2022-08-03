@@ -818,6 +818,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f874ce0961e6675ace6511506b2818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  behaviorResetEvent:
+    m_PersistentCalls:
+      m_Calls: []
   aggressiveBranch: {fileID: 2455479537994466309}
   passiveBranch: {fileID: 2455479537994466316}
 --- !u!195 &2455479537994466319
@@ -1093,6 +1096,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceBar: {fileID: 2455479538476748210}
   resourceText: {fileID: 0}
+  fractionFormat: 1
+  deactivateTextOnZero: 0
 --- !u!1 &2455479538470645591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1482,7 +1487,7 @@ Transform:
   m_GameObject: {fileID: 7898363362553206590}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 7, y: 7, z: 7}
+  m_LocalScale: {x: 7.5, y: 7.5, z: 7.5}
   m_Children: []
   m_Father: {fileID: 2455479537994466312}
   m_RootOrder: 5

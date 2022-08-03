@@ -72,12 +72,15 @@ public abstract class AbstractDamageZone : MonoBehaviour
 
         // Go through the copy to damage targets
         foreach (ITwitchUnitStatus target in damagedTargets) {
+            BossStatus testBoss = target as BossStatus;
+            bool prevTransition = (testBoss != null) && testBoss.isPhaseTransitioning();
+
             damageTarget(target, dmg);
             applyVisualEffects(target);
 
-            // Check if target is alive or boss is transitioning afterwards
-            BossStatus testBoss = target as BossStatus;
-            if (!target.isAlive() || (testBoss != null && testBoss.isPhaseTransitioning())) {
+            // Check if target is alive or boss is transitioning afterwards (cannot be transitioning before this attack)
+            bool postTransitioning = (testBoss != null) && testBoss.isPhaseTransitioning();
+            if (!target.isAlive() || (postTransitioning && postTransitioning != prevTransition)) {
                 numTargetsKilled++;
             }
         }
@@ -90,10 +93,12 @@ public abstract class AbstractDamageZone : MonoBehaviour
 
 
     // Main function to check if target was killed afterwards, mostly used if it's a DELAYED function due to the VFX
-    protected void checkDeath(ITwitchUnitStatus target) {
+    protected bool checkDeath(ITwitchUnitStatus target) {
         BossStatus testBoss = target as BossStatus;
         if (!target.isAlive() || (testBoss != null && testBoss.isPhaseTransitioning())) {
-            targetKilledEvent.Invoke();
+            return true;
+        } else {
+            return false;
         }
     }
 
