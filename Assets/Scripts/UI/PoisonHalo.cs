@@ -9,7 +9,7 @@ public class PoisonHalo : INumberDisplay
     private SpriteRenderer[] poisonSprites;
     [SerializeField]
     private SpriteRenderer bigPoisonSprite;
-    private float alphaTransparency = 0.65f;
+    private float alphaTransparency = 0.8f;
 
 
     // Main function to display a positive number, whether through icons or text

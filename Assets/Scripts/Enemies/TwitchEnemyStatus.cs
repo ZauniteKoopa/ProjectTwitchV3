@@ -362,7 +362,14 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  Pre: damage is a number greater than 0
     //  Post: unit gets inflicted with damage and returns if damage was successful
     public override bool damage(float dmg, bool isTrue) {
+        // Calculate damage
         dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, baseArmor * armorMultiplier);
+
+        // Apply damagePopup if it's possible. Round it to tenths so that you don't get ugly decimals
+        if (damagePopupPrefab != null && dmg > 0.0f) {
+            TextPopup dmgPopup = Object.Instantiate(damagePopupPrefab, transform);
+            dmgPopup.SetUpPopup("" + (Mathf.Round(dmg * 10f) / 10f));
+        }
 
         // Apply damage. Use a lock to make sure changes to health are synchronized
         lock(healthLock) {
