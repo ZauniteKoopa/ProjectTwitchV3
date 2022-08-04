@@ -17,5 +17,5 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 94cd622bc7798e53097ba715600a694f, type: 3}
   healthPercentHealed: 0.25
   healTime: 6
-  ultCooldown: 60
+  ultCooldown: 30
   ultCost: 8
