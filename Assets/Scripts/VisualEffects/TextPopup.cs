@@ -12,7 +12,7 @@ public class TextPopup : MonoBehaviour
     [SerializeField]
     private Vector3 initialPos = Vector3.zero;
     [SerializeField]
-    private Vector3 endPos = Vector3.zero;
+    private float floatDistance = 4f;
     [SerializeField]
     private Color startColor = Color.white;
     [SerializeField]
@@ -22,6 +22,10 @@ public class TextPopup : MonoBehaviour
     [SerializeField]
     private float stayDuration = 0.25f;
 
+    // The parent to do damage on
+    private Transform pseudoParent = null;
+    
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,9 +34,10 @@ public class TextPopup : MonoBehaviour
     }
 
     //Method to set text up
-    public void SetUpPopup(string textInfo)
+    public void SetUpPopup(string textInfo, Transform popupParent)
     {
         popupInfo.text = textInfo;
+        pseudoParent = popupParent;
     }
 
 
@@ -43,13 +48,17 @@ public class TextPopup : MonoBehaviour
         float distanceTimer = 0f;
         WaitForEndOfFrame waitFrame = new WaitForEndOfFrame();
 
+        // Calculate used positions
+        Vector3 realStartPos = (pseudoParent == null) ? initialPos : pseudoParent.TransformPoint(initialPos);
+        Vector3 realEndPos = realStartPos + floatDistance * Vector3.up;
+
         // Main timer for when it's constant
         popupInfo.color = startColor;
         
         while (distanceTimer < stayDuration) {
             yield return waitFrame;
             distanceTimer += Time.deltaTime;
-            transform.localPosition = Vector3.Lerp(initialPos, endPos, distanceTimer / maxDistanceTime);
+            transform.position = Vector3.Lerp(realStartPos, realEndPos, distanceTimer / maxDistanceTime);
         }
 
         // Main timer for when it starts to fade
@@ -62,7 +71,7 @@ public class TextPopup : MonoBehaviour
             fadeTimer += Time.deltaTime;
 
             // Update properties
-            transform.localPosition = Vector3.Lerp(initialPos, endPos, distanceTimer / maxDistanceTime);
+            transform.position = Vector3.Lerp(realStartPos, realEndPos, distanceTimer / maxDistanceTime);
             popupInfo.color = Color.Lerp(startColor, endColor, fadeTimer / fadeDuration);
         }
 
