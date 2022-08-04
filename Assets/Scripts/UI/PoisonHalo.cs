@@ -9,6 +9,7 @@ public class PoisonHalo : INumberDisplay
     private SpriteRenderer[] poisonSprites;
     [SerializeField]
     private SpriteRenderer bigPoisonSprite;
+    private float alphaTransparency = 0.65f;
 
 
     // Main function to display a positive number, whether through icons or text
@@ -40,6 +41,7 @@ public class PoisonHalo : INumberDisplay
     //  Pre: color is the color you want to change to
     //  Post: updates color accordingly
     public override void displayColor(Color color) {
+        color.a = alphaTransparency;
         bigPoisonSprite.color = color;
 
         foreach (SpriteRenderer poisonSprite in poisonSprites) {
