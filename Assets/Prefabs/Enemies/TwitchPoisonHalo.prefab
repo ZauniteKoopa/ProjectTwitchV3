@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3031346523968163793}
-  - component: {fileID: 4362605303531907272}
   - component: {fileID: 2386236190643978791}
   m_Layer: 0
   m_Name: TwitchPoisonHalo
@@ -38,18 +37,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4362605303531907272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1447185203035618013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c843c5741b381c0cf83b08eb5ddfc037, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2386236190643978791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,6 +66,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7158081900972847193}
   - component: {fileID: 7047513972590036110}
+  - component: {fileID: 4057650384400023386}
   m_Layer: 5
   m_Name: Poison1
   m_TagString: Untagged
@@ -94,7 +82,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1891382163359168599}
   m_LocalRotation: {x: -0.3420201, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: 0, y: 1.5, z: -0.5}
+  m_LocalPosition: {x: 0, y: 1.5, z: -1.21}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 3031346523968163793}
@@ -151,6 +139,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4057650384400023386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891382163359168599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c843c5741b381c0cf83b08eb5ddfc037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5707964005684505878
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,6 +161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 139067507924509632}
   - component: {fileID: 5409819025593737642}
+  - component: {fileID: 6059416652857570208}
   m_Layer: 5
   m_Name: Poison3
   m_TagString: Untagged
@@ -233,6 +234,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6059416652857570208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5707964005684505878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c843c5741b381c0cf83b08eb5ddfc037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7052228129449527226
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,6 +256,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5627850147439636643}
   - component: {fileID: 8181025728059090476}
+  - component: {fileID: 8646587229566784882}
   m_Layer: 5
   m_Name: Poison2
   m_TagString: Untagged
@@ -315,6 +329,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8646587229566784882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7052228129449527226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c843c5741b381c0cf83b08eb5ddfc037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7107236110352717548
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,6 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2385875930910766838}
   - component: {fileID: 1328812633433431654}
+  - component: {fileID: 3237711871698975929}
   m_Layer: 5
   m_Name: BigPoison
   m_TagString: Untagged
@@ -397,6 +424,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3237711871698975929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7107236110352717548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c843c5741b381c0cf83b08eb5ddfc037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7339711293239552238
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,6 +446,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2817460041983323261}
   - component: {fileID: 7126759073514717066}
+  - component: {fileID: 8222623469501255950}
   m_Layer: 5
   m_Name: Poison4
   m_TagString: Untagged
@@ -479,6 +519,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8222623469501255950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7339711293239552238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c843c5741b381c0cf83b08eb5ddfc037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8768916094399205707
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,6 +541,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7830299789564486178}
   - component: {fileID: 2341809838643183831}
+  - component: {fileID: 282185345979044285}
   m_Layer: 5
   m_Name: Poison5
   m_TagString: Untagged
@@ -561,3 +614,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &282185345979044285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8768916094399205707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c843c5741b381c0cf83b08eb5ddfc037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
