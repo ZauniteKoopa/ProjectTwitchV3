@@ -429,7 +429,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2455479537889438893}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -718,6 +718,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   statusDisplay: {fileID: 7281989864836158956}
+  damagePopupPrefab: {fileID: 3095767809177235347, guid: 8a163cb91e466cb43904ca8b45b8de9c, type: 3}
   unitDeathEvent:
     m_PersistentCalls:
       m_Calls:
@@ -1580,6 +1581,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TwitchPoisonHalo
       objectReference: {fileID: 0}
+    - target: {fileID: 2341809838643183831, guid: 79b9fab25517d10fcbda228451b92157, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3031346523968163793, guid: 79b9fab25517d10fcbda228451b92157, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -1624,7 +1629,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5409819025593737642, guid: 79b9fab25517d10fcbda228451b92157, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7047513972590036110, guid: 79b9fab25517d10fcbda228451b92157, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126759073514717066, guid: 79b9fab25517d10fcbda228451b92157, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8181025728059090476, guid: 79b9fab25517d10fcbda228451b92157, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}

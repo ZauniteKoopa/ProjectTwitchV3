@@ -19,6 +19,10 @@ public class TwitchInventory : ITwitchInventory
     [Header("UI Elements")]
     [SerializeField]
     private ITwitchPlayerUI mainPlayerUI;
+    [SerializeField]
+    private TextPopup upgradePopup;
+    [SerializeField]
+    private float upgradeInterval = 1.0f;
     public UnityEvent playerCraftEvent;
 
 
@@ -559,6 +563,38 @@ public class TwitchInventory : ITwitchInventory
         mainPlayerUI.displayPrimaryVial(primaryVial);
 
         onPrimaryVialChange();
+        StartCoroutine(displayUpgradeGains());
+    }
+
+
+    // Main function to do upgrade popup sequence
+    //  Pre: none
+    //  Post: displays the result of the previous upgrades via popups
+    private IEnumerator displayUpgradeGains() {
+        // Calculate wait frame
+        WaitForSeconds upgradeIntervalFrame = new WaitForSeconds(upgradeInterval);
+
+        // show primary vial upgrades
+        if (primaryVial != null) {
+            List<string> primaryUpgrades = primaryVial.getPrevUpgradeDisplays();
+
+            foreach (string upgrade in primaryUpgrades) {
+                TextPopup dmgPopup = Object.Instantiate(upgradePopup, transform.position, Quaternion.identity);
+                dmgPopup.SetUpPopup(upgrade);
+                yield return upgradeIntervalFrame;
+            }
+        }
+
+        // show secondary vial upgrades
+        if (secondaryVial != null) {
+            List<string> secondaryUpgrades = secondaryVial.getPrevUpgradeDisplays();
+
+            foreach (string upgrade in secondaryUpgrades) {
+                TextPopup dmgPopup = Object.Instantiate(upgradePopup, transform.position, Quaternion.identity);
+                dmgPopup.SetUpPopup(upgrade);
+                yield return upgradeIntervalFrame;
+            }
+        }
     }
 
 

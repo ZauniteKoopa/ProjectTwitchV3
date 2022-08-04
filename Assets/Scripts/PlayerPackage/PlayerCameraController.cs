@@ -72,6 +72,23 @@ public class PlayerCameraController : MonoBehaviour
     }
 
 
+    // Static function to get UI to face the camera, (object forward points in same direction as camera)
+    //  Pre: object != null, mainPlayerCamera != null
+    //  Post: Object now faces the camera
+    public static void faceCamera(Transform facingObject) {
+
+        // Get calculated X
+        Vector3 rawForward = facingObject.position - mainPlayerCamera.transform.position;
+        facingObject.forward = rawForward;
+        float rotX = facingObject.eulerAngles.x;
+        float rotY = 180f;
+        float rotZ = 0f;
+
+        // Create new rotation
+        facingObject.rotation = Quaternion.Euler(rotX, rotY, rotZ);
+    }
+
+
     // Main IE numerator to moving the camera
     //  Pre: parent is the transform you want the camera to parent to, localPosition is the local position of the camera relative to the parent, mainPlayerCamera != null
     //  Post: moves the camera

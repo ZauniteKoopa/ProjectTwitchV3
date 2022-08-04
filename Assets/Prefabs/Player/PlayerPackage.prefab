@@ -4319,7 +4319,7 @@ MonoBehaviour:
   m_FillMethod: 0
   m_FillAmount: 0
   m_FillClockwise: 1
-  m_FillOrigin: 1
+  m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1191993606
@@ -11600,6 +11600,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   statusDisplay: {fileID: 5473243851907251149}
+  damagePopupPrefab: {fileID: 3095767809177235347, guid: 8a163cb91e466cb43904ca8b45b8de9c, type: 3}
   unitDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -11663,6 +11664,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   mainPlayerUI: {fileID: 666051070539244718}
+  upgradePopup: {fileID: 1636935206753159446, guid: b5c14ab63afa07f41a88843810b239a9, type: 3}
+  upgradeInterval: 0.5
   playerCraftEvent:
     m_PersistentCalls:
       m_Calls: []

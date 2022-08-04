@@ -79,6 +79,12 @@ public interface IVial
     bool upgrade(Ingredient ing1, Ingredient ing2);
 
 
+    // Main function to get previous upgrades as an array of strings
+    //  Pre: None
+    //  Post: returns a list of strings to be displayed as popups, once this has been called, the cache for previous upgrades will be cleared
+    List<string> getPrevUpgradeDisplays();
+
+
     // Function to access the color of this vial
     //  Pre: null
     //  Post: Returns a valid color
