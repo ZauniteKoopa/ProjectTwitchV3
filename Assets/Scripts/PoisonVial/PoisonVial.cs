@@ -17,6 +17,10 @@ public class PoisonVial : IVial
     private const int MAX_TOTAL_STATS = 10;
     private const int MAX_SINGLE_STAT = 5;
 
+    // Variables to keep track of previous upgrades
+    private Dictionary<string, int> prevUpgradeGains = new Dictionary<string, int>();
+    private bool gainedEffectLastUpgrade = false;
+
     // Ammo management
     private int ammo;
     private static int MAX_AMMO = 60;
@@ -433,21 +437,33 @@ public class PoisonVial : IVial
 
             // Calculate stat gain
             int currentStatGain = ing.calculateStatGain(ignoredIndex);
+            string prevUpgradesKey = "";
 
             // Switch on stat gain
             switch(currentStatGain) {
                 case 0:
                     potency++;
+                    prevUpgradesKey = "Potency";
                     break;
                 case 1:
                     poison++;
+                    prevUpgradesKey = "Poison";
                     break;
                 case 2:
                     reactivity++;
+                    prevUpgradesKey = "Reactivity";
                     break;
                 case 3:
                     stickiness++;
+                    prevUpgradesKey = "Stickiness";
                     break;
+            }
+
+            // Update prev gains
+            if (prevUpgradeGains.ContainsKey(prevUpgradesKey)) {
+                prevUpgradeGains[prevUpgradesKey]++; 
+            } else {
+                prevUpgradeGains.Add(prevUpgradesKey, 1);
             }
         }
 
@@ -492,9 +508,32 @@ public class PoisonVial : IVial
             if (possibleSpecializations.Count > 0) {
                 Specialization selectedSpecialization = possibleSpecializations[Random.Range(0, possibleSpecializations.Count)];
                 sideEffect = PoisonVialDatabase.getRandomSideEffect(selectedSpecialization);
+                gainedEffectLastUpgrade = true;
             }
 
         }
+    }
+
+
+    // Main function to get previous upgrades as an array of strings
+    //  Pre: None
+    //  Post: returns a list of strings to be displayed as popups, once this has been called, the cache for previous upgrades will be cleared
+    public List<string> getPrevUpgradeDisplays() {
+        // Get list of popups by going through the entire dictionary and checking if you gained the side effect on the last upgrade
+        List<string> upgradePopups = new List<string>();
+        foreach (KeyValuePair<string, int> entry in prevUpgradeGains) {
+            upgradePopups.Add(entry.Key + ": " + entry.Value);
+        }
+
+        if (gainedEffectLastUpgrade) {
+            upgradePopups.Add(sideEffect.getName());
+        }
+
+        // Clear upgrade cache so that the next time this is called, it will receive all the upgrades after this display call
+        prevUpgradeGains.Clear();
+        gainedEffectLastUpgrade = false;
+
+        return upgradePopups;
     }
 
 

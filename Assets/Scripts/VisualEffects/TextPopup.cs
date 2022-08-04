@@ -34,7 +34,7 @@ public class TextPopup : MonoBehaviour
     }
 
     //Method to set text up
-    public void SetUpPopup(string textInfo, Transform popupParent)
+    public void SetUpPopup(string textInfo, Transform popupParent = null)
     {
         popupInfo.text = textInfo;
         pseudoParent = popupParent;
@@ -49,7 +49,7 @@ public class TextPopup : MonoBehaviour
         WaitForEndOfFrame waitFrame = new WaitForEndOfFrame();
 
         // Calculate used positions
-        Vector3 realStartPos = (pseudoParent == null) ? initialPos : pseudoParent.TransformPoint(initialPos);
+        Vector3 realStartPos = (pseudoParent == null) ? transform.position : pseudoParent.TransformPoint(initialPos);
         Vector3 realEndPos = realStartPos + floatDistance * Vector3.up;
 
         // Main timer for when it's constant

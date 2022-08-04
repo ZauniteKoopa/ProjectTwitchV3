@@ -84,7 +84,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 10
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3095767809177235350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupInfo: {fileID: 3095767810533815101}
   initialPos: {x: 0, y: 0, z: 0}
-  endPos: {x: 0, y: 4, z: 0}
+  floatDistance: 4
   startColor: {r: 0.745283, g: 0.18120608, b: 0, a: 1}
   endColor: {r: 0.7490196, g: 0.18431373, b: 0, a: 0}
   fadeDuration: 0.5

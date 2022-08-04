@@ -11664,6 +11664,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   mainPlayerUI: {fileID: 666051070539244718}
+  upgradePopup: {fileID: 1636935206753159446, guid: b5c14ab63afa07f41a88843810b239a9, type: 3}
+  upgradeInterval: 0.5
   playerCraftEvent:
     m_PersistentCalls:
       m_Calls: []
