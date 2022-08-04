@@ -288,8 +288,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  Pre: deltaTime > 0f
     //  Post: handle side effect and do damage
     private IEnumerator volatileSideEffect(float volatileDuration) {
-        // Turn isVolatile to true
+        // Turn isVolatile to true (you have cured poison because poison turned to volatile, helps contamination handler)
         isVolatile = true;
+        unitCurePoisonEvent.Invoke();
         if (statusDisplay != null) {
             statusDisplay.displayVolatile(true);
         }
@@ -401,15 +402,17 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 unitPoisonedEvent.Invoke();
             }
 
-            // Edit poison variables
-            currentPoison = poison;
+            // Edit poison variables: if unit was already volatile with another poison, poison cannot be overriden
+            if (!isVolatile) {
+                currentPoison = poison;
+            }
             poisonTimer = 0f;
             numPoisonStacks = Mathf.Min(numPoisonStacks + numStacks, MAX_STACKS);
 
             // Display poison
             if (poisonStackDisplay != null) {
                 poisonStackDisplay.displayNumber(numPoisonStacks);
-                poisonStackDisplay.displayColor(poison.getColor());
+                poisonStackDisplay.displayColor(currentPoison.getColor());
             }
 
             // Enable enemy aura if aura is allowed to be present

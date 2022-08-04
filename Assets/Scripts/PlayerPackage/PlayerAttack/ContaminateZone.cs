@@ -45,13 +45,26 @@ public class ContaminateZone : AbstractDamageZone
     // Main damage coroutine
     private IEnumerator damageSequence(ITwitchUnitStatus tgt) {
         yield return new WaitForSeconds(vfxDuration);
+
+        // Get prev transition
+        BossStatus testBoss = tgt as BossStatus;
+        bool prevTransition = (testBoss != null) && testBoss.isPhaseTransitioning();
+
         tgt.contaminate();
+
+        // Get post transition
+        bool postTransition = checkDeath(tgt);
+        bool targetKilled = (testBoss == null) ? postTransition : (postTransition && postTransition != prevTransition);
+        if (targetKilled) {
+            targetKilledEvent.Invoke();
+        }
     }
 
 
     // Protected method to apply visual effect to targets
     protected override void applyVisualEffects(ITwitchUnitStatus tgt) {
-        if (tgt.isPoisoned()) {
+        // Very duct tape solution because abstract enemy field doesn't remove on death
+        if (tgt.isPoisoned() && tgt.gameObject.activeInHierarchy) {
             IFixedEffect currentLob = Object.Instantiate(visualEffectPrefab, transform.position, Quaternion.identity);
             currentLob.activateEffect(transform.position, tgt.transform.position, vfxDuration);
         }
@@ -65,7 +78,7 @@ public class ContaminateZone : AbstractDamageZone
 
         lock(targetsLock) {
             foreach(ITwitchUnitStatus tgt in inRangeTargets) {
-                canUse = tgt.isPoisoned();
+                canUse = tgt.isPoisoned() && tgt.gameObject.activeInHierarchy;
 
                 if (canUse) {
                     break;
