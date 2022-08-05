@@ -130,6 +130,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         }
 
         // Initialize other variables in child classes
+        statusEffectVFXs.clear();
         initialize();
     }
 
@@ -178,8 +179,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  Pre: none
     //  Post: Returns a float that represents base attack (> 0)
     public override float getBaseAttack() {
-        return baseAttack * attackMultiplier
-        ;
+        return baseAttack * attackMultiplier;
     }
 
 
@@ -339,10 +339,17 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     public override void makeManic(bool willManic, float manicIntensity) {
         Debug.Assert(manicIntensity > 0.0f && manicIntensity < 1.0f);
 
+        // Update UI
         if (statusDisplay != null) {
             statusDisplay.displayManic(willManic);
         }
 
+        // Update vfx display
+        if (statusEffectVFXs != null) {
+            statusEffectVFXs.displayManic(willManic);
+        }
+
+        // Update stats
         if (manic != willManic) {
             manic = willManic;
 
@@ -619,6 +626,8 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 healthBar.setStatus(curHealth, maxHealth);
             }
         }
+
+        statusEffectVFXs.clear();
 
         enemyResetEvent.Invoke();
     }
