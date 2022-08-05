@@ -25,9 +25,11 @@ public class ExplosiveSurprise : VirtualSideEffect
     public override void executeAuraDamage(EnemyAura aura, AuraType auraType, int numStacks, IVial vial) {
         Debug.Assert(aura != null && vial != null && 0 <= numStacks && numStacks <= 6);
 
+        int reactivityStat = vial.getStats()["Reactivity"];
+
         if (auraType == AuraType.SURPRISE) {
             // Do explosive damage
-            float explosiveDmg = Mathf.Max(baseExplosionDamage + (explosiveDamageGrowth * (numStacks - 3)), baseExplosionDamage);
+            float explosiveDmg = Mathf.Max(baseExplosionDamage + (explosiveDamageGrowth * (reactivityStat - 3)), baseExplosionDamage);
             aura.damageAllTargets(explosiveDmg);
 
             // Do slow status

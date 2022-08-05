@@ -21,10 +21,6 @@ public class SprayAndPray : VirtualSideEffect
         // roll the dice, if you rolled the dice correctly, get a crit
         float critChance = Mathf.Lerp(0f, maxCritChance, (float)numPoisonStacks / 6f);
         float diceRoll = Random.Range(0f, 100f);
-
-        if (diceRoll <= critChance) {
-            Debug.Log("CRIT WITH " + critChance + "% CHANCE");
-        }
         return (diceRoll <= critChance) ? damage * critDamageMultiplier : damage;
     }
 

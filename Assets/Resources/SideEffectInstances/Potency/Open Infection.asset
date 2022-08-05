@@ -15,5 +15,5 @@ MonoBehaviour:
   effectName: Open Infection
   specialization: 0
   icon: {fileID: 0}
-  maxCritChance: 40
+  maxCritChance: 42
   critDamageMultiplier: 2
