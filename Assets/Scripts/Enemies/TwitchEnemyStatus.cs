@@ -295,6 +295,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             statusDisplay.displayVolatile(true);
         }
 
+        if (statusEffectVFXs != null) {
+            statusEffectVFXs.displayImpendingDoomHalo(volatileDuration, transform);
+        }
+
         // Main timer loop
         float timer = 0.0f;
         WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();

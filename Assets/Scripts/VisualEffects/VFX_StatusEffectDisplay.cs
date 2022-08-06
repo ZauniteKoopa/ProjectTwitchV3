@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Assertions;
 
 public class VFX_StatusEffectDisplay : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class VFX_StatusEffectDisplay : MonoBehaviour
     private Image invisScreen;
     [SerializeField]
     private ParticleSystem manicEffect;
+    [SerializeField]
+    private CollapsingHalo impendingDoomHalo;
 
     private int healers = 0;
 
@@ -57,12 +60,26 @@ public class VFX_StatusEffectDisplay : MonoBehaviour
     }
 
 
+    // Main function to display doom halo
+    //  Pre:
+    //  Post:
+    public void displayImpendingDoomHalo(float duration, Transform character) {
+        if (impendingDoomHalo != null) {
+            impendingDoomHalo.runCollapsingHalo(duration, character);
+        }
+    }
+
+
     // Main function to clear up everything
     //  Pre: none
     //  Post: clears side effects
     public void clear() {
         if (healingParticles != null) {
             healingParticles.Stop();
+        }
+
+        if (impendingDoomHalo != null) {
+            impendingDoomHalo.clearHalo();
         }
 
         displayStealth(false);

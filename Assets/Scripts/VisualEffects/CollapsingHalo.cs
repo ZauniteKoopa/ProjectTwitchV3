@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class CollapsingHalo : MonoBehaviour
 {
     [SerializeField]
     private float radius = 2f;
     [SerializeField]
-    private Transform character = null;
-    [SerializeField]
     private float circleStepSize = 0.02f;
     [SerializeField]
     private LineRenderer circleBorderRender = null;
+    [SerializeField]
+    private LineRenderer circleProgressRender = null;
+
+    private Transform character = null;
 
     private const float CIRCLE_RADS = 2f * Mathf.PI;
     private const float COLLAPSING_TIME = 0.1f;
@@ -20,14 +23,46 @@ public class CollapsingHalo : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        StartCoroutine(collapsingHaloSequence(3f));
+        // Error check
+        if (circleBorderRender == null || circleProgressRender == null) {
+            Debug.LogError("LineRenderers are not connected to collapsing halo");
+        }
+
+        if (radius <= 0.0f || circleStepSize <= 0.0f || circleStepSize >= CIRCLE_RADS) {
+            Debug.LogError("Invalid radius or invalid step size assigned for collapsing halo");
+        }
+    }
+
+
+    // Main function to activate collapsing halo sequence
+    //  Pre: duration > COLLAPSING_TIME && only 1 halo sequence is running at a time && c != null
+    //  Post: running collapsing halo sequence
+    public void runCollapsingHalo(float duration, Transform c) {
+        Debug.Assert(duration > COLLAPSING_TIME && c != null);
+
+        character = c;
+        StartCoroutine(collapsingHaloSequence(duration));
+    }
+
+
+    // Main function to clear halo
+    //  Pre: none
+    //  Post: halo routine has been interrupted and you cannot see halos anymore
+    public void clearHalo() {
+        StopAllCoroutines();
+        circleBorderRender.enabled = false;
+        circleProgressRender.enabled = false;
     }
 
 
     // Main Sequence to do collapsing circle
+    //  Pre: duration > COLLAPSING_TIME, character != null
     private IEnumerator collapsingHaloSequence(float duration) {
+        Debug.Assert(duration > 0.0f && character != null);
+
         // Enable renderers
         circleBorderRender.enabled = true;
+        circleProgressRender.enabled = true;
 
         // Main loop for drawing the circle
         float timer = 0f;
@@ -38,7 +73,8 @@ public class CollapsingHalo : MonoBehaviour
 
             timer += Time.deltaTime;
             float progress = Mathf.Min(timer / drawDuration, 1f);
-            drawCircle(radius, circleBorderRender, progress);
+            drawCircle(radius, circleProgressRender, progress);
+            drawCircle(radius, circleBorderRender, 1f);
         }
 
         // Main loop for collapsing the circle
@@ -49,14 +85,23 @@ public class CollapsingHalo : MonoBehaviour
             timer += Time.deltaTime;
             float curRadius = Mathf.Lerp(radius, 0f, timer / COLLAPSING_TIME);
             drawCircle(curRadius, circleBorderRender, 1f);
+            drawCircle(curRadius, circleProgressRender, 1f);
         }
 
         // Disable renderers
         circleBorderRender.enabled = false;
+        circleProgressRender.enabled = false;
     }
 
+
     // Main function to draw a circle
+    //  Pre: r >= 0.0f, circleRender != null, 0 <= progress <= 1f, character != null
+    //  Post: draws a circle revolving around character
     private void drawCircle(float r, LineRenderer circleRender, float progress) {
+        Debug.Assert(r >= 0.0f);
+        Debug.Assert(progress >= 0f && progress <= 1f);
+        Debug.Assert(circleRender != null && character != null);
+
         Vector3 circleCenter = character.position;
         float radsProgressed = Mathf.Lerp(0f, CIRCLE_RADS, progress);
         int numSteps = (int)Mathf.Ceil(radsProgressed / circleStepSize);
