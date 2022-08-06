@@ -13,11 +13,13 @@ public class CollapsingHalo : MonoBehaviour
     private LineRenderer circleBorderRender = null;
     [SerializeField]
     private LineRenderer circleProgressRender = null;
+    [SerializeField]
+    private AnimationCurve collapsingCurve = AnimationCurve.Linear(0f, 1f, 1f, 0f);
 
     private Transform character = null;
 
     private const float CIRCLE_RADS = 2f * Mathf.PI;
-    private const float COLLAPSING_TIME = 0.1f;
+    private const float COLLAPSING_TIME = 0.25f;
 
 
     // Start is called before the first frame update
@@ -82,8 +84,12 @@ public class CollapsingHalo : MonoBehaviour
         while (timer < COLLAPSING_TIME) {
             yield return null;
 
+            // Calculate radius depending on the collapsing curve
             timer += Time.deltaTime;
-            float curRadius = Mathf.Lerp(radius, 0f, timer / COLLAPSING_TIME);
+            float collapseCurveX = Mathf.Min(timer / COLLAPSING_TIME, 1f);
+            float curRadius = radius * collapsingCurve.Evaluate(collapseCurveX);
+
+            // Draw the circles
             drawCircle(curRadius, circleBorderRender, 1f);
             drawCircle(curRadius, circleProgressRender, 1f);
         }
