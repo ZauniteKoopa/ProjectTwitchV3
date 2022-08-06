@@ -9,15 +9,29 @@ public class VFX_StatusEffectDisplay : MonoBehaviour
     // Main function to handle healing effects
     [SerializeField]
     private ParticleSystem healingParticles;
+
     [SerializeField]
     private Image invisScreen;
     [SerializeField]
+    private float invisTransitionDuration = 0.5f;
+    private Coroutine invisSequence = null;
+    private Color invisColor;
+
+    [SerializeField]
     private ParticleSystem manicEffect;
+
     [SerializeField]
     private CollapsingHalo impendingDoomHalo;
 
     private int healers = 0;
 
+
+    // On awake, get variables
+    private void Awake() {
+        if (invisScreen != null) {
+            invisColor = invisScreen.color;
+        }
+    }
 
     // Main function to display healing
     //  Pre: bool to represent whether to turn this on or off
@@ -55,8 +69,37 @@ public class VFX_StatusEffectDisplay : MonoBehaviour
     //  Post: displays stealth if enemy is invisible
     public void displayStealth(bool invisible) {
         if (invisScreen != null) {
-            invisScreen.gameObject.SetActive(invisible);
+            // Stop current running invis sequence
+            if (invisSequence != null) {
+                StopCoroutine(invisSequence);
+                invisSequence = null;
+            }
+
+            // If invisible, start a sequence, else, 
+            if (invisible) {
+                invisSequence = StartCoroutine(transitionInvisScreen());
+            } else {
+                invisScreen.gameObject.SetActive(false);
+            }
         }
+    }
+
+
+    // Main function to transition invis screen
+    private IEnumerator transitionInvisScreen() {
+        float timer = 0f;
+        invisScreen.gameObject.SetActive(true);
+        invisScreen.color = Color.clear;
+
+        while (timer < invisTransitionDuration) {
+            yield return null;
+
+            timer += Time.deltaTime;
+            invisScreen.color = Color.Lerp(Color.clear, invisColor, timer / invisTransitionDuration);
+        }
+
+        invisScreen.color = invisColor;
+        invisSequence = null;
     }
 
 
