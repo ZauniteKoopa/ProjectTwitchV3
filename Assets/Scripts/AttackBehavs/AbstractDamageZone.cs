@@ -33,6 +33,7 @@ public abstract class AbstractDamageZone : MonoBehaviour
                 if (!inRangeTargets.Contains(colliderTgt)) {
                     inRangeTargets.Add(colliderTgt);
                     colliderTgt.unitDeathEvent.AddListener(onTargetDeath);
+                    colliderTgt.unitDespawnEvent.AddListener(delegate{ onTargetDeath(colliderTgt); });
                     unitEnterZone(colliderTgt);
                 }
             }
@@ -49,6 +50,7 @@ public abstract class AbstractDamageZone : MonoBehaviour
                 if (inRangeTargets.Contains(colliderTgt)) {
                     inRangeTargets.Remove(colliderTgt);
                     colliderTgt.unitDeathEvent.RemoveListener(onTargetDeath);
+                    colliderTgt.unitDespawnEvent.RemoveListener(delegate{ onTargetDeath(colliderTgt); });
                     unitExitZone(colliderTgt);  
                 }
             }
@@ -146,6 +148,8 @@ public abstract class AbstractDamageZone : MonoBehaviour
             if (twitchUnitStatus != null && inRangeTargets.Contains(twitchUnitStatus)) {
                 inRangeTargets.Remove(twitchUnitStatus);
                 status.unitDeathEvent.RemoveListener(onTargetDeath);
+                twitchUnitStatus.unitDespawnEvent.RemoveListener(delegate{ onTargetDeath(status); });
+
                 unitExitZone(twitchUnitStatus);  
             }
         }

@@ -377,7 +377,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, baseArmor * armorMultiplier);
 
         // Apply damagePopup if it's possible. Round it to tenths so that you don't get ugly decimals
-        if (damagePopupPrefab != null && dmg > 0.0f) {
+        if (damagePopupPrefab != null && dmg > 0.0f && isAlive()) {
             TextPopup dmgPopup = Object.Instantiate(damagePopupPrefab, transform.position, Quaternion.identity);
             dmgPopup.SetUpPopup("" + (Mathf.Round(dmg * 10f) / 10f), transform);
         }
