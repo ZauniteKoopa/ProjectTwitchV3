@@ -237,7 +237,7 @@ public class PlayerStatus : ITwitchStatus
         dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, armor * armorMultiplier);
 
         // Apply damagePopup if it's possible. Round it to tenths so that you don't get ugly decimals
-        if (damagePopupPrefab != null && dmg > 0.0f && !isInvincible) {
+        if (damagePopupPrefab != null && dmg > 0.0f && !isInvincible && isAlive()) {
             TextPopup dmgPopup = Object.Instantiate(damagePopupPrefab, transform.position, Quaternion.identity);
             dmgPopup.SetUpPopup("" + (Mathf.Round(dmg * 10f) / 10f), transform);
         }
