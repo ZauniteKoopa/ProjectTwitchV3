@@ -253,13 +253,16 @@ public class TwitchInventory : ITwitchInventory
         if (playerAura != null) {
 
             // If conditions are met AND no running coroutine at this moment
-            if (primaryVial != null && primaryVial.isPlayerAuraPresent() && currentAuraSequence == null) {
+            if (primaryVial != null && primaryVial.isPlayerAuraPresent()) {
                 playerAura.setCaskPoison(primaryVial);
                 playerAura.setActive(true);
-                currentAuraSequence = StartCoroutine(poisonVialAuraSequence());
+
+                if (currentAuraSequence == null) {
+                    currentAuraSequence = StartCoroutine(poisonVialAuraSequence());
+                }
 
             // If conditions are not met, deactivate aura
-            } else if (primaryVial == null || !primaryVial.isPlayerAuraPresent()) {
+            } else {
                 playerAura.setActive(false);
             }
         }
