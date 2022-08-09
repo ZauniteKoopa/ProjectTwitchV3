@@ -17,6 +17,7 @@ public class CollapsingHalo : MonoBehaviour
     private AnimationCurve collapsingCurve = AnimationCurve.Linear(0f, 1f, 1f, 0f);
 
     private Transform character = null;
+    private AudioSource speaker = null;
 
     private const float CIRCLE_RADS = 2f * Mathf.PI;
     private const float COLLAPSING_TIME = 0.25f;
@@ -32,6 +33,13 @@ public class CollapsingHalo : MonoBehaviour
 
         if (radius <= 0.0f || circleStepSize <= 0.0f || circleStepSize >= CIRCLE_RADS) {
             Debug.LogError("Invalid radius or invalid step size assigned for collapsing halo");
+        }
+
+        speaker = GetComponent<AudioSource>();
+        if (speaker == null) {
+            Debug.LogError("No speaker found in this collapsing halo object", transform);
+        } else if (speaker.clip == null) {
+            Debug.LogWarning("No clip found within collapsing halo speaker, this will not make any sound", transform);
         }
     }
 
@@ -54,6 +62,7 @@ public class CollapsingHalo : MonoBehaviour
         StopAllCoroutines();
         circleBorderRender.enabled = false;
         circleProgressRender.enabled = false;
+        speaker.Stop();
     }
 
 
@@ -97,6 +106,11 @@ public class CollapsingHalo : MonoBehaviour
         // Disable renderers
         circleBorderRender.enabled = false;
         circleProgressRender.enabled = false;
+
+        speaker.Play();
+        yield return new WaitForSeconds(1.0f);
+        speaker.Stop();
+
     }
 
 

@@ -64,4 +64,6 @@ Twitch Step, boot scuffly but light (SFX_Twitch_Footsteps): https://freesound.or
 Quiet Step (SFX_General_LightStep):
 https://freesound.org/people/wibwob/sounds/277717/
 
+Impending Doom (SFX_StatusEffect_ImpendingDoom) https://freesound.org/people/miksmusic/sounds/497704/
+
 
