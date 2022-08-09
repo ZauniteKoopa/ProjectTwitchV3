@@ -74,4 +74,8 @@ Pulsating Cask Stretch (SFX_SideEffect_PulsatingCask_Stretch) https://freesound.
 
 Pulsating Cask Splat (SFX_SideEffect_PulsatingCask_Splat)  https://freesound.org/people/FoolBoyMedia/sounds/237924/
 
+Boiling Blast (SFX_SideEffect_BoilingBlast) https://freesound.org/people/LeMudCrab/sounds/163455/
+
+Healing (SFX_SideEffect_TwitchJuice) https://freesound.org/people/magnuswaker/sounds/540074/
+
 
