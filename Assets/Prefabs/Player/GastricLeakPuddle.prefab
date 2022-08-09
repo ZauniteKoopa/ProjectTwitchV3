@@ -112,6 +112,7 @@ MonoBehaviour:
   targetKilledEvent:
     m_PersistentCalls:
       m_Calls: []
+  damageSound: {fileID: 8300000, guid: d89d48c7aa14113419058098d4734b34, type: 3}
 --- !u!82 &808924251915634423
 AudioSource:
   m_ObjectHideFlags: 0
