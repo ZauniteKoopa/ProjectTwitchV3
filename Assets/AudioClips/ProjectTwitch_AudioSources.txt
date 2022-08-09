@@ -64,4 +64,18 @@ Twitch Step, boot scuffly but light (SFX_Twitch_Footsteps): https://freesound.or
 Quiet Step (SFX_General_LightStep):
 https://freesound.org/people/wibwob/sounds/277717/
 
+Impending Doom (SFX_StatusEffect_ImpendingDoom) https://freesound.org/people/miksmusic/sounds/497704/
+
+Manic Gas (SFX_SideEffect_ManicGas) https://freesound.org/people/mwirth/sounds/137174/
+
+Elastic Dome (SFX_SideEffect_ElasticDome) https://freesound.org/people/Clagnar/sounds/558578/
+
+Pulsating Cask Stretch (SFX_SideEffect_PulsatingCask_Stretch) https://freesound.org/people/pitx/sounds/15539/
+
+Pulsating Cask Splat (SFX_SideEffect_PulsatingCask_Splat)  https://freesound.org/people/FoolBoyMedia/sounds/237924/
+
+Boiling Blast (SFX_SideEffect_BoilingBlast) https://freesound.org/people/LeMudCrab/sounds/163455/
+
+Healing (SFX_SideEffect_TwitchJuice) https://freesound.org/people/magnuswaker/sounds/540074/
+
 

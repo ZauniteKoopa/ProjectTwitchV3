@@ -152,6 +152,12 @@ public interface IVial
     bool hasUltimate();
 
 
+    // Main function to check if you can actually use the ultimate
+    //  Pre: none
+    //  Post: returns whether or not you can run ultimate. Returns the ult type
+    bool hasUltimate(out UltimateType ultType);
+
+
     // Returns ultimate cooldown
     //  Pre: none
     //  Post: returns a float >= 0.0f

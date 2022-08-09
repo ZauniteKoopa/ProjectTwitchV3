@@ -735,6 +735,15 @@ public class PoisonVial : IVial
     }
 
 
+    // Main function to check if you can actually use the ultimate
+    //  Pre: none
+    //  Post: returns whether or not you can run ultimate and gives you the ult type
+    public bool hasUltimate(out UltimateType ultType) {
+        ultType = sideEffect.getUltType();
+        return ultType != UltimateType.NONE;
+    }
+
+
     // Returns ultimate cooldown
     //  Pre: none
     //  Post: returns a float >= 0.0f

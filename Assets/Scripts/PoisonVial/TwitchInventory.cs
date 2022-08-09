@@ -612,7 +612,8 @@ public class TwitchInventory : ITwitchInventory
         }
 
         // Check if vial even has an ultimate
-        if (currentPrimaryVial != null && currentPrimaryVial.hasUltimate()) {
+        UltimateType ultType;
+        if (currentPrimaryVial != null && currentPrimaryVial.hasUltimate(out ultType)) {
             // Check if cooldown is NOT running (NOT found in cooldown manager) AND that you could even execute this ultimate
             if (!vialUltCooldownManager.ContainsKey(currentPrimaryVial) && currentPrimaryVial.executeUltimate(player, dest)) {
                 // Update costs
@@ -622,6 +623,13 @@ public class TwitchInventory : ITwitchInventory
                 if (primaryVial != null) {
                     Coroutine currentCooldown = StartCoroutine(ultimateCooldownSequence(currentPrimaryVial.getUltimateCooldown(), currentPrimaryVial));
                     vialUltCooldownManager.Add(currentPrimaryVial, currentCooldown);
+                }
+
+                // Play throwing audio if the ultimate is type lob
+                if (ultType == UltimateType.LOB) {
+                    playerAudio.playCaskCastSound();
+                } else if (ultType == UltimateType.STEROID) {
+                    playerAudio.playSteroidDrinkSound();
                 }
 
                 return true;
