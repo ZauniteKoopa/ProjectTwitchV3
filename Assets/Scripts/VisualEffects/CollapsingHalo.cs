@@ -62,6 +62,11 @@ public class CollapsingHalo : MonoBehaviour
         StopAllCoroutines();
         circleBorderRender.enabled = false;
         circleProgressRender.enabled = false;
+
+        if (speaker == null) {
+            speaker = GetComponent<AudioSource>();
+        }
+        
         speaker.Stop();
     }
 
