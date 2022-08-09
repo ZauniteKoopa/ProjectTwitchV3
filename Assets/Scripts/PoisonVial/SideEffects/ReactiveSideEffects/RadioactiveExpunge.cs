@@ -16,7 +16,7 @@ public class RadioactiveExpunge : VirtualSideEffect
 
         if (auraType == AuraType.RADIOACTIVE_EXPUNGE) {
             float additionalExpungeDamage = vial.getContaminateDamage(numStacks) * expungeAuraDamage;
-            aura.damageAllTargets(additionalExpungeDamage);
+            aura.damageAllTargets(additionalExpungeDamage, true);
         }
     }
 

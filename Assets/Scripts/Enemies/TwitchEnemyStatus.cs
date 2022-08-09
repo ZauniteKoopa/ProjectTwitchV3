@@ -557,7 +557,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 damage(tempVial.getContaminateDamage(tempStacks), false);
 
                 // Apply aura damage if possible
-                if (enemyAura != null) {
+                if (enemyAura != null && tempVial.isEnemyAuraPresent(tempStacks)) {
                     tempVial.applyEnemyAuraEffects(enemyAura, AuraType.RADIOACTIVE_EXPUNGE, tempStacks);
                 }
             }

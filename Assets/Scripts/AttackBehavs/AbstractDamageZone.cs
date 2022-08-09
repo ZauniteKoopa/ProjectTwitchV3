@@ -11,12 +11,22 @@ public abstract class AbstractDamageZone : MonoBehaviour
 
     // Unity Event for when a target has been killed
     public UnityEvent targetKilledEvent;
+    
+    // Audio
+    private AudioSource speaker = null;
+    [SerializeField]
+    private AudioClip damageSound = null;
 
     
     // On awake, initialize
     private void Awake() {
         inRangeTargets = new HashSet<ITwitchUnitStatus>();
         initialize();
+
+        speaker = GetComponent<AudioSource>();
+        if (speaker != null) {
+            speaker.clip = damageSound;
+        }
     }
 
 
@@ -61,9 +71,15 @@ public abstract class AbstractDamageZone : MonoBehaviour
     // Public method to do damage to all enemies within the zone
     //  Pre: dmg is the amount effecting the targets
     //  Post: applies damage to all targets, if at least one of the targets die, trigger targetKilledEvent
-    public void damageAllTargets(float dmg) {
+    public void damageAllTargets(float dmg, bool playSound = false) {
         int numTargetsKilled = 0;
         List<ITwitchUnitStatus> damagedTargets = new List<ITwitchUnitStatus>();
+
+        // Play sound if possible
+        if (playSound && speaker != null) {
+            speaker.Stop();
+            speaker.Play();
+        }
 
         // Go through the original list to make a copy
         lock (targetsLock) {
