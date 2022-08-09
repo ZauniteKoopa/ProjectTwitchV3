@@ -3272,7 +3272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: lateLaserCharge
-      value: 0.95
+      value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: projectileSpeed
@@ -3280,7 +3280,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: initialLaserCharge
-      value: 1.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541384, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: laterProjectileInterval
@@ -3323,8 +3323,16 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: lateLaserCharge
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: projectileSpeed
       value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
+      propertyPath: initialLaserCharge
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 456505596693541391, guid: 387f4a7eee69d061f8955bbf38e471be, type: 3}
       propertyPath: laterProjectileInterval
