@@ -24,6 +24,13 @@ public class PulsatingCaskZone : IBattleUltimate
     private HashSet<ITwitchUnitStatus> attached = new HashSet<ITwitchUnitStatus>();
     private const float PULL_TIME = 0.35f;
 
+    // Audio
+    private AudioSource speaker;
+    [SerializeField]
+    private AudioClip stretchSound;
+    [SerializeField]
+    private AudioClip splatSound;
+
 
     // Main abstract function to set ult properties
     //  Pre: ultParameter.Length == 4, [caskSlow, pullDistance, pullDelay, stunDuration]
@@ -46,6 +53,13 @@ public class PulsatingCaskZone : IBattleUltimate
     //  Post: activates ultimate sequence
     public override void activateUltimate() {
         Debug.Assert(setup == true);
+
+        // error check speaker
+        speaker = GetComponent<AudioSource>();
+        if (speaker == null) {
+            Debug.LogError("No audio source connected to this speaker");
+        }
+
         StartCoroutine(ultimateSequence());
     }
 
@@ -54,10 +68,16 @@ public class PulsatingCaskZone : IBattleUltimate
     private IEnumerator ultimateSequence() {
         // Attach
         currentStage = PulsatingCaskStage.ATTACHING;
+        speaker.clip = stretchSound;
+        speaker.Play();
+
         yield return new WaitForSeconds(pullDelay);
 
         // Pull: remove slow debuff, stun all targets first and calculate their pull vectors
         currentStage = PulsatingCaskStage.PULLING;
+        speaker.clip = splatSound;
+        speaker.Play();
+
         Dictionary<ITwitchUnitStatus, Vector3> finalLocations = new Dictionary<ITwitchUnitStatus, Vector3>();
         Dictionary<ITwitchUnitStatus, Vector3> startLocations = new Dictionary<ITwitchUnitStatus, Vector3>();
 
