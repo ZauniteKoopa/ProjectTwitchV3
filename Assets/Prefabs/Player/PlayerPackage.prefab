@@ -11578,6 +11578,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 449a31d9545d078eab92b595e33037ca, type: 3}
   - {fileID: 8300000, guid: d76ca2ca044fe92c09308024cd296567, type: 3}
   - {fileID: 8300000, guid: 54ba5bc87627cb9b384fcabb8515ea97, type: 3}
+  vialDrinkSounds:
+  - {fileID: 8300000, guid: ba2679da3c0e5334fb2e29acc4aeaa82, type: 3}
   vialMixingSound: {fileID: 8300000, guid: 9784ba24f3be6a8e785812dab2eafdca, type: 3}
   footstepsManager: {fileID: 1087849593}
   defaultTimePerStep: 0.35

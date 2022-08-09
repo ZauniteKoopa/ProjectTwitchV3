@@ -628,6 +628,8 @@ public class TwitchInventory : ITwitchInventory
                 // Play throwing audio if the ultimate is type lob
                 if (ultType == UltimateType.LOB) {
                     playerAudio.playCaskCastSound();
+                } else if (ultType == UltimateType.STEROID) {
+                    playerAudio.playSteroidDrinkSound();
                 }
 
                 return true;

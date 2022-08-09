@@ -33,6 +33,8 @@ public class TwitchPlayerAudio : MonoBehaviour
     [SerializeField]
     private AudioClip[] sideEffectUpgradeSounds = null;
     [SerializeField]
+    private AudioClip[] vialDrinkSounds = null;
+    [SerializeField]
     private AudioClip vialMixingSound = null;
 
 
@@ -128,6 +130,12 @@ public class TwitchPlayerAudio : MonoBehaviour
     // Main function to play side effect upgrade sound
     public void playSideEffectUpgradeSound() {
         playRandomClip(sideEffectUpgradeSounds, voiceSpeaker);
+    }
+
+
+    // Main function to play vial drink sound when drinking a steroid
+    public void playSteroidDrinkSound() {
+        playRandomClip(vialDrinkSounds, baseSpeaker);
     }
 
 
