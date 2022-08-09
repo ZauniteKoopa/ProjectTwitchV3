@@ -79,6 +79,12 @@ public interface IVial
     bool upgrade(Ingredient ing1, Ingredient ing2);
 
 
+    // Main function to get previous upgrades as an array of strings
+    //  Pre: None
+    //  Post: returns a list of strings to be displayed as popups, once this has been called, the cache for previous upgrades will be cleared
+    List<string> getPrevUpgradeDisplays();
+
+
     // Function to access the color of this vial
     //  Pre: null
     //  Post: Returns a valid color
@@ -144,6 +150,12 @@ public interface IVial
     //  Pre: none
     //  Post: returns whether or not you can run ultimate DOESN'T CONSIDER COOLDOWNS
     bool hasUltimate();
+
+
+    // Main function to check if you can actually use the ultimate
+    //  Pre: none
+    //  Post: returns whether or not you can run ultimate. Returns the ult type
+    bool hasUltimate(out UltimateType ultType);
 
 
     // Returns ultimate cooldown

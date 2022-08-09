@@ -28,7 +28,7 @@ public class ExplosiveSurprise : VirtualSideEffect
         if (auraType == AuraType.SURPRISE) {
             // Do explosive damage
             float explosiveDmg = Mathf.Max(baseExplosionDamage + (explosiveDamageGrowth * (numStacks - 3)), baseExplosionDamage);
-            aura.damageAllTargets(explosiveDmg);
+            aura.damageAllTargets(explosiveDmg, true);
 
             // Do slow status
             aura.applyTimedSlowEffect(speedReduction, slowDuration);

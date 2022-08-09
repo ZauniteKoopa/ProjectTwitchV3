@@ -149,6 +149,10 @@ public class PlayerStatus : ITwitchStatus
         if (statusDisplay != null) {
             statusDisplay.clear();
         }
+
+        if (statusEffectVFXs != null) {
+            statusEffectVFXs.clear();
+        }
     }
 
 
@@ -168,11 +172,18 @@ public class PlayerStatus : ITwitchStatus
     //  Pre: 0.0 < manicIntensity < 1.0f;
     public override void makeManic(bool willManic, float manicIntensity) {
         Debug.Assert(manicIntensity > 0.0f && manicIntensity < 1.0f);
-
+        
+        // Update UI display
         if (statusDisplay != null) {
             statusDisplay.displayManic(willManic);
         }
 
+        // Update vfx display
+        if (statusEffectVFXs != null) {
+            statusEffectVFXs.displayManic(willManic);
+        }
+
+        // do functional effects
         if (manic != willManic) {
             manic = willManic;
 
@@ -224,6 +235,12 @@ public class PlayerStatus : ITwitchStatus
     //  Post: damage is inflicted on player unit and return is damage is successful
     public override bool damage(float dmg, bool isTrue) {
         dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, armor * armorMultiplier);
+
+        // Apply damagePopup if it's possible. Round it to tenths so that you don't get ugly decimals
+        if (damagePopupPrefab != null && dmg > 0.0f && !isInvincible && isAlive()) {
+            TextPopup dmgPopup = Object.Instantiate(damagePopupPrefab, transform.position, Quaternion.identity);
+            dmgPopup.SetUpPopup("" + (Mathf.Round(dmg * 10f) / 10f), transform);
+        }
 
         lock (healthLock) {
             if (!isInvincible && curHealth > 0f) {
@@ -582,6 +599,10 @@ public class PlayerStatus : ITwitchStatus
             statusDisplay.displayStealth(true, camoDuration, camoDuration);
         }
 
+        if (statusEffectVFXs != null) {
+            statusEffectVFXs.displayStealth(true);
+        }
+
         // Camofladge timer
         float timer = 0f;
         WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
@@ -602,6 +623,10 @@ public class PlayerStatus : ITwitchStatus
 
         if (statusDisplay != null) {
             statusDisplay.displayStealth(false, 0f, camoDuration);
+        }
+
+        if (statusEffectVFXs != null) {
+            statusEffectVFXs.displayStealth(false);
         }
     }
 
@@ -696,6 +721,10 @@ public class PlayerStatus : ITwitchStatus
             statusDisplay.displayHealing(true);
         }
 
+        if (statusEffectVFXs != null) {
+            statusEffectVFXs.displayHealing(true);
+        }
+
         // Main loop
         while (timer < duration) {
             yield return waitFrame;
@@ -712,6 +741,10 @@ public class PlayerStatus : ITwitchStatus
 
         if (statusDisplay != null) {
             statusDisplay.displayHealing(false);
+        }
+
+        if (statusEffectVFXs != null) {
+            statusEffectVFXs.displayHealing(false);
         }
 
         // pop out from healthRegenEffect sequence

@@ -18,6 +18,12 @@ public abstract class IUnitStatus : MonoBehaviour
     [SerializeField]
     protected StatusEffectDisplay statusDisplay;
 
+    [SerializeField]
+    protected VFX_StatusEffectDisplay statusEffectVFXs;
+
+    [SerializeField]
+    protected TextPopup damagePopupPrefab = null;
+
     // Main death event
     public UnitDelegate unitDeathEvent;
     

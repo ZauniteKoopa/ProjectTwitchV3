@@ -209,7 +209,11 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
         // Destroy all active crushbots
         lock (crushBotLock) {
             foreach (IUnitStatus crushBot in activeCrushBots) {
-                crushBot.gameObject.SetActive(false);
+                ITwitchUnitStatus crushBotStatus = crushBot as ITwitchUnitStatus;
+
+                if (crushBotStatus != null) {
+                    crushBotStatus.despawn();
+                }
             }
 
             activeCrushBots.Clear();

@@ -130,6 +130,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         }
 
         // Initialize other variables in child classes
+        statusEffectVFXs.clear();
         initialize();
     }
 
@@ -178,8 +179,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  Pre: none
     //  Post: Returns a float that represents base attack (> 0)
     public override float getBaseAttack() {
-        return baseAttack * attackMultiplier
-        ;
+        return baseAttack * attackMultiplier;
     }
 
 
@@ -295,6 +295,10 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             statusDisplay.displayVolatile(true);
         }
 
+        if (statusEffectVFXs != null) {
+            statusEffectVFXs.displayImpendingDoomHalo(volatileDuration, transform);
+        }
+
         // Main timer loop
         float timer = 0.0f;
         WaitForFixedUpdate waitFrame = new WaitForFixedUpdate();
@@ -339,10 +343,17 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     public override void makeManic(bool willManic, float manicIntensity) {
         Debug.Assert(manicIntensity > 0.0f && manicIntensity < 1.0f);
 
+        // Update UI
         if (statusDisplay != null) {
             statusDisplay.displayManic(willManic);
         }
 
+        // Update vfx display
+        if (statusEffectVFXs != null) {
+            statusEffectVFXs.displayManic(willManic);
+        }
+
+        // Update stats
         if (manic != willManic) {
             manic = willManic;
 
@@ -362,7 +373,14 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     //  Pre: damage is a number greater than 0
     //  Post: unit gets inflicted with damage and returns if damage was successful
     public override bool damage(float dmg, bool isTrue) {
+        // Calculate damage
         dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, baseArmor * armorMultiplier);
+
+        // Apply damagePopup if it's possible. Round it to tenths so that you don't get ugly decimals
+        if (damagePopupPrefab != null && dmg > 0.0f && isAlive()) {
+            TextPopup dmgPopup = Object.Instantiate(damagePopupPrefab, transform.position, Quaternion.identity);
+            dmgPopup.SetUpPopup("" + (Mathf.Round(dmg * 10f) / 10f), transform);
+        }
 
         // Apply damage. Use a lock to make sure changes to health are synchronized
         lock(healthLock) {
@@ -529,7 +547,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 damage(tempVial.getContaminateDamage(tempStacks), false);
 
                 // Apply aura damage if possible
-                if (enemyAura != null) {
+                if (enemyAura != null && tempVial.isEnemyAuraPresent(tempStacks)) {
                     tempVial.applyEnemyAuraEffects(enemyAura, AuraType.RADIOACTIVE_EXPUNGE, tempStacks);
                 }
             }
@@ -612,6 +630,8 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
                 healthBar.setStatus(curHealth, maxHealth);
             }
         }
+
+        statusEffectVFXs.clear();
 
         enemyResetEvent.Invoke();
     }
