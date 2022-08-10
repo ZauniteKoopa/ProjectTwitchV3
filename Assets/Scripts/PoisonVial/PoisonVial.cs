@@ -356,6 +356,7 @@ public class PoisonVial : IVial
         float curBaseDmg = BASE_CONTAMINATE_DMG + (BASE_CON_GROWTH * reactivity);
         float stackDmg = BASE_STACK_DMG + (STACK_DMG_GROWTH * reactivity);
         float contaminateDamage = curBaseDmg + (stackDmg * (numStacks - 1));
+        contaminateDamage *= sideEffect.contaminateMultiplier();
         
         Debug.Assert(contaminateDamage >= 0.0f);
         return contaminateDamage;
