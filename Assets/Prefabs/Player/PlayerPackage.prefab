@@ -1660,6 +1660,10 @@ MonoBehaviour:
   - {fileID: 5365948433264273833}
   - {fileID: 1632096162371704529}
   - {fileID: 445960166148160679}
+  - {fileID: 6811905099668368899}
+  - {fileID: 325130333908492723}
+  - {fileID: 4700188353503646090}
+  - {fileID: 4606143302450538661}
   hoverPopupInfo: {fileID: 0}
   inventoryAudio: {fileID: 114253294}
   twitchInventory: {fileID: 1211125687}
