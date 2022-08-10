@@ -33,6 +33,10 @@ public class CraftInventory : MonoBehaviour
     private VialIcon selectedVialInfo;
     [SerializeField]
     private IngredientDisplay ingredientInfo;
+    [SerializeField]
+    private HoverPopup[] hoverPopups;
+    [SerializeField]
+    private InventoryHoverPopupDisplays hoverPopupInfo;
 
     // Audio
     [Header("Audio")]
@@ -68,6 +72,11 @@ public class CraftInventory : MonoBehaviour
         if (inventoryAudio == null) {
             Debug.LogError("No audio to connect to for inventory UI", transform);
         }
+
+        hoverPopupInfo = GetComponent<InventoryHoverPopupDisplays>();
+        if (hoverPopupInfo == null) {
+            Debug.LogError("No InventoryHoverPopupDisplays component connected to inventory object", transform);
+        }
     }
 
 
@@ -92,7 +101,9 @@ public class CraftInventory : MonoBehaviour
         // Display primary vial
         primaryVialIcon.setHighlight(true);
         secondaryVialIcon.setHighlight(false);
+
         selectedVialInfo.DisplayVial(twitchInventory.getPrimaryVial());
+        hoverPopupInfo.updateDisplays(twitchInventory.getPrimaryVial());
         primaryVialSelected = true;
 
         // Play sound
@@ -107,6 +118,11 @@ public class CraftInventory : MonoBehaviour
         inInventory = false;
         Time.timeScale = prevTimeScale;
         gameObject.SetActive(false);
+
+        // Reset all hover popups
+        foreach (HoverPopup popup in hoverPopups) {
+            popup.reset();
+        }
 
         // Play sound
         if (playSound) {
@@ -159,6 +175,7 @@ public class CraftInventory : MonoBehaviour
             primaryVialSelected = true;
             craftVialSlot.Reset();
             selectedVialInfo.DisplayVial(twitchInventory.getPrimaryVial());
+            hoverPopupInfo.updateDisplays(twitchInventory.getPrimaryVial());
 
             // Change highlights
             primaryVialIcon.setHighlight(true);
@@ -176,7 +193,7 @@ public class CraftInventory : MonoBehaviour
             // Update flags and info
             primaryVialSelected = false;
             craftVialSlot.Reset();
-            twitchInventory.displaySecondaryVial(selectedVialInfo);
+            twitchInventory.displaySecondaryVial(selectedVialInfo, hoverPopupInfo);
 
             // Update highlights
             primaryVialIcon.setHighlight(false);
@@ -307,8 +324,9 @@ public class CraftInventory : MonoBehaviour
         // Update vial display
         if (primaryVialSelected) {
             selectedVialInfo.DisplayVial(twitchInventory.getPrimaryVial());
+            hoverPopupInfo.updateDisplays(twitchInventory.getPrimaryVial());
         } else {
-            twitchInventory.displaySecondaryVial(selectedVialInfo);
+            twitchInventory.displaySecondaryVial(selectedVialInfo, hoverPopupInfo);
         }
     }
 }
