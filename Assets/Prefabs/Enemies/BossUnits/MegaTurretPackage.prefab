@@ -2864,7 +2864,7 @@ MonoBehaviour:
   - {fileID: 57540867572529628}
   projectileSpeed: 20
   aimRadius: 8
-  projDamage: 3
+  projDamage: 4
   laserDamage: 7
   laserAnticipationColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   laserFiredColor: {r: 1, g: 0, b: 0, a: 1}
@@ -2917,7 +2917,7 @@ MonoBehaviour:
   - {fileID: 57540867300687285}
   projectileSpeed: 20
   aimRadius: 8
-  projDamage: 3
+  projDamage: 4
   laserDamage: 7
   laserAnticipationColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   laserFiredColor: {r: 1, g: 0, b: 0, a: 1}

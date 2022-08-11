@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectName: Explosive Surprise
   specialization: 2
+  icon: {fileID: 0}
   baseExplosionDamage: 10
   explosiveDamageGrowth: 5
-  speedReduction: 0.6
+  speedReduction: 0.5
   slowDuration: 3
