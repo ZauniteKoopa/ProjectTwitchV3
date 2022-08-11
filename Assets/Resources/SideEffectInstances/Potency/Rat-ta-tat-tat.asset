@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectName: Rat-ta-tat-tat
   specialization: 0
-  damageReductionPerHit: 0.1
+  icon: {fileID: 0}
+  damageReductionPerHit: 0.03
   minDamageReduction: 0.5
   piercingShot: {fileID: 4162204746529134715, guid: 365183e041e07e300ac0011bc5691dba, type: 3}
