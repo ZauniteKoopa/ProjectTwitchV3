@@ -497,8 +497,12 @@ public class TwitchInventory : ITwitchInventory
     // Main function to display secondary vial in an icon
     //  Pre: VialIcon must not be null
     //  Post: VialIcon will now display secondaryVial
-    public override void displaySecondaryVial(VialIcon vialIcon) {
+    public override void displaySecondaryVial(VialIcon vialIcon, InventoryHoverPopupDisplays hoverInfo = null) {
         vialIcon.DisplayVial(secondaryVial);
+
+        if (hoverInfo != null) {
+            hoverInfo.updateDisplays(secondaryVial);
+        }
     }
 
 

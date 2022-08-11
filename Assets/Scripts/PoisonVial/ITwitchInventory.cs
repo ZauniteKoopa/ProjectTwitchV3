@@ -103,7 +103,7 @@ public abstract class ITwitchInventory : MonoBehaviour
     // Main function to display secondary vial in an icon
     //  Pre: VialIcon must not be null
     //  Post: VialIcon will now display secondaryVial
-    public abstract void displaySecondaryVial(VialIcon vialIcon);
+    public abstract void displaySecondaryVial(VialIcon vialIcon, InventoryHoverPopupDisplays hoverInfo = null);
 
 
     // Main function to check if you can upgrade a vial
