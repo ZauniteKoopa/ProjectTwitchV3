@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectName: Impending Doom
   specialization: 2
-  contaminateDamageMultiplier: 1.5
-  autoContaminateDuration: 3
+  icon: {fileID: 0}
+  contaminateDamageMultiplier: 15
+  autoContaminateDuration: 2.7
