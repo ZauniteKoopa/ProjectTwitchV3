@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectName: Gastric Leak
   specialization: 3
+  icon: {fileID: 0}
   leakInterval: 2
-  leakSlow: 0.65
+  leakSlow: 0.7
   leakPuddle: {fileID: 1859964783368215304, guid: 047ecf2bac4f36a8a8085b691ce58caf, type: 3}

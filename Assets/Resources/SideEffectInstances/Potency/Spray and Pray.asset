@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 439d073ccae7dd7c599739f61ade9fcb, type: 3}
-  m_Name: Rat-ta-tat-tat
+  m_Name: Spray and Pray
   m_EditorClassIdentifier: 
-  effectName: Rat-ta-tat-tat
+  effectName: Spray and Pray
   specialization: 0
   icon: {fileID: 0}
   damageReductionPerHit: 0.03
