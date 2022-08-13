@@ -61,6 +61,9 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     private ResourceBar healthBar = null;
     [SerializeField]
     private INumberDisplay poisonStackDisplay = null;
+    private DamagePopup activeDamagePopup = null;
+    private const float DAMAGE_POPUP_UPDATE_DURATION = 0.2f;
+    private readonly object damagePopupLock = new object();
 
     // Events
     [Header("Death / Reset")]
@@ -369,6 +372,25 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     }
 
 
+    // Main function to have active popup duration running
+    //  Pre: startDamage can be any number AND activeDamagePopup == null
+    //  Post: this current popup will be the active damage popup until it is done
+    private IEnumerator launchDamagePopup(float startDamage) {
+        Debug.Assert(activeDamagePopup == null);
+
+        DamagePopup dmgPopup = Object.Instantiate(damagePopupPrefab, transform.position, Quaternion.identity);
+        dmgPopup.launch(startDamage, transform);
+
+        activeDamagePopup = dmgPopup;
+        yield return new WaitForSeconds(DAMAGE_POPUP_UPDATE_DURATION);
+
+        // set active damage popup safely
+        lock (damagePopupLock) {
+            activeDamagePopup = null;
+        }
+    }
+
+
     // Main method to inflict basic damage on unit
     //  Pre: damage is a number greater than 0, isTrue indicates if its true damage. true damage is not affected by armor and canCrit: can the damage given crit
     //  Post: unit gets inflicted with damage 
@@ -383,12 +405,17 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         // calculate actual damage
         dmg = (isTrue) ? dmg : IUnitStatus.calculateDamage(dmg, baseArmor * armorMultiplier);
 
-        // Apply damagePopup if it's possible. Round it to tenths so that you don't get ugly decimals
+        // Apply damagePopup if it's possible
         if (damagePopupPrefab != null && dmg > 0.0f && isAlive()) {
-            TextPopup dmgPopup = Object.Instantiate(damagePopupPrefab, transform.position, Quaternion.identity);
-            float displayedDmg = Mathf.Round(dmg * 10f) / 10f;
-            displayedDmg = (displayedDmg < 0.1f) ? 0.1f : displayedDmg;
-            dmgPopup.SetUpPopup("" + displayedDmg, transform);
+
+            // Decide whether or not to make a new damage popup or increment the most recent one
+            lock (damagePopupLock) {
+                if (activeDamagePopup != null) {
+                    activeDamagePopup.updateDamage(dmg);
+                } else {
+                    StartCoroutine(launchDamagePopup(dmg));
+                }
+            }
         }
 
         // Apply damage. Use a lock to make sure changes to health are synchronized

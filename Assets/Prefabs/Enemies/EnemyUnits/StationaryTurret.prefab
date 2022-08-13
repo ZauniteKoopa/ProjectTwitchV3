@@ -355,7 +355,7 @@ MonoBehaviour:
       m_Calls: []
   statusDisplay: {fileID: 8671162249198797940}
   statusEffectVFXs: {fileID: 4066737761722861966}
-  damagePopupPrefab: {fileID: 3095767809177235347, guid: 8a163cb91e466cb43904ca8b45b8de9c, type: 3}
+  damagePopupPrefab: {fileID: 5029783681753522166, guid: 8a163cb91e466cb43904ca8b45b8de9c, type: 3}
   unitDeathEvent:
     m_PersistentCalls:
       m_Calls:
@@ -411,6 +411,7 @@ MonoBehaviour:
   maxLootDistance: 2.5
   healthBar: {fileID: 3408818156410562281}
   poisonStackDisplay: {fileID: 2554633020670100490}
+  activeDamagePopup: {fileID: 0}
   enemyResetEvent:
     m_PersistentCalls:
       m_Calls:

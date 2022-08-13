@@ -22,7 +22,7 @@ public abstract class IUnitStatus : MonoBehaviour
     protected VFX_StatusEffectDisplay statusEffectVFXs;
 
     [SerializeField]
-    protected TextPopup damagePopupPrefab = null;
+    protected DamagePopup damagePopupPrefab = null;
 
     // Main death event
     public UnitDelegate unitDeathEvent;

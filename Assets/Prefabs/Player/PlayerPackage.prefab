@@ -11856,7 +11856,7 @@ MonoBehaviour:
       m_Calls: []
   statusDisplay: {fileID: 5473243851907251149}
   statusEffectVFXs: {fileID: 666051070002590507}
-  damagePopupPrefab: {fileID: 3095767809177235347, guid: 8a163cb91e466cb43904ca8b45b8de9c, type: 3}
+  damagePopupPrefab: {fileID: 5029783681753522166, guid: 8a163cb91e466cb43904ca8b45b8de9c, type: 3}
   unitDeathEvent:
     m_PersistentCalls:
       m_Calls: []
