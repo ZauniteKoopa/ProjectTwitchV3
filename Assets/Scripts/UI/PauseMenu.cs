@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Pause menu class: MUST BE CONNECTED TO THE PAUSE MENU GAME OBJECT TO BE USED
 public class PauseMenu : IPauseMenu
@@ -36,7 +37,7 @@ public class PauseMenu : IPauseMenu
     //  Post: will exit the application IFF application is paused on this menu
     public override void onExitApplication() {
         if (paused) {
-            Application.Quit();
+            SceneManager.LoadScene("MainMenu");
         }
     }
 
