@@ -141,6 +141,7 @@ public class StatusEffectDisplay : MonoBehaviour
             }
 
             invisibilityIcon.gameObject.SetActive(invisible);
+            invisibilityBar.gameObject.SetActive(invisible);
             invisibilityBar.setStatus(curInvisTimer, invisDuration);
         }
     }
@@ -186,6 +187,7 @@ public class StatusEffectDisplay : MonoBehaviour
 
         if (invisibilityIcon != null) {
             invisibilityIcon.gameObject.SetActive(false);
+            invisibilityBar.gameObject.SetActive(false);
         }
 
         if (healingIcon != null) {
