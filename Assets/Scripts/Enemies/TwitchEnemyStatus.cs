@@ -279,7 +279,7 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
     protected virtual void checkAutoExecution(IVial pv, int pStacks) {
         Debug.Assert(pStacks >= 0 && pStacks <= 6);
 
-        if (pv != null) {
+        if (pv != null && isAlive()) {
             if (pv.canAutoExecute(false, curHealth / maxHealth, pStacks)) {
                 damage(curHealth, true);
             }
@@ -311,24 +311,26 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         }
 
         // Do contaminate damage
-        int tempStacks;
-        IVial tempVial;
-        lock (poisonLock) {
-            tempVial = currentPoison;
-            tempStacks = numPoisonStacks;
-        }
-
-        if (tempVial != null) {
-            damage(tempVial.getContaminateDamage(tempStacks), false);
-
-            // Apply aura damage if possible
-            if (enemyAura != null) {
-                tempVial.applyEnemyAuraEffects(enemyAura, AuraType.RADIOACTIVE_EXPUNGE, tempStacks);
+        if (isAlive()) {
+            int tempStacks;
+            IVial tempVial;
+            lock (poisonLock) {
+                tempVial = currentPoison;
+                tempStacks = numPoisonStacks;
             }
-        }
 
-        // Reset stealth if low (canAutoExecute also resets stealth)
-        tempVial.canAutoExecute(false, curHealth / maxHealth, tempStacks);
+            if (tempVial != null) {
+                damage(tempVial.getContaminateDamage(tempStacks), false);
+
+                // Apply aura damage if possible
+                if (enemyAura != null) {
+                    tempVial.applyEnemyAuraEffects(enemyAura, AuraType.RADIOACTIVE_EXPUNGE, tempStacks);
+                }
+            }
+
+            // Reset stealth if low (canAutoExecute also resets stealth)
+            tempVial.canAutoExecute(false, getHealthPercentageToReset(), tempStacks);
+        }
 
         // Clear out status effects and poison
         clearPoison();
@@ -337,7 +339,14 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
         if (statusDisplay != null) {
             statusDisplay.displayVolatile(false);
         }
+    }
 
+
+    // Main function to get health percentage left to reset (what health to reach to trigger a stealth reset)
+    //  Pre: none
+    //  Post: 0 <= return < maxHealth
+    protected virtual float getHealthPercentageToReset() {
+        return curHealth / maxHealth;
     }
 
 

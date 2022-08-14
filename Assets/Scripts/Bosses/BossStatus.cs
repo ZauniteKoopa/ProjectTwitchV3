@@ -95,6 +95,19 @@ public class BossStatus : TwitchEnemyStatus
     }
 
 
+    // Main function to get health percentage left to reset (what health to reach to trigger a stealth reset)
+    //  Pre: none
+    //  Post: 0 <= return < maxHealth
+    protected override float getHealthPercentageToReset() {
+        // If transitioning phases, return 0.0f immediately changing of phases
+        if (phaseTransitioning) {
+            return 0.0f;
+        } else {
+            return (curHealth - curPhaseThreshold) / (maxHealth - curPhaseThreshold);
+        }
+    }
+
+
     // Phase transitioning sequence
     //  Pre: boss has moved on to the next phase
     //  Post: Boss becomes invulnerable to all damage and enemy behavior stops temporarily
