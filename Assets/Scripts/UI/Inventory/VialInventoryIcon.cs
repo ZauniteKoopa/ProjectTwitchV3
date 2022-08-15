@@ -18,22 +18,30 @@ public class VialInventoryIcon : VialIcon, IBeginDragHandler, IEndDragHandler, I
     public bool dropped;
     public UnityEvent iconSelectedEvent;
 
+    // UI layer (render order)
+    private Transform defaultParent;
+    private Transform selectedParent;
+
     // Start is called before the first frame update
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         startPosition = rectTransform.anchoredPosition;
+        defaultParent = transform.parent;
         dropped = false;
     }
 
     //Event handler when beginning to drag
     public void OnBeginDrag(PointerEventData eventData)
     {
+        Debug.Assert(selectedParent != null);
+
         if (GetVial() != null)
         {
             canvasGroup.blocksRaycasts = false;
             canvasGroup.alpha = 0.6f;
+            transform.SetParent(selectedParent);
         }
 
         iconSelectedEvent.Invoke();
@@ -53,6 +61,7 @@ public class VialInventoryIcon : VialIcon, IBeginDragHandler, IEndDragHandler, I
     {
         if (!dropped && GetVial() != null)
         { 
+            transform.SetParent(defaultParent);
             canvasGroup.blocksRaycasts = true;
             canvasGroup.alpha = 1f;
             rectTransform.anchoredPosition = startPosition;
@@ -67,6 +76,15 @@ public class VialInventoryIcon : VialIcon, IBeginDragHandler, IEndDragHandler, I
     //  Post: sets highlight depending on boolean sent in
     public void setHighlight(bool on) {
         vialHighlight.enabled = on;
+    }
+
+
+    // Main function to set selected layer
+    //  Pre: layer != null
+    //  Post: sets where to send the icon when player selects it
+    public void setSelectedLayer(Transform sLayer) {
+        Debug.Assert(sLayer != null);
+        selectedParent = sLayer;
     }
 
 

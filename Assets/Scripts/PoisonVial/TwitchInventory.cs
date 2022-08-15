@@ -467,9 +467,10 @@ public class TwitchInventory : ITwitchInventory
     // Main function to display ingredients given an array of ingredient icons
     //  Pre: array of icons != null with non-null elements AND array length >= number of distinct ingredient types
     //  Post: Displays ingredients onto ingredient icons
-    public override void displayIngredients(IngredientIcon[] ingredientIcons) {
+    public override void displayIngredients(IngredientIcon[] ingredientIcons, Transform selectedParent) {
         // Pre condition
         Debug.Assert(ingredientIcons != null && ingredientIcons.Length >= ingredientInventory.Count);
+        Debug.Assert(selectedParent != null);
 
         // Index used to access the icons array
         int iconIndex = 0;
@@ -479,7 +480,7 @@ public class TwitchInventory : ITwitchInventory
             // Set up each ingredient icon
             IngredientIcon currentIcon = ingredientIcons[iconIndex];
             Debug.Assert(currentIcon != null);
-            currentIcon.SetUpIcon(entry.Key, entry.Value);
+            currentIcon.SetUpIcon(entry.Key, entry.Value, selectedParent);
 
             // Increment iconIndex
             iconIndex++;
