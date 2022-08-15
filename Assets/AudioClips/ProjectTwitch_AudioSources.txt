@@ -83,3 +83,7 @@ Gastric Leak (SFX_SideEffect_GastricLeak) https://freesound.org/people/morganpur
 Explosive Surprise (SFX_SideEffect_ExplosiveSurprise) https://freesound.org/people/vckhaze/sounds/332602/
 
 Radioactive Expunge (SFX_SideEffect_RadioactiveExpunge) https://freesound.org/people/mango777/sounds/547375/
+
+Boss Laser (SFX_Boss_LaserFire): https://pixabay.com/sound-effects/shotgun-firing-4-6746/
+
+Boss Projectile (SFX_Boss_Projectile): https://freesound.org/people/Bird_man/sounds/275151/
