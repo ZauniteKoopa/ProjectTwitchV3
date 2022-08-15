@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using TMPro;
 
 public class CraftInventory : MonoBehaviour
@@ -14,6 +15,8 @@ public class CraftInventory : MonoBehaviour
     private VialInventoryIcon primaryVialIcon;
     [SerializeField]
     private VialInventoryIcon secondaryVialIcon;
+    [SerializeField]
+    private Image caskThrowIcon;
     private bool primaryVialSelected = true;
 
     // Crafting
@@ -93,7 +96,10 @@ public class CraftInventory : MonoBehaviour
     private void openInventory() {
         // Display basic ingredient icons and vial icons
         twitchInventory.displayIngredients(ingredients, transform.GetChild(transform.childCount - 1));
-        primaryVialIcon.DisplayVial(twitchInventory.getPrimaryVial());
+        IVial primaryVial = twitchInventory.getPrimaryVial();
+
+        primaryVialIcon.DisplayVial(primaryVial);
+        caskThrowIcon.color = (primaryVial != null) ? primaryVial.getColor() : Color.black;
         twitchInventory.displaySecondaryVial(secondaryVialIcon);
 
         // Reset craft window
@@ -109,8 +115,8 @@ public class CraftInventory : MonoBehaviour
         primaryVialIcon.setHighlight(true);
         secondaryVialIcon.setHighlight(false);
 
-        selectedVialInfo.DisplayVial(twitchInventory.getPrimaryVial());
-        hoverPopupInfo.updateDisplays(twitchInventory.getPrimaryVial());
+        selectedVialInfo.DisplayVial(primaryVial);
+        hoverPopupInfo.updateDisplays(primaryVial);
         primaryVialSelected = true;
 
         // Play sound

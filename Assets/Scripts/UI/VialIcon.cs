@@ -20,6 +20,8 @@ public class VialIcon : AbilityIcon
     [SerializeField]
     private Image vialDisplay;
     [SerializeField]
+    private Image vialDisplay2;
+    [SerializeField]
     private ResourceBar totalStats;
     [SerializeField]
     private TMP_Text sideEffectName;
@@ -39,6 +41,10 @@ public class VialIcon : AbilityIcon
         //Enable or disable
         if (vialDisplay != null) {
             vialDisplay.color = vialColor;
+        }
+
+        if (vialDisplay2 != null) {
+            vialDisplay2.color = vialColor;
         }
 
         // Get ammo information
