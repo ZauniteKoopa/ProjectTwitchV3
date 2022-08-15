@@ -224,7 +224,6 @@ public class CraftInventory : MonoBehaviour
         craftVialSlot.Reset();
 
         ingredientInfo.uiClear();
-        selectedVialInfo.DisplayVial(null);
 
         inventoryAudio.playDropSound();
     }
