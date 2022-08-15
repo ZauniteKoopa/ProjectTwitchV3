@@ -119,6 +119,13 @@ public class CraftInventory : MonoBehaviour
         Time.timeScale = prevTimeScale;
         gameObject.SetActive(false);
 
+        // Reset all icons
+        primaryVialIcon.onInventoryClose();
+        secondaryVialIcon.onInventoryClose();
+        foreach (IngredientIcon ingIcon in ingredients) {
+            ingIcon.onInventoryClose();
+        }
+
         // Reset all hover popups
         foreach (HoverPopup popup in hoverPopups) {
             popup.reset();

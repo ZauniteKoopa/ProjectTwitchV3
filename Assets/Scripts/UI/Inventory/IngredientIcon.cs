@@ -171,4 +171,15 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     {
         return ingredient != null && count > 0;
     }
+
+
+    // Main function to handle when the inventory closes
+    //  Pre: inventory is about to close
+    //  Post: sets it to this automatically
+    public void onInventoryClose() {
+        canvasGroup.blocksRaycasts = true;
+        canvasGroup.alpha = 1f;
+        rectTransform.anchoredPosition = startPosition;
+        dropped = false;
+    }
 }
