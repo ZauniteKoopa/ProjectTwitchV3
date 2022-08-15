@@ -87,3 +87,7 @@ Radioactive Expunge (SFX_SideEffect_RadioactiveExpunge) https://freesound.org/pe
 Boss Laser (SFX_Boss_LaserFire): https://pixabay.com/sound-effects/shotgun-firing-4-6746/
 
 Boss Projectile (SFX_Boss_Projectile): https://freesound.org/people/Bird_man/sounds/275151/
+
+Boss Phase Shift (SFX_Boss_PhaseShift): https://freesound.org/people/damnsatinist/sounds/493915/
+
+Boss Death (SFX_Boss_Death): https://freesound.org/people/psychentist/sounds/168567/
