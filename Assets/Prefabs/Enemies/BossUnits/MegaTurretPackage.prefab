@@ -2683,7 +2683,7 @@ MonoBehaviour:
   defaultTimePerStep: 0.25
   isStationary: 1
   deathSounds:
-  - {fileID: 8300000, guid: fc7191afdb773a54e83844822d017dab, type: 3}
+  - {fileID: 8300000, guid: 3c925b5b3e8c1fd4887460421dc9e601, type: 3}
   attackSounds: []
   phaseShiftSounds:
   - {fileID: 8300000, guid: 8a0c5c660eef1e04bba504d40249dc40, type: 3}
