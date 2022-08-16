@@ -7,3 +7,5 @@ Graphic_Menu, edited with GIMP:
 https://www.flickr.com/photos/howzey/3578149185
 
 Graphic_WoodenMenuBoard: https://pixabay.com/illustrations/board-wood-wall-wooden-wall-grain-218533/
+
+Graphic_Arrow: https://pixabay.com/vectors/arrow-right-arrow-sign-symbol-icon-310628/
