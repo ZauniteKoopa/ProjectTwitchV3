@@ -46,6 +46,9 @@ public class MegaTurretBossScoutingBranch : IBossScoutingBranch
     [SerializeField]
     private float lateLaserCharge = 0.75f;
 
+    // Audio
+    private MegaTurretBossAudioManager audioManager;
+
 
     // On awake, error check
     private void Awake() {
@@ -57,6 +60,12 @@ public class MegaTurretBossScoutingBranch : IBossScoutingBranch
             if (pillar == null) {
                 Debug.LogError("Found null element in targeted pillars list for scouting branch of this boss: " + transform, transform);
             }
+        }
+
+        // Get reference variables
+        audioManager = GetComponent<MegaTurretBossAudioManager>();
+        if (audioManager == null) {
+            Debug.LogError("No mega turret audio manager found on this mega turret boss", transform);
         }
     }
 
@@ -92,6 +101,8 @@ public class MegaTurretBossScoutingBranch : IBossScoutingBranch
         foreach (EnemyAreaOfEffect laser in lasers) {
             laser.changeColor(Color.clear);
         }
+
+        audioManager.stopAudio();
     }
 
 
@@ -123,6 +134,8 @@ public class MegaTurretBossScoutingBranch : IBossScoutingBranch
         BasicEnemyProjectile currentProjectile = Object.Instantiate(baseProjectile, projectileSrc, Quaternion.identity);
         currentProjectile.setDamage(projDamage * enemyStats.getAttackMultiplier());
         currentProjectile.setUpMovement(aimDirection, projectileSpeed);
+
+        audioManager.playBulletFire();
     }
 
 
@@ -138,11 +151,13 @@ public class MegaTurretBossScoutingBranch : IBossScoutingBranch
             transform.forward = aimDirection;
             changeLaserColors(laserAnticipationColor, phaseNumber);
             float curAnticipation = (phaseNumber < 2) ? initialLaserCharge : lateLaserCharge;
+            audioManager.playLaserCharge();
 
             yield return new WaitForSeconds(curAnticipation);
 
             // Fire: change to fired color and do damage
             changeLaserColors(laserFiredColor, phaseNumber);
+            audioManager.playLaserFire();
             
             if (phaseNumber < 2) {
                 lasers[0].damageAllTargets(laserDamage * enemyStats.getAttackMultiplier());
@@ -153,7 +168,7 @@ public class MegaTurretBossScoutingBranch : IBossScoutingBranch
             }
 
             // Clear everything up after a delay
-            yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(0.3f);
             changeLaserColors(Color.clear, phaseNumber);
 
             // Start cooldown

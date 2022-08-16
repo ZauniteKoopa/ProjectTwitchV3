@@ -31,6 +31,9 @@ public class BossStatus : TwitchEnemyStatus
     [SerializeField]
     private ResourceBar phaseThresholdBar;
 
+    // Boss Audio (same as the enemy status audio manager)
+    private BossAudioManager audioManager;
+
 
     // Main function to handle initialization
     protected override void initialize() {
@@ -55,6 +58,11 @@ public class BossStatus : TwitchEnemyStatus
         phaseThresholdBar.setStatus(curPhaseThreshold, maxHealth);
 
         meshRender = GetComponent<MeshRenderer>();
+        audioManager = GetComponent<BossAudioManager>();
+        if (meshRender == null || audioManager == null) {
+            Debug.LogError("No mesh renderer or boss audio manager found on this boss", transform);
+        }
+
         originalColor = meshRender.material.color;
     }
 
@@ -87,6 +95,7 @@ public class BossStatus : TwitchEnemyStatus
                 curPhaseThreshold = maxHealth - (maxHealth * totalHealthPercentPassed);
                 phaseThresholdBar.setStatus(curPhaseThreshold, maxHealth);
 
+                audioManager.playPhaseShiftSound();
                 transitionSequence = StartCoroutine(transitionPhaseSequence());
             }
         }

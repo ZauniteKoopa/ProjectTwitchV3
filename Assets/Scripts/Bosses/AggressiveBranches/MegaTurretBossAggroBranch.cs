@@ -78,6 +78,9 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
     private HashSet<IUnitStatus> activeCrushBots = new HashSet<IUnitStatus>();
     private List<LobbedEnemy> lobbedEnemies = new List<LobbedEnemy>();
 
+    // Audio
+    private MegaTurretBossAudioManager audioManager;
+
 
     // Enums concerning moves
     private enum MegaTurretMove {
@@ -99,6 +102,12 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
         errorCheckMoveProbabilities(phase1MoveProbabilities);
         errorCheckMoveProbabilities(phase2MoveProbabilities);
         errorCheckMoveProbabilities(phase3MoveProbabilities);
+
+        // Get reference variables
+        audioManager = GetComponent<MegaTurretBossAudioManager>();
+        if (audioManager == null) {
+            Debug.LogError("No mega turret audio manager found on this mega turret boss", transform);
+        }
     }
 
 
@@ -198,6 +207,8 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
         foreach (EnemyAreaOfEffect laser in lasers) {
             laser.changeColor(Color.clear);
         }
+
+        audioManager.stopAudio();
     }
 
 
@@ -255,6 +266,7 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
         BasicEnemyProjectile currentProjectile = Object.Instantiate(baseProjectile, projectileSrc, Quaternion.identity);
         currentProjectile.setDamage(projDamage * enemyStats.getAttackMultiplier());
         currentProjectile.setUpMovement(aimDirection, projectileSpeed);
+        audioManager.playBulletFire();
 
         // If you're in Phase Number 2, do triple shots
         if (phaseNumber >= 2) {
@@ -284,11 +296,13 @@ public class MegaTurretBossAggroBranch : IBossAggroBranch
             transform.forward = aimDirection;
             changeLaserColors(laserAnticipationColor, phaseNumber);
             float curAnticipation = (phaseNumber < 2) ? initialLaserCharge : lateLaserCharge;
+            audioManager.playLaserCharge();
 
             yield return new WaitForSeconds(curAnticipation);
 
             // Fire: change to fired color and do damage
             changeLaserColors(laserFiredColor, phaseNumber);
+            audioManager.playLaserFire();
             
             if (phaseNumber < 2) {
                 lasers[0].damageAllTargets(laserDamage * enemyStats.getAttackMultiplier());

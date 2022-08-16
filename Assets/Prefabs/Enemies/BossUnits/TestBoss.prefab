@@ -428,7 +428,7 @@ GameObject:
   - component: {fileID: 7156200389806921683}
   - component: {fileID: 7156200389806921689}
   - component: {fileID: 7156200389806921691}
-  - component: {fileID: 6777071995617395047}
+  - component: {fileID: 5971080460239042433}
   - component: {fileID: 6731779089923492230}
   - component: {fileID: 7156200389806921680}
   - component: {fileID: 7156200389806921686}
@@ -631,7 +631,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6777071995617395047
+--- !u!114 &5971080460239042433
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -640,7 +640,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7156200389806921682}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c149461e95003fa1800e6025be71474, type: 3}
+  m_Script: {fileID: 11500000, guid: 44c797080c1fda4448a019a2f7c1fe20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   footstepsManager: {fileID: 0}
@@ -649,6 +649,8 @@ MonoBehaviour:
   deathSounds:
   - {fileID: 8300000, guid: 3c925b5b3e8c1fd4887460421dc9e601, type: 3}
   attackSounds: []
+  phaseShiftSounds:
+  - {fileID: 8300000, guid: 8a0c5c660eef1e04bba504d40249dc40, type: 3}
 --- !u!82 &6731779089923492230
 AudioSource:
   m_ObjectHideFlags: 0

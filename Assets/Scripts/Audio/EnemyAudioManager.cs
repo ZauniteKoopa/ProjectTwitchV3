@@ -61,6 +61,12 @@ public class EnemyAudioManager : MonoBehaviour
     }
 
 
+    // Public function to cancel audio
+    public void stopAudio() {
+        speaker.Stop();
+    }
+
+
     // Main function to set step rate
     //  Pre: speedFactor > 0f. If less than 1, slows unit down. If more than 1, unit is faster
     //  Post: sets speed factor for calculation

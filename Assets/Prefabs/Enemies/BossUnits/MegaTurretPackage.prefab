@@ -2452,7 +2452,7 @@ GameObject:
   - component: {fileID: 456505596693541389}
   - component: {fileID: 456505596693541383}
   - component: {fileID: 456505596693541381}
-  - component: {fileID: 4257806207677670585}
+  - component: {fileID: 377750340825784842}
   - component: {fileID: 4068490265753267288}
   - component: {fileID: 456505596693541390}
   - component: {fileID: 456505596693541385}
@@ -2667,7 +2667,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4257806207677670585
+--- !u!114 &377750340825784842
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2676,15 +2676,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 456505596693541388}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c149461e95003fa1800e6025be71474, type: 3}
+  m_Script: {fileID: 11500000, guid: c53c1535a6ff3684c9367e680ded0a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   footstepsManager: {fileID: 0}
   defaultTimePerStep: 0.25
   isStationary: 1
   deathSounds:
-  - {fileID: 8300000, guid: 3c925b5b3e8c1fd4887460421dc9e601, type: 3}
+  - {fileID: 8300000, guid: fc7191afdb773a54e83844822d017dab, type: 3}
   attackSounds: []
+  phaseShiftSounds:
+  - {fileID: 8300000, guid: 8a0c5c660eef1e04bba504d40249dc40, type: 3}
+  laserChargeSounds:
+  - {fileID: 8300000, guid: d66b8cfd190f41645a72fd757fadde42, type: 3}
+  laserFireSounds:
+  - {fileID: 8300000, guid: d3e21d91c42e865429b14cfba77c1c9d, type: 3}
+  bulletFireSounds:
+  - {fileID: 8300000, guid: 9cfafece494ce6d48a11c631e51b38e7, type: 3}
 --- !u!82 &4068490265753267288
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2697,7 +2705,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -677,8 +677,12 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             }
         }
 
-        statusEffectVFXs.clear();
+        // Display speed
+        if (statusDisplay != null) {
+            statusDisplay.displaySpeedStatus(1.0f);
+        }
 
+        statusEffectVFXs.clear();
         enemyResetEvent.Invoke();
     }
 
