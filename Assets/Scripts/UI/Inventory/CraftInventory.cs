@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using TMPro;
 
 public class CraftInventory : MonoBehaviour
@@ -14,6 +15,8 @@ public class CraftInventory : MonoBehaviour
     private VialInventoryIcon primaryVialIcon;
     [SerializeField]
     private VialInventoryIcon secondaryVialIcon;
+    [SerializeField]
+    private Image caskThrowIcon;
     private bool primaryVialSelected = true;
 
     // Crafting
@@ -64,6 +67,9 @@ public class CraftInventory : MonoBehaviour
         primaryVialIcon.iconSelectedEvent.AddListener(onPrimaryVialSelect);
         secondaryVialIcon.iconSelectedEvent.AddListener(onSecondaryVialSelect);
 
+        primaryVialIcon.setSelectedLayer(transform.GetChild(transform.childCount - 1));
+        secondaryVialIcon.setSelectedLayer(transform.GetChild(transform.childCount - 1));
+
         // Error checking
         if (twitchInventory == null) {
             Debug.LogError("No inventory for UI to display", transform);
@@ -77,6 +83,10 @@ public class CraftInventory : MonoBehaviour
         if (hoverPopupInfo == null) {
             Debug.LogError("No InventoryHoverPopupDisplays component connected to inventory object", transform);
         }
+
+        if (transform.childCount == 0) {
+            Debug.LogError("Inventory UI object should have at least 1 empty object to render everything on top of (selected elements can be rendered on top)");
+        }
     }
 
 
@@ -85,8 +95,11 @@ public class CraftInventory : MonoBehaviour
     //  Post: Inventory UI has been updated with the latest version and change records are reset
     private void openInventory() {
         // Display basic ingredient icons and vial icons
-        twitchInventory.displayIngredients(ingredients);
-        primaryVialIcon.DisplayVial(twitchInventory.getPrimaryVial());
+        twitchInventory.displayIngredients(ingredients, transform.GetChild(transform.childCount - 1));
+        IVial primaryVial = twitchInventory.getPrimaryVial();
+
+        primaryVialIcon.DisplayVial(primaryVial);
+        caskThrowIcon.color = (primaryVial != null) ? primaryVial.getColor() : Color.black;
         twitchInventory.displaySecondaryVial(secondaryVialIcon);
 
         // Reset craft window
@@ -102,8 +115,8 @@ public class CraftInventory : MonoBehaviour
         primaryVialIcon.setHighlight(true);
         secondaryVialIcon.setHighlight(false);
 
-        selectedVialInfo.DisplayVial(twitchInventory.getPrimaryVial());
-        hoverPopupInfo.updateDisplays(twitchInventory.getPrimaryVial());
+        selectedVialInfo.DisplayVial(primaryVial);
+        hoverPopupInfo.updateDisplays(primaryVial);
         primaryVialSelected = true;
 
         // Play sound
@@ -118,6 +131,13 @@ public class CraftInventory : MonoBehaviour
         inInventory = false;
         Time.timeScale = prevTimeScale;
         gameObject.SetActive(false);
+
+        // Reset all icons
+        primaryVialIcon.onInventoryClose();
+        secondaryVialIcon.onInventoryClose();
+        foreach (IngredientIcon ingIcon in ingredients) {
+            ingIcon.onInventoryClose();
+        }
 
         // Reset all hover popups
         foreach (HoverPopup popup in hoverPopups) {
@@ -217,7 +237,6 @@ public class CraftInventory : MonoBehaviour
         craftVialSlot.Reset();
 
         ingredientInfo.uiClear();
-        selectedVialInfo.DisplayVial(null);
 
         inventoryAudio.playDropSound();
     }
@@ -314,7 +333,7 @@ public class CraftInventory : MonoBehaviour
     // Private helper function to update infromation to get the most up-to-date version
     private void updateInfo() {
         // Display basic ingredient icons and vial icons
-        twitchInventory.displayIngredients(ingredients);
+        twitchInventory.displayIngredients(ingredients, transform.GetChild(transform.childCount - 1));
         primaryVialIcon.DisplayVial(twitchInventory.getPrimaryVial());
         twitchInventory.displaySecondaryVial(secondaryVialIcon);
 

@@ -21,6 +21,10 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     private Ingredient ingredient = null;
     private int count;
 
+    // UI layer groups: render order
+    private Transform defaultParent;
+    private Transform selectedParent;
+
     //Variables for managing drag and drop
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
@@ -38,13 +42,15 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
+        defaultParent = transform.parent;
         dropped = false;
     }
 
     //Method to set up ingredient
-    public void SetUpIcon(Ingredient ing, int n)
+    public void SetUpIcon(Ingredient ing, int n, Transform selectedLayer)
     {
         startPosition = GetComponent<RectTransform>().anchoredPosition;
+        selectedParent = selectedLayer;
 
         if (ing != null)
         {
@@ -125,6 +131,8 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
         {
             canvasGroup.blocksRaycasts = false;
             canvasGroup.alpha = 0.6f;
+            transform.SetAsLastSibling();
+            transform.SetParent(selectedParent);
         }
     }
 
@@ -153,6 +161,10 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     //Private IEnumerator to go back to start.
     private IEnumerator BackToStart()
     {
+        // Get accurate start position
+        transform.SetParent(defaultParent);
+
+        // Set up timer
         Vector3 curPos = rectTransform.anchoredPosition;
         float timer = 0.0f;
         float delta = 0.02f;
@@ -170,5 +182,17 @@ public class IngredientIcon : MonoBehaviour, IPointerDownHandler, IBeginDragHand
     public bool IngredientExists()
     {
         return ingredient != null && count > 0;
+    }
+
+
+    // Main function to handle when the inventory closes
+    //  Pre: inventory is about to close
+    //  Post: sets it to this automatically
+    public void onInventoryClose() {
+        transform.SetParent(defaultParent);
+        canvasGroup.blocksRaycasts = true;
+        canvasGroup.alpha = 1f;
+        rectTransform.anchoredPosition = startPosition;
+        dropped = false;
     }
 }

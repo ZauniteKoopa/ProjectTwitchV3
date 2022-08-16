@@ -95,9 +95,9 @@ public abstract class ITwitchInventory : MonoBehaviour
 
 
     // Main function to display ingredients given an array of ingredient icons
-    //  Pre: array of icons != null with non-null elements AND array length >= number of distinct ingredient types
+    //  Pre: array of icons != null with non-null elements AND array length >= number of distinct ingredient types, selectedParent != null
     //  Post: Displays ingredients onto ingredient icons
-    public abstract void displayIngredients(IngredientIcon[] ingredientIcons);
+    public abstract void displayIngredients(IngredientIcon[] ingredientIcons, Transform selectedParent);
 
 
     // Main function to display secondary vial in an icon
