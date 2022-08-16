@@ -334,6 +334,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b278534e9d719cab580e99e9c66e8f01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 8
   stretchSound: {fileID: 8300000, guid: 37a15fd20f3ad254e86456601335c5f0, type: 3}
   splatSound: {fileID: 8300000, guid: 15684d68d1184a34c818a04a856395ee, type: 3}
 --- !u!82 &2261273426846131956

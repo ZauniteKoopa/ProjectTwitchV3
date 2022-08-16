@@ -12,6 +12,9 @@ public class PulsatingCaskZone : IBattleUltimate
     private float stunDuration = 1.5f;
     private bool setup = false;
 
+    public LayerMask collisionMask;
+    private float knockbackOffset = 0.5f;
+
     //Enums to represet the stages of the cask
     private enum PulsatingCaskStage {
         ATTACHING,
@@ -87,8 +90,15 @@ public class PulsatingCaskZone : IBattleUltimate
                 tgt.stun(true);
                 startLocations.Add(tgt, tgt.transform.position);
                 
+                // Get current final location
                 Vector3 flatCaskPosition = new Vector3(transform.position.x, tgt.transform.position.y, transform.position.z);
-                Vector3 currentFinalLocation = tgt.transform.position + (pullDistance * (flatCaskPosition - tgt.transform.position).normalized);
+
+                // shoot out ray to check for collision and get the destination point
+                RaycastHit hitInfo;
+                Vector3 rayDir = (flatCaskPosition - tgt.transform.position).normalized;
+                bool hit = Physics.Raycast(transform.position, rayDir, out hitInfo, pullDistance, collisionMask);
+                Vector3 currentFinalLocation = (hit) ? hitInfo.point - (knockbackOffset * rayDir) : transform.position + (pullDistance * rayDir);
+
                 finalLocations.Add(tgt, currentFinalLocation);
             }
         }

@@ -3674,8 +3674,12 @@ PrefabInstance:
       value: EnemyRoom
       objectReference: {fileID: 0}
     - target: {fileID: 2719903223917397480, guid: 7f98517f800ca3e78bd85d16df633839, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2719903223917397480, guid: 7f98517f800ca3e78bd85d16df633839, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.35
+      value: -0.88
       objectReference: {fileID: 0}
     - target: {fileID: 2719903223917397480, guid: 7f98517f800ca3e78bd85d16df633839, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4212,13 +4216,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1455316811087517151, guid: 96097720e35c5d31591dc3438e01839b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1455316811087517151, guid: 96097720e35c5d31591dc3438e01839b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9.84
+      objectReference: {fileID: 0}
     - target: {fileID: 5819144814510702153, guid: 96097720e35c5d31591dc3438e01839b, type: 3}
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5819144814510702153, guid: 96097720e35c5d31591dc3438e01839b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 26.790504
+      value: -8.1
       objectReference: {fileID: 0}
     - target: {fileID: 5819144814510702153, guid: 96097720e35c5d31591dc3438e01839b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4226,7 +4238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5819144814510702153, guid: 96097720e35c5d31591dc3438e01839b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -27.673122
+      value: -24.8
       objectReference: {fileID: 0}
     - target: {fileID: 5819144814510702153, guid: 96097720e35c5d31591dc3438e01839b, type: 3}
       propertyPath: m_LocalRotation.w
