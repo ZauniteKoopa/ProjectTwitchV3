@@ -15,6 +15,11 @@ public class DualActivatableSwitch : IHittable
     private Color notActivatedColor = Color.yellow;
     [SerializeField]
     private Color activatedColor = Color.green;
+    [SerializeField]
+    private float switchCooldown = 0.0f;
+
+    private bool canHit = true;
+    private Coroutine cooldownCoroutine = null;
     private MeshRenderer meshRender;
 
 
@@ -29,10 +34,31 @@ public class DualActivatableSwitch : IHittable
     //  Pre: none
     //  Post: switch on if it was initially off or off if it was initially on
     public override void hit() {
-        activated = !activated;
+        if (canHit) {
+            // Trigger event
+            activated = !activated;
+            UnityEvent triggeredEvent = (activated) ? activateEvent : deactivateEvent;
+            triggeredEvent.Invoke();
+
+            if (switchCooldown > 0.001f) {
+                cooldownCoroutine = StartCoroutine(hitCooldownSequence());
+            } else {
+                meshRender.material.color = (activated) ? activatedColor : notActivatedColor;
+            }
+        }
+    }
+
+
+    // Main cooldown coroutine
+    private IEnumerator hitCooldownSequence() {
+        meshRender.material.color = Color.red;
+        canHit = false;
+
+        yield return new WaitForSeconds(switchCooldown);
+
+        canHit = true;
         meshRender.material.color = (activated) ? activatedColor : notActivatedColor;
-        UnityEvent triggeredEvent = (activated) ? activateEvent : deactivateEvent;
-        triggeredEvent.Invoke();
+        cooldownCoroutine = null;
     }
 
 
@@ -42,8 +68,14 @@ public class DualActivatableSwitch : IHittable
     public override void reset() {
         if (activated) {
             activated = false;
+            canHit = true;
             meshRender.material.color = notActivatedColor;
             deactivateEvent.Invoke();
+
+            // Stop cooldown sequence if there is any
+            if (cooldownCoroutine != null) {
+                StopCoroutine(cooldownCoroutine);
+            }
         }
     }
 }
