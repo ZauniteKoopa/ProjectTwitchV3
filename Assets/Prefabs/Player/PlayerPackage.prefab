@@ -1549,7 +1549,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &338630829
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1652,6 +1652,7 @@ MonoBehaviour:
   primaryVialIcon: {fileID: 8978266333842367838}
   secondaryVialIcon: {fileID: 3934868532464219460}
   caskThrowIcon: {fileID: 3788430498846057072}
+  selectedGroup: {fileID: 4911367283125570945}
   craftIngSlot1: {fileID: 7139455548574619072}
   craftIngSlot2: {fileID: 3216978732367396977}
   craftVialSlot: {fileID: 763786020208773023}
@@ -8248,8 +8249,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: '<color=red>Contaminate</color>: Unleash a burst of damage on all nearby
-    infected enemies. Damage scales with infected poison stacks and <color=red>reactivity</color>.
-    If this kills, reset <color=red>stealth</color> cooldown'
+    <color=red>infected enemies</color>. Damage scales with infected <color=red>poison
+    stacks</color> and <color=red>reactivity</color>. If this kills, reset <color=red>stealth</color>
+    cooldown'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -20395,7 +20397,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<color=red>Cask Throw</color>: Throw a cask at a location, creating a
     fog that will slow and infect enemies for a max of 4 stacks gradually. The slow
-    will scale with <color=red>stickiness</color>'
+    will scale with <color=red>stickiness</color>. <color=red>Poison required</color>.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
