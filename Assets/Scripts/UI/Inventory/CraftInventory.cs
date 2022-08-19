@@ -17,6 +17,8 @@ public class CraftInventory : MonoBehaviour
     private VialInventoryIcon secondaryVialIcon;
     [SerializeField]
     private Image caskThrowIcon;
+    [SerializeField]
+    private Transform selectedGroup;
     private bool primaryVialSelected = true;
 
     // Crafting
@@ -67,8 +69,8 @@ public class CraftInventory : MonoBehaviour
         primaryVialIcon.iconSelectedEvent.AddListener(onPrimaryVialSelect);
         secondaryVialIcon.iconSelectedEvent.AddListener(onSecondaryVialSelect);
 
-        primaryVialIcon.setSelectedLayer(transform.GetChild(transform.childCount - 1));
-        secondaryVialIcon.setSelectedLayer(transform.GetChild(transform.childCount - 1));
+        primaryVialIcon.setSelectedLayer(selectedGroup);
+        secondaryVialIcon.setSelectedLayer(selectedGroup);
 
         // Error checking
         if (twitchInventory == null) {
@@ -84,7 +86,7 @@ public class CraftInventory : MonoBehaviour
             Debug.LogError("No InventoryHoverPopupDisplays component connected to inventory object", transform);
         }
 
-        if (transform.childCount == 0) {
+        if (selectedGroup == null) {
             Debug.LogError("Inventory UI object should have at least 1 empty object to render everything on top of (selected elements can be rendered on top)");
         }
     }
@@ -95,7 +97,7 @@ public class CraftInventory : MonoBehaviour
     //  Post: Inventory UI has been updated with the latest version and change records are reset
     private void openInventory() {
         // Display basic ingredient icons and vial icons
-        twitchInventory.displayIngredients(ingredients, transform.GetChild(transform.childCount - 1));
+        twitchInventory.displayIngredients(ingredients, selectedGroup);
         IVial primaryVial = twitchInventory.getPrimaryVial();
 
         primaryVialIcon.DisplayVial(primaryVial);
@@ -333,7 +335,7 @@ public class CraftInventory : MonoBehaviour
     // Private helper function to update infromation to get the most up-to-date version
     private void updateInfo() {
         // Display basic ingredient icons and vial icons
-        twitchInventory.displayIngredients(ingredients, transform.GetChild(transform.childCount - 1));
+        twitchInventory.displayIngredients(ingredients, selectedGroup);
         primaryVialIcon.DisplayVial(twitchInventory.getPrimaryVial());
         twitchInventory.displaySecondaryVial(secondaryVialIcon);
 

@@ -19,7 +19,7 @@ MonoBehaviour:
   ultCost: 6
   baseSlow: 0.75
   slowGrowth: -0.1
-  pullDistance: 3.75
+  pullDistance: 2
   pullDelay: 1.25
   stunDuration: 1
   pulsatingCaskPrefab: {fileID: 1408666514852005981, guid: 80c4cd12bb23e6ff88f792c37de9bb4c, type: 3}
