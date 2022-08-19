@@ -10,6 +10,7 @@ public abstract class IHittable : MonoBehaviour
 {
     // Main event for when this object is destroyed
     public HittableDelegate destroyedEvent;
+    public bool targetable = false;
     
 
     // Main function to hit the object with an attack
