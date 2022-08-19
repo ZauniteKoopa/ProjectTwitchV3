@@ -70,8 +70,12 @@ public class XZ_AimAssist : IAimAssist
                 Vector3 distanceVector = tgtPosition - playerPosition;
                 distanceVector.y = 0f;
 
-                // check if there's a ray collision, indicating that the aim is blocked
-                bool aimBlocked = Physics.Raycast(transform.position, distanceVector.normalized, distanceVector.magnitude, aimMask);
+                // check if there's a ray collision, indicating that the aim is blocked. Also make sure that the one blocking isn't the target itself
+                RaycastHit hitInfo;
+                bool aimBlocked = Physics.Raycast(transform.position, distanceVector.normalized, out hitInfo, distanceVector.magnitude, aimMask);
+                if (aimBlocked) {
+                    aimBlocked = (hitInfo.collider.transform != target);
+                }
 
                 // Get the Cos of the angle between distance vector and aim direction. (If positive, in the direction of aim. Else, in the opposite direction of aim)
                 float cosAngle = Vector3.Dot(distanceVector, aimDirection);

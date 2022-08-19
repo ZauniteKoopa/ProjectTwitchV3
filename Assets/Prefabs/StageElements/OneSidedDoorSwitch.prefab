@@ -476,6 +476,7 @@ MonoBehaviour:
   destroyedEvent:
     m_PersistentCalls:
       m_Calls: []
+  targetable: 1
   activateEvent:
     m_PersistentCalls:
       m_Calls:
