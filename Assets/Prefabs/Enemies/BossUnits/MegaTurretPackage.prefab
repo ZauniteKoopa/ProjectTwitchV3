@@ -2613,8 +2613,8 @@ MonoBehaviour:
   spawnInEffect: {fileID: 3300450328022978300}
   spawnInTime: 1.25
   phaseHealthPercents:
-  - 0.28
-  - 0.28
+  - 0.25
+  - 0.31
   - 0.44
   phaseTransitionTime: 4
   transitionPhaseStartEvent:
