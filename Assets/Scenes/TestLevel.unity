@@ -2212,6 +2212,7 @@ MonoBehaviour:
   destroyedEvent:
     m_PersistentCalls:
       m_Calls: []
+  targetable: 0
   activateEvent:
     m_PersistentCalls:
       m_Calls:
@@ -5503,6 +5504,17 @@ Transform:
   m_Father: {fileID: 1650094510596327245}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &571918604 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6786827966142758274, guid: 17c48fd30b8db4ed3b00b5fde804ef99, type: 3}
+  m_PrefabInstance: {fileID: 2156538578024748383}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee9145307b4ba5037bde57cbd3594152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &573013303 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8182115139627567030, guid: 4a09235809e8d6d1a98a15310207e4ae, type: 3}
@@ -5972,6 +5984,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 360218b3a8a8b2f478f2739cf3c4b98c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &628037925 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6786827966142758274, guid: 17c48fd30b8db4ed3b00b5fde804ef99, type: 3}
+  m_PrefabInstance: {fileID: 7263861861623262582}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee9145307b4ba5037bde57cbd3594152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &629755106
@@ -7595,6 +7618,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyRooms:
   - {fileID: 5813005283665118538}
+  - {fileID: 628037925}
+  - {fileID: 887378871}
+  - {fileID: 571918604}
   ingredientCrate: {fileID: 424134784}
 --- !u!23 &804063194
 MeshRenderer:
@@ -8003,6 +8029,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a09235809e8d6d1a98a15310207e4ae, type: 3}
+--- !u!114 &887378871 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6786827966142758274, guid: 17c48fd30b8db4ed3b00b5fde804ef99, type: 3}
+  m_PrefabInstance: {fileID: 5390664149655999000}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee9145307b4ba5037bde57cbd3594152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &896782523
 GameObject:
   m_ObjectHideFlags: 0
@@ -10550,6 +10587,7 @@ MonoBehaviour:
   destroyedEvent:
     m_PersistentCalls:
       m_Calls: []
+  targetable: 0
   activateEvent:
     m_PersistentCalls:
       m_Calls:
@@ -23519,6 +23557,7 @@ MonoBehaviour:
   destroyedEvent:
     m_PersistentCalls:
       m_Calls: []
+  targetable: 0
   activateEvent:
     m_PersistentCalls:
       m_Calls:
@@ -23727,6 +23766,7 @@ MonoBehaviour:
   destroyedEvent:
     m_PersistentCalls:
       m_Calls: []
+  targetable: 0
   activateEvent:
     m_PersistentCalls:
       m_Calls:
@@ -23888,6 +23928,7 @@ MonoBehaviour:
   destroyedEvent:
     m_PersistentCalls:
       m_Calls: []
+  targetable: 0
   activateEvent:
     m_PersistentCalls:
       m_Calls:
