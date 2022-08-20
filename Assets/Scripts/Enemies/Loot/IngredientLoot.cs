@@ -24,6 +24,7 @@ public class IngredientLoot : Loot
 
         bool success = inventory.addIngredient(ingInstance);
         if (success) {
+            interruptExpiration();
             gameObject.SetActive(false);
         }
 
@@ -36,6 +37,7 @@ public class IngredientLoot : Loot
 
         bool success = (isPrimary) ? inventory.upgradePrimaryVial(ingInstance, false) : inventory.upgradeSecondaryVial(ingInstance, false);
         if (success) {
+            interruptExpiration();
             gameObject.SetActive(false);
         }
 
