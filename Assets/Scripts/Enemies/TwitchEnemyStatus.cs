@@ -634,10 +634,12 @@ public class TwitchEnemyStatus : ITwitchUnitStatus
             int numLoot = Random.Range(minLootDrops, maxLootDrops + 1);
 
             for (int l = 0; l < numLoot; l++) {
-                Vector3 lootPosition = transform.position;
-                Transform currentLoot = possibleLoot[Random.Range(0, possibleLoot.Length)].transform;
-                Transform curLootInstance = Object.Instantiate(currentLoot, lootPosition, Quaternion.identity);
-                curLootInstance.GetComponent<Loot>().setSpawnRadius(minLootDistance, maxLootDistance);
+                if (TwitchInventory.willDropIngredient()) {
+                    Vector3 lootPosition = transform.position;
+                    Transform currentLoot = possibleLoot[Random.Range(0, possibleLoot.Length)].transform;
+                    Transform curLootInstance = Object.Instantiate(currentLoot, lootPosition, Quaternion.identity);
+                    curLootInstance.GetComponent<Loot>().setSpawnRadius(minLootDistance, maxLootDistance);
+                }
             }
         }
     }

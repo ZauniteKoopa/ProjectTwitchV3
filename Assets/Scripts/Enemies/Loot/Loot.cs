@@ -19,6 +19,10 @@ public class Loot : MonoBehaviour
     private float lootThrowWallOffset = 0.5f;
     private float lootGroundOffset = 0.25f;
 
+    private float lootExpirationTime = 12f;
+    private float lootBlinkTime = 4f;
+    private const float BLINK_TIME = 0.1f;
+
     // Reference variables
     private MeshRenderer meshRender;
     private Collider lootTrigger;
@@ -75,6 +79,29 @@ public class Loot : MonoBehaviour
         meshRender.enabled = true;
         yield return new WaitForSeconds(0.25f);
         lootTrigger.enabled = true;
+
+        // Expire
+        Debug.Assert(lootExpirationTime > lootBlinkTime);
+        yield return new WaitForSeconds(lootExpirationTime - lootBlinkTime);
+
+        WaitForSeconds blinkFrame = new WaitForSeconds(BLINK_TIME);
+        bool blinked = false;
+        Color originalColor = meshRender.material.color;
+        Color blinkColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
+        float timer = 0f;
+
+        while (timer < lootBlinkTime) {
+            yield return blinkFrame;
+
+            blinked = !blinked;
+            meshRender.material.color = (blinked) ? blinkColor : originalColor;
+            timer += BLINK_TIME;
+        }
+
+        // Send to shadow realm and destroy object
+        transform.position = Vector3.up * 10000000000f;
+        yield return new WaitForSeconds(0.1f);
+        Object.Destroy(gameObject);
     }
 
 
@@ -104,5 +131,11 @@ public class Loot : MonoBehaviour
 
         minLootDistance = minSpawnRadius;
         maxLootDistance = maxSpawnRadius;
+    }
+
+
+    // Main function to stop expiration
+    protected void interruptExpiration() {
+        StopAllCoroutines();
     }
 }

@@ -1665,7 +1665,7 @@ GameObject:
   - component: {fileID: 207508699}
   - component: {fileID: 207508698}
   - component: {fileID: 207508697}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2212,6 +2212,7 @@ MonoBehaviour:
   destroyedEvent:
     m_PersistentCalls:
       m_Calls: []
+  targetable: 1
   activateEvent:
     m_PersistentCalls:
       m_Calls:
@@ -3028,7 +3029,7 @@ GameObject:
   - component: {fileID: 288082467}
   - component: {fileID: 288082466}
   - component: {fileID: 288082465}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3761,7 +3762,7 @@ GameObject:
   - component: {fileID: 355458239}
   - component: {fileID: 355458238}
   - component: {fileID: 355458237}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5503,6 +5504,17 @@ Transform:
   m_Father: {fileID: 1650094510596327245}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &571918604 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6786827966142758274, guid: 17c48fd30b8db4ed3b00b5fde804ef99, type: 3}
+  m_PrefabInstance: {fileID: 2156538578024748383}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee9145307b4ba5037bde57cbd3594152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &573013303 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8182115139627567030, guid: 4a09235809e8d6d1a98a15310207e4ae, type: 3}
@@ -5972,6 +5984,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 360218b3a8a8b2f478f2739cf3c4b98c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &628037925 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6786827966142758274, guid: 17c48fd30b8db4ed3b00b5fde804ef99, type: 3}
+  m_PrefabInstance: {fileID: 7263861861623262582}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee9145307b4ba5037bde57cbd3594152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &629755106
@@ -7468,7 +7491,7 @@ GameObject:
   - component: {fileID: 788788758}
   - component: {fileID: 788788757}
   - component: {fileID: 788788756}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7595,6 +7618,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyRooms:
   - {fileID: 5813005283665118538}
+  - {fileID: 628037925}
+  - {fileID: 887378871}
+  - {fileID: 571918604}
   ingredientCrate: {fileID: 424134784}
 --- !u!23 &804063194
 MeshRenderer:
@@ -8003,6 +8029,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a09235809e8d6d1a98a15310207e4ae, type: 3}
+--- !u!114 &887378871 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6786827966142758274, guid: 17c48fd30b8db4ed3b00b5fde804ef99, type: 3}
+  m_PrefabInstance: {fileID: 5390664149655999000}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee9145307b4ba5037bde57cbd3594152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &896782523
 GameObject:
   m_ObjectHideFlags: 0
@@ -8209,6 +8246,10 @@ PrefabInstance:
     - target: {fileID: 2050020950324005075, guid: b0619f83556423369b6f53615030aab2, type: 3}
       propertyPath: m_Name
       value: CrushBot (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005083, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: nearDistance
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2050020950324005087, guid: b0619f83556423369b6f53615030aab2, type: 3}
       propertyPath: m_RootOrder
@@ -10550,6 +10591,7 @@ MonoBehaviour:
   destroyedEvent:
     m_PersistentCalls:
       m_Calls: []
+  targetable: 0
   activateEvent:
     m_PersistentCalls:
       m_Calls:
@@ -10797,7 +10839,7 @@ GameObject:
   - component: {fileID: 1230662857}
   - component: {fileID: 1230662856}
   - component: {fileID: 1230662855}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13004,7 +13046,7 @@ GameObject:
   - component: {fileID: 1440486251}
   - component: {fileID: 1440486250}
   - component: {fileID: 1440486249}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13584,6 +13626,10 @@ PrefabInstance:
     - target: {fileID: 2050020950324005075, guid: b0619f83556423369b6f53615030aab2, type: 3}
       propertyPath: m_Name
       value: CrushBot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2050020950324005083, guid: b0619f83556423369b6f53615030aab2, type: 3}
+      propertyPath: nearDistance
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2050020950324005087, guid: b0619f83556423369b6f53615030aab2, type: 3}
       propertyPath: m_RootOrder
@@ -16926,31 +16972,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4415668285557723186, guid: 10d57d3293c6adb4cb9ff8b92c289097, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4415668285782674701, guid: 10d57d3293c6adb4cb9ff8b92c289097, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4415668285892940969, guid: 10d57d3293c6adb4cb9ff8b92c289097, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4415668285902075119, guid: 10d57d3293c6adb4cb9ff8b92c289097, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4415668285933339809, guid: 10d57d3293c6adb4cb9ff8b92c289097, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4415668286241215336, guid: 10d57d3293c6adb4cb9ff8b92c289097, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4415668286993020895, guid: 10d57d3293c6adb4cb9ff8b92c289097, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4415668287261975304, guid: 10d57d3293c6adb4cb9ff8b92c289097, type: 3}
       propertyPath: m_Name
@@ -17006,7 +17052,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4415668287300292171, guid: 10d57d3293c6adb4cb9ff8b92c289097, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10d57d3293c6adb4cb9ff8b92c289097, type: 3}
@@ -22243,7 +22289,7 @@ GameObject:
   - component: {fileID: 2544113312537946326}
   - component: {fileID: 6952931497256951028}
   - component: {fileID: 2273677519792909763}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22607,7 +22653,7 @@ GameObject:
   - component: {fileID: 3469821680602957121}
   - component: {fileID: 8292269996411941219}
   - component: {fileID: 928990925759135828}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23315,7 +23361,7 @@ GameObject:
   - component: {fileID: 6515998503501697279}
   - component: {fileID: 1827966472014046429}
   - component: {fileID: 7398923951295206890}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23519,6 +23565,7 @@ MonoBehaviour:
   destroyedEvent:
     m_PersistentCalls:
       m_Calls: []
+  targetable: 1
   activateEvent:
     m_PersistentCalls:
       m_Calls:
@@ -23727,6 +23774,7 @@ MonoBehaviour:
   destroyedEvent:
     m_PersistentCalls:
       m_Calls: []
+  targetable: 0
   activateEvent:
     m_PersistentCalls:
       m_Calls:
@@ -23888,6 +23936,7 @@ MonoBehaviour:
   destroyedEvent:
     m_PersistentCalls:
       m_Calls: []
+  targetable: 1
   activateEvent:
     m_PersistentCalls:
       m_Calls:
@@ -24698,7 +24747,7 @@ GameObject:
   - component: {fileID: 8389200630695079825}
   - component: {fileID: 3989954289129397171}
   - component: {fileID: 5237499152853019268}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

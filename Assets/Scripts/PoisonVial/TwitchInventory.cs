@@ -38,6 +38,26 @@ public class TwitchInventory : ITwitchInventory
     // Variables to keep track of previous craft
     private bool gainedSideEffect = false;
 
+    // Main variable to handle loot management
+    private static int numPlayerIngredients;
+    private static readonly float MIN_PROBABILITY = 0.2f;
+    private static readonly int NUM_FREE_ING_DROPS = 2;
+
+
+    // Main function to tell you whether or not you drop an ingredient or not depending on the number of ingredient the player has
+    public static bool willDropIngredient() {
+        //If number of ingredient is less than the number of free ingredient drops, always drop it
+        if (numPlayerIngredients <= NUM_FREE_ING_DROPS) {
+            return true;
+
+        // Else, reduce drop chance according to this formula: MIN_PROBABILITY + ((1.0 - MIN_PROBABILITY) * (1 / (numIng - NUM_FREE_ING_DROPS + 1)))
+        //  If minProb == 20% and numFreeDrops == 4, it would be this formula: 0.2 + (0.8 * (1 / (x - 3)))
+        } else {
+            float dropChance = MIN_PROBABILITY + ((1.0f - MIN_PROBABILITY) * (1f / (numPlayerIngredients - (float)NUM_FREE_ING_DROPS + 1)));
+            float diceRoll = Random.Range(0f, 1f);
+            return diceRoll <= dropChance;
+        }
+    }
 
 
     // On awake, initialize backend instance variables
@@ -50,6 +70,9 @@ public class TwitchInventory : ITwitchInventory
         mainPlayerUI.displaySecondaryVial(secondaryVial);
         mainPlayerUI.displayPrimaryVial(primaryVial);
         mainPlayerUI.displayCraftingTimer(0.0f, 10.0f, false);
+
+        // Reset player inventory counter
+        numPlayerIngredients = 0;
 
         // Error check
         if (mainPlayerUI == null) {
@@ -128,6 +151,7 @@ public class TwitchInventory : ITwitchInventory
         }
 
         playerAudio.playPickUpSound();
+        numPlayerIngredients++;
         return true;
     }
 
@@ -154,6 +178,7 @@ public class TwitchInventory : ITwitchInventory
             }
         }
 
+        numPlayerIngredients--;
         return removalSuccess;
     }
 
@@ -244,6 +269,7 @@ public class TwitchInventory : ITwitchInventory
 
         // On primary vial change
         onPrimaryVialChange();
+        numPlayerIngredients = 0;
     }
 
 
