@@ -15,7 +15,7 @@ MonoBehaviour:
   effectName: Explosive Surprise
   specialization: 2
   icon: {fileID: 0}
-  baseExplosionDamage: 10
-  explosiveDamageGrowth: 5
+  baseExplosionDamage: 7.5
+  explosiveDamageGrowth: 2.5
   speedReduction: 0.5
   slowDuration: 3
