@@ -38,6 +38,8 @@ public class PauseMenu : IPauseMenu
     public override void onExitApplication() {
         if (paused) {
             SceneManager.LoadScene("MainMenu");
+            paused = false;
+            Time.timeScale = 1.0f;
         }
     }
 
