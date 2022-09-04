@@ -1075,7 +1075,7 @@ MonoBehaviour:
       m_Calls: []
   maxHealth: 25
   baseMovementSpeed: 5.5
-  baseAttack: 23
+  baseAttack: 12
   baseArmor: 3
   enemyAura: {fileID: 5827776463227434740}
   maxLootDrops: 1

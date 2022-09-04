@@ -40,8 +40,8 @@ public class TwitchInventory : ITwitchInventory
 
     // Main variable to handle loot management
     private static int numPlayerIngredients;
-    private static readonly float MIN_PROBABILITY = 0.2f;
-    private static readonly int NUM_FREE_ING_DROPS = 2;
+    private static readonly float MIN_PROBABILITY = 0.125f;
+    private static readonly int NUM_FREE_ING_DROPS = 1;
 
 
     // Main function to tell you whether or not you drop an ingredient or not depending on the number of ingredient the player has
