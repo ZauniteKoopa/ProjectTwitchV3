@@ -13,6 +13,10 @@ public abstract class AbstractStraightProjectile : MonoBehaviour
     private bool moving = false;
     private float curDistanceTraveled = 0.0f;
 
+    // Aim assister if one needs to adjust the aim
+    private IAimAssist aimAssist = null;
+    private const float ANGLE_CHANGE_THRESHOLD = 30f;
+
 
     // Main method to move the projectile after every frame
     private void FixedUpdate() {
@@ -34,13 +38,33 @@ public abstract class AbstractStraightProjectile : MonoBehaviour
 
 
     // Public method to set up the projectile movement properties and start movement
-    public void setUpMovement(Vector3 projDir, float projSpeed) {
+    public void setUpMovement(Vector3 projDir, float projSpeed, IAimAssist aimer = null) {
+        // Set projectile movement variables
         projectileDir = projDir.normalized;
         projectileSpeed = projSpeed;
         transform.forward = projDir;
 
+        // Set aimAssist if it exist
+        aimAssist = aimer;
+
+        // set moving flag to true
         moving = true;
     }
+
+
+    // Protected function for children to adjust aim accordingly, is mostly use for polish reasons (Piercing Poison Vial Bolt, possibly reflecting projectiles)
+    //  Pre: aimAssit != null, if it is return nothing. excludedEnemy can be null or non-null
+    //  Post: adjust aim so that it can hit an enemy at that direction
+    protected void adjustAimDirection(ITwitchUnitStatus excludedEnemy) {
+        if (aimAssist != null) {
+            Vector3 protoAim = aimAssist.adjustAim(projectileDir, transform.position, excludedEnemy);
+            if (Vector3.Angle(protoAim, projectileDir) <= ANGLE_CHANGE_THRESHOLD) {
+                Debug.Log("adjusted");
+                projectileDir = protoAim;
+            }
+        }
+    }
+
 
 
     // onTriggerEnter function for projectile

@@ -22,7 +22,7 @@ public class ShotgunPivot : MonoBehaviour, ITwitchBasicAttack
     // Main function to fire the basic attack towards a certain direction
     //  Pre: projDir is the direction that the projectile is facing and projSpeed is how fast the projectile goes
     //  Post: sets up basic attack to go a certain direction
-    public void setUpMovement(Vector3 projDir, float projSpeed) {
+    public void setUpMovement(Vector3 projDir, float projSpeed, IAimAssist aimer = null) {
         transform.forward = projDir;
         StartCoroutine(blastSequence());
     }

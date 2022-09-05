@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 
 public class PoisonVialBolt : AbstractStraightProjectile, ITwitchBasicAttack
 {
-    // Private instance variables
+    // Private instance variables to calculate damage. aim assist for children to adjust aim afterwards
     protected IVial poison;
     private float damageMultiplier = 1.0f;
     [SerializeField]

@@ -13,7 +13,7 @@ public interface ITwitchBasicAttack
     // Main function to fire the basic attack towards a certain direction
     //  Pre: projDir is the direction that the projectile is facing and projSpeed is how fast the projectile goes
     //  Post: sets up basic attack to go a certain direction
-    void setUpMovement(Vector3 projDir, float projSpeed);
+    void setUpMovement(Vector3 projDir, float projSpeed, IAimAssist aimer = null);
 
 
     // Main function to get access to the transform of this component

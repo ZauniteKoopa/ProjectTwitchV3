@@ -18,9 +18,9 @@ public class XZ_AimAssist : IAimAssist
 
 
     // Main function to adjust the aim direction so that it can accurately hit an enemy: O(E) Time and O(E) space (E = enemies considered)
-    //  Pre: aimDirection is the direction of the attack, playerPosition is the position of the player
+    //  Pre: aimDirection is the direction of the attack, playerPosition is the position of the player, excludedEnemy is a twitch unit to exclude in aiming
     //  Post: returns adjusted aimDirection IFF there's an enemy in that general direction
-    public override Vector3 adjustAim(Vector3 aimDirection, Vector3 playerPosition) {
+    public override Vector3 adjustAim(Vector3 aimDirection, Vector3 playerPosition, ITwitchUnitStatus excludedEnemy = null) {
         // Flatten aimDirection so that only the XZ plane is considered
         aimDirection.y = 0f;
 
@@ -55,9 +55,9 @@ public class XZ_AimAssist : IAimAssist
 
 
     // Main function to cull all enemies so that only enemies in the direction of aimDirection are considered AND ray is not blocked. This is THE FIRST CULL: O(E) time, O(E) space
-    //  Pre: aimDirection is the direction of the attack (aimDirection.y == 0f), playerPosition is the position of the player
+    //  Pre: aimDirection is the direction of the attack (aimDirection.y == 0f), playerPosition is the position of the player, excludedEnemy is the enemy to be excluded
     //  Post: returns a list of enemies that are in the direction of aimDirection relative to the player (Not opposite). If there are none, returns an empty list
-    private List<Transform> forwardCull(Vector3 aimDirection, Vector3 playerPosition) {
+    private List<Transform> forwardCull(Vector3 aimDirection, Vector3 playerPosition, ITwitchUnitStatus excludedEnemy = null) {
         Debug.Assert(aimDirection.y == 0f);
 
         List<Transform> forwardCullResults = new List<Transform>();
@@ -65,22 +65,25 @@ public class XZ_AimAssist : IAimAssist
         // Iterate over every enemy in range to see if they are in the direction of aimDirection (not opposite)
         lock (targetLock) {
             foreach (Transform target in nearbyTargets) {
-                // Get distance vector
-                Vector3 tgtPosition = target.position;
-                Vector3 distanceVector = tgtPosition - playerPosition;
-                distanceVector.y = 0f;
+                // ALWAYS exclude excluded enemy. If there is none, just keep going
+                if (excludedEnemy == null || target != excludedEnemy.transform) {
+                    // Get distance vector
+                    Vector3 tgtPosition = target.position;
+                    Vector3 distanceVector = tgtPosition - playerPosition;
+                    distanceVector.y = 0f;
 
-                // check if there's a ray collision, indicating that the aim is blocked. Also make sure that the one blocking isn't the target itself
-                RaycastHit hitInfo;
-                bool aimBlocked = Physics.Raycast(transform.position, distanceVector.normalized, out hitInfo, distanceVector.magnitude, aimMask);
-                if (aimBlocked) {
-                    aimBlocked = (hitInfo.collider.transform != target);
-                }
+                    // check if there's a ray collision, indicating that the aim is blocked. Also make sure that the one blocking isn't the target itself
+                    RaycastHit hitInfo;
+                    bool aimBlocked = Physics.Raycast(transform.position, distanceVector.normalized, out hitInfo, distanceVector.magnitude, aimMask);
+                    if (aimBlocked) {
+                        aimBlocked = (hitInfo.collider.transform != target);
+                    }
 
-                // Get the Cos of the angle between distance vector and aim direction. (If positive, in the direction of aim. Else, in the opposite direction of aim)
-                float cosAngle = Vector3.Dot(distanceVector, aimDirection);
-                if (cosAngle > 0f && !aimBlocked) {
-                    forwardCullResults.Add(target);
+                    // Get the Cos of the angle between distance vector and aim direction. (If positive, in the direction of aim. Else, in the opposite direction of aim)
+                    float cosAngle = Vector3.Dot(distanceVector, aimDirection);
+                    if (cosAngle > 0f && !aimBlocked) {
+                        forwardCullResults.Add(target);
+                    }
                 }
             }
         }

@@ -12,11 +12,15 @@ public class PiercingPoisonVialBolt : PoisonVialBolt
     protected override void damageTarget(ITwitchUnitStatus target) {
         Debug.Assert(target != null);
 
+        // Damage unit
         if (poison != null) {
             target.poisonDamage(getDamage(numEnemiesHit), poison, 1);
         } else {
             base.damageTarget(target);
         }
+
+        // Adjust aim, excluding the target in the aim assist
+        adjustAimDirection(target);
     }
 
     

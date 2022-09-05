@@ -286,9 +286,9 @@ public class PoisonVial : IVial
 
 
     // Main function used to launch basic attack using this vial, considering side effect
-    //  Pre: projDir is the direction of the basic attack, projSpeed is the speed of the attack, spawnPosition is the position in the world this is spawning
+    //  Pre: projDir is the direction of the basic attack, projSpeed is the speed of the attack, spawnPosition is the position in the world this is spawning, aimAssist is the aimAssist used to help projectile adjust direction
     //  Post: returns the instantiated basic attack in the world
-    public static ITwitchBasicAttack launchBasicAttack(Vector3 projDir, float projSpeed, Vector3 spawnPosition, IVial vial, float damageMultiplier) {
+    public static ITwitchBasicAttack launchBasicAttack(Vector3 projDir, float projSpeed, Vector3 spawnPosition, IVial vial, float damageMultiplier, IAimAssist aimAssist) {
         Debug.Assert(projSpeed > 0.0f && damageMultiplier > 0.0f);
 
         ITwitchBasicAttack currentBasicAttack = (vial == null) ? defaultBasicAttack : vial.getBoltType();
@@ -296,7 +296,7 @@ public class PoisonVial : IVial
         ITwitchBasicAttack attackComponent = basicAttackInstance.GetComponent<ITwitchBasicAttack>();
 
         attackComponent.setVialDamage(vial, damageMultiplier);
-        attackComponent.setUpMovement(projDir, projSpeed);
+        attackComponent.setUpMovement(projDir, projSpeed, aimAssist);
 
         return attackComponent;
     }

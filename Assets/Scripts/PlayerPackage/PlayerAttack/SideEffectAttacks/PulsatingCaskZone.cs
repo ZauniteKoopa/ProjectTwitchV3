@@ -96,8 +96,8 @@ public class PulsatingCaskZone : IBattleUltimate
                 // shoot out ray to check for collision and get the destination point
                 RaycastHit hitInfo;
                 Vector3 rayDir = (flatCaskPosition - tgt.transform.position).normalized;
-                bool hit = Physics.Raycast(transform.position, rayDir, out hitInfo, pullDistance, collisionMask);
-                Vector3 currentFinalLocation = (hit) ? hitInfo.point - (knockbackOffset * rayDir) : transform.position + (pullDistance * rayDir);
+                bool hit = Physics.Raycast(tgt.transform.position, rayDir, out hitInfo, pullDistance, collisionMask);
+                Vector3 currentFinalLocation = (hit) ? hitInfo.point - (knockbackOffset * rayDir) : tgt.transform.position + (pullDistance * rayDir);
 
                 finalLocations.Add(tgt, currentFinalLocation);
             }
