@@ -59,7 +59,6 @@ public abstract class AbstractStraightProjectile : MonoBehaviour
         if (aimAssist != null) {
             Vector3 protoAim = aimAssist.adjustAim(projectileDir, transform.position, excludedEnemy);
             if (Vector3.Angle(protoAim, projectileDir) <= ANGLE_CHANGE_THRESHOLD) {
-                Debug.Log("adjusted");
                 projectileDir = protoAim;
             }
         }
