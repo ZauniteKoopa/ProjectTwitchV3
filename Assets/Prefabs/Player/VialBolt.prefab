@@ -125,3 +125,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd0250c95cdc7c7fea14f497b47e4be3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeoutDistance: 12.5
+  weakBoltDamage: 1.75

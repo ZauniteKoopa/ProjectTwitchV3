@@ -41,6 +41,6 @@ public class RatTaTatTat : VirtualSideEffect
     public override string getDescription() {
         float displayedReduction = (damageReductionPerHit * 100f);
         float displayedCap = (1.0f - minDamageReduction) * 100f;
-        return "Bolts now become PIERCING, going through enemies. For each enemy hit, the bolt loses " + displayedReduction + "% of the damage, capping at " + displayedCap + "% damage reduction";
+        return "Bolts now become PIERCING, going through enemies and gaining massive range. For each enemy hit, the bolt loses " + displayedReduction + "% of the damage, capping at " + displayedCap + "% damage reduction";
     }
 }

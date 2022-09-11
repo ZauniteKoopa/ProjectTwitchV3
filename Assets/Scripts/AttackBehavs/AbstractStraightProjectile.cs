@@ -7,6 +7,7 @@ public abstract class AbstractStraightProjectile : MonoBehaviour
     // Private helper function to do movement
     private Vector3 projectileDir;
     private float projectileSpeed = 0.0f;
+    [SerializeField]
     private float timeoutDistance = 30f;
 
     // Movement tracking
